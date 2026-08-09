@@ -1,0 +1,590 @@
+---
+// 컴포넌트 검수용 임시 페이지. 실제 서비스 라우트가 아님 — 컴포넌트가 늘어날 때마다 여기 추가해서 눈으로 확인한다.
+import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import Button from '~/components/Button.astro'
+import TextButton from '~/components/TextButton.astro'
+import IconButton from '~/components/IconButton.astro'
+import Tab from '~/components/Tab.astro'
+import Label from '~/components/Label.astro'
+import Icon from '~/components/Icon.astro'
+import IconCircle from '~/components/IconCircle.astro'
+import Grid from '~/components/Grid.astro'
+import Box from '~/components/Box.astro'
+import Title from '~/components/Title.astro'
+import TextList from '~/components/TextList.astro'
+import ListItem from '~/components/ListItem.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Footer from '~/components/Footer.astro'
+import Container from '~/components/Container.astro'
+import Row from '~/components/Row.astro'
+import Col from '~/components/Col.astro'
+
+const bodySizes = [36, 30, 24, 22, 20, 18, 16, 15, 14] as const
+
+// src/assets/icons/*.svg 파일명을 그대로 목록으로 뽑는다 — 새 아이콘 추가 시 자동으로 여기 표시됨.
+const iconFiles = import.meta.glob('/src/assets/icons/*.svg', {eager: true})
+const iconNames = Object.keys(iconFiles)
+  .map((path) => path.split('/').pop()!.replace('.svg', ''))
+  .sort()
+---
+
+<Layout>
+  <Gnb />
+
+  <!--
+    PageBanner — GNB 바로 아래 오는 서브페이지 공통 배너. Gnb/Footer와 같은 레이아웃 컴포넌트라
+    실제 페이지 조합 그대로 여기서 풀블리드로 보여준다(별도 sg__section로 감싸지 않음).
+    참고: https://comet-take-17267726.figma.site/navigation ("Header" 섹션, property1=About us)
+  -->
+  <PageBanner
+    title="Company"
+    subtitle={[
+      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
+      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
+    ]}
+  />
+
+  <main class="sg">
+    <section class="sg__section">
+      <h2>PageBanner</h2>
+      <p class="text-body-14 text-secondary">
+        위 화면 최상단(Gnb 바로 아래)에 실제 배치된 것이 기본 케이스. breadcrumb prop을 넘기면
+        아래처럼 하단에 위치 경로가 추가된다 — 참고 인스턴스(Company 페이지)에서는 hidden 상태였던
+        옵션 슬롯.
+      </p>
+      <PageBanner
+        title="AI Engine"
+        subtitle={['AI로 물류와 커머스의 미래를 설계하다']}
+        breadcrumb={[{label: 'AI Engine', href: '/ai-engine'}, {label: 'AI & Machine Learning'}]}
+      />
+      <PageBanner title="Robot Logistics" />
+    </section>
+
+    <section class="sg__section">
+      <h2>LayoutGrid (Container / Row / Col)</h2>
+      <p class="text-body-14 text-secondary">
+        12컬럼 그리드, 컬럼 간격(gutter) 20px 고정. Container는 1280 max-width + 좌우 거터(fluid
+        prop을 주면 Footer처럼 max-width 없이 거터만). Col은 span(기본)과
+        spanSm/spanMd/spanLg/spanXl로 breakpoint별 폭을 바꾼다.
+      </p>
+      <Container>
+        <Row>
+          <Col span={12} spanLg={4} class="sg__grid-cell">span 12 / lg:4</Col>
+          <Col span={12} spanLg={4} class="sg__grid-cell">span 12 / lg:4</Col>
+          <Col span={12} spanLg={4} class="sg__grid-cell">span 12 / lg:4</Col>
+        </Row>
+      </Container>
+      <Container>
+        <Row>
+          <Col span={4} class="sg__grid-cell">4</Col>
+          <Col span={8} class="sg__grid-cell">8</Col>
+        </Row>
+      </Container>
+    </section>
+
+    <section class="sg__section">
+      <h2>Typography</h2>
+      <h1>H1 Heading 48px</h1>
+      <h2>H2 Heading 40px</h2>
+      <h3>H3 Heading 36px</h3>
+      <h4>H4 Heading 30px</h4>
+      <h5>H5 Heading 24px</h5>
+      <h6>H6 Heading 20px</h6>
+      {
+        bodySizes.map((size) => (
+          <p class={`text-body-${size}`}>Body {size}px — 동해물과 백두산이 마르고 닳도록</p>
+        ))
+      }
+    </section>
+
+    <section class="sg__section">
+      <h2>Icon</h2>
+      <p class="text-body-14 text-secondary">
+        src/assets/icons/*.svg 전체 — 16 / 20 / 24px 크기 비교
+      </p>
+      <div class="sg__icon-grid">
+        {
+          iconNames.map((name) => (
+            <div class="sg__icon-cell">
+              <div class="sg__row">
+                <Icon name={name} size={16} />
+                <Icon name={name} size={20} />
+                <Icon name={name} size={24} />
+              </div>
+              <code>{name}</code>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Button</h2>
+      <div class="sg__row">
+        <Button variant="primary" size="lg" icon="ico_download">회사소개서 다운로드</Button>
+        <Button variant="secondary" size="lg" icon="ico_download">회사소개서 다운로드</Button>
+      </div>
+      <div class="sg__row">
+        <Button variant="secondary" size="lg" icon="ico_copy" fullWidth>자세히 보기</Button>
+      </div>
+      <div class="sg__row">
+        <Button variant="primary" size="md" icon="ico_plus">Overview</Button>
+        <Button variant="secondary" size="md" icon="ico_plus">Overview</Button>
+        <Button variant="secondary" size="md" icon="ico_external_link">바로가기</Button>
+        <Button variant="third" size="md" icon="ico_arrow_right">Read More</Button>
+      </div>
+      <div class="sg__row">
+        <Button variant="primary" size="sm" disabled>Disabled</Button>
+      </div>
+      <div class="sg__row">
+        <Button variant="primary" size="md" icon="ico_chevron_down" fullWidth>더보기</Button>
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>TextButton</h2>
+      <p class="text-body-14 text-secondary">
+        배경/테두리 없는 순수 텍스트 버튼 — Figma에서 검정 배경처럼 보였던 건 프리뷰 아트보드 배경일
+        뿐, 컴포넌트 자체엔 배경이 없다.
+      </p>
+      <div class="sg__row">
+        <TextButton href="/privacy">개인정보처리방침</TextButton>
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>IconButton</h2>
+      <div class="sg__row">
+        <IconButton icon="ico_arrow_top" ariaLabel="맨 위로 가기" />
+        <IconButton icon="ico_arrow_top" ariaLabel="맨 위로 가기" variant="primary" />
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Tab — round</h2>
+      <Tab
+        variant="round"
+        items={[{label: 'TAP'}, {label: 'TAP'}, {label: 'TAP'}]}
+        activeIndex={0}
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Tab — line</h2>
+      <Tab
+        variant="line"
+        size="small"
+        items={[{label: 'TAP'}, {label: 'TAP'}, {label: 'TAP'}]}
+        activeIndex={0}
+      />
+      <Tab
+        variant="line"
+        size="large"
+        items={[{label: 'TAP'}, {label: 'TAP'}, {label: 'TAP'}]}
+        activeIndex={1}
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Tab — box</h2>
+      <Tab variant="box" items={[{label: 'TAP'}, {label: 'TAP'}, {label: 'TAP'}]} activeIndex={1} />
+    </section>
+
+    <section class="sg__section">
+      <h2>Navigation</h2>
+      <p class="text-body-14 text-secondary">
+        Figma의 "네비게이션" 섹션은 밑줄 탭과 동일한 컴포넌트다 — 별도로 만들지 않고 아래처럼
+        <code>Tab variant="line"</code>를 그대로 재사용한다.
+      </p>
+      <Tab
+        variant="line"
+        size="large"
+        items={[
+          {label: 'ABOUT M2MGLOBAL'},
+          {label: 'CEO 인사말'},
+          {label: '회사 연혁'},
+          {label: '인재 채용'},
+          {label: 'IR / PR'},
+          {label: '위치 및 연락처'},
+          {label: '사업 문의'}
+        ]}
+        activeIndex={0}
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Label</h2>
+      <div class="sg__row">
+        <Label>POINT 1</Label>
+        <Label variant="accent">재계약율 100%</Label>
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Title — hero</h2>
+      <Title variant="hero" title="회사 개요" />
+      <Title
+        variant="hero"
+        title="e-Commerce"
+        subtitle={[
+          'Service에 Commerce Platform을 더하다!',
+          '다수의 커머스 플랫폼 수행 경험을 바탕으로, 고객과 기업이 상생할 수 있는 믿을 수 있는 e-Commerce 프레임워크 보유'
+        ]}
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Title — section</h2>
+      <Title variant="section" prefix="General " highlight="Overview" />
+      <Title
+        variant="section"
+        prefix="General "
+        highlight="Overview"
+        subtitle={[
+          '추천 시스템은 데이터·모델·운영 통제를 결합한 전략 자산으로 개인화 → 분석 기반 최적화 → 확장 가능한 아키텍처로 단계적으로 진화합니다.'
+        ]}
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Title — banner</h2>
+      <Title variant="banner" title="M2M-MES" caption="Manufacturing Execution System" />
+      <Title variant="banner" title="Seamless 물류 프로세스" />
+    </section>
+
+    <section class="sg__section">
+      <h2>IconCircle</h2>
+      <p class="text-body-14 text-secondary">
+        Figma의 About US_Icon / AI_Icon / 로봇물류_Icon / Solution_Icon 프레임에 실제로 150개 이상의
+        브랜드 전용 일러스트(전부 파란 원형 배경 + 네이비 아이콘)가 들어있다. 전부 일괄
+        컴포넌트화하진 않았지만, 그 "케이스가 많다"는 걸 보여주려고 4개 카테고리에서 대표로 5개를
+        골라 실제로 export해서 넣어봤다 — 이 5개는 진짜 Figma 원본 아이콘이고, 크기(사이즈) prop만
+        다르게 원형 래퍼(IconCircle)에 넣으면 됨. 나머지는 필요한 페이지 만들 때 같은 방식으로 추가.
+      </p>
+      <div class="sg__row">
+        <IconCircle icon="ico_ai_machine_learning" />
+        <IconCircle icon="ico_robot_logistics" />
+        <IconCircle icon="ico_smart_factory" />
+        <IconCircle icon="ico_commerce_platform" />
+        <IconCircle icon="ico_logistics_platform" />
+      </div>
+      <p class="text-body-14 text-secondary">사이즈 비교 (100px 기본 / 64px 축소)</p>
+      <div class="sg__row">
+        <IconCircle icon="ico_ai_machine_learning" size={64} />
+        <IconCircle icon="ico_robot_logistics" size={64} />
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>TextList</h2>
+      <ul>
+        <li><TextList>Text List</TextList></li>
+        <li><TextList highlighted>Text List</TextList></li>
+      </ul>
+    </section>
+
+    <section class="sg__section">
+      <h2>ListItem — 프로젝트 사례형</h2>
+      <ListItem
+        title="수협중앙회 쇼핑몰 재구축"
+        description="수협다움을 제시하는 새로운 이커머스 몰 개편"
+        tags={[
+          {
+            label: '기술환경',
+            value:
+              'Mobile: android, ios, vue.js / Backoffice: vue.js, java / DB: AWS Postgre / Infra: AWS'
+          },
+          {label: '투입기간', value: "25' 05 ~ 26' 03"}
+        ]}
+        href="/cases/1"
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>ListItem — 공지사항형</h2>
+      <ListItem
+        category="공지사항"
+        title="엠투엠글로벌, 20년 이상 축적 IT 기술로 이커머스 선도"
+        date="2024.01.01"
+        href="/news/1"
+      />
+      <ListItem
+        category="IR"
+        title="주주 배정 유상증자 신주발행 공고문 (25년 7월 7일)"
+        date="2025.07.07"
+        href="/news/2"
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Color</h2>
+      <p class="text-body-14 text-secondary">
+        하드코딩 hex 대신 :root 커스텀 프로퍼티(<code>var(--...)</code>)를 그대로 참조한다 — 전체
+        정의는 src/styles/scss/abstracts/_variables.scss 의 :root 블록 참고.
+      </p>
+      <div class="sg__swatch-grid">
+        {
+          [
+            ['Primary', '--core-primary'],
+            ['Secondary', '--core-secondary'],
+            ['Third', '--core-third'],
+            ['Alert Warning', '--core-alert-warning'],
+            ['Alert Danger', '--core-alert-danger'],
+            ['Black 100', '--core-black-100'],
+            ['Black 40 (Tertiary text)', '--core-black-40'],
+            ['Black 20 (Border)', '--core-black-20'],
+            ['Black 10 (Border subtle)', '--core-black-10'],
+            ['Black 3 (BG muted)', '--core-black-3'],
+            ['Black 1 (BG elevated)', '--core-black-1'],
+            ['Blue Gray 800 (Sub text)', '--core-blue-gray-800'],
+            ['Blue 10 (Label accent bg)', '--core-blue-10']
+          ].map(([name, cssVar]) => (
+            <div class="sg__swatch">
+              <span class="sg__swatch-color" style={`background:var(${cssVar})`} />
+              <div>
+                <p class="text-body-14">{name}</p>
+                <code>var({cssVar})</code>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Grid — table</h2>
+      <Grid
+        variant="table"
+        columns={['제조사', '모델', '유형', '용도']}
+        rows={[
+          ['LG', 'Cloi', 'AMR', '피킹'],
+          ['ForwardX', 'Flex Series', 'AMR', '피킹'],
+          ['Omron', 'LD/MD/HD', 'AMR', '피킹']
+        ]}
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Grid — spec</h2>
+      <Grid
+        variant="spec"
+        spec={[
+          {label: 'Length', value: 'L950*W702*H275 mm'},
+          {label: 'Width', value: '144 kg'},
+          {label: 'Hight', value: '600 kg'},
+          {label: 'Turning Diameter', value: '60 mm'},
+          {label: 'Ground Clearance', value: '4 s'},
+          {label: 'Load Surface', value: '2m/s without load 1.5m/s full load'},
+          {label: 'Lifting Hight', value: '90°/1.5s, 180°/2s'}
+        ]}
+      />
+    </section>
+
+    <section class="sg__section">
+      <h2>Box</h2>
+      <div class="sg__row">
+        <Box icon="ico_download" label="POINT 1" title={['플랫폼 전문', '구축 역량']}>
+          <mark>이커머스, 물류, 클라우드, AI, 모바일</mark> 등 다양한 산업 분야에서 <mark
+            >20년 이상 축적</mark
+          >된 노하우와 성과를 보유한 전문 기업
+        </Box>
+        <Box variant="filled" number="01" label="POINT 1" title={['플랫폼 전문', '구축 역량']}>
+          <mark>이커머스, 물류, 클라우드, AI, 모바일</mark> 등 다양한 산업 분야에서 <mark
+            >20년 이상 축적</mark
+          >된 노하우와 성과를 보유한 전문 기업
+        </Box>
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>조합 예시 — 라벨_타이틀_설명_Box (대형 서비스 카드)</h2>
+      <p class="text-body-14 text-secondary">
+        새 컴포넌트를 만든 게 아니라 이미 만든 <code>IconCircle</code> + <code>Label</code> +
+        <code>TextList</code> + <code>Button</code>을 페이지에서 그대로 조합한 것 — Figma 원본은
+        체크리스트 항목이 15개인데 패턴만 보여주려고 일부만 옮겼다. 이런 대형 카드가 몇십 개 나오면
+        그때는 이 조합 자체를 <code>ServiceCard.astro</code> 컴포넌트로 뽑는 걸 고려.
+      </p>
+      <div class="sg__service-card">
+        <div class="sg__service-card-head">
+          <IconCircle icon="ico_ai_machine_learning" size={64} />
+          <p class="text-body-24">개인화 추천 시스템</p>
+        </div>
+
+        <div class="sg__service-card-sub">
+          <Label variant="accent">재계약율 100%</Label>
+          <p class="text-body-24">중고 반도체 거래 플랫폼</p>
+          <span class="text-body-16 text-secondary">1차 / 2차</span>
+        </div>
+
+        <div class="sg__service-card-head">
+          <IconCircle icon="ico_commerce_platform" size={64} />
+          <p class="text-body-24">e-Commerce</p>
+        </div>
+        <p class="text-body-16">
+          다년간의 프로젝트 경험과 노하우를 바탕으로 안정적인 e-Commerce 프레임워크 제공 (Web,
+          Admin, Mobile)
+        </p>
+
+        <ul class="sg__service-card-list">
+          <li><TextList>24년 ~ 26년 계약</TextList></li>
+          <li><TextList>웹 / 어드민 / 모바일</TextList></li>
+          <li><TextList>구축 / 운영 / 컨설팅</TextList></li>
+          <li><TextList>수협중앙회 쇼핑몰 재구축</TextList></li>
+          <li><TextList>세미마켓 반도체 거래 플랫폼</TextList></li>
+        </ul>
+
+        <p class="text-body-14 text-secondary">
+          # 셀러,바이어 # Seller 입점몰 # 입찰 구매 # 오퍼 구매 # 견적 구매
+        </p>
+
+        <div class="sg__service-card-meta">
+          <span>데이터 활용 수준 <strong>상품 데이터 중심</strong></span>
+          <span>성과 지표 <strong>노출량</strong></span>
+        </div>
+
+        <Button variant="secondary" size="lg" icon="ico_copy" fullWidth>자세히 보기</Button>
+      </div>
+    </section>
+
+    <section class="sg__section sg__section--todo">
+      <h2>아직 미착수 / 의도적으로 스킵</h2>
+      <p class="text-body-14 text-secondary">
+        <strong>Carousel</strong>: 요청에 따라 제외.<br />
+        <strong>Arrow</strong>: 실제 컴포넌트가 아니라 그림자 블러 + 화살표로 구성된 장식용 그래픽
+        모티프라 재사용 가능한 컴포넌트로 만들 근거가 약함 — 필요한 화면이 생기면 그때 맥락 보고
+        판단.
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* 이 페이지는 컴포넌트 검수 전용이라 SCSS 파이프라인 밖(Astro scoped style)에 있다.
+     그래서 SCSS 변수 대신 :root에 노출해둔 CSS 커스텀 프로퍼티(디자인 토큰)를 참조한다.
+     하드코딩 hex/px 금지 — src/styles/scss/abstracts/_variables.scss 의 :root 블록 참고.
+     px 대신 rem도 동일 규칙(10px = 1rem, abstracts/_functions.scss 참고) — Sass mixin을 못 쓰는
+     자리라 직접 나눈 값을 쓴다: 1280px→128rem, 1px→0.1rem, 140px→14rem 식. */
+  .sg {
+    max-width: 128rem;
+    margin: 0 auto;
+    padding: var(--space-48) var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-48);
+  }
+  .sg__section h2 {
+    margin-bottom: var(--space-20);
+    padding-bottom: var(--space-8);
+    border-bottom: 0.1rem solid var(--color-border-subtle);
+  }
+  .sg__section > * + * {
+    margin-top: var(--space-12);
+  }
+  .sg__grid-cell {
+    padding: var(--space-16);
+    background: var(--color-bg-muted);
+    border-radius: var(--radius-8);
+    color: var(--color-text-secondary);
+    font-size: var(--text-body-14);
+    text-align: center;
+  }
+  .sg__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    flex-wrap: wrap;
+  }
+  .sg__icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: var(--space-20);
+  }
+  .sg__icon-cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-16);
+    border: 0.1rem solid var(--color-border-subtle);
+    border-radius: var(--radius-8);
+  }
+  .sg__icon-cell code {
+    font-size: var(--text-body-14);
+    color: var(--color-text-secondary);
+  }
+  .sg__section--todo {
+    padding: var(--space-20);
+    background: var(--color-bg-elevated);
+    border-radius: var(--radius-8);
+  }
+  .sg__section--todo h2 {
+    border-bottom: none;
+    margin-bottom: var(--space-8);
+  }
+  .sg__swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+    gap: var(--space-16);
+  }
+  .sg__swatch {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+  }
+  .sg__swatch-color {
+    flex-shrink: 0;
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--radius-8);
+    border: 0.1rem solid var(--color-border-subtle);
+  }
+  .sg__swatch code {
+    font-size: var(--text-body-14);
+    color: var(--color-text-secondary);
+  }
+  .sg__service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-20);
+    max-width: 48rem;
+    padding: var(--space-32);
+    border: 0.1rem solid var(--color-border-default);
+    border-radius: var(--radius-24);
+    text-align: center;
+  }
+  .sg__service-card-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-12);
+  }
+  .sg__service-card-sub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
+  }
+  .sg__service-card-list {
+    align-self: stretch;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+  .sg__service-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    align-self: stretch;
+    font-size: var(--text-body-14);
+    color: var(--color-text-secondary);
+  }
+  .sg__service-card-meta strong {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-regular);
+    margin-left: var(--space-8);
+  }
+</style>

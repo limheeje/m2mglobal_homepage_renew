@@ -22,5 +22,21 @@
   },
   "[astro]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+
+  "liveSassCompile.settings.formats": [
+    {
+      "format": "expanded",
+      "extensionName": ".css",
+      "savePath": "/src/styles/css"
+    }
+  ],
+  "liveSassCompile.settings.generateMap": true,
+  "liveSassCompile.settings.watchOnLaunch": false,
+  "liveSassCompile.settings.excludeList": [
+    "**/node_modules/**",
+    "**/.astro/**",
+    "**/.vscode/**",
+    "**/dist/**"
+  ]
 }

@@ -1,0 +1,89 @@
+@use '../abstracts/mixins' as m;
+
+// ListItem — 프로젝트 사례 / 공지사항 리스트 행
+// 참고: https://comet-take-17267726.figma.site/data-display
+
+.list-item {
+  @include m.flex($align: center, $gap: m.spacing(20));
+  padding: m.spacing(24) 0;
+  border-bottom: m.rem(1px) solid m.color('border-default');
+}
+
+.list-item__body {
+  @include m.flex($align: center, $gap: m.spacing(20));
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.list-item__thumb {
+  flex-shrink: 0;
+  width: m.rem(128px);
+  height: m.rem(68px);
+  overflow: hidden;
+  border-radius: m.radius(8);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.list-item__category {
+  @include m.flex($justify: center, $align: center);
+  flex-shrink: 0;
+  width: m.rem(128px);
+  padding: m.spacing(10);
+  border-radius: m.radius(24);
+  background-color: m.color('bg-muted');
+
+  p {
+    @include m.body(18);
+    color: m.color('text-primary');
+  }
+}
+
+.list-item__main {
+  @include m.flex($direction: column, $gap: m.spacing(4));
+  flex-shrink: 0;
+  width: m.rem(320px);
+  max-width: 40%;
+}
+
+.list-item__title {
+  @include m.body(22);
+  color: m.color('text-primary');
+}
+
+.list-item__desc {
+  @include m.body(16);
+  color: m.color('text-primary');
+}
+
+.list-item__tags {
+  @include m.flex($direction: column, $gap: m.spacing(10));
+  flex: 1 0 0;
+  min-width: 0;
+}
+
+.list-item__tag {
+  @include m.flex($align: center, $gap: m.spacing(10));
+}
+
+.list-item__tag-value {
+  @include m.body(16);
+  color: m.color('text-primary');
+}
+
+.list-item__date {
+  flex-shrink: 0;
+
+  p {
+    @include m.body(18);
+    color: m.color('text-secondary');
+  }
+}
+
+.list-item__cta {
+  flex-shrink: 0;
+}

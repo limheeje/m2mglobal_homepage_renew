@@ -1,0 +1,50 @@
+@use '../abstracts/mixins' as m;
+
+// IconButton — 아이콘 전용 원형 버튼
+.icon-btn {
+  @include m.flex($justify: center, $align: center);
+  width: var(--icon-btn-size, #{m.rem(48px)});
+  height: var(--icon-btn-size, #{m.rem(48px)});
+  border: none;
+  border-radius: var(--radius-circle);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:focus-visible {
+    outline: #{m.rem(2px)} solid m.color('border-focus');
+    outline-offset: #{m.rem(2px)};
+  }
+
+  // Figma에서 흰 배경/네이비 배경이 짝으로 있던 건 hover 데모였다 — 그래서 기본값도 hover 시 네이비로 전환.
+  &--default {
+    background-color: m.color('bg-surface');
+    color: m.color('text-primary');
+    box-shadow: var(--shadow-fab);
+
+    &:hover {
+      background-color: m.color('action-primary');
+      color: m.color('text-inverse');
+      box-shadow: none;
+    }
+  }
+
+  &--primary {
+    background-color: m.color('action-primary');
+    color: m.color('text-inverse');
+
+    &:hover {
+      background-color: m.color('action-primary-hover');
+    }
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    background-color: m.color('action-disabled-bg');
+    color: m.color('action-disabled-text');
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

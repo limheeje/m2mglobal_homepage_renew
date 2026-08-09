@@ -1,0 +1,15 @@
+---
+// Row — Container 안에서 Col들을 12컬럼 CSS Grid로 배치한다. 컬럼 간격(gutter) 20px 고정.
+// 참고: src/styles/scss/components/_layout-grid.scss
+
+export interface Props {
+  class?: string
+}
+
+const {class: className} = Astro.props
+const classes = ['row', className].filter(Boolean).join(' ')
+---
+
+<div class={classes}>
+  <slot />
+</div>

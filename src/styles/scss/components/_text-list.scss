@@ -1,0 +1,29 @@
+@use '../abstracts/mixins' as m;
+
+// TextList — 체크 아이콘 + 텍스트
+.text-list {
+  @include m.flex($align: flex-start, $gap: m.spacing(12));
+  padding: m.spacing(8) 0;
+
+  &--highlighted {
+    align-items: center;
+    padding: m.spacing(12);
+    border-radius: m.radius(12);
+    background-color: m.color('bg-muted');
+  }
+}
+
+.text-list__icon {
+  flex-shrink: 0;
+  color: m.color('action-primary');
+  margin-top: m.rem(5px);
+}
+
+.text-list--highlighted .text-list__icon {
+  margin-top: 0;
+}
+
+.text-list__text {
+  @include m.body(18);
+  color: m.color('text-primary');
+}

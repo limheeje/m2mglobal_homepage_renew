@@ -1,23 +1,52 @@
+---
+import '~/styles/css/main.css'
+import IconButton from '~/components/IconButton.astro'
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="//www.m2mglobal.co.kr/img/common/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <meta http-equiv="content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="Author" content="M2MGlobal" />
+    <meta name="keywords" content="M2MGlobal" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no,address=no,email=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta property="og:title" content="M2MGLOBAL" />
+    <meta property="og:type" content="M2MGLOBAL e-Commerce and e-Trade Solution Partner" />
+    <meta property="og:url" content="http://www.m2mglobal.co.kr" />
+    <meta property="og:image" content="//www.m2mglobal.co.kr/img/img_meta.png" />
+    <meta
+      property="og:description"
+      content="한국 전자상거래의 역사와 함께한 엠투엠글로벌은 B2C, B2B, B2E 영역에서 Totale-Commerce솔루션을 제공합니다."
+    />
+    <title>M2MGlobal</title>
+  </head>
+  <body>
+    <slot />
+
+    <!-- 모든 페이지 공통 — 스크롤 시 맨 위로 가기 FAB. TODO(script 단계): 스크롤 동작 연결. -->
+    <IconButton icon="ico_arrow_top" ariaLabel="맨 위로 가기" class="layout__top-btn" />
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .layout__top-btn {
+    position: fixed;
+    right: var(--space-24);
+    bottom: var(--space-24);
+    z-index: 50;
+  }
 </style>

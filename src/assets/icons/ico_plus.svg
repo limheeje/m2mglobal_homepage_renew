@@ -1,0 +1,7 @@
+<!-- Figma 실측(Overview+ 버튼): 20px 프레임 안에서 25% 인셋(지름의 50%).
+     viewBox를 24x24로 패딩. -->
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(6,6)">
+<path d="M6 1L6 11M11 6L1 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</g>
+</svg>

@@ -1,0 +1,96 @@
+---
+// ListItem 공통 컴포넌트 — 프로젝트/공지사항 등 리스트 행
+// 참고: https://comet-take-17267726.figma.site/data-display ("List" 섹션)
+//
+// thumbnail(이미지)을 주면 프로젝트 사례형(제목+설명+태그), category(텍스트)를 주면
+// 공지사항형(제목+날짜) 레이아웃이 된다.
+//
+// 사용 예:
+//   <ListItem
+//     thumbnail="/img/case.jpg"
+//     title="수협중앙회 쇼핑몰 재구축"
+//     description="수협다움을 제시하는 새로운 이커머스 몰 개편"
+//     tags={[{ label: '기술환경', value: 'Mobile: android, ios...' }, { label: '투입기간', value: "25' 05 ~ 26' 03" }]}
+//     href="/cases/1"
+//   />
+//   <ListItem category="공지사항" title="엠투엠글로벌, 20년 이상 축적 IT 기술로 이커머스 선도" date="2024.01.01" href="/news/1" />
+
+import Button from '~/components/Button.astro'
+import Label from '~/components/Label.astro'
+
+export interface Props {
+  /** 이미지 경로 — 있으면 프로젝트 사례형 레이아웃 */
+  thumbnail?: string
+  /** 텍스트 배지 — 있으면 공지/게시글형 레이아웃 (128px 박스에 텍스트로 표시) */
+  category?: string
+  title: string
+  description?: string
+  /** 프로젝트 사례형에서 쓰는 라벨+값 태그 (기술환경/투입기간 등) */
+  tags?: {label: string; value: string}[]
+  /** 공지/게시글형에서 쓰는 날짜 */
+  date?: string
+  href: string
+  class?: string
+}
+
+const {
+  thumbnail,
+  category,
+  title,
+  description,
+  tags = [],
+  date,
+  href,
+  class: className
+} = Astro.props
+const classes = ['list-item', className].filter(Boolean).join(' ')
+---
+
+<div class={classes}>
+  <div class="list-item__body">
+    {
+      thumbnail && (
+        <div class="list-item__thumb">
+          <img src={thumbnail} alt="" loading="lazy" />
+        </div>
+      )
+    }
+    {
+      category && !thumbnail && (
+        <div class="list-item__category">
+          <p>{category}</p>
+        </div>
+      )
+    }
+
+    <div class="list-item__main">
+      <p class="list-item__title">{title}</p>
+      {description && <p class="list-item__desc">{description}</p>}
+    </div>
+
+    {
+      tags.length > 0 && (
+        <div class="list-item__tags">
+          {tags.map((tag) => (
+            <div class="list-item__tag">
+              <Label>{tag.label}</Label>
+              <span class="list-item__tag-value">{tag.value}</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      date && (
+        <div class="list-item__date">
+          <p>{date}</p>
+        </div>
+      )
+    }
+  </div>
+
+  <Button variant="secondary" size="md" icon="ico_plus" href={href} class="list-item__cta">
+    Overview
+  </Button>
+</div>

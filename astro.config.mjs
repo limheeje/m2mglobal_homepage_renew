@@ -15,7 +15,8 @@ export default defineConfig({
     envDir: './config/env',
     resolve: {
       alias: {
-        '~': resolve('./src')
+        '~': resolve('./src'),
+        '@config': resolve('./config')
       }
     }
   }

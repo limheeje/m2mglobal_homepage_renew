@@ -1,0 +1,95 @@
+// ---------------------------------------------
+// Pretendard 웹폰트 (정적 subset, src/assets/font/)
+// Figma Typography 섹션 전체가 Pretendard 기준이라 프로젝트 기본 폰트로 등록한다.
+// url() 경로는 컴파일 결과물인 src/styles/css/main.css 기준 상대경로.
+// ---------------------------------------------
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-Thin.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-Thin.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-ExtraLight.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-ExtraLight.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-Light.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-Regular.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-Medium.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-SemiBold.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-SemiBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-Bold.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-ExtraBold.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-ExtraBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../../assets/font/Pretendard-Black.woff2') format('woff2'),
+    url('../../assets/font/Pretendard-Black.woff') format('woff');
+}

@@ -11,12 +11,13 @@
     "local": "cross-env MODE=dev astro dev --mode dev --host",
     "build:prod": "cross-env MODE=prod astro build --mode prod",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky"
   },
   "dependencies": {
-    "astro": "^7.2.0",
     "@types/lodash": "^4.17.24",
     "@types/node": "^26.1.2",
+    "astro": "^7.2.0",
     "cross-env": "^10.1.0",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
@@ -29,5 +30,15 @@
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0"
+  },
+  "lint-staged": {
+    "!(public/**/*)*.{js,ts,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.astro": [
+      "eslint",
+      "prettier --write"
+    ]
   }
 }

@@ -1,0 +1,34 @@
+---
+// IconCircle 공통 컴포넌트 — 원형 배경 + 아이콘 (Box 카드, 피처 리스트 등에서 재사용)
+// 참고: https://comet-take-17267726.figma.site/icon-image ("ICON" 섹션)
+//
+// Figma 규칙: 기본 사이즈 100px, 안쪽 아이콘은 최대 48*48px, 배경은 blue-10.
+// Figma에는 About US_Icon / AI_Icon / 로봇물류_Icon / Solution_Icon 등 150개 이상의
+// 브랜드 전용 커스텀 일러스트가 이 원형 안에 들어가는데, 그건 페이지별 콘텐츠 에셋이라
+// 여기서 일괄 컴포넌트화하지 않는다 — 실제 페이지 제작 시 필요한 아이콘만 Figma에서
+// 개별적으로 export해서 src/assets/icons/ 에 추가하고 이 컴포넌트로 감싸 쓰면 된다.
+//
+// 사용 예:
+//   <IconCircle icon="ico_download" />
+//   <IconCircle icon="ico_download" size={80} />
+
+import Icon from '~/components/Icon.astro'
+import {pxToRem} from '~/utils/rem'
+
+export interface Props {
+  /** src/assets/icons/{name}.svg */
+  icon: string
+  /** 원 지름(px). Figma 기본값 100px */
+  size?: number
+  class?: string
+}
+
+const {icon, size = 100, class: className} = Astro.props
+// Figma 비율: 100px 원 안에 최대 48px 아이콘 (48%)
+const iconSize = Math.round(size * 0.48)
+const classes = ['icon-circle', className].filter(Boolean).join(' ')
+---
+
+<span class={classes} style={`--icon-circle-size:${pxToRem(size)}`}>
+  <Icon name={icon} size={iconSize} />
+</span>

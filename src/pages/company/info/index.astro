@@ -1,0 +1,356 @@
+---
+// Company > 회사 개요 (/company/info)
+// 참고: Figma "About us > 회사 개요" 프레임(node 211:1950)
+//
+// 컨텐츠 최대폭은 프로젝트 공통 1280이 아니라 이 페이지 전용 1760(Figma 실측 — Row/Col 12컬럼 +
+// 20px 거터로 나눴을 때 5개 Box(336px 고정)·4카드(span 3)·3카드(span 4)가 전부 딱 맞아떨어짐).
+// "숫자로 보는 M2M GLOBAL" 파란 통계 섹션만 max-width 없이 풀블리드로 뺐다.
+//
+// 공용 컴포넌트로 커버 안 되는 이 페이지 전용 마크업(포인트 카드 줄, 정보 표, 통계 카드,
+// 사업영역 카드, 사례 카드)은 src/styles/scss/page/_company.scss 에 `.company-info__*`로 있다.
+import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import Row from '~/components/Row.astro'
+import Col from '~/components/Col.astro'
+import Box from '~/components/Box.astro'
+import Label from '~/components/Label.astro'
+import IconCircle from '~/components/IconCircle.astro'
+import TextList from '~/components/TextList.astro'
+import Icon from '~/components/Icon.astro'
+import Button from '~/components/Button.astro'
+import Footer from '~/components/Footer.astro'
+import statsBgUrl from '~/assets/images/company-info-stats-bg.png'
+import worldmapUrl from '~/assets/images/company-info-worldmap.svg'
+import globeWordmarkUrl from '~/assets/images/company-info-globe-wordmark.svg'
+import connectorLineUrl from '~/assets/images/company-info-connector-line.svg'
+import {route} from '@config/route'
+
+const tabs = [
+  {label: '회사 개요', href: route['/company/info']},
+  {label: 'CEO 인사말', href: route['/company/ceo-message']},
+  {label: '회사 연혁', href: route['/company/history']},
+  {label: '인재 채용', href: route['/company/careers']},
+  {label: 'News', href: route['/company/news']},
+  {label: '위치 및 연락처', href: route['/company/address']},
+  {label: '사업 문의', href: route['/company/contact-us']}
+]
+
+const stats = [
+  {number: '24', unit: '년', label: 'M2M GLOBAL 업력'},
+  {number: '93', unit: '%', label: 'IT 전문 인력 비율'},
+  {number: '130', unit: '+', label: '수행 프로젝트'},
+  {number: '17', unit: '개', label: '자체 개발 솔루션'},
+  {number: '09', unit: '개', label: '수상 및 인증현황'},
+  {number: '73', unit: '명', label: '직원 수'},
+  {number: '35', unit: '+', label: '주요 고객사 수'},
+  {number: '12', unit: '개', label: '물류/무역/커머스 솔루션'}
+]
+
+const features = [
+  {
+    icon: 'ico_commerce_platform',
+    title: 'e-Commerce',
+    desc: [
+      '다년간의 프로젝트 경험과 노하우를 바탕으로',
+      '안정적인 e-Commerce 프레임워크 제공',
+      '(Web, Admin, Mobile)'
+    ],
+    list: [
+      '수협중앙회 쇼핑몰 재구축',
+      '세미마켓 반도체 거래 플랫폼',
+      '다이소 쇼핑몰',
+      '서린상사 B2B 온라인 플랫폼',
+      '농협 온라인 쇼핑몰'
+    ]
+  },
+  {
+    icon: 'ico_ai_machine_learning',
+    title: 'AI & Machine Learning',
+    desc: [
+      '데이터 수집부터 운영 모니터링까지 전 주기를 지원하는',
+      'End-to-End AI 파이프라인을 통해',
+      '다양한 AI 서비스를 효율적으로 제공'
+    ],
+    list: ['KCar C2C 프로젝트', '수협중앙회 쇼핑몰 재구축', '세미마켓 반도체 거래 플랫폼']
+  },
+  {
+    icon: 'ico_robot_logistics',
+    title: 'Robot Logistics',
+    desc: [
+      'AGV/AWR 기반 로봇 통합 관제 및',
+      '실시간 모니터링을 통한',
+      '택배 물류 센터 자동화 관리 플랫폼 구축/운영'
+    ],
+    list: [
+      '세미마켓 반도체 물류 시스템',
+      'CJ 대한통운 로봇관제시스템 3차',
+      'CJ 대한통운 로봇관제시스템 2차',
+      'CJ 대한통운 로봇관제시스템 1차'
+    ]
+  },
+  {
+    icon: 'ico_smart_factory',
+    title: 'Smart Factory',
+    desc: [
+      '"생산 현장 데이터를 실시간 수집/가공/분석"을 통한',
+      '자율공장 실현이 가능한 지능화 된',
+      '스마트 팩토리 제공'
+    ],
+    list: ['금호폴리캠 MES 시스템', '씨에스윈드 MES시스템', '디에이라이팅 MES 시스템']
+  }
+]
+
+const cases = [
+  {
+    title: 'CJ 대한통운 로봇물류',
+    phase: '1차 / 2차 / 3차',
+    list: ['21년 ~ 23년 계약', '웹 / 태블릿 / 갤럭시워치 / PDA', '구축 / 운영'],
+    tags: ['# 로봇 # 통합관제 #모니터링 # 위치 정보', '# 정보 관리 # 작업관리']
+  },
+  {
+    title: '중고 반도체 거래 플랫폼',
+    phase: '1차 / 2차',
+    list: ['24년 ~ 26년 계약', '웹 / 어드민 / 모바일', '구축 / 운영 / 컨설팅'],
+    tags: ['# 셀러,바이어 # Seller 입점몰', '# 입찰 구매 # 오퍼 구매', '# 견적 구매']
+  },
+  {
+    title: '비철 / 금속 거래 플랫폼',
+    phase: '1차 / 2차 / 3차',
+    list: ['21년 ~ 23년 계약', '웹 / 어드민 / 모바일', '구축 / 운영 / 컨설팅'],
+    tags: [
+      '# 알루미늄, 아연, 주석…',
+      '# 실시간 라이브가격 구매/차트 제공',
+      '# 평균가 구매, 지정가 구매 # 구매 입찰 # 견적 구매',
+      '# 선물거래, 수출입 대행 구축'
+    ]
+  }
+]
+---
+
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="Company"
+    subtitle={[
+      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
+      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
+    ]}
+  />
+
+  <Tab variant="line" size="large" items={tabs} activeIndex={0} />
+
+  <Title variant="hero" title="회사 개요" />
+
+  <Container maxWidth={1760}>
+    <Title
+      variant="section"
+      prefix="M2MGLOBAL "
+      highlight="회사 개요"
+      class="company-info__section-title"
+    />
+
+    <div class="company-info__points">
+      <Box label="POINT 1" title={['플랫폼 전문', '구축 역량']}>
+        <mark>이커머스, 물류, 클라우드, AI, 모바일</mark> 등 다양한 산업 분야에서<br />
+        <mark>20년 이상 축적</mark>된 노하우와 성과를 보유한 전문 기업
+      </Box>
+      <Box label="POINT 2" title={['차별화 된', '기술력']}>
+        <mark>로봇 물류</mark>와 글로벌 <mark>무역 플랫폼</mark> 등<br />
+        복잡한 프로젝트를<br />
+        성공적으로 구현해온 기술 선도 기업
+      </Box>
+      <Box label="POINT 3" title={['B2B 특화 커머스 플랫폼', '구축 경험을 보유한 유일 기업']}>
+        실거래 수준의 플랫폼 완성도와<br />
+        <mark>99% 재계약률</mark>로 신뢰를 입증한<br />
+        <mark>B2B 산업재 플랫폼 리더</mark>
+      </Box>
+      <Box label="POINT 4" title={['고객 중심의', '철학']}>
+        고객의 성공을 최우선으로 생각하며,<br />
+        <mark>완성도 있는 결과</mark>로<br />
+        <mark>함께 성장</mark>하는 믿음직한 기업
+      </Box>
+      <Box label="POINT 5" title={['함께 성장하는', '든든한 파트너']}>
+        <mark>전문 인력</mark>과 <mark>축적된 노하우</mark>로<br />
+        귀사의 성공을 함께 완성하는<br />
+        믿음직한 파트너
+      </Box>
+    </div>
+
+    <Title
+      variant="section"
+      prefix="General "
+      highlight="Overview"
+      class="company-info__section-title"
+    />
+
+    <div class="company-info__spec">
+      <Row class="company-info__spec-row">
+        <Col span={12} spanLg={6} class="company-info__spec-item">
+          <span class="company-info__spec-label">회사명</span>
+          <span class="company-info__spec-value">엠투엠글로벌㈜</span>
+        </Col>
+        <Col span={12} spanLg={6} class="company-info__spec-item">
+          <span class="company-info__spec-label">대표이사</span>
+          <span class="company-info__spec-value">김승원 대표</span>
+        </Col>
+      </Row>
+      <Row class="company-info__spec-row">
+        <Col span={12} spanLg={6} class="company-info__spec-item">
+          <span class="company-info__spec-label">설립일</span>
+          <span class="company-info__spec-value"
+            >엠투엠글로벌㈜ 설립 : 2002년 1월<br />샵피온㈜ 사업 분사 : 2004년 1월</span
+          >
+        </Col>
+        <Col span={12} spanLg={6} class="company-info__spec-item">
+          <span class="company-info__spec-label">인원</span>
+          <span class="company-info__spec-value">73명</span>
+        </Col>
+      </Row>
+      <Row class="company-info__spec-row">
+        <Col span={12} spanLg={6} class="company-info__spec-item">
+          <span class="company-info__spec-label">주소</span>
+          <span class="company-info__spec-value"
+            >서울특별시 영등포구 영등포로 150, B동 1509호 생각공장 당산</span
+          >
+        </Col>
+        <Col span={12} spanLg={6} class="company-info__spec-item">
+          <span class="company-info__spec-label">연락처</span>
+          <span class="company-info__spec-value">
+            Tel : 02) 6956-3955 / Email : help@m2mglobal.co.kr
+            <Icon name="ico_mail" size={24} class="company-info__spec-mail-icon" />
+          </span>
+        </Col>
+      </Row>
+      <Row class="company-info__spec-row">
+        <Col span={12} class="company-info__spec-item">
+          <span class="company-info__spec-label">주요사업</span>
+          <span class="company-info__spec-value"
+            >이커머스 플랫폼 구축 / 로봇 물류 플랫폼 구축 / 무역 물류 플랫폼 구축 / 축산 경매 플랫폼
+            구축 / 클라우드, AI 솔루션 공급</span
+          >
+        </Col>
+      </Row>
+    </div>
+  </Container>
+
+  <!--
+    "숫자로 보는 M2M GLOBAL" — Figma 실측상 max-width 캡 없이 뷰포트 100% 폭 + 좌우 80px 패딩
+    풀블리드 섹션이라 위 Container(1760) 밖으로 뺐다.
+  -->
+  <section class="company-info__stats">
+    <img class="company-info__stats-bg" src={statsBgUrl.src} alt="" aria-hidden="true" />
+    <div class="company-info__stats-inner">
+      <div class="company-info__stats-label">
+        <Icon name="ico_trophy" size={36} class="company-info__stats-icon" />
+        <p class="company-info__stats-title">숫자로 보는<br />M2M GLOBAL</p>
+      </div>
+      <div class="company-info__stats-grid">
+        <Row>
+          {
+            stats.map((stat) => (
+              <Col span={6} spanLg={3}>
+                <div class="company-info__stat-card">
+                  <p class="company-info__stat-number">
+                    {stat.number}
+                    <span>{stat.unit}</span>
+                  </p>
+                  <p class="company-info__stat-label">{stat.label}</p>
+                </div>
+              </Col>
+            ))
+          }
+        </Row>
+      </div>
+    </div>
+  </section>
+
+  <Container maxWidth={1760}>
+    <Title
+      variant="hero"
+      title="Specialized Outcomes"
+      subtitle={[
+        'AI 기반 비즈니스 혁신을 현실로 만드는 엠투엠글로벌입니다.',
+        'AI & Machine Learning / AI Commerce Platform / AI Robot & Logistics Knowledge'
+      ]}
+    />
+
+    <div class="company-info__map" aria-hidden="true">
+      <img class="company-info__map-bg" src={worldmapUrl.src} alt="" />
+      <img class="company-info__map-logo" src={globeWordmarkUrl.src} alt="" />
+      <img class="company-info__map-connector" src={connectorLineUrl.src} alt="" />
+    </div>
+
+    <Row>
+      {
+        features.map((feature) => (
+          <Col span={12} spanLg={3}>
+            <div class="company-info__feature-card">
+              <IconCircle icon={feature.icon} />
+              <p class="company-info__feature-title">{feature.title}</p>
+              <p class="company-info__feature-desc">
+                {feature.desc.map((line, i) => (
+                  <>
+                    {i > 0 && <br />}
+                    {line}
+                  </>
+                ))}
+              </p>
+              <div class="company-info__feature-list">
+                {feature.list.map((item) => (
+                  <TextList highlighted>{item}</TextList>
+                ))}
+              </div>
+            </div>
+          </Col>
+        ))
+      }
+    </Row>
+
+    <Title
+      variant="hero"
+      title="Specialized Outcomes"
+      subtitle={[
+        'B2B 전문몰 구축, 24시간 고객상담, MyGlobalMall 등 업무별 문제 해결과 가치향상을 위한 AI Commerce 서비스를 제공합니다.',
+        'AI Commerce 서비스를 통해 매출/비용 등 핵심 지표변화를 실제 케이스로 증명합니다'
+      ]}
+    />
+
+    <Row class="company-info__cases">
+      {
+        cases.map((item) => (
+          <Col span={12} spanLg={4}>
+            <div class="company-info__case-card">
+              <div class="company-info__case-head">
+                <Label variant="accent">재계약율 100%</Label>
+                <div class="company-info__case-title-row">
+                  <p class="company-info__case-title">{item.title}</p>
+                  <p class="company-info__case-phase">{item.phase}</p>
+                </div>
+              </div>
+              <div class="company-info__case-list">
+                {item.list.map((text) => (
+                  <TextList>{text}</TextList>
+                ))}
+              </div>
+              <div class="company-info__case-tags">
+                {item.tags.map((tag) => (
+                  <p>{tag}</p>
+                ))}
+              </div>
+              <Button variant="secondary" size="lg" icon="ico_copy" iconSize={18} fullWidth>
+                자세히 보기
+              </Button>
+            </div>
+          </Col>
+        ))
+      }
+    </Row>
+  </Container>
+
+  <Footer />
+</Layout>

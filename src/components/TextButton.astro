@@ -1,0 +1,24 @@
+---
+// TextButton 공통 컴포넌트 — 배경/테두리 없는 텍스트 전용 버튼 (예: 개인정보처리방침)
+// 참고: https://comet-take-17267726.figma.site/button
+//
+// Figma 원본에 이 컴포넌트는 배경 박스가 전혀 없다 — 순수 텍스트 색상만 상태별로 바뀐다.
+// (스크린샷에서 검은 배경처럼 보였던 건 프리뷰용 아트보드 배경이었고, 컴포넌트 자체엔 없었음)
+//
+// 사용 예:
+//   <TextButton href="/privacy">개인정보처리방침</TextButton>
+
+export interface Props {
+  href?: string
+  type?: 'button' | 'submit' | 'reset'
+  class?: string
+}
+
+const {href, type = 'button', class: className} = Astro.props
+const classes = ['text-btn', className].filter(Boolean).join(' ')
+const Tag = href ? 'a' : 'button'
+---
+
+<Tag class={classes} href={href} type={!href ? type : undefined}>
+  <slot />
+</Tag>

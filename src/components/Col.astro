@@ -1,0 +1,36 @@
+---
+// Col — Row 안에서 12컬럼 기준 폭을 차지하는 그리드 아이템.
+// span은 기본(모든 화면 폭) 값이고, spanSm/spanMd/spanLg/spanXl로 breakpoint별 override 가능
+// (breakpoint 이상 폭에서 해당 값으로 바뀜 — Bootstrap의 col-md-6과 동일한 개념).
+//
+// 사용 예:
+//   <Col span={12} spanLg={6}>모바일 풀폭, lg부터 절반</Col>
+
+export interface Props {
+  /** 1~12. 기본 12(전체 폭) */
+  span?: number
+  spanSm?: number
+  spanMd?: number
+  spanLg?: number
+  spanXl?: number
+  class?: string
+}
+
+const {span = 12, spanSm, spanMd, spanLg, spanXl, class: className} = Astro.props
+
+const classes = [
+  'col',
+  `col-${span}`,
+  spanSm && `col-sm-${spanSm}`,
+  spanMd && `col-md-${spanMd}`,
+  spanLg && `col-lg-${spanLg}`,
+  spanXl && `col-xl-${spanXl}`,
+  className
+]
+  .filter(Boolean)
+  .join(' ')
+---
+
+<div class={classes}>
+  <slot />
+</div>

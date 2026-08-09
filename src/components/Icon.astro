@@ -1,0 +1,50 @@
+---
+// Icon 공통 컴포넌트
+// 가이드 규칙(https://comet-take-17267726.figma.site/icon-image):
+//  - 아이콘은 SVG만 사용, 16/20/24/32px 중에서만 크기 선택
+//  - 색상은 currentColor 상속 (아이콘에 hex 하드코딩 금지)
+//  - name 은 src/assets/icons/{name}.svg 파일명과 동일 (snake_case, ico_ 접두사)
+//
+// 사용 예:
+//   <Icon name="ico_download" size={20} />
+//   <Icon name="ico_arrow_right" size={16} class="btn__icon" />
+
+import {pxToRem} from '~/utils/rem'
+
+export interface Props {
+  /** src/assets/icons/{name}.svg 파일명 (확장자 제외) */
+  name: string
+  /**
+   * 16 / 20 / 24 / 32 를 기본으로 쓴다 (아이콘 크기 가이드). px 단위 숫자로 받되 실제로는
+   * rem으로 변환해서 --icon-size에 넣는다(프로젝트 전체 rem 규칙, abstracts/_functions.scss 참고).
+   * 원형 FAB(IconButton) 안처럼 Figma 원본이 더 작은 이너 마진을 쓰는 예외 상황에서만
+   * 다른 값을 허용 — 숫자 타입으로 열어두되 페이지에서 임의로 남용하지 않는다.
+   */
+  size?: number
+  class?: string
+}
+
+const {name, size = 20, class: className} = Astro.props
+
+const icons = import.meta.glob('/src/assets/icons/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true
+}) as Record<string, string>
+
+const svg = icons[`/src/assets/icons/${name}.svg`]
+
+if (!svg) {
+  throw new Error(
+    `[Icon] "${name}" 아이콘을 src/assets/icons/ 에서 찾을 수 없습니다. ` +
+      `새 아이콘은 /icon-image 가이드의 네이밍 규칙(ico_의미_옵션, snake_case)에 맞춰 추가하세요.`
+  )
+}
+---
+
+<span
+  class:list={['icon', className]}
+  style={`--icon-size:${pxToRem(size)}`}
+  set:html={svg}
+  aria-hidden="true"
+/>

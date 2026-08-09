@@ -1,0 +1,53 @@
+---
+// Tab 공통 컴포넌트 — round(세그먼트 pill) · line(밑줄) · box(블록) 3종
+// 공식: Type(variant) + Size + State(active) + Option
+// 참고: https://comet-take-17267726.figma.site/navigation ("Tap" 섹션)
+//
+// 스크립트(탭 전환 인터랙션)는 이후 단계에서 추가 예정 — 지금은 마크업/CSS만 제공한다.
+// activeIndex로 초기 활성 탭만 표시한다.
+//
+// 사용 예:
+//   <Tab variant="line" items={[{label:'Overview'}, {label:'Spec'}]} activeIndex={0} />
+
+export interface TabItem {
+  label: string
+  href?: string
+}
+
+export interface Props {
+  variant?: 'round' | 'line' | 'box'
+  /** line variant 전용. Figma 소스 기준 small=24px, large=18px (표기와 실제 폰트 크기가 반대이니 주의) */
+  size?: 'small' | 'large'
+  items: TabItem[]
+  activeIndex?: number
+  class?: string
+}
+
+const {variant = 'round', size = 'small', items, activeIndex = 0, class: className} = Astro.props
+
+const listClasses = ['tab', `tab--${variant}`, variant === 'line' && `tab--${size}`, className]
+  .filter(Boolean)
+  .join(' ')
+---
+
+<ul class={listClasses} role="tablist">
+  {
+    items.map((item, i) => {
+      const isActive = i === activeIndex
+      const Tag = item.href ? 'a' : 'button'
+      return (
+        <li class="tab__item-wrap" role="presentation">
+          <Tag
+            class={`tab__item ${isActive ? 'is-active' : ''}`}
+            href={item.href}
+            type={!item.href ? 'button' : undefined}
+            role="tab"
+            aria-selected={isActive ? 'true' : 'false'}
+          >
+            {item.label}
+          </Tag>
+        </li>
+      )
+    })
+  }
+</ul>

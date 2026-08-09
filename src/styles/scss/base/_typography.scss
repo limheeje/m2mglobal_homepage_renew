@@ -1,0 +1,81 @@
+@use 'sass:map';
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+// ---------------------------------------------
+// Typography
+// Figma "Typography" 섹션 기준. H1~H6 line-height 120%, Body 계열 140%.
+// 참고: https://comet-take-17267726.figma.site/naming (네이밍) / .../tokens
+//
+// 값은 전부 :root 커스텀 프로퍼티(var(--...))에서 가져온다 — abstracts/_mixins.scss 의
+// heading()/body() 믹스인, color()/core() 함수 참고.
+// ---------------------------------------------
+
+html {
+  // rem 루트. 브라우저 기본 폰트 사이즈(16px) 기준으로 62.5% = 10px가 되므로,
+  // 이 프로젝트의 모든 px→rem 변환(abstracts/_functions.scss 의 rem())은 "10px = 1rem"을
+  // 전제로 한다 — Figma에서 16px면 1.6rem, 24px면 2.4rem. 사용자가 브라우저 폰트 크기를
+  // 키우면 10px 자체도 같이 커지므로 접근성(줌/배율)도 그대로 보존된다.
+  font-size: 62.5%;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
+  // Figma "기본폰트" 표기(15px) — --font-size-base는 이미 rem으로 나가 있다(1.5rem).
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  color: m.color('text-primary');
+  background-color: m.color('bg-base');
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+h1 {
+  @include m.heading(1);
+}
+h2 {
+  @include m.heading(2);
+}
+h3 {
+  @include m.heading(3);
+}
+h4 {
+  @include m.heading(4);
+}
+h5 {
+  @include m.heading(5);
+}
+h6 {
+  @include m.heading(6);
+}
+
+p {
+  margin: 0;
+}
+
+// Body 유틸리티 클래스 — 페이지에서 임의 font-size를 박지 말고 이 클래스만 사용.
+// 예) <p class="text-body-18">...</p>
+@each $key, $value in v.$font-size-body {
+  .text-body-#{$key} {
+    @include m.body($key);
+  }
+}
+
+// 자주 쓰는 semantic alias
+.text-secondary {
+  color: m.color('text-secondary');
+}
+.text-tertiary {
+  color: m.color('text-tertiary');
+}
+.text-disabled {
+  color: m.color('text-disabled');
+}

@@ -1,0 +1,7 @@
+<!-- Figma 실측(GNB 햄버거): 30px 프레임 안에서 가로 66.7%/세로 50%만 차지.
+     viewBox를 패딩해서 비율을 맞춤. -->
+<svg width="33" height="34" viewBox="0 0 33 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(5.5,8.5)">
+<path d="M1 1L21 1M7.875 8.5L21 8.5M1 16L21 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</g>
+</svg>

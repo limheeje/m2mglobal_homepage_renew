@@ -1,0 +1,104 @@
+@use '../abstracts/mixins' as m;
+
+// Button 공통 컴포넌트
+// 공식: Type(variant) + Size + State + Option
+// 참고: https://comet-take-17267726.figma.site/button
+//
+// 절대 금지: 여기 정의된 수치를 페이지에서 임의로 덮어쓰기, btn2/btn-blue 같은 임의 variant 생성,
+//           loading을 버튼 State로 취급하기 (loading은 별도 UI로 처리).
+
+.btn {
+  @include m.flex($justify: center, $align: center, $gap: m.spacing(4));
+  border: m.rem(1px) solid transparent;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+
+  &:focus-visible {
+    outline: #{m.rem(2px)} solid m.color('border-focus');
+    outline-offset: #{m.rem(2px)};
+  }
+
+  // ---------- Size ----------
+  &--lg {
+    @include m.body(18);
+    gap: m.spacing(12);
+    padding: m.spacing(24) m.spacing(30);
+  }
+
+  &--md {
+    @include m.body(16);
+    padding: m.spacing(12) m.spacing(24);
+  }
+
+  &--sm {
+    @include m.body(14);
+    padding: m.spacing(8) m.spacing(16);
+  }
+
+  // ---------- Type (variant) ----------
+  &--primary {
+    background-color: m.color('action-primary');
+    border-color: m.color('action-primary');
+    color: m.color('text-inverse');
+
+    &:hover {
+      background-color: m.color('action-primary-hover');
+      border-color: m.color('action-primary-hover');
+    }
+  }
+
+  &--secondary {
+    background-color: m.color('action-secondary-bg');
+    border-color: m.color('border-default');
+    color: m.color('text-primary');
+
+    &:hover {
+      background-color: m.color('action-secondary-bg-hover');
+    }
+
+    // Figma 소스: secondary + lg 조합만 테두리 없이 더 짙은 배경(#f1f1f1)을 쓴다.
+    &.btn--lg {
+      background-color: m.color('bg-muted');
+      border-color: transparent;
+
+      &:hover {
+        background-color: m.core('black-5');
+      }
+    }
+  }
+
+  &--third {
+    background-color: m.color('action-third');
+    border-color: m.color('action-third');
+    color: m.color('text-inverse');
+
+    &:hover {
+      filter: brightness(0.92);
+    }
+  }
+
+  // ---------- State: disabled ----------
+  &:disabled,
+  &[aria-disabled='true'] {
+    background-color: m.color('action-disabled-bg');
+    border-color: m.color('action-disabled-bg');
+    color: m.color('action-disabled-text');
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // ---------- Option ----------
+  &--full {
+    width: 100%;
+  }
+}
+
+.btn__icon {
+  color: inherit;
+}

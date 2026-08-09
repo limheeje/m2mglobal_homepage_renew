@@ -1,0 +1,20 @@
+---
+// Label 공통 컴포넌트 — 포인트/수치 강조용 pill 태그
+// 참고: https://comet-take-17267726.figma.site/card-list ("Label" 섹션)
+//
+// 사용 예:
+//   <Label>POINT 1</Label>
+//   <Label variant="accent">재계약율 100%</Label>
+
+export interface Props {
+  /** neutral: 연회색 배경 · accent: 연블루 배경 (텍스트는 두 variant 모두 primary 색) */
+  variant?: 'neutral' | 'accent'
+  class?: string
+}
+
+const {variant = 'neutral', class: className} = Astro.props
+
+const classes = ['label', `label--${variant}`, className].filter(Boolean).join(' ')
+---
+
+<span class={classes}><slot /></span>

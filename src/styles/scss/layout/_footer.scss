@@ -1,0 +1,103 @@
+@use '../abstracts/mixins' as m;
+
+// Footer
+// 참고: https://comet-take-17267726.figma.site/navigation ("Copyright" 섹션)
+//
+// GNB/PageBanner와 달리 Footer는 Figma에서 1280 max-width 컨테이너로 캡되지 않고
+// 뷰포트 100% 폭에 좌우 거터(80px)만 있는 풀블리드 구조 — max-width를 걸지 않는다.
+
+.footer {
+  background-color: m.core('black-90');
+  padding: m.spacing(40) 0;
+}
+
+.footer__inner {
+  width: 100%;
+  padding: 0 m.spacing(20);
+
+  // Figma 실측: 1920 뷰포트 기준 좌우 거터 80px.
+  @include m.breakpoint(lg) {
+    padding: 0 m.spacing(80);
+  }
+}
+
+.footer__top {
+  @include m.flex($justify: space-between, $align: center, $gap: m.spacing(20));
+  flex-wrap: wrap;
+  padding-bottom: m.spacing(30);
+}
+
+.footer__info {
+  @include m.flex($align: center, $gap: m.spacing(20));
+  flex-wrap: wrap;
+}
+
+.footer__logo img {
+  display: block;
+  width: m.rem(152px);
+  height: m.rem(40px);
+}
+
+.footer__contact {
+  @include m.flex($direction: column, $gap: m.spacing(4));
+}
+
+.footer__address,
+.footer__reach {
+  @include m.body(16);
+  color: m.core('black-20');
+}
+
+.footer__reach {
+  @include m.flex($align: center, $gap: 0);
+}
+
+.footer__reach-item {
+  padding: 0 m.spacing(10);
+  border-right: m.rem(1px) solid m.core('blue-gray-800');
+
+  // Figma 실측: 첫 항목(Email)은 좌측 패딩 없이 flush, 구분선 앞 pr-10만 있음.
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.footer__strong {
+  color: m.color('text-inverse');
+}
+
+.footer__downloads {
+  @include m.flex($align: center, $gap: m.spacing(20));
+}
+
+// Figma 실측: footer 다운로드 버튼(padding 12/24는 Button md와 동일하지만)은
+// gap 8px·font 15px로 공통 Button md(gap 4px·font 16px)와 다르다 — footer 전용 override.
+.footer__downloads .btn {
+  gap: m.spacing(8);
+  font-size: m.body-size(15);
+}
+
+.footer__bottom {
+  @include m.flex($justify: space-between, $align: center, $gap: m.spacing(12));
+  flex-wrap: wrap;
+  padding-bottom: m.spacing(24);
+}
+
+.footer__copyright {
+  @include m.body(16);
+  color: m.core('black-20');
+}
+
+// 어두운 배경 위이므로 TextButton 기본(secondary 계열 어두운 회색) 색을 밝은 회색으로 재정의.
+.footer__privacy {
+  color: m.core('black-20');
+
+  &:hover,
+  &:focus-visible {
+    color: m.color('text-inverse');
+  }
+}

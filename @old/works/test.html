@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Swiper demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+  <!-- Demo styles -->
+  <style>
+    html,
+    body {
+      position: relative;
+      height: 100%;
+    }
+
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .wrapper {
+      display: flex;
+      margin: 10px ;
+    }
+    .swiper {
+      width: 100%;
+      height: auto;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+    }
+
+    /* .swiper .swiper-slide {
+      height: 300px;
+      line-height: 300px;
+    }
+
+    .swiper .swiper-slide:nth-child(2n) {
+      height: 500px;
+      line-height: 500px;
+    } */
+  </style>
+</head>
+
+<body>
+  <!-- Swiper -->
+  <div class="wrapper">
+    <h2>dddd</h2>
+    <div class="swiper works-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1</div>
+        <div class="swiper-slide">Slide 2<br>Slide 2<br>Slide 2<br>Slide 2<br>Slide 2</div>
+        <div class="swiper-slide">Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br></div>
+        <div class="swiper-slide">Slide 4<br>Slide 4<br>Slide 4<br>Slide 4<br>Slide 4<br></div>
+        <div class="swiper-slide">Slide 5<br>Slide 5<br></div>
+        <div class="swiper-slide" style="height: 500px;">Slide 6</div>
+        <div class="swiper-slide" style="height: 500px;">Slide 7</div>
+        <div class="swiper-slide" style="height: 500px;">Slide 8</div>
+        <div class="swiper-slide" style="height: 500px;">Slide 9</div>
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+  <div class="wrapper">
+    <h2>dddd</h2>
+    <div class="swiper works-swiper aa02">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1<br>Slide 1</div>
+        <div class="swiper-slide">Slide 2<br>Slide 2<br>Slide 2<br>Slide 2<br>Slide 2</div>
+        <div class="swiper-slide">Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br>Slide 3<br></div>
+        <div class="swiper-slide">Slide 4<br>Slide 4<br>Slide 4<br>Slide 4<br>Slide 4<br></div>
+        <div class="swiper-slide">Slide 5<br>Slide 5<br></div>
+        <div class="swiper-slide">Slide 6<br>Slide 6<br>Slide 6<br>Slide 6<br></div>
+        <div class="swiper-slide">Slide 7<br>Slide 7<br>Slide 7<br>Slide 7<br></div>
+        <div class="swiper-slide">Slide 8<br>Slide 8<br></div>
+        <div class="swiper-slide">Slide 9<br>Slide 9<br>Slide 9<br></div>
+      </div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+
+    var swiper = new Swiper(".works-swiper, .aa02", {
+  slidesPerView: 1,
+  spaceBetween: 24,
+  autoHeight : false,
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+  mousewheel: true,
+  keyboard: true,
+  breakpoints: {
+    768 : {
+      slidesPerView: 2
+    }
+  }
+})
+  </script>
+</body>
+
+</html>

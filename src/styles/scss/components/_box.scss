@@ -1,0 +1,48 @@
+@use '../abstracts/mixins' as m;
+
+// Box — 포인트 카드 (아이콘/번호 + 라벨 + 타이틀 + 설명)
+// 참고: https://comet-take-17267726.figma.site/card-list
+
+.box {
+  @include m.flex($direction: column, $align: center, $gap: m.spacing(20));
+  width: m.rem(336px);
+  max-width: 100%;
+  padding: m.spacing(36);
+  border-radius: m.radius(24);
+  text-align: center;
+
+  &--bordered {
+    background-color: m.color('bg-surface');
+    border: m.rem(1px) solid m.color('border-default');
+  }
+
+  &--filled {
+    background-color: m.color('bg-muted');
+  }
+}
+
+.box__number {
+  @include m.body(24);
+  color: m.color('action-primary');
+}
+
+.box__head {
+  @include m.flex($direction: column, $align: center, $gap: m.spacing(20));
+  width: 100%;
+}
+
+.box__title {
+  @include m.body(24);
+  color: m.color('text-primary');
+}
+
+.box__desc {
+  @include m.body(16);
+  color: m.color('text-primary');
+
+  // Figma 원본의 강조 텍스트(파란색 primary) — description slot 안에서 <mark> 사용.
+  mark {
+    background: none;
+    color: m.color('action-primary');
+  }
+}

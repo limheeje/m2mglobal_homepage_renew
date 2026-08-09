@@ -1,0 +1,67 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+// LayoutGrid — Container / Row / Col (Bootstrap 스타일 12컬럼 그리드)
+// 참고: 컴포넌트는 src/components/Container.astro, Row.astro, Col.astro
+//
+// - Container: 페이지 폭 통일(1280 max-width + 좌우 거터). fluid면 캡 없이 거터만(Footer류).
+// - Row: CSS Grid 12컬럼, 컬럼 간격(gutter) 20px 고정.
+// - Col: Row 안에서 1~12 중 원하는 폭만큼 차지. span 기본값은 breakpoint별 접두 클래스로 override.
+//
+// Container는 `max-width` + `padding` 조합을 안 쓴다 — 그 둘을 같이 쓰면 뷰포트가 넓어서
+// max-width가 이미 캡을 건 상태에서도 padding이 또 안쪽에서 폭을 깎아먹어서(예: max-width
+// 1280에 좌우 80 padding이면 실제 콘텐츠는 1280이 아니라 1120이 됨), Figma에서 실측한
+// "콘텐츠 폭"과 안 맞게 된다. 대신 `width: min(100% - 거터*2, max-width)`로 계산해서
+// 거터는 뷰포트가 max-width보다 좁을 때만(=박스가 아직 캡에 안 걸렸을 때만) 의미를 갖고,
+// 캡이 걸리는 순간부터는 max-width 값 그대로가 실제 콘텐츠 폭이 되게 한다.
+$grid-columns: 12;
+$grid-gutter: m.rem(20px); // 컬럼 간격 20px — spacing 토큰과 별개인 그리드 전용 고정값
+
+.container {
+  // Container.astro의 maxWidth prop이 인라인으로 이 커스텀 프로퍼티를 덮어쓴다.
+  --container-max-width: #{m.rem(v.$container-max-width)};
+
+  width: min(100% - #{m.spacing(20)} * 2, var(--container-max-width));
+  margin: 0 auto;
+
+  @include m.breakpoint(lg) {
+    width: min(100% - #{m.spacing(80)} * 2, var(--container-max-width));
+  }
+
+  &--fluid {
+    width: calc(100% - #{m.spacing(20)} * 2);
+
+    @include m.breakpoint(lg) {
+      width: calc(100% - #{m.spacing(80)} * 2);
+    }
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat($grid-columns, 1fr);
+  column-gap: $grid-gutter;
+  row-gap: m.spacing(20);
+}
+
+.col {
+  min-width: 0;
+}
+
+// 기본(전체 breakpoint) span 클래스: col-1 ~ col-12
+@for $i from 1 through $grid-columns {
+  .col-#{$i} {
+    grid-column: span #{$i} / span #{$i};
+  }
+}
+
+// breakpoint별 override: col-sm-N / col-md-N / col-lg-N / col-xl-N
+@each $bp in (sm, md, lg, xl) {
+  @include m.breakpoint($bp) {
+    @for $i from 1 through $grid-columns {
+      .col-#{$bp}-#{$i} {
+        grid-column: span #{$i} / span #{$i};
+      }
+    }
+  }
+}

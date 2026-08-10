@@ -14,6 +14,7 @@ import Box from '~/components/Box.astro'
 import Title from '~/components/Title.astro'
 import TextList from '~/components/TextList.astro'
 import ListItem from '~/components/ListItem.astro'
+import SpecGroup from '~/components/SpecGroup.astro'
 import PageBanner from '~/components/PageBanner.astro'
 import Footer from '~/components/Footer.astro'
 import Container from '~/components/Container.astro'
@@ -285,6 +286,17 @@ const iconNames = Object.keys(iconFiles)
         <li><TextList>Text List</TextList></li>
         <li><TextList highlighted>Text List</TextList></li>
       </ul>
+    </section>
+
+    <section class="sg__section">
+      <h2>SpecGroup — pill 타이틀 + label:value 행 목록</h2>
+      <SpecGroup
+        title="구축 가능 분야"
+        rows={[
+          {label: 'AI 추천 플랫폼', value: '개인화 추천·연관 추천 제공'},
+          {label: 'AI 커머스 플랫폼', value: '행동 분석 기반 카테고리 최적화'}
+        ]}
+      />
     </section>
 
     <section class="sg__section">

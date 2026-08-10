@@ -13,6 +13,13 @@ import IconCircle from '~/components/IconCircle.astro'
 import TextList from '~/components/TextList.astro'
 import Icon from '~/components/Icon.astro'
 import Footer from '~/components/Footer.astro'
+import {route} from '@config/route'
+
+// 1Depth "Robot Logistics" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
+const pageTabs = [
+  {label: 'Robot Logistics', href: route['/robot-logistics/overview']},
+  {label: 'Smart Factory', href: route['/robot-logistics/smart-factory']}
+]
 
 const sectionTabs = [
   {label: 'M2M-RLCK 개요', href: '#overview'},
@@ -31,7 +38,7 @@ const rcsChips = [
   {label: 'Interface', active: false},
   {label: '장비제어', active: false},
   {label: '라우팅', active: false},
-  {label: '관제', active: false},
+  {label: '관제', active: false, useBr: true},
   {label: '입출고', active: true},
   {label: '장비제어', active: true},
   {label: '라우팅', active: true},
@@ -42,7 +49,7 @@ const wesChips = [
   {label: '파킹', active: false},
   {label: '운반', active: false},
   {label: '소팅', active: false},
-  {label: '최적화', active: false},
+  {label: '최적화', active: false, useBr: true},
   {label: '데이터', active: true},
   {label: '알고리즘', active: true},
   {label: '시뮬레이션', active: true},
@@ -326,6 +333,8 @@ const devicePanels = [
     ]}
   />
 
+  <Tab variant="line" size="large" items={pageTabs} activeIndex={0} />
+
   <Title variant="hero" title="로봇 물류 플랫폼" />
 
   <Container maxWidth={1760} class="company-page-end">
@@ -350,9 +359,12 @@ const devicePanels = [
           <div class="rl__overview-chip-row">
             {
               rcsChips.map((chip) => (
-                <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
-                  {chip.label}
-                </span>
+                <>
+                  <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
+                    {chip.label}
+                  </span>
+                  {chip.useBr && <br />}
+                </>
               ))
             }
           </div>
@@ -372,19 +384,25 @@ const devicePanels = [
           <div class="rl__overview-chip-row">
             {
               wesChips.map((chip) => (
-                <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
-                  {chip.label}
-                </span>
+                <>
+                  <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
+                    {chip.label}
+                  </span>
+                  {chip.useBr && <br />}
+                </>
               ))
             }
           </div>
         </div>
+        <span class="rl__overview-arrow">
+          <Icon name="ico_arrow_big_down" />
+        </span>
       </div>
 
-      <div class="rl__process-title">Seamless 물류 프로세스</div>
+      <Title variant="banner" title="Seamless 물류 프로세스" />
       <div class="rl__process-flow">
         {
-          processStages.map((stage, i) => (
+          processStages.map((stage) => (
             <>
               <div class="rl__process-stage">
                 <p class="rl__process-stage-title">{stage.title}</p>
@@ -394,11 +412,6 @@ const devicePanels = [
                   ))}
                 </div>
               </div>
-              {i < processStages.length - 1 && (
-                <span class="rl__process-chevron" aria-hidden="true">
-                  <Icon name="ico_chevron_right" size={24} />
-                </span>
-              )}
             </>
           ))
         }

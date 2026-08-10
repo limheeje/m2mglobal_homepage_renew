@@ -12,7 +12,15 @@ import Container from '~/components/Container.astro'
 import IconCircle from '~/components/IconCircle.astro'
 import TextList from '~/components/TextList.astro'
 import Footer from '~/components/Footer.astro'
+import {route} from '@config/route'
 import type {ImageMetadata} from 'astro'
+
+// 1Depth "e-Commerce" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
+const pageTabs = [
+  {label: 'Commerce Technology', href: route['/e-commerce/commerce-technology']},
+  {label: 'B2B Commerce', href: route['/e-commerce/b2b-commerce']},
+  {label: 'Marketplace', href: route['/e-commerce/marketplace']}
+]
 
 const sectionTabs = [
   {label: '제공기술 및 특징', href: '#features'},
@@ -261,6 +269,8 @@ const references = [
       '"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.'
     ]}
   />
+
+  <Tab variant="line" size="large" items={pageTabs} activeIndex={0} />
 
   <Title
     variant="hero"

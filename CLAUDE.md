@@ -114,6 +114,7 @@ Figma 파일의 `Component` 페이지(Typography/Color/Tab/Label/Button/GNB 등)
 | `Box` (bordered/filled 카드) | `src/components/Box.astro` | `components/_box.scss` |
 | `Title` (hero/section/banner) | `src/components/Title.astro` | `components/_title.scss` |
 | `TextList` | `src/components/TextList.astro` | `components/_text-list.scss` |
+| `SpecGroup` (pill 타이틀 + label:value 행) | `src/components/SpecGroup.astro` | `components/_spec-group.scss` |
 | `ListItem` (사례형/공지형) | `src/components/ListItem.astro` | `components/_list-item.scss` |
 | `Gnb` (헤더) | `src/components/Gnb.astro` | `layout/_header.scss` |
 | `PageBanner` (서브페이지 상단 배너) | `src/components/PageBanner.astro` | `layout/_page-banner.scss` |
@@ -133,7 +134,9 @@ Figma 파일의 `Component` 페이지(Typography/Color/Tab/Label/Button/GNB 등)
 
 **아이콘 크기는 SVG 파일 자체의 viewBox 패딩으로 맞춘다 (컴포넌트에서 비율 계산 금지)**: `Icon` 컴포넌트는 SVG를 요청받은 `size` 정사각형에 꽉 채우기만 한다. 그런데 Figma는 아이콘을 "프레임 크기"(예: 24px)와 그 안의 "실제 그림 크기"(예: 16px, 66.7%)를 다르게 두는 경우가 흔하다 — 이 인셋을 무시하고 원본 그림 그대로 SVG를 만들면 프레임을 꽉 채워버려서 Figma보다 훨씬 커 보인다(실제로 전 아이콘이 이 문제였음). 그래서 `src/assets/icons/ico_*.svg`는 그림을 **Figma가 실측한 인셋 비율만큼 투명 여백을 포함한 viewBox로 패딩**해서 저장한다 (예: `ico_download.svg`는 실제 그림이 16×16이지만 viewBox는 24×24, `<g transform="translate(4,4)">`로 중앙 배치). 이렇게 하면 어떤 `size`로 쓰든 Figma와 같은 비율로 자동으로 작게 보인다 — `IconButton`처럼 컴포넌트마다 별도로 축소 비율을 곱하는 방식은 쓰지 않는다. **새 아이콘을 추가할 때**: ① `get_design_context`로 실제 사용된 인스턴스의 inset 비율(예: `inset-[16.67%]`, `left-1/4 right-1/4`)을 확인 → ② raw SVG의 원본 크기를 그 비율의 100%로 보고 전체 캔버스 크기를 역산(캔버스 = 원본 ÷ (1-2×inset)) → ③ 캔버스 크기의 정사각형(또는 필요한 비율) viewBox로 만들고 원본 path를 `<g transform="translate(x,y)">`로 중앙 배치. `IconCircle`도 같은 원리라 별도 처리 불필요 — 아이콘 파일만 고치면 자동으로 같이 고쳐진다.
 
-**아직 스크립트(JS) 미구현 — TODO**: GNB 모바일 드로어 열기/닫기, Tab 클릭 전환, IconButton(맨 위로가기) 스크롤 동작. 지금은 마크업/CSS만 있고 GNB 데스크탑 메가메뉴만 `:hover`/`:focus-within` CSS로 동작한다. GNB 메가메뉴는 항목별 개별 드롭다운이 아니라 **1Depth 아무거나 hover하면 6개 컬럼 전체가 하나의 패널로 열리는 구조**(Figma 원본 그대로) — 항목별 드롭다운으로 바꾸지 말 것.
+**아직 스크립트(JS) 미구현 — TODO**: GNB 모바일 드로어 열기/닫기. 지금은 마크업/CSS만 있고 GNB 데스크탑 메가메뉴만 `:hover`/`:focus-within` CSS로 동작한다. GNB 메가메뉴는 항목별 개별 드롭다운이 아니라 **1Depth 아무거나 hover하면 6개 컬럼 전체가 하나의 패널로 열리는 구조**(Figma 원본 그대로) — 항목별 드롭다운으로 바꾸지 말 것.
+
+**전역 스크립트는 `src/scripts/*.ts` + `Layout.astro`의 `<body>` 끝 `<script>` 태그에서 import**: `tab-box-scrollspy.ts`(`.tab--box` 클릭 시 부드러운 스크롤 + IntersectionObserver로 스크롤 위치에 따른 탭 자동 활성화), `scroll-to-top.ts`(맨 위로 가기 FAB 클릭 시 부드러운 스크롤). 페이지 종속 로직 없이 클래스/id 마크업 컨벤션만으로 동작하므로 새 페이지에서 별도 연결 코드 필요 없음.
 
 **"맨 위로 가기" 버튼은 `Layout.astro`에 전역으로 있다**: 모든 페이지의 `<body>` 끝에서 자동으로 렌더링되는 `<IconButton icon="ico_arrow_top" .../>`(fixed, 우측 하단) — 새 페이지에서 페이지마다 다시 추가하지 말 것.
 

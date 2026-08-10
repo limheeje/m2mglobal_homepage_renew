@@ -14,6 +14,19 @@ import TextList from '~/components/TextList.astro'
 import Icon from '~/components/Icon.astro'
 import Footer from '~/components/Footer.astro'
 import flowArrowUrl from '~/assets/images/flow-arrow.svg'
+import flowArrowBigUrl from '~/assets/images/flow-big-arrow.svg'
+import symbol001 from '~/assets/images/common/symbol001.png'
+import symbol002 from '~/assets/images/common/symbol002.png'
+import symbol003 from '~/assets/images/common/symbol003.png'
+import symbol004 from '~/assets/images/common/symbol004.png'
+import symbol005 from '~/assets/images/common/symbol005.png'
+import {route} from '@config/route'
+
+// 1Depth "AI Engine" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
+const pageTabs = [
+  {label: 'AI & Machine Learning', href: route['/ai-engine/machine-learning']},
+  {label: 'AI Commerce', href: route['/ai-engine/ai-commerce']}
+]
 
 const sectionTabs = [
   {label: '추천설계', href: '#design'},
@@ -184,15 +197,17 @@ const scoringFunctions = [
 // 개인화
 const personalizeCards = [
   {
-    icon: 'ico_ai_personalization',
-    title: 'Layer 1: 후보군 생성 (Candidate Generation)',
-    desc: '빠르게 많이 모으는 단계. 사전 계산(Pre-Computation) 기반으로 속도와 안정성 확보',
+    icon: 'ico_ai_recomm',
+    title: 'Layer 1: 후보군 생성',
+    subtitle: '(Candidate Generation)',
+    desc: '빠르게 많이 모으는 단계.<br/> 사전 계산(Pre-Computation) 기반으로 속도와 안정성 확보',
     items: ['세션 내 동시 조회', '구매 연계', '행동 기반 연관']
   },
   {
-    icon: 'ico_ai_personalization',
-    title: 'Layer 2: 개인화 신호 강화 (Personalization Layer)',
-    desc: '동일 상품이라도 사용자에 따라 순위가 달라집니다.',
+    icon: 'ico_ai_recomm2',
+    title: 'Layer 2: 개인화 신호 강화',
+    subtitle: '(Personalization Layer)',
+    desc: '동일 상품이라도 사용자에 따라<br/> 순위가 달라집니다.',
     items: ['카테고리 선호도', '최근 행동 가중치', '브랜드 선호']
   }
 ]
@@ -221,6 +236,8 @@ const logoSrc = (key: string) =>
       '모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다.'
     ]}
   />
+
+  <Tab variant="line" size="large" items={pageTabs} activeIndex={1} />
 
   <Title
     variant="hero"
@@ -358,6 +375,9 @@ const logoSrc = (key: string) =>
             </div>
           ))
         }
+        <div class="ai-commerce__strategy-arrow">
+          <img src={flowArrowBigUrl.src} alt="" />
+        </div>
         <div class="ai-commerce__strategy-banner">
           <p class="ai-commerce__strategy-banner-title">Context-Aware Semantic Scoring Engine</p>
           <p class="ai-commerce__strategy-banner-desc">
@@ -390,7 +410,9 @@ const logoSrc = (key: string) =>
           }
         </div>
 
-        <div class="ai-commerce__scoring-image"></div>
+        <div class="ai-commerce__scoring-image">
+          <img src={symbol001.src} alt="" />
+        </div>
 
         <div>
           <p class="ai-commerce__scoring-col-title">Applied Recommendation Functions</p>
@@ -417,40 +439,62 @@ const logoSrc = (key: string) =>
           '사용자 행동과 상품 속성을 벡터 공간으로 구조화하여, 유사도 기반 개인화 추천을 구현합니다. 동일 상품이라도 사용자 맥락에 따라 노출 우선순위가 동적으로 재정렬됩니다.'
         ]}
       />
-      <div class="ai-commerce__personalize-grid">
-        {
-          personalizeCards.map((card) => (
-            <div class="ai-commerce__personalize-card">
-              <div class="ai-commerce__personalize-head">
-                <IconCircle icon={card.icon} />
-                <p class="ai-commerce__personalize-title">{card.title}</p>
-                <p class="ai-commerce__personalize-desc">{card.desc}</p>
-              </div>
-              <div class="ai-commerce__personalize-image" />
-              <div class="ai-commerce__personalize-list">
-                {card.items.map((item) => (
-                  <TextList highlighted>{item}</TextList>
-                ))}
-              </div>
-            </div>
-          ))
-        }
+      <p class="ai-commerce__diagram-pill">{'Layer 1 & 2 : 광범위한 탐색과 정교한 취향 매칭'}</p>
+      <div class="ai-commerce__diagram-placeholder-wrap">
+        <div class="ai-commerce__personalize-grid">
+          {
+            personalizeCards.map((card, index) => (
+              <>
+                <div class="ai-commerce__personalize-card">
+                  <div class="ai-commerce__personalize-head">
+                    <IconCircle icon={card.icon} />
+                    <p class="ai-commerce__personalize-title">{card.title}</p>
+                    <p class="ai-commerce__personalize-subtitle">{card.subtitle}</p>
+                    <p class="ai-commerce__personalize-desc" set:html={card.desc} />
+                  </div>
+                  <div class="ai-commerce__personalize-list">
+                    {card.items.map((item) => (
+                      <TextList highlighted>{item}</TextList>
+                    ))}
+                  </div>
+                </div>
+                {index === 0 && (
+                  <div class="ai-commerce__personalize-img">
+                    <img src={symbol005.src} alt="" />
+                  </div>
+                )}
+              </>
+            ))
+          }
+        </div>
       </div>
     </section>
 
     <section id="repurchase" class="ai-section">
       <p class="ai-commerce__diagram-pill">{'Layer 3 :  커머스의 핵심, "재구매 타이밍" 예측'}</p>
-      <div class="ai-commerce__diagram-placeholder"></div>
+      <div class="ai-commerce__diagram-placeholder-wrap">
+        <div class="ai-commerce__diagram-placeholder">
+          <img src={symbol002.src} alt="" />
+        </div>
+      </div>
     </section>
 
     <section id="reranking" class="ai-section">
       <p class="ai-commerce__diagram-pill">Layer 5 : AI 제안 위에 비지니스 전략 제시</p>
-      <div class="ai-commerce__diagram-placeholder"></div>
+      <div class="ai-commerce__diagram-placeholder-wrap">
+        <div class="ai-commerce__diagram-placeholder">
+          <img src={symbol003.src} alt="" />
+        </div>
+      </div>
     </section>
 
     <section id="rebalancing" class="ai-section">
       <p class="ai-commerce__diagram-pill">리스크를 최소화한 단계적 도입 로드맵으로 Phase2 목표</p>
-      <div class="ai-commerce__diagram-placeholder"></div>
+      <div class="ai-commerce__diagram-placeholder-wrap">
+        <div class="ai-commerce__diagram-placeholder">
+          <img src={symbol004.src} alt="" />
+        </div>
+      </div>
     </section>
 
     <section id="cases" class="ai-section">

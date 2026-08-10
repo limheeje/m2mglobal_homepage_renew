@@ -14,6 +14,14 @@ import TextList from '~/components/TextList.astro'
 import Label from '~/components/Label.astro'
 import Icon from '~/components/Icon.astro'
 import Footer from '~/components/Footer.astro'
+import {route} from '@config/route'
+
+// 1Depth "e-Commerce" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
+const pageTabs = [
+  {label: 'Commerce Technology', href: route['/e-commerce/commerce-technology']},
+  {label: 'B2B Commerce', href: route['/e-commerce/b2b-commerce']},
+  {label: 'Marketplace', href: route['/e-commerce/marketplace']}
+]
 
 const sectionTabs = [
   {label: '거래 중개 구조', href: '#structure'},
@@ -135,6 +143,8 @@ const auctionFlow = ['상장', '실시간 경매 / 응찰하기', '낙찰(결과
       '"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.'
     ]}
   />
+
+  <Tab variant="line" size="large" items={pageTabs} activeIndex={2} />
 
   <Title
     variant="hero"

@@ -25,7 +25,7 @@
 }
 
 .gnb__bar {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   width: 100%;
@@ -35,6 +35,7 @@
   // Figma 소스 기준 GNB 좌우 거터는 80px 고정.
   @include m.breakpoint(lg) {
     padding: 0 m.spacing(80);
+    display: grid;
   }
 }
 
@@ -46,6 +47,7 @@
   img {
     display: block;
     width: m.rem(152px);
+    min-width: m.rem(152px);
     height: m.rem(40px);
   }
 }
@@ -80,10 +82,15 @@
 
 .gnb__menu-link {
   @include m.flex($justify: center, $align: center);
-  @include m.body(22);
+  @include m.body(18);
+  width: auto;
+  height: m.rem(40px);
   // Figma 소스: 1Depth 항목 고정폭 180px, 별도 좌우 패딩 없음.
-  width: m.rem(180px);
-  height: m.rem(80px);
+  @include m.breakpoint(lg) {
+    @include m.body(22);
+    width: m.rem(180px);
+    height: m.rem(80px);
+  }
   color: m.color('text-primary');
   text-decoration: none;
   white-space: nowrap;
@@ -133,6 +140,8 @@
 // ---------- 전체메뉴 버튼 (모바일 전용 아님 — PC 포함 항상 노출) ----------
 .gnb__toggle {
   @include m.flex($justify: center, $align: center);
+  margin-left: auto;
+  margin-right: 0;
   justify-self: end;
   width: m.rem(40px);
   height: m.rem(40px);

@@ -1,0 +1,80 @@
+@use '../abstracts/mixins' as m;
+
+// SpecGroup — pill 타이틀 + label:value 행 목록
+// 원래 /ai-engine/machine-learning의 "ai-ml__spec-group" 페이지 전용 클래스였던 걸 그대로 옮긴 것.
+
+.spec-group {
+  display: flex;
+  width: 100%;
+  gap: m.rem(20px);
+  align-items: flex-start;
+  .spec-group__row {
+    border-top: m.rem(1px) solid m.core('black-100');
+  }
+  .spec-group__list{
+    margin-top: m.rem(65px);
+    width: 100%;
+  }
+  .spec-group__row + .spec-group__row {
+    border-top: none;
+  }
+}
+
+.spec-group + .spec-group {
+  margin-top: m.spacing(48);
+
+  @include m.breakpoint(lg) {
+    margin-top: m.spacing(80);
+  }
+}
+
+.spec-group__pill {
+  @include m.flex($justify: center, $align: center);
+  @include m.body(18);
+  display: inline-flex;
+  width: fit-content;
+  min-width: m.rem(277px);
+  white-space: nowrap;
+  margin-bottom: m.spacing(24);
+  padding: m.spacing(8) m.rem(35px);
+  border-radius: var(--radius-pill);
+  background-color: m.color('bg-muted');
+  color: m.color('text-primary');
+
+  @include m.breakpoint(lg) {
+    @include m.heading(5);
+  }
+}
+
+.spec-group__row {
+  @include m.flex($direction: column, $align: flex-start, $gap: m.spacing(4));
+  padding: m.spacing(16) 0;
+  border-bottom: m.rem(1px) solid m.color('border-subtle');
+
+  @include m.breakpoint(lg) {
+    flex-direction: row;
+    align-items: center;
+    gap: m.spacing(20);
+    padding: m.spacing(20);
+  }
+}
+
+.spec-group__label {
+  @include m.body(16);
+  flex-shrink: 0;
+  color: m.color('text-tertiary');
+
+  @include m.breakpoint(lg) {
+    @include m.body(20);
+    width: m.rem(256px);
+  }
+}
+
+.spec-group__value {
+  @include m.body(16);
+  color: m.color('text-primary');
+
+  @include m.breakpoint(lg) {
+    @include m.body(18);
+  }
+}

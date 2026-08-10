@@ -12,8 +12,18 @@ import Container from '~/components/Container.astro'
 import Box from '~/components/Box.astro'
 import IconCircle from '~/components/IconCircle.astro'
 import TextList from '~/components/TextList.astro'
+import SpecGroup from '~/components/SpecGroup.astro'
 import Footer from '~/components/Footer.astro'
 import flowArrowUrl from '~/assets/images/flow-arrow.svg'
+import banner001 from '~/assets/images/banner/banner001.png'
+import banner002 from '~/assets/images/banner/banner002.png'
+import {route} from '@config/route'
+
+// 1Depth "AI Engine" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
+const pageTabs = [
+  {label: 'AI & Machine Learning', href: route['/ai-engine/machine-learning']},
+  {label: 'AI Commerce', href: route['/ai-engine/ai-commerce']}
+]
 
 const sectionTabs = [
   {label: '서비스 특징', href: '#features'},
@@ -123,12 +133,14 @@ const cases = [
   {
     title: '수협중앙회 쇼핑몰 재구축',
     date: '2025.03 ~ 2026.03',
-    desc: 'AI 데이터 분석 기법을 활용한 고객 맞춤형 상품 자동 추천 기능'
+    desc: 'AI 데이터 분석 기법을 활용한 고객 맞춤형 상품 자동 추천 기능',
+    imgBannerSrc: banner001.src
   },
   {
     title: '서플러스글로벌 반도체장비 마켓플레이스 구축',
     date: '2025.08 ~ 2026.01',
-    desc: 'AI 기반 자동화 상품추천'
+    desc: 'AI 기반 자동화 상품추천',
+    imgBannerSrc: banner002.src
   }
 ]
 ---
@@ -144,6 +156,8 @@ const cases = [
     ]}
   />
 
+  <Tab variant="line" size="large" items={pageTabs} activeIndex={0} />
+
   <Title
     variant="hero"
     title="AI & Machine Learning"
@@ -157,6 +171,14 @@ const cases = [
     <Tab variant="box" items={sectionTabs} activeIndex={0} />
 
     <section id="features" class="ai-section">
+      <Title
+        variant="section"
+        prefix="서비스 "
+        highlight="특징"
+        subtitle={[
+          'M2M-AI/ML 솔루션은 데이터 수집부터 모델 학습, 실시간 추론, 운영 모니터링까지 전 주기를 지원하며, End-to-End AI 파이프라인을 제공하여 다양한 사업 환경에 맞춘 AI 서비스를 효율적으로 제공합니다.'
+        ]}
+      />
       <div class="ai-ml__feature-grid">
         {
           features.map((feature) => (
@@ -177,6 +199,12 @@ const cases = [
     </section>
 
     <section id="core" class="ai-section">
+      <Title
+        variant="section"
+        prefix="M2M-AI/ML "
+        highlight="핵심 기능"
+        subtitle={['AI 모델 학습부터 실시간 추론, 운영 모니터링까지 전 주기를 지원합니다.']}
+      />
       <div class="ai-ml__core-grid">
         {
           coreFeatures.map((feature) => (
@@ -196,6 +224,12 @@ const cases = [
     </section>
 
     <section id="architecture" class="ai-section">
+      <Title
+        variant="section"
+        prefix="M2M-AI/ML "
+        highlight="비즈니스 구성도"
+        subtitle={['데이터 수집 → 확충 → 서빙 → 모니터링까지의 End-to-End AI 플랫폼 아키텍처']}
+      />
       <div class="ai-ml__flow">
         {
           flowStages.map((stage, i) => (
@@ -228,42 +262,35 @@ const cases = [
     </section>
 
     <section id="stack" class="ai-section">
-      <div class="ai-ml__spec-group">
-        <p class="ai-ml__spec-pill">구축 가능 분야</p>
-        {
-          buildFields.map((field) => (
-            <div class="ai-ml__spec-row">
-              <span class="ai-ml__spec-label">{field.title}</span>
-              <span class="ai-ml__spec-value">{field.desc}</span>
-            </div>
-          ))
-        }
-      </div>
+      <Title
+        variant="section"
+        prefix="구축 가능 분야 및 "
+        highlight="기술 스택"
+        subtitle={['다양한 산업 도메인에 적용 가능한 AI 솔루션과 검증된 기술 스택을 제공합니다.']}
+      />
+      <SpecGroup
+        title="구축 가능 분야"
+        rows={buildFields.map((field) => ({label: field.title, value: field.desc}))}
+      />
 
-      <div class="ai-ml__spec-group">
-        <p class="ai-ml__spec-pill">주요 기술 스택</p>
-        {
-          techStack.map((stack) => (
-            <div class="ai-ml__spec-row">
-              <span class="ai-ml__spec-label">{stack.title}</span>
-              <span class="ai-ml__spec-value">{stack.desc}</span>
-            </div>
-          ))
-        }
-      </div>
+      <SpecGroup
+        title="주요 기술 스택"
+        rows={techStack.map((stack) => ({label: stack.title, value: stack.desc}))}
+      />
     </section>
 
     <section id="cases" class="ai-section">
+      <Title variant="section" prefix="구축 " highlight="사례" />
       <div class="ai-ml__cases">
         {
           cases.map((item) => (
             <div class="ai-ml__case-card">
-              <div class="ai-ml__case-thumb" />
+              <div class="ai-ml__case-thumb">
+                <img src={item.imgBannerSrc} alt="" />
+              </div>
               <div class="ai-ml__case-body">
-                <div class="ai-ml__case-title-row">
-                  <p class="ai-ml__case-title">{item.title}</p>
-                  <span class="ai-ml__case-date">{item.date}</span>
-                </div>
+                <p class="ai-ml__case-title">{item.title}</p>
+                <span class="ai-ml__case-date">{item.date}</span>
                 <p class="ai-ml__case-desc">{item.desc}</p>
               </div>
             </div>

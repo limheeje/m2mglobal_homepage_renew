@@ -30,8 +30,13 @@ import IconButton from '~/components/IconButton.astro'
   <body>
     <slot />
 
-    <!-- 모든 페이지 공통 — 스크롤 시 맨 위로 가기 FAB. TODO(script 단계): 스크롤 동작 연결. -->
+    <!-- 모든 페이지 공통 — 스크롤 시 맨 위로 가기 FAB. -->
     <IconButton icon="ico_arrow_top" ariaLabel="맨 위로 가기" class="layout__top-btn" />
+
+    <script>
+      import '~/scripts/tab-box-scrollspy.ts'
+      import '~/scripts/scroll-to-top.ts'
+    </script>
   </body>
 </html>
 

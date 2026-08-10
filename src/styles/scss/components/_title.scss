@@ -22,7 +22,10 @@
 
 // ---------- section: 좌측 컬러바 + prefix/highlight 소제목 ----------
 .title--section {
-  @include m.flex($direction: column, $gap: m.spacing(12));
+  @include m.flex($direction: column, $gap: m.rem(14px));
+  .title__row{
+    padding-top: m.rem(14px);
+  }
 }
 
 .title__row {
@@ -42,12 +45,11 @@
     content: '';
     position: absolute;
     left: 0;
-    bottom: 0;
+    top: 0;
     width: 100%;
     height: m.rem(15px);
     border-radius: m.rem(4px);
     background-color: m.core('secondary');
-    z-index: -1;
   }
 }
 
@@ -66,7 +68,7 @@
   @include m.flex($justify: center, $align: center, $gap: m.spacing(10));
   height: m.rem(75px);
   padding: m.spacing(10);
-  border-radius: m.radius(12);
+  border-radius: m.radius(24);
   background-color: m.core('secondary');
   text-align: center;
 }

@@ -12,6 +12,13 @@ import IconCircle from '~/components/IconCircle.astro'
 import TextList from '~/components/TextList.astro'
 import Icon from '~/components/Icon.astro'
 import Footer from '~/components/Footer.astro'
+import {route} from '@config/route'
+
+// 1Depth "Robot Logistics" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
+const pageTabs = [
+  {label: 'Robot Logistics', href: route['/robot-logistics/overview']},
+  {label: 'Smart Factory', href: route['/robot-logistics/smart-factory']}
+]
 
 const sectionTabs = [
   {label: 'M2M-MES 특장점', href: '#benefits'},
@@ -86,6 +93,8 @@ const cases = [
       '모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다.'
     ]}
   />
+
+  <Tab variant="line" size="large" items={pageTabs} activeIndex={1} />
 
   <Title variant="hero" title="스마트 팩토리" />
 

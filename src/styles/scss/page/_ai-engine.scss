@@ -34,7 +34,7 @@
   gap: m.spacing(20);
 
   @include m.breakpoint(lg) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -75,7 +75,7 @@
   gap: m.spacing(20);
 
   @include m.breakpoint(lg) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .box {
@@ -101,9 +101,9 @@
 
 // --- 비즈니스 구성도 (5단계 플로우 + 화살표 + 배포 인프라 배너) ---
 .ai-ml__flow {
-  @include m.flex($direction: column, $align: stretch, $gap: m.spacing(20));
-
+  @include m.flex($direction: column, $align: stretch, $gap: m.spacing(0));
   @include m.breakpoint(lg) {
+    @include m.flex($direction: column, $align: stretch, $gap: m.spacing(20));
     flex-direction: row;
     align-items: stretch;
   }
@@ -149,19 +149,15 @@
   transform: rotate(90deg);
 
   img {
-    height: m.rem(32px);
-    max-width: none;
+    width: 100%;
+    height: auto;
   }
 
   @include m.breakpoint(lg) {
-    width: m.rem(30px);
-    height: m.rem(80px);
+    width: m.rem(55px);
+    height: m.rem(146px);
     transform: none;
 
-    img {
-      width: m.rem(30px);
-      height: auto;
-    }
   }
 }
 
@@ -169,63 +165,8 @@
   margin-top: m.spacing(40);
 }
 
-// --- 구축분야 및 기술 스택 ---
-.ai-ml__spec-group + .ai-ml__spec-group {
-  margin-top: m.spacing(48);
-
-  @include m.breakpoint(lg) {
-    margin-top: m.spacing(80);
-  }
-}
-
-.ai-ml__spec-pill {
-  @include m.flex($justify: center, $align: center);
-  @include m.body(18);
-  display: inline-flex;
-  width: fit-content;
-  margin-bottom: m.spacing(24);
-  padding: m.spacing(8) m.spacing(20);
-  border-radius: var(--radius-pill);
-  background-color: m.color('bg-muted');
-  color: m.color('text-primary');
-
-  @include m.breakpoint(lg) {
-    @include m.heading(5);
-  }
-}
-
-.ai-ml__spec-row {
-  @include m.flex($direction: column, $align: flex-start, $gap: m.spacing(4));
-  padding: m.spacing(16) 0;
-  border-bottom: m.rem(1px) solid m.color('border-subtle');
-
-  @include m.breakpoint(lg) {
-    flex-direction: row;
-    align-items: center;
-    gap: m.spacing(20);
-    padding: m.spacing(20);
-  }
-}
-
-.ai-ml__spec-label {
-  @include m.body(16);
-  flex-shrink: 0;
-  color: m.color('text-tertiary');
-
-  @include m.breakpoint(lg) {
-    @include m.body(20);
-    width: m.rem(256px);
-  }
-}
-
-.ai-ml__spec-value {
-  @include m.body(16);
-  color: m.color('text-primary');
-
-  @include m.breakpoint(lg) {
-    @include m.body(18);
-  }
-}
+// --- 구축분야 및 기술 스택: ~/components/SpecGroup.astro 공용 컴포넌트로 분리됨
+// (components/_spec-group.scss) ---
 
 // --- 구축사례 ---
 .ai-ml__cases {
@@ -234,27 +175,29 @@
   gap: m.spacing(20);
 
   @include m.breakpoint(lg) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .ai-ml__case-card {
-  border: m.rem(1px) solid m.color('border-default');
   border-radius: m.radius(24);
   overflow: hidden;
-  background-color: m.color('bg-surface');
+  background-color: m.color('bg-muted');
+  padding: m.rem(36px);
 }
 
 // 실제 프로젝트 스크린샷은 아직 없어 Figma의 placeholder rounded-rect를 그대로 빈 색상 블록으로 표현 —
 // 나중에 실제 이미지가 준비되면 이 블록을 <img>로 교체.
 .ai-ml__case-thumb {
   width: 100%;
+  border-radius: m.radius(24);
+  overflow: hidden;
   aspect-ratio: 501 / 285;
-  background-color: m.color('bg-muted');
 }
 
 .ai-ml__case-body {
-  padding: m.spacing(24) m.spacing(36) m.spacing(36);
+  padding-top: m.spacing(20);
+  text-align: center;
 }
 
 .ai-ml__case-title-row {
@@ -264,18 +207,21 @@
 }
 
 .ai-ml__case-title {
-  @include m.body(20);
+  @include m.body(24);
   color: m.color('text-primary');
 }
 
 .ai-ml__case-date {
-  @include m.body(16);
-  color: m.color('text-secondary');
+  @include m.body(20);
+  color: m.color('text-primary');
+  margin-top: m.rem(10px);
+  display: block;
 }
 
 .ai-ml__case-desc {
-  @include m.body(16);
+  @include m.body(18);
   color: m.color('text-primary');
+  margin-top: m.rem(20px);
 }
 
 // ===========================================================================
@@ -339,14 +285,14 @@
 }
 
 .ai-commerce__meta-row {
-  @include m.flex($align: center, $gap: m.spacing(10));
-  flex-wrap: wrap;
+  @include m.flex($align: flex-start, $gap: m.spacing(10));
 }
 
 .ai-commerce__meta-label {
   @include m.flex($align: center, $gap: m.spacing(6));
   @include m.body(16);
-  width: m.rem(120px);
+  white-space: nowrap;
+  width: m.rem(140px);
   color: m.color('text-tertiary');
 }
 
@@ -365,6 +311,13 @@
   }
 }
 
+.ai-commerce__strategy-arrow{
+  align-self: center;
+  transform: rotate(90deg);
+  @include m.breakpoint(lg) {
+    transform: rotate(0);
+  }
+}
 .ai-commerce__strategy-card {
   @include m.flex($direction: column, $align: center, $gap: 0);
   flex: 1;
@@ -429,10 +382,10 @@
 .ai-commerce__scoring {
   display: grid;
   grid-template-columns: 1fr;
-  gap: m.spacing(40);
+  gap: m.spacing(25);
 
   @include m.breakpoint(lg) {
-    grid-template-columns: 1fr m.rem(300px) 1fr;
+    grid-template-columns: 1fr m.rem(577px) 1fr;
     align-items: start;
   }
 }
@@ -458,6 +411,7 @@
   padding: m.spacing(8) 0;
   border-bottom: m.rem(1px) solid m.color('action-primary');
   color: m.color('text-primary');
+  margin-bottom: m.rem(12px);
 
   @include m.breakpoint(lg) {
     @include m.body(20);
@@ -478,10 +432,20 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: m.spacing(24);
-
+  .ai-commerce__personalize-img{
+    width: 100%;
+    img{
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
   @include m.breakpoint(lg) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: m.spacing(40);
+    .ai-commerce__personalize-img{
+      width: m.rem(574px);
+      align-self: center;
+    }
   }
 }
 
@@ -490,7 +454,7 @@
 }
 
 .ai-commerce__personalize-head {
-  @include m.flex($direction: column, $align: center, $gap: m.spacing(12));
+  @include m.flex($direction: column, $align: center);
   width: 100%;
   text-align: center;
 }
@@ -498,15 +462,24 @@
 .ai-commerce__personalize-title {
   @include m.body(20);
   color: m.color('text-primary');
+  margin-top: m.rem(20px);
+  @include m.breakpoint(lg) {
+    @include m.body(30);
+  }
+}
+.ai-commerce__personalize-subtitle {
+  @include m.body(15);
+  color: m.color('text-primary');
 
   @include m.breakpoint(lg) {
-    @include m.body(24);
+    @include m.body(18);
   }
 }
 
 .ai-commerce__personalize-desc {
-  @include m.body(16);
-  color: m.color('text-secondary');
+  @include m.body(18);
+  margin-top: m.rem(20px);
+  color: m.color('text-primary');
 }
 
 .ai-commerce__personalize-image {
@@ -544,13 +517,19 @@
   }
 }
 
+.ai-commerce__diagram-placeholder-wrap {
+  border-radius: m.radius(24);
+  border: m.rem(1px) solid m.color('border-default');
+  padding: m.rem(36px); 
+}
 .ai-commerce__diagram-placeholder {
   width: 100%;
   max-width: m.rem(1195px);
   aspect-ratio: 1195 / 632;
   margin: 0 auto;
-  border-radius: m.radius(24);
-  background-color: m.color('bg-muted');
+  img{
+    margin: 0 auto;
+  }
 }
 
 // --- 실행 사례 (고객사 로고 카드 재사용) ---
@@ -560,7 +539,7 @@
   gap: m.spacing(12);
 
   @include m.breakpoint(lg) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: m.spacing(20);
   }
 }

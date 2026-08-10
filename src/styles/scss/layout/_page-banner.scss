@@ -22,7 +22,7 @@
 .page-banner__content {
   position: relative;
   @include m.flex($direction: column, $align: center, $gap: m.spacing(20));
-  padding: m.spacing(40) m.spacing(20) m.spacing(30);
+  padding: m.spacing(40) m.spacing(20) m.spacing(40);
   text-align: center;
 
   @include m.breakpoint(lg) {

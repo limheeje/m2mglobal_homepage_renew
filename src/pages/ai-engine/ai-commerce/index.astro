@@ -1,5 +1,471 @@
 ---
+// AI Engine > AI Commerce (/ai-engine/ai-commerce)
+// 참고: Figma "AI > AI Commerce" 9개 프레임(추천설계/아키텍처 전환/상황기반추천설계/AI 스코어링/개인화/
+// 재구매 예측/재 랭킹/리밸런싱/실행 사례) — 전부 같은 "Tap_box_series" 앵커 탭의 상태라 한 페이지로 합쳤다
+// (/ai-engine/machine-learning, /company/history와 동일 패턴).
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import IconCircle from '~/components/IconCircle.astro'
+import TextList from '~/components/TextList.astro'
+import Icon from '~/components/Icon.astro'
+import Footer from '~/components/Footer.astro'
+import flowArrowUrl from '~/assets/images/flow-arrow.svg'
+
+const sectionTabs = [
+  {label: '추천설계', href: '#design'},
+  {label: '아키텍처 전환', href: '#architecture'},
+  {label: '상황기반추천설계', href: '#context'},
+  {label: 'AI 스코어링', href: '#scoring'},
+  {label: '개인화', href: '#personalize'},
+  {label: '재구매 예측', href: '#repurchase'},
+  {label: '재 랭킹', href: '#reranking'},
+  {label: '리밸런싱', href: '#rebalancing'},
+  {label: '실행 사례', href: '#cases'}
+]
+
+// 추천설계
+const designCards = [
+  {
+    icon: 'ico_ai_hyperpersonalization',
+    title: '초개인화',
+    items: [
+      '맥락(Context) 기반 랭킹 시스템 도입',
+      '단순 클릭 기반을 넘어 구매 주기와 취향 벡터를 결합한 개인화 실현'
+    ]
+  },
+  {
+    icon: 'ico_ai_controllable',
+    title: '통제 가능한 AI',
+    items: [
+      '블랙박스(Black Box)가 아닌 글래스박스(AI)',
+      '재고, 프로모션, 회원 등급에 따라 운영자가 즉시 개입 가능한 구조'
+    ]
+  },
+  {
+    icon: 'ico_ai_scalability',
+    title: '단계적 확장성',
+    items: [
+      'Multi-Layer Scoring Framework 적용',
+      '1단계 랭킹 고도화부터 3단계 실시간 튜닝까지 리스크 최소화를 위한 단계적 도입'
+    ]
+  }
+]
+
+// 아키텍처 전환
+const levels = [
+  {
+    level: 'Level 1',
+    title: '상품 중심 진열',
+    items: [
+      '카테고리/이벤트 기반 노출',
+      '운영자 수동 편성',
+      '고객 행동 데이터 미반영',
+      '상품 중심 노출 기준',
+      '개인별 최적화 구조 부재'
+    ],
+    dataLevel: '상품 데이터 중심',
+    metric: '노출량'
+  },
+  {
+    level: 'Level 2',
+    title: '정책 중심 추천',
+    items: [
+      '함께 본/함께 산 상품',
+      '단순 교차 판매 로직',
+      '세그먼트 단위 추천',
+      '조건 기반 필터링 구조',
+      '실시간 반응 제한'
+    ],
+    dataLevel: '상품 + 거래',
+    metric: '클릭률'
+  },
+  {
+    level: 'Level 3',
+    title: '맥락 기반 추천 구조',
+    items: [
+      '사용자 행동 신호 실시간 반영',
+      '회원 유형/재고/정책 통합',
+      '노출 가중치 동적 적용',
+      '상품 속성 + 구매 주기 분석',
+      'KPI 기준 추천 모델 튜닝'
+    ],
+    dataLevel: '상품 + 거래 + 행동',
+    metric: '전환율'
+  },
+  {
+    level: 'Level 4',
+    title: '실시간 적응형 추천',
+    items: [
+      '실시간 행동 피드백 루프',
+      '운영 통제와 알고리즘 통합',
+      'KPI 기반 자동 최적화',
+      '세션 단위 동적 개인화',
+      'A/B 테스트 반영'
+    ],
+    dataLevel: '상품 + 거래 + 행동 + 실시간 세션 데이터',
+    metric: 'LTV*/재구매율'
+  }
+]
+
+// 상황기반추천설계 — 고객 여정 5단계
+const journeyStages = [
+  {
+    title: '탐색 단계 (Discovery)',
+    items: ['목적 : 관심 상품 발견', '유형 : 개인화 추천(취향 기반)']
+  },
+  {
+    title: '상품 상세 (Detail)',
+    items: ['목적 : 구매확신 강화', '유형 : 연관 상품(함께 본/산 상품)']
+  },
+  {
+    title: '장바구니 (Cart)',
+    items: ['목적 : 객단가(AOV*) 상승', '유형 : 교차 판매 Cross-Selling, 보완재']
+  },
+  {title: '주문/배송 (Order)', items: ['목적 : 재구매 유도', '유형 : 반복 구매 주기 분석']},
+  {title: '마이페이지 (MyPage)', items: ['목적 : 충성도 강화', '유형 : 개인화 피드']}
+]
+
+// 상황기반추천설계 — 커머스 특성 반영
+const strategyCards = [
+  {
+    title: '복합 회원 정책',
+    items: ['가격 정책 차별화', 'B2B·B2C 혼합 구조 대응', '노출 우선 순위 전략화']
+  },
+  {
+    title: '식품 물류 특성',
+    items: ['합배송 최적화', '배송비 부담 완화', '장바구니 기반 묶음 추천']
+  },
+  {
+    title: '재고 및 유통기한',
+    items: ['임박 상품 가중치 조정', '재고 회전율 최적화', '폐기 리스크 최소화']
+  }
+]
+
+// AI 스코어링
+const scoringLayers = [
+  {
+    title: 'Layer 1 : Catalog Intelligence',
+    items: ['상품 속성 정규화', '카테고리/브랜드/가격 구조화']
+  },
+  {
+    title: 'Layer 2 : Business Rule Engine',
+    items: ['회원 유형 필터', '정책/프로모션 반영', '노출 우선순위 제어']
+  },
+  {
+    title: 'Layer 3 : Inventory & Logistics Layer',
+    items: ['재고 가중치', '유통기한 민감도', '합배송 조건 반영']
+  },
+  {
+    title: 'Layer 4 : Behavior Modeling',
+    items: ['클릭/구매 시그널', '구매 주기 분석', '구매 주기 분석']
+  },
+  {title: 'Layer 5 : Adaptive Scoring', items: ['가중치 통합', 'KPI 기반 튜닝', '실시간 최적화']}
+]
+
+const scoringFunctions = [
+  {
+    title: 'Layer 1: 후보군 생성 (Candidate Generation)',
+    items: ['행동/카테고리 기반 광범위 후보 확보']
+  },
+  {
+    title: 'Layer 2: 개인화 신호 (Personalization Layer)',
+    items: ['사용자 벡터(Vector) 매칭 & 선호도 반영']
+  },
+  {title: 'Layer 3: 재구매 모델링 (Repurchase Modeling)', items: ['식품 구매 주기 패턴 분석']},
+  {title: 'Layer 4: 비즈니스 통제 (Business Control)', items: ['재고, 프로모션, 정책 필터링']},
+  {title: 'Layer 5 : 재랭킹 (Re-Ranking)', items: ['다양성 확보 및 최신성 반영']},
+  {title: 'Output: 최종 추천 리스트', items: []}
+]
+
+// 개인화
+const personalizeCards = [
+  {
+    icon: 'ico_ai_personalization',
+    title: 'Layer 1: 후보군 생성 (Candidate Generation)',
+    desc: '빠르게 많이 모으는 단계. 사전 계산(Pre-Computation) 기반으로 속도와 안정성 확보',
+    items: ['세션 내 동시 조회', '구매 연계', '행동 기반 연관']
+  },
+  {
+    icon: 'ico_ai_personalization',
+    title: 'Layer 2: 개인화 신호 강화 (Personalization Layer)',
+    desc: '동일 상품이라도 사용자에 따라 순위가 달라집니다.',
+    items: ['카테고리 선호도', '최근 행동 가중치', '브랜드 선호']
+  }
+]
+
+// 실행 사례 (client 로고 재사용 — company/news와 동일 에셋)
+const caseClients = [
+  {name: '수협쇼핑', key: '05-suhyupshopping'},
+  {name: 'SemiMarket', key: '03-semimarket'},
+  {name: '케이카', key: '04-kcar'},
+  {name: '다이소', key: '02-daiso'}
+]
+const clientLogos = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
+  eager: true
+})
+const logoSrc = (key: string) =>
+  clientLogos[`/src/assets/images/clients/ico_client_${key}.png`].default.src
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="AI Engine"
+    subtitle={[
+      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
+      '모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다.'
+    ]}
+  />
+
+  <Title
+    variant="hero"
+    title="AI Commerce"
+    subtitle={[
+      'Hybrid Multi-Layer Scoring Framework를 통해 거래·추천·분석까지',
+      'AI Commerce 비즈니스를 실현 중인 M2M GLOBAL만의 지능형 프레임워크'
+    ]}
+  />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <Tab variant="box" items={sectionTabs} activeIndex={0} />
+
+    <section id="design" class="ai-section">
+      <Title
+        variant="section"
+        prefix="추천 "
+        highlight="설계"
+        subtitle={[
+          '추천 시스템은 데이터·모델·운영 통제를 결합한 전략 자산으로 개인화 → 분석 기반 최적화 → 확장 가능한 아키텍처로 단계적으로 진화합니다.'
+        ]}
+      />
+      <div class="ai-ml__feature-grid">
+        {
+          designCards.map((card) => (
+            <div class="ai-ml__feature-card">
+              <div class="ai-ml__feature-head">
+                <IconCircle icon={card.icon} />
+                <p class="ai-ml__feature-title">{card.title}</p>
+              </div>
+              <div class="ai-ml__feature-list">
+                {card.items.map((item) => (
+                  <TextList>{item}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="architecture" class="ai-section">
+      <Title
+        variant="section"
+        prefix="추천 "
+        highlight="아키텍처 전환"
+        subtitle={[
+          '데이터 기반 개인화 및 실시간 보정 체계로 전환 함으로써, 고객 여정 전반에서 실질적인 매출 기여가 가능한 추천 체계로 진화합니다.'
+        ]}
+      />
+      <div class="ai-commerce__level-grid">
+        {
+          levels.map((lv) => (
+            <div class="ai-commerce__level-card">
+              <div class="ai-commerce__level-head">
+                <span class="label label--accent">{lv.level}</span>
+                <p class="ai-commerce__level-title">{lv.title}</p>
+              </div>
+              <div class="ai-commerce__level-list">
+                {lv.items.map((item) => (
+                  <TextList>{item}</TextList>
+                ))}
+              </div>
+              <div class="ai-commerce__level-meta">
+                <div class="ai-commerce__meta-row">
+                  <span class="ai-commerce__meta-label">
+                    <Icon name="ico_clipboard" size={16} />
+                    데이터 활용 수준
+                  </span>
+                  <span class="ai-commerce__meta-value">{lv.dataLevel}</span>
+                </div>
+                <div class="ai-commerce__meta-row">
+                  <span class="ai-commerce__meta-label">
+                    <Icon name="ico_chart_bar" size={16} />
+                    성과 지표
+                  </span>
+                  <span class="ai-commerce__meta-value">{lv.metric}</span>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="context" class="ai-section">
+      <Title
+        variant="section"
+        prefix="상황별 "
+        highlight="추천 전략"
+        subtitle={[
+          '고객 여정 단계에 따라 목적이 달라져야 하며, 홈 · 상품상세· 장바구니 · 주문완료 단계별로 강력한 추천 데이터를 적용합니다.'
+        ]}
+      />
+      <div class="ai-ml__flow">
+        {
+          journeyStages.map((stage, i) => (
+            <>
+              <div class="ai-ml__flow-box">
+                <div class="ai-ml__flow-head">
+                  <p class="ai-ml__flow-title">{stage.title}</p>
+                </div>
+                <div class="ai-ml__flow-list">
+                  {stage.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
+              </div>
+              {i < journeyStages.length - 1 && (
+                <span class="ai-ml__flow-arrow" aria-hidden="true">
+                  <img src={flowArrowUrl.src} alt="" />
+                </span>
+              )}
+            </>
+          ))
+        }
+      </div>
+
+      <Title
+        variant="section"
+        prefix="커머스 특성을 반영한 "
+        highlight="추천 설계 적용"
+        class="ai-ml__deploy-banner"
+      />
+      <div class="ai-commerce__strategy">
+        {
+          strategyCards.map((card) => (
+            <div class="ai-commerce__strategy-card">
+              <p class="ai-commerce__strategy-title">{card.title}</p>
+              <div class="ai-commerce__strategy-list">
+                {card.items.map((item) => (
+                  <TextList>{item}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+        <div class="ai-commerce__strategy-banner">
+          <p class="ai-commerce__strategy-banner-title">Context-Aware Semantic Scoring Engine</p>
+          <p class="ai-commerce__strategy-banner-desc">
+            Score = Member Type + Logistics Condition + Inventory Sensitivity + Behavior Signal
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="scoring" class="ai-section">
+      <Title
+        variant="section"
+        highlight="Hybrid Multi-Layer Scoring Framework"
+        subtitle={[
+          '다층 구조 기반의 통합 가중치 설계를 통해 최종 점수를 산정하는 지능형 의사결정 엔진으로 상품 구조·회원 정책·재고 조건·행동 신호를 동시에 반영하여 전략적으로 제어 가능한 추천 체계를 구현합니다.'
+        ]}
+      />
+      <div class="ai-commerce__scoring">
+        <div>
+          <p class="ai-commerce__scoring-col-title">Core Architecture Layers</p>
+          {
+            scoringLayers.map((layer) => (
+              <div class="ai-commerce__scoring-layer">
+                <p class="ai-commerce__scoring-layer-head">{layer.title}</p>
+                {layer.items.map((item) => (
+                  <TextList>{item}</TextList>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="ai-commerce__scoring-image"></div>
+
+        <div>
+          <p class="ai-commerce__scoring-col-title">Applied Recommendation Functions</p>
+          {
+            scoringFunctions.map((layer) => (
+              <div class="ai-commerce__scoring-layer">
+                <p class="ai-commerce__scoring-layer-head">{layer.title}</p>
+                {layer.items.map((item) => (
+                  <TextList>{item}</TextList>
+                ))}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="personalize" class="ai-section">
+      <Title
+        variant="section"
+        prefix="Vector 기반 "
+        highlight="개인화 프로파일링"
+        subtitle={[
+          '사용자 행동과 상품 속성을 벡터 공간으로 구조화하여, 유사도 기반 개인화 추천을 구현합니다. 동일 상품이라도 사용자 맥락에 따라 노출 우선순위가 동적으로 재정렬됩니다.'
+        ]}
+      />
+      <div class="ai-commerce__personalize-grid">
+        {
+          personalizeCards.map((card) => (
+            <div class="ai-commerce__personalize-card">
+              <div class="ai-commerce__personalize-head">
+                <IconCircle icon={card.icon} />
+                <p class="ai-commerce__personalize-title">{card.title}</p>
+                <p class="ai-commerce__personalize-desc">{card.desc}</p>
+              </div>
+              <div class="ai-commerce__personalize-image" />
+              <div class="ai-commerce__personalize-list">
+                {card.items.map((item) => (
+                  <TextList highlighted>{item}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="repurchase" class="ai-section">
+      <p class="ai-commerce__diagram-pill">{'Layer 3 :  커머스의 핵심, "재구매 타이밍" 예측'}</p>
+      <div class="ai-commerce__diagram-placeholder"></div>
+    </section>
+
+    <section id="reranking" class="ai-section">
+      <p class="ai-commerce__diagram-pill">Layer 5 : AI 제안 위에 비지니스 전략 제시</p>
+      <div class="ai-commerce__diagram-placeholder"></div>
+    </section>
+
+    <section id="rebalancing" class="ai-section">
+      <p class="ai-commerce__diagram-pill">리스크를 최소화한 단계적 도입 로드맵으로 Phase2 목표</p>
+      <div class="ai-commerce__diagram-placeholder"></div>
+    </section>
+
+    <section id="cases" class="ai-section">
+      <Title variant="section" prefix="실행 " highlight="사례" />
+      <div class="ai-commerce__client-grid">
+        {
+          caseClients.map((client) => (
+            <div class="ai-commerce__client-card">
+              <img src={logoSrc(client.key)} alt={client.name} loading="lazy" />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+
+  <Footer />
+</Layout>

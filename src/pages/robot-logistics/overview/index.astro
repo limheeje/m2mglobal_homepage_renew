@@ -1,5 +1,703 @@
 ---
+// Robot Logistics > 로봇 물류 플랫폼 (/robot-logistics/overview)
+// 참고: Figma "Robot Logistics > 로봇 물류 플랫폼" 9개 프레임 — 전부 같은 "Tap_box_series" 앵커 탭의
+// 상태라 한 페이지로 합쳤다 (/ai-engine/*, /company/history와 동일 패턴).
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import Box from '~/components/Box.astro'
+import IconCircle from '~/components/IconCircle.astro'
+import TextList from '~/components/TextList.astro'
+import Icon from '~/components/Icon.astro'
+import Footer from '~/components/Footer.astro'
+
+const sectionTabs = [
+  {label: 'M2M-RLCK 개요', href: '#overview'},
+  {label: 'RLCK 구현 로봇', href: '#robots'},
+  {label: '시스템구성', href: '#system'},
+  {label: '로봇물류제어기술', href: '#control-tech'},
+  {label: '인프라구성', href: '#infra'},
+  {label: '소프트웨어 구성', href: '#software'},
+  {label: '시뮬레이션', href: '#simulation'},
+  {label: '스케줄링, 경로계획, 영역제어', href: '#scheduling'},
+  {label: '구축사례', href: '#cases'}
+]
+
+// M2M-RLCK 개요
+const rcsChips = [
+  {label: 'Interface', active: false},
+  {label: '장비제어', active: false},
+  {label: '라우팅', active: false},
+  {label: '관제', active: false},
+  {label: '입출고', active: true},
+  {label: '장비제어', active: true},
+  {label: '라우팅', active: true},
+  {label: '관제', active: true},
+  {label: '관제', active: true}
+]
+const wesChips = [
+  {label: '파킹', active: false},
+  {label: '운반', active: false},
+  {label: '소팅', active: false},
+  {label: '최적화', active: false},
+  {label: '데이터', active: true},
+  {label: '알고리즘', active: true},
+  {label: '시뮬레이션', active: true},
+  {label: '가시화', active: true}
+]
+
+const processStages = [
+  {
+    title: 'Planning',
+    chips: ['운영 계획', '주문 계획', '최적화', '시뮬레이션']
+  },
+  {
+    title: 'Execution (Fulfilment / Shipping)',
+    chips: ['주문', '하차', '이동', '적치 (보관)', '재고', '피킹', '분배', '패킹', '상차']
+  },
+  {
+    title: 'Monitoring (Management)',
+    chips: ['성과 관리', '노무 관리', '가시성 관리', '장비 관리']
+  }
+]
+
+// RLCK 구현 로봇
+const robotGroups = [
+  {
+    title: 'AGV (Automated Guided Vehicle)',
+    robots: [
+      {
+        name: 'HIKEROBOT : Q3-600D',
+        specs: [
+          ['Lifting Height', '60 mm'],
+          ['Lated Load', '600 kg'],
+          ['Navigation', 'QR Code'],
+          ['Weight', '132 kg'],
+          ['Rotation Diameter', '995 mm'],
+          ['Run Time', '8 h'],
+          ['Dimensions', 'L950*W650*H250 mm'],
+          ['Rated Speed', '2.0'],
+          ['Maximum rotation speed', '200'],
+          ['Positoin Accuracy', '±10, ±1'],
+          ['Charging Time', '1.5'],
+          ['Driving Mode', 'Differntial Drive']
+        ]
+      },
+      {
+        name: 'GEEKPLUS : P500R',
+        specs: [
+          ['Dimensions', 'L950*W702*H275 mm'],
+          ['Self weight', '144 kg'],
+          ['Maximum payload', '600 kg'],
+          ['Maximum lifting height', '60 mm'],
+          ['Minimum lifting time', '4 s'],
+          ['Maximum speed', '2m/s without load 1.5m/s full load'],
+          ['Maximum rotation speed', '90°/1.5s，180°/2s'],
+          ['Maximum slope angle', '2.5° (slope 4.4%)'],
+          ['Stop accuracy', '<±10 mm'],
+          ['Navigation', 'Inertial sensors + QR code'],
+          ['Obstacle detection distance', '2m infrared / 3m laser'],
+          ['Power supply', 'Lithium-ion, DC50.96V, 28 Ah']
+        ]
+      }
+    ]
+  },
+  {
+    title: 'AMR (Autonomous robot)',
+    robots: [
+      {
+        name: 'HIKEROBOT : Q3-600D',
+        specs: [
+          ['Rated Load', '250 kg'],
+          ['Bin Nymber', '5'],
+          ['Aisle Width', '1000 mm'],
+          ['Max Lifting Speed', '500 mm/s'],
+          ['Positoin Accuracy', '±10, ±1'],
+          ['Docking Height', '280 ~ 2087'],
+          ['Dimensions', 'L1730*W850*H2600 mm'],
+          ['Weight', '605 kg'],
+          ['Rated Speed', '1.5'],
+          ['Adaptable Tote Dimension', '(200-620)*(200-450)*120-3...'],
+          ['Charging Time', '<2'],
+          ['Run Time', '6 ~ 8 h']
+        ]
+      },
+      {
+        name: 'Forward Robotics : Flex 300-SCB',
+        specs: [
+          ['Length', 'L950*W702*H275 mm'],
+          ['Width', '144 kg'],
+          ['Hight', '600 kg'],
+          ['Turning Diameter', '60 mm'],
+          ['Ground Clearance', '4 s'],
+          ['Load Surface', '2m/s without load 1.5m/s full load'],
+          ['Lifting Hight', '90°/1.5s，180°/2s'],
+          ['Safety Bumper', 'Yes'],
+          ['Energy Stop Button', '2'],
+          ['Movement Obstacle Perception', 'Yes'],
+          ['Audible and Visuble Alar', 'Yes']
+        ]
+      }
+    ]
+  }
+]
+
+// 로봇물류제어기술
+const controlTechCards = [
+  {
+    icon: 'ico_robot_platform',
+    title: '자동화 창고(AS/RS)',
+    steps: ['입고지시(WMS)', '자동 적치', '재고관리', '출고지시', '자동 출고', '출하'],
+    features: [
+      'WMS 실시간 연계',
+      '고밀도 저장 및 자동 입·출고',
+      '스태커 크레인 기반 자동 운반',
+      '재고 정확도 및 공간 활용 극대화'
+    ]
+  },
+  {
+    icon: 'ico_robot_scheduling',
+    title: 'AMR',
+    steps: ['작업지시', 'AMR 배차', '자율주행', '작업 수행', '목적지 이송', '작업 완료'],
+    features: [
+      '자율주행 기반 운반',
+      '작업 우선순위 자동 배정',
+      '장애물 회피 및 경로 최적화',
+      '유연한 레이아웃 대응'
+    ]
+  },
+  {
+    icon: 'ico_robot_routing',
+    title: 'AGV',
+    steps: ['작업지시', '랙 하부 진입', '랙 리프팅', '목적지 이동', '랙 하차', '작업 완료'],
+    features: [
+      '랙(선반) 직접 운반',
+      '고정 컨베이어 불필요',
+      '레이아웃 변경 용이',
+      '피킹 작업 효율 향상'
+    ]
+  },
+  {
+    icon: 'ico_robot_zone_control',
+    title: 'Stacker Crane',
+    steps: ['입고 요청', '팔레트 인수', '지정 위치 적치', '재고 관리', '출고 요청', '자동 반출'],
+    features: ['고층 입체창고 운영', '대용량 팔레트 처리', '고속 입·출고 지원', '무인 자동화 운영']
+  },
+  {
+    icon: 'ico_ai_data_collection',
+    title: 'Shuttle AGV',
+    steps: ['입고', 'Bin 적재', '자동 보관', '피킹 요청', 'Bin 이송', '작업 완료'],
+    features: [
+      'Bin 단위 자동 보관·피킹',
+      'Goods-to-Person 방식 지원',
+      '소형 상품 처리 최적화',
+      '피킹 정확도 및 생산성 향상'
+    ]
+  },
+  {
+    icon: 'ico_ai_monitoring',
+    title: 'Shuttle Car',
+    steps: ['입고 요청', '셔틀 적재', '자동 이송', '지정 위치 저장', '출고 요청', '자동 반출'],
+    features: [
+      '고속 셔틀 기반 이송',
+      '다층·고밀도 저장 지원',
+      '입·출고 처리량 극대화',
+      '공간 활용 및 처리 효율 향상'
+    ]
+  }
+]
+
+// 소프트웨어 구성
+const softwareInsights = [
+  '플랫폼을 구역별로 분할 구성함으로써 각 구역의 시스템이 독립적으로 운영되어 안정성 향상',
+  '플랫폼의 성능을 일정 수준으로 유지하기 용이한 구조',
+  '단일 시스템 구성에 비해 복잡도 및 그에 따른 비용 증가'
+]
+
+// 시뮬레이션
+const simulationInsights = [
+  '모의실험을 위한 시뮬레이터를 별도로 개발하여 테스트 효율 극대화',
+  '100대 이상 AMR 동시 제어 실험을 통해 성능 점검',
+  '대규모 테스트 진행으로 다양한 문제점 도출 및 개선 가능'
+]
+
+// 스케줄링, 경로계획, 영역제어
+const schedulingCards = [
+  {
+    icon: 'ico_ai_data_collection',
+    desc: '동시 작업 흐름과 동적 자원 할당에 대한 모델을 기반으로 중앙 집중식 교착 상태 회피'
+  },
+  {
+    icon: 'ico_ai_scalability',
+    desc: '현실적인 물류센터 환경에 적합한 구역제어(동적/정적) 접근법 고려'
+  },
+  {icon: 'ico_robot_zone_control', desc: '중앙집중식/ 분산형 접근식/ 하이브리드 방식 등 고려'},
+  {icon: 'ico_robot_routing', desc: '루프회피 기능으로 충돌을 원천적으로 회피한 라우팅 전략 고려'},
+  {
+    icon: 'ico_robot_scheduling',
+    desc: '총 이동 거리와 대기 시간을 줄이기 위한 동적 스케줄링 전략 고려'
+  }
+]
+
+// 구축사례
+const caseFunctions = [
+  {number: '01', title: 'AGV 제어', desc: 'Root-Planning'},
+  {number: '02', title: '해당 기종', desc: '로봇 트래픽 제어'},
+  {number: '03', title: '작업자 배치 ·', desc: '주문 배치/할당 알고리즘'},
+  {number: '04', title: '비동기', desc: '메시지 제어'},
+  {number: '05', title: '3D Map', desc: '구현/제어'},
+  {number: '06', title: 'MSA', desc: '(Micro Service Architecture)'},
+  {number: '07', title: '하드웨어 제어 ·', desc: '빅데이터 수집/가공'}
+]
+
+const vendorTables = [
+  [
+    ['LG', 'Cloi', 'AMR', '피킹'],
+    ['ForwardX', 'Flex Series', 'AMR', '피킹'],
+    ['Omron', 'LD/MD/HD', 'AMR', '피킹']
+  ],
+  [
+    ['Geek+', 'P500R', 'AGV', '보충/피킹'],
+    ['Hik', 'Q7-1000E', 'AMR', '보충/피킹'],
+    ['Hik', 'F0-50DCH', 'AGV', '보충/피킹']
+  ]
+]
+
+const systemFunctions = [
+  {
+    icon: 'ico_robot_platform',
+    title: '정보 조회',
+    items: ['로봇 모니터링', '로봇 모니터링', '보충 작업 내역', '피킹 작업 내역']
+  },
+  {
+    icon: 'ico_robot_rcs',
+    title: '센터 관리',
+    items: [
+      '센터 정보 관리',
+      '구역 정보 관리',
+      '렉 관리',
+      '스테이션 관리',
+      '설비관리',
+      '맵 관리',
+      '화주 관리'
+    ]
+  },
+  {icon: 'ico_robot_wes', title: 'SKU 정보관리'},
+  {icon: 'ico_robot_scheduling', title: '주문관리', items: ['보충 주문', '피킹 주문']},
+  {
+    icon: 'ico_robot_routing',
+    title: '재고관리',
+    items: ['재고 조회', '재고 조사', '이상 재고 관리', '상품 점유 내역', '과잉/부족 관리']
+  },
+  {
+    icon: 'ico_robot_zone_control',
+    title: '시스템관리',
+    items: ['권한그룹 관리', '사용자 관리', '메뉴 관리', '공통 코드 관리', '로그 관리']
+  },
+  {
+    icon: 'ico_ai_data_collection',
+    title: '통계',
+    items: ['주문통계', '보관량 통계', '로봇 가동 통계', '작업 통계']
+  },
+  {
+    icon: 'ico_ai_monitoring',
+    title: '작업자',
+    items: ['보충 작업', '피킹 작업', '반출 피킹', '재고 조사']
+  }
+]
+
+const devicePanels = [
+  {title: 'PC', items: ['보충주문', '일반 피킹', '반출 피킹', '재고조사']},
+  {title: 'Tablet', items: ['대시보드', '오더피킹', '맵 조회', '실시간 위치']}
+]
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="Robot Logistics"
+    subtitle={[
+      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
+      '모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다.'
+    ]}
+  />
+
+  <Title variant="hero" title="로봇 물류 플랫폼" />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <Tab variant="box" items={sectionTabs} activeIndex={0} />
+
+    <section id="overview" class="rl-section">
+      <Title
+        variant="section"
+        prefix="M2M-RLCK "
+        highlight="개요"
+        subtitle={[
+          'Robot Logistics Control Knowledge는 물류창고 내 로봇 작업과 자원을 실시간으로 최적화하는 WES(Warehouse Execution System)와',
+          '다양한 로봇의 연동·제어·경로 관리를 수행하는 RCS(Robot Control System) 기술을 기반으로 구축된 엠투엠글로벌의 로봇 물류 제어 기술체계입니다.'
+        ]}
+      />
+      <div class="rl__overview-grid">
+        <div class="rl__overview-card">
+          <div class="rl__overview-head">
+            <IconCircle icon="ico_robot_rcs" />
+            <p class="rl__overview-title">RCS(Robot Control System)</p>
+          </div>
+          <div class="rl__overview-chip-row">
+            {
+              rcsChips.map((chip) => (
+                <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
+                  {chip.label}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+
+        <p class="rl__overview-label">
+          Robot Logistics
+          <br />
+          Control Knowledge
+        </p>
+
+        <div class="rl__overview-card">
+          <div class="rl__overview-head">
+            <IconCircle icon="ico_robot_wes" />
+            <p class="rl__overview-title">WES(Warehouse Execution System)</p>
+          </div>
+          <div class="rl__overview-chip-row">
+            {
+              wesChips.map((chip) => (
+                <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
+                  {chip.label}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="rl__process-title">Seamless 물류 프로세스</div>
+      <div class="rl__process-flow">
+        {
+          processStages.map((stage, i) => (
+            <>
+              <div class="rl__process-stage">
+                <p class="rl__process-stage-title">{stage.title}</p>
+                <div class="rl__process-chip-grid">
+                  {stage.chips.map((chip) => (
+                    <span class="rl__process-chip">{chip}</span>
+                  ))}
+                </div>
+              </div>
+              {i < processStages.length - 1 && (
+                <span class="rl__process-chevron" aria-hidden="true">
+                  <Icon name="ico_chevron_right" size={24} />
+                </span>
+              )}
+            </>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="robots" class="rl-section">
+      <Title
+        variant="section"
+        prefix="RLCK "
+        highlight="구현 로봇"
+        subtitle={[
+          'RLCK(Robot Logistics Control Knowledge)는 메시지 스트리밍, 표준 인터페이스, 표준 프레임워크, 표준 UI 라이브러리 등 핵심 플랫폼 기술을 기반으로 구현된 로봇 물류 제어 플랫폼입니다.'
+        ]}
+      />
+      {
+        robotGroups.map((group) => (
+          <div class="rl__robot-group">
+            <p class="rl__spec-pill">{group.title}</p>
+            {group.robots.map((robot) => (
+              <div class="rl__robot-card">
+                <p class="rl__robot-name">{robot.name}</p>
+                <div class="rl__robot-body">
+                  <div class="rl__robot-thumb" />
+                  <div class="rl__spec-columns">
+                    {robot.specs.map(([label, value]) => (
+                      <div class="rl__spec-row">
+                        <span class="rl__spec-label">{label}</span>
+                        <span class="rl__spec-value">{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </section>
+
+    <section id="system" class="rl-section">
+      <Title variant="section" prefix="시스템 " highlight="구성" />
+      <div class="rl__diagram-placeholder" style="aspect-ratio: 1499/639;"></div>
+    </section>
+
+    <section id="control-tech" class="rl-section">
+      <Title
+        variant="section"
+        prefix="로봇물류 "
+        highlight="제어기술"
+        subtitle={[
+          'M2M-RLCK는 다양한 물류 로봇과 자동화 설비를 하나의 플랫폼으로 통합 제어하여 스마트 창고의 운영 효율을 극대화합니다.',
+          'AS/RS, AMR, 셔틀카 등 이기종 로봇을 유기적으로 연계해 안정적인 물류 운영과 최적의 작업 환경을 제공합니다.'
+        ]}
+      />
+      <div class="rl__tech-grid">
+        {
+          controlTechCards.map((card) => (
+            <div class="rl__tech-card">
+              <div class="rl__tech-head">
+                <span class="rl__tech-icon">
+                  <IconCircle icon={card.icon} size={80} />
+                </span>
+                <p class="rl__tech-title">{card.title}</p>
+              </div>
+              <div class="rl__tech-row">
+                <span class="rl__tech-row-label">업무과정</span>
+                <div class="rl__tech-steps">
+                  {card.steps.map((step, i) => (
+                    <>
+                      <span class="rl__tech-step">{step}</span>
+                      {i < card.steps.length - 1 && (
+                        <span class="rl__tech-step-arrow" aria-hidden="true">
+                          <Icon name="ico_chevron_right" size={16} />
+                        </span>
+                      )}
+                    </>
+                  ))}
+                </div>
+              </div>
+              <div class="rl__tech-row">
+                <span class="rl__tech-row-label">특징</span>
+                <div class="rl__tech-features">
+                  {card.features.map((feature) => (
+                    <TextList>{feature}</TextList>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="infra" class="rl-section">
+      <Title
+        variant="section"
+        prefix="인프라 "
+        highlight="구성"
+        subtitle={[
+          'Middleware는 WES·WCS와 RCS 간의 안정적인 데이터 연계 및 제어를 지원하며, 태블릿, 스마트워치, PDA 등 다양한 작업자 디바이스와 연동하여 실시간 작업 수행과 운영 가시성을 제공합니다.'
+        ]}
+      />
+      <div class="rl__diagram-placeholder" style="aspect-ratio: 1168/579;"></div>
+    </section>
+
+    <section id="software" class="rl-section">
+      <Title
+        variant="section"
+        prefix="소프트웨어 "
+        highlight="구성"
+        subtitle={[
+          '플랫폼을 기능별·구역별로 설계하여, 시스템의 안정성과 확장성을 확보하고 균일한 목표 성능을 유지할 수 있는 시스템의 기본 구조를 설계합니다.'
+        ]}
+      />
+      <div class="rl__insight-grid">
+        {
+          softwareInsights.map((desc) => (
+            <div class="rl__insight-card">
+              <IconCircle icon="ico_robot_platform" />
+              <p class="rl__insight-desc">{desc}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="rl__diagram-placeholder" style="aspect-ratio: 1170/623;"></div>
+    </section>
+
+    <section id="simulation" class="rl-section">
+      <Title
+        variant="section"
+        highlight="시뮬레이션"
+        subtitle={[
+          '실제 물류센터 환경을 기반으로 한 시뮬레이션을 통해 구축 전 잠재적인 문제를 사전에 검증하고, 시스템 안정성과 운영 리스크를 최소화합니다.'
+        ]}
+      />
+      <div class="rl__insight-grid">
+        {
+          simulationInsights.map((desc) => (
+            <div class="rl__insight-card">
+              <IconCircle icon="ico_robot_platform" />
+              <p class="rl__insight-desc">{desc}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="rl__diagram-placeholder" style="aspect-ratio: 1325/573;"></div>
+    </section>
+
+    <section id="scheduling" class="rl-section">
+      <Title
+        variant="section"
+        highlight="스케줄링, 경로계획, 영역제어"
+        subtitle={[
+          '실시간 스케줄링과 최적 경로 계획을 통해 로봇 작업의 효율성과 처리 속도를 향상시킵니다. 영역 제어 기능으로 로봇 간 간섭과 충돌을 방지하여 안정적인 스마트 창고 운영을 지원합니다.'
+        ]}
+      />
+      <div class="rl__scheduling-grid">
+        {
+          schedulingCards.map((card) => (
+            <div class="rl__insight-card">
+              <IconCircle icon={card.icon} />
+              <p class="rl__insight-desc">{card.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="rl__diagram-placeholder" style="aspect-ratio: 1333/291;"></div>
+    </section>
+
+    <section id="cases" class="rl-section">
+      <Title variant="section" prefix="로봇기반 통합관제시스템 " highlight="구축 사례" />
+
+      <div class="rl__timeline">
+        <div class="rl__timeline-heading">
+          <span>로봇물류플랫폼 기술확보</span>
+          <span>현장 센터 시범적용 &amp; 운용 (국내 1위 물류 업체 협업)</span>
+        </div>
+        <div class="rl__timeline-track">
+          <div class="rl__timeline-phase">
+            <p class="rl__timeline-date">2022.07 - 2024.12</p>
+            <p class="rl__timeline-name">1단계(2022.07-2023.03)</p>
+            <p class="rl__timeline-desc">이기종무인운반차(AGV) 로봇통합관제플랫폼 개발</p>
+          </div>
+          <div class="rl__timeline-phase">
+            <p class="rl__timeline-date">&nbsp;</p>
+            <p class="rl__timeline-name">2단계(2023.05-2024.03)</p>
+            <p class="rl__timeline-desc">이기종자율이동로봇(AMR) 로봇통합관제플랫폼개발</p>
+          </div>
+          <div class="rl__timeline-phase">
+            <p class="rl__timeline-date">&nbsp;</p>
+            <p class="rl__timeline-name">3단계(2024.07-2024.12)</p>
+            <p class="rl__timeline-desc">
+              로봇(셔틀및소형AGV), 기타IT 디바이스를 통해 이커머스 택배에서 활용가능 한 로봇
+              운영(피킹,보관) 플랫폼 개발
+            </p>
+          </div>
+          <div class="rl__timeline-phase">
+            <p class="rl__timeline-date">2024.12 - 2025.12</p>
+            <p class="rl__timeline-name">1차(2024.12-2025.03)</p>
+            <p class="rl__timeline-desc">AMR 25대적용(이천물류센터)</p>
+          </div>
+        </div>
+      </div>
+
+      <Title variant="section" prefix="구현 " highlight="기능" class="ai-ml__deploy-banner" />
+      <div class="rl__number-grid">
+        {
+          caseFunctions.map((fn) => (
+            <Box variant="filled" number={fn.number} title={fn.title}>
+              {fn.desc}
+            </Box>
+          ))
+        }
+      </div>
+
+      <Title variant="section" prefix="연동 제조사 " highlight="AMR / AGV" />
+      <div class="rl__vendor-tables">
+        {
+          vendorTables.map((rows) => (
+            <div class="rl__vendor-table">
+              <div class="rl__vendor-row rl__vendor-row--head">
+                <span class="rl__vendor-cell">제조사</span>
+                <span class="rl__vendor-cell">모델</span>
+                <span class="rl__vendor-cell">유형</span>
+                <span class="rl__vendor-cell">용도</span>
+              </div>
+              {rows.map((row) => (
+                <div class="rl__vendor-row">
+                  {row.map((cell) => (
+                    <span class="rl__vendor-cell">{cell}</span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+
+      <Title
+        variant="section"
+        highlight="CJ 대한통운 APRIL 로봇통합플랫폼 : 동작 구현 화면"
+        class="ai-ml__deploy-banner"
+      />
+      <div class="rl__diagram-placeholder" style="aspect-ratio: 1156/580; margin-bottom: 2.4rem;">
+      </div>
+
+      <Title
+        variant="section"
+        prefix="시스템 "
+        highlight="업무 구성"
+        class="ai-ml__deploy-banner"
+      />
+      <div class="rl__function-grid">
+        {
+          systemFunctions.map((fn) => (
+            <Box icon={fn.icon} title={fn.title}>
+              {fn.items &&
+                fn.items.map((item, i) => (
+                  <>
+                    {i > 0 && <br />}
+                    {item}
+                  </>
+                ))}
+            </Box>
+          ))
+        }
+      </div>
+
+      <Title
+        variant="section"
+        prefix="주요 "
+        highlight="기능 소개"
+        subtitle={[
+          'PC는 보충주문, 일반 피킹, 반출 피킹, 재고조사 등 운영 관리 기능을 제공하고, 태블릿은 대시보드,',
+          '오더 피킹, 맵 조회, 실시간 위치 확인 등 현장 중심의 작업 지원 기능을 제공합니다.'
+        ]}
+        class="ai-ml__deploy-banner"
+      />
+      <div class="rl__device-panel">
+        {
+          devicePanels.map((panel) => (
+            <div class="rl__device-card">
+              <span class="rl__device-icon">
+                <IconCircle icon="ico_robot_platform" />
+              </span>
+              <p class="rl__device-title">{panel.title}</p>
+              <div class="rl__device-list">
+                {panel.items.map((item) => (
+                  <TextList highlighted>{item}</TextList>
+                ))}
+              </div>
+              <div class="rl__device-image" />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+
+  <Footer />
+</Layout>

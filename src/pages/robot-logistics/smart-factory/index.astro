@@ -1,5 +1,178 @@
 ---
+// Robot Logistics > 스마트 팩토리 (/robot-logistics/smart-factory)
+// 참고: Figma "Robot Logistics > 스마트 팩토리" 3개 프레임 — 전부 같은 "Tap_series"(box 스타일) 앵커 탭의
+// 상태라 한 페이지로 합쳤다 (/robot-logistics/overview와 동일 패턴).
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import IconCircle from '~/components/IconCircle.astro'
+import TextList from '~/components/TextList.astro'
+import Icon from '~/components/Icon.astro'
+import Footer from '~/components/Footer.astro'
+
+const sectionTabs = [
+  {label: 'M2M-MES 특장점', href: '#benefits'},
+  {label: '시스템구성', href: '#system'},
+  {label: '구축사례', href: '#cases'}
+]
+
+const pipelineStages = ['데이터 수집', '데이터 정제 · 관리', '데이터 활용']
+const pipelineCategories = [
+  '제조 실행',
+  '품질/수율관리',
+  '설비/엔지니어링',
+  '데이터 시각화',
+  '창고 관리 / 물류 관제'
+]
+const pipelineDevices = ['센서', '게이트웨이', '모니터링 SW', '분석 SW']
+
+const benefitCards = [
+  {
+    title: '생산성 증가',
+    top: '정확한 생산 데이터 기반 원료, 재고 상황 확인 가능',
+    bottom: '최적의 생산계획 수립에 따른 생산성 증가 효과'
+  },
+  {
+    title: '비용 절감',
+    top: '스마트한 MES 시스템 도입 Downtime 감소',
+    bottom: '생산성 향상, 품질 향상 비용 절감, 매출 증진 고객 만족도 증진'
+  },
+  {
+    title: '설비 운영 효율화',
+    top: '자원의 상세 인력 & 설비 현황 실시간 제공',
+    bottom: '설비의 오작동에 즉각 대응 및 효율적인 설비 운영 가능, 생산성/매출 증대 기대'
+  },
+  {
+    title: '현장 사고 예방',
+    top: '실시간 현장 모니터링, 제조활동 모니터링',
+    bottom: '긴급 상황 예방, 사고 시 긴급 대처에 따른 사고 건수 절감 및 글로벌 품질 역량 강화'
+  },
+  {
+    title: '분석 통합 레포팅',
+    top: '업무 공정을 체계적으로 데이터화',
+    bottom: '업무 ROSS 제로화 재고관리, 생산성 증대 문서관리의 편리성 제공'
+  }
+]
+
+const cases = [
+  {
+    title: '금호폴리캠 MES 시스템 구축',
+    date: '2019.06 ~ 2019.12',
+    desc: '품질영량재고 및 생산현장 가시성 확보를 위한 MES 시스템 구축'
+  },
+  {
+    title: '씨에스윈드 MES 시스템 구축',
+    date: '2018.06 ~ 2018.09',
+    desc: '씨에스윈드 국내 MES와 해외 MES 시스템 통합 구현'
+  },
+  {
+    title: '디에이치라이팅 MES 시스템 구축',
+    date: '1차 2017.07, 2차 2018.03',
+    desc: 'Smart Jactory 구현을 위한 MES 시스템 구축 및 고도화'
+  }
+]
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="Robot Logistics"
+    subtitle={[
+      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
+      '모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다.'
+    ]}
+  />
+
+  <Title variant="hero" title="스마트 팩토리" />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <Tab variant="box" items={sectionTabs} activeIndex={0} />
+
+    <section id="benefits" class="rl-section">
+      <Title variant="section" prefix="제공 " highlight="기술 및 특징" />
+
+      <div class="rl__process-flow">
+        {
+          pipelineStages.map((stage, i) => (
+            <>
+              <div class="rl__process-stage">
+                <div class="ai-ml__flow-box">
+                  <p class="rl__process-stage-title">{stage}</p>
+                </div>
+              </div>
+              {i < pipelineStages.length - 1 && (
+                <span class="rl__process-chevron" aria-hidden="true">
+                  <Icon name="ico_chevron_right" size={24} />
+                </span>
+              )}
+            </>
+          ))
+        }
+      </div>
+      <div class="rl__pipeline-chip-row">
+        {pipelineCategories.map((cat) => <span class="rl__pipeline-chip">{cat}</span>)}
+      </div>
+      <div class="rl__pipeline-chip-row">
+        {pipelineDevices.map((dev) => <span class="rl__pipeline-chip">{dev}</span>)}
+      </div>
+
+      <Title
+        variant="banner"
+        title="M2M-MES"
+        caption="Manufacturing Execution System"
+        class="rl__mes-banner"
+      />
+
+      <div class="rl__benefit-grid">
+        {
+          benefitCards.map((card) => (
+            <div class="rl__benefit-card">
+              <div class="rl__benefit-head">
+                <IconCircle icon="ico_mes_benefit" />
+                <p class="rl__benefit-title">{card.title}</p>
+              </div>
+              <div class="rl__benefit-list">
+                <TextList>{card.top}</TextList>
+                <span class="rl__benefit-arrow" aria-hidden="true">
+                  <Icon name="ico_chevron_right" size={18} />
+                </span>
+                <TextList>{card.bottom}</TextList>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="system" class="rl-section">
+      <Title variant="section" prefix="시스템 " highlight="구성도" />
+      <div class="rl__diagram-placeholder" style="aspect-ratio: 1190/678;"></div>
+    </section>
+
+    <section id="cases" class="rl-section">
+      <Title variant="section" prefix="구축 " highlight="사례" />
+      <div class="ai-ml__cases">
+        {
+          cases.map((item) => (
+            <div class="ai-ml__case-card">
+              <div class="ai-ml__case-thumb" />
+              <div class="ai-ml__case-body">
+                <div class="ai-ml__case-title-row">
+                  <p class="ai-ml__case-title">{item.title}</p>
+                  <span class="ai-ml__case-date">{item.date}</span>
+                </div>
+                <p class="ai-ml__case-desc">{item.desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+
+  <Footer />
+</Layout>

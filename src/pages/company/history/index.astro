@@ -1,5 +1,298 @@
 ---
+// Company > 회사 연혁 (/company/history)
+// 참고: Figma "About us > 회사연혁" 프레임(node 211:2154, 720:10439 — 2개로 나뉘어 있지만
+// 같은 페이지 안 "Tap_series"(연도 구간 전환 탭)의 두 상태라 한 페이지로 합쳤다)
+//
+// Tap_series는 스크립트 없는 지금 단계에서도 실제로 동작하도록 페이지 내 앵커(#recent/#archive)로
+// 연결한 진짜 링크로 구현했다 — Tab(line, small) 재사용.
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import Footer from '~/components/Footer.astro'
+import {route} from '@config/route'
+
+const tabs = [
+  {label: '회사 개요', href: route['/company/info']},
+  {label: 'CEO 인사말', href: route['/company/ceo-message']},
+  {label: '회사 연혁', href: route['/company/history']},
+  {label: '인재 채용', href: route['/company/careers']},
+  {label: 'News', href: route['/company/news']},
+  {label: '위치 및 연락처', href: route['/company/address']},
+  {label: '사업 문의', href: route['/company/contact-us']}
+]
+
+const yearTabs = [
+  {label: '현재 ~ 2016', href: '#recent'},
+  {label: '2015 ~ 2002', href: '#archive'}
+]
+
+const recentYears = [
+  {
+    year: '2025',
+    items: [
+      '제주항공 기내 통합운영 시스템 고도화',
+      'KCar C2C 서비스 구축',
+      '서플러스글로벌 세미마켓 운영',
+      '오늘농사 운영',
+      '파라타항공 UI/UX 고도화',
+      '서플러스 글로벌 세미마켓 고도화',
+      '수협 사이버직매장 재구축'
+    ]
+  },
+  {
+    year: '2024',
+    items: [
+      '농협은행 용도품관리시스템 수주',
+      'M2M-eCCP 솔루션 출시',
+      '서플러스글로벌 B2B 세미마켓 플랫폼 사업 수주',
+      '고용노동부 청년친화 강소기업 재지정'
+    ]
+  },
+  {
+    year: '2023',
+    items: [
+      '다이소 차세대 커머스 플랫폼 구축 사업사 선정',
+      'CJ대한통운 로봇물류 표준관제시스템 구축',
+      '생활공간 상품태그 솔루션 출시',
+      '서울경제 선정 2023년 대한민국 올해의 중소기업 수상'
+    ]
+  },
+  {
+    year: '2022',
+    items: [
+      '고용안정우수기업 인증',
+      'K-Car 스마트앱어워드 중고차 쇼핑분야 대상 선정',
+      '엠투엠글로벌 사옥 이전'
+    ]
+  },
+  {
+    year: '2021',
+    items: [
+      '한국기계전기전자연구원 차세대 시험인증 플랫폼 구축 사업자 선정',
+      '서린상사 B2B 커머스 구축 사업자 선정',
+      '고용노동부 청년 친화 강소기업 선정'
+    ]
+  },
+  {year: '2020', items: ['LG U+ 홈서비스 플랫폼 구축 사업 수주', '농협몰 운영 사업 수주']},
+  {
+    year: '2019',
+    items: [
+      '롯데그룹 통합 EC 구축사업 컨소시엄 수주',
+      '농협몰 고도화 및 운영 사업 수주',
+      'NHN KCP 주문배달 시스템 고도화 사업 수주'
+    ]
+  },
+  {year: '2018', items: ['롯데 아이몰 운영 사업 수주', '서울시 강소기업 및 하이서울 브랜드 시정']},
+  {year: '2017', items: ['농협 A 마켓 차세대 쇼핑몰 구축 및 운영 사업']},
+  {
+    year: '2016',
+    items: [
+      'Bell I&s 클라우드 쇼핑몰 구축 사업 수주',
+      '신세계 TV 홈쇼핑 쇼핑몰 구축 사업 수주',
+      '신세계 Duty Free 쇼핑몰 구축 사업 수주'
+    ]
+  }
+]
+
+const archiveYears = [
+  {
+    year: '2015',
+    items: [
+      '롯데 하이마트몰 제휴 API 구축 사업 수주',
+      '교보문고 온라인 통합 주문 시스템 구축 사업',
+      '고용노동부 청년 친화 강소기업 선정'
+    ]
+  },
+  {
+    year: '2014',
+    items: ['한국방송광고진흥공사 운영사업 수주', '롯데닷컴 티몰연동, 홈플러스,11번가 제휴 개발']
+  },
+  {year: '2013', items: ['롯데홈쇼핑 CSM 시스템 구축 사업 참여', '롯데아이몰 운영 사업 참여']},
+  {
+    year: '2012',
+    items: ['한국관세무역개발원 FTA 분야 사업협력', '서울시 강소기업 및 하이서울 브랜드 시정']
+  },
+  {year: '2011', items: ['롯데홈쇼핑 롯데아이몰 구축사업자 선정']},
+  {year: '2010', items: ['관세청 FTA 인증수출자 구축사업자 선정']},
+  {
+    year: '2009',
+    items: [
+      '방송통신위원회 위치정보사업허가 획득 (제55호)',
+      '원산지정보관리시스템 구축사업자 선정',
+      '신세계 Duty Free 쇼핑몰 구축 사업 수주'
+    ]
+  },
+  {
+    year: '2008',
+    items: [
+      '한국사이버결제-M2M-JDFW 표준프레임워크 개발',
+      '전자거래진흥원 (Saas 기반 유통 및 물류협업) 사업자 선정'
+    ]
+  },
+  {
+    year: '2007',
+    items: [
+      '한국 소프트웨어 진흥원 대한민국 S/W 기술대상 우수상 수장',
+      '경영혁신 중소기업 선정',
+      '한국산업기술진흥협회 기업부설 연구소 설립',
+      '기술혁신형 중소기업, INNO-BIZ 선정'
+    ]
+  },
+  {
+    year: '2006',
+    items: [
+      '건설교통부 항공물류정보시스템 구축 사업자 산정',
+      '동아시아 전자무역 네트워크 구축사업자 선정',
+      '한국-유럽 전자무역 네트워크 구축사업사 선정',
+      '산업자원부 B2B 공유 네트워크 (SCM) 사업자 선정'
+    ]
+  },
+  {
+    year: '2005',
+    items: [
+      'KT로지스 물류 분야 공동 사업협력계약 체결',
+      '행정자치부 e-비즈니스 확산 공로 산업포장 수상',
+      'Stratus FT Server 한국 공급사업사 선정',
+      '한국전자거래 협회 한/일 e-아시아 마켓플레이스 운영 사업자 지정',
+      'JAVA 개발 표준 프레임워크, Jmatrix 40 개발',
+      '대우정보시스템 협력파트너 선정'
+    ]
+  },
+  {
+    year: '2004',
+    items: [
+      '인터넷쇼핑사업부문 분사-샵피온 ㈜',
+      'SCM 소프트웨어 등록 (M2M-SCM)',
+      '정보통신부 주관 소기업 네트워크 사업자 선정',
+      'JAVA 개발 표준 프레임워크, Jmatrix 30 개발',
+      '국가 공인 인증서 등록 대행기관 지정 - 한국무역정보통신'
+    ]
+  },
+  {
+    year: '2003',
+    items: [
+      '한국전자거래협회 회원사 등록',
+      'ERP 소프트웨어 등록 (M2M-ERP)',
+      '산업자원부 ERP 템플릿 사업자 선정',
+      '글로벌 전자무역 파트너 지정 - 한국무역정보통신',
+      'JAVA 개발 표준 프레임워크, Jmatrix 20 개발'
+    ]
+  },
+  {
+    year: '2002',
+    items: [
+      '새롬기술 다이얼패드 쇼핑몰 사업 인수',
+      'B2B e마켓플레이스 협의회 간사사 선임',
+      '인터넷 쇼핑몰 샵피온 의장, 상표권 등록',
+      '글로벌 전자무역 파트너 지정 - 한국무역정보통신',
+      '공동사업추진을 위한 20개 e마켓플레이스 간 협약',
+      'JAVA 개발 표준 프레임워크, Jmatrix 10 개발',
+      '주주사 e마켓플레이스 운영, 아웃소싱 추진',
+      'B2B업계의 협업을 위한 엠투엠글로벌(주) 설립'
+    ]
+  }
+]
+
+// Figma 원본은 연도가 2열로 짝지어 배치돼있다(예: 2025+2024가 한 줄).
+function pairUp<T>(list: T[]): [T, T | null][] {
+  const pairs: [T, T | null][] = []
+  for (let i = 0; i < list.length; i += 2) {
+    pairs.push([list[i], list[i + 1] ?? null])
+  }
+  return pairs
+}
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="Company"
+    subtitle={[
+      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
+      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
+    ]}
+  />
+
+  <Tab variant="line" size="large" items={tabs} activeIndex={2} />
+
+  <Title
+    variant="hero"
+    title="회사 연혁"
+    subtitle={[
+      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
+      '다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다. (고용노동부 지정 청년친화 강소기업)'
+    ]}
+  />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <Title variant="section" highlight="History" class="company-info__section-title" />
+
+    <Tab
+      variant="line"
+      size="small"
+      items={yearTabs}
+      activeIndex={0}
+      class="company-history__year-tabs"
+    />
+
+    <div id="recent">
+      {
+        pairUp(recentYears).map(([left, right]) => (
+          <div class="row company-history__row">
+            <div class="col-12 col-lg-6 company-history__cell">
+              <span class="company-history__year">{left.year}</span>
+              <ul class="company-history__list">
+                {left.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+            {right && (
+              <div class="col-12 col-lg-6 company-history__cell">
+                <span class="company-history__year">{right.year}</span>
+                <ul class="company-history__list">
+                  {right.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+
+    <div id="archive">
+      {
+        pairUp(archiveYears).map(([left, right]) => (
+          <div class="row company-history__row">
+            <div class="col-12 col-lg-6 company-history__cell">
+              <span class="company-history__year">{left.year}</span>
+              <ul class="company-history__list">
+                {left.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+            {right && (
+              <div class="col-12 col-lg-6 company-history__cell">
+                <span class="company-history__year">{right.year}</span>
+                <ul class="company-history__list">
+                  {right.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+
+  <Footer />
+</Layout>

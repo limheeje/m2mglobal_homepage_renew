@@ -1,5 +1,73 @@
 ---
+// Company > 위치 및 연락처 (/company/address)
+// 참고: Figma "About us > 위치 및 연락처" 프레임(node 360:1450)
+//
+// 지도는 실제 지도 API(카카오맵 등)를 사용자가 직접 붙일 예정이라 정적 스크린샷 대신
+// Figma 실측 비율의 빈 자리(.company-address__map)만 잡아둔다.
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import Footer from '~/components/Footer.astro'
+import logoUrl from '~/assets/images/m2m-global-logo-full.svg'
+import {route} from '@config/route'
+
+const tabs = [
+  {label: '회사 개요', href: route['/company/info']},
+  {label: 'CEO 인사말', href: route['/company/ceo-message']},
+  {label: '회사 연혁', href: route['/company/history']},
+  {label: '인재 채용', href: route['/company/careers']},
+  {label: 'News', href: route['/company/news']},
+  {label: '위치 및 연락처', href: route['/company/address']},
+  {label: '사업 문의', href: route['/company/contact-us']}
+]
+
+const rows = [
+  {label: '본사 주소', value: '서울특별시 영등포구 영등포로 150, B동 1509호 생각공장 당산'},
+  {label: '전화 번호', value: 'T : 02) 6956-3955'},
+  {label: '오시는 길', value: '2호선 문래역 4번출구 도보 5분'}
+]
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="Company"
+    subtitle={[
+      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
+      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
+    ]}
+  />
+
+  <Tab variant="line" size="large" items={tabs} activeIndex={5} />
+
+  <Title variant="hero" title="위치 및 연락처" />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <div class="company-address">
+      <!-- 지도 API 자리 — id="company-map"에 직접 지도를 렌더링하면 됨 -->
+      <div id="company-map" class="company-address__map"></div>
+
+      <div class="company-address__info">
+        <a href="/" class="company-address__logo">
+          <img src={logoUrl.src} alt="M2M GLOBAL 엠투엠글로벌(주)" />
+        </a>
+        <div class="company-address__rows">
+          {
+            rows.map((row) => (
+              <div class="company-address__row">
+                <span class="company-address__row-label">{row.label}</span>
+                <span class="company-address__row-value">{row.value}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </Container>
+
+  <Footer />
+</Layout>

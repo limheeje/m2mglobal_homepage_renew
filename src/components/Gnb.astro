@@ -16,10 +16,15 @@ type MenuItem = {
   children?: {label: string; href: string}[]
 }
 
+// 참고: routeMap상 1Depth 경로(`/company`, `/ai-engine` 등) 자체는 old 사이트에 대응 페이지가 없던
+// 순수 네비게이션 그룹핑 라벨이라 콘텐츠 페이지를 만들지 않았다(빈 `<Layout />` placeholder였던 걸
+// 전부 삭제함). 그래서 1Depth 라벨의 href는 부모 경로가 아니라 항상 "첫 번째 2Depth 자식"으로 보낸다 —
+// 데스크탑에서는 어차피 hover 시 메가메뉴가 열리지만, 클릭·모바일·키보드 접근성을 위해 실제로 존재하는
+// 페이지로 이동해야 한다.
 const menu: MenuItem[] = [
   {
     label: 'Company',
-    href: '/company',
+    href: '/company/info',
     children: [
       {label: 'Company Info', href: '/company/info'},
       {label: "CEO's Message", href: '/company/ceo-message'},
@@ -32,7 +37,7 @@ const menu: MenuItem[] = [
   },
   {
     label: 'AI Engine',
-    href: '/ai-engine',
+    href: '/ai-engine/machine-learning',
     children: [
       {label: 'AI & Machine Learning', href: '/ai-engine/machine-learning'},
       {label: 'AI Commerce', href: '/ai-engine/ai-commerce'}
@@ -40,7 +45,7 @@ const menu: MenuItem[] = [
   },
   {
     label: 'Robot Logistics',
-    href: '/robot-logistics',
+    href: '/robot-logistics/overview',
     children: [
       {label: 'Robot Logistics', href: '/robot-logistics/overview'},
       {label: 'Smart Factory', href: '/robot-logistics/smart-factory'}
@@ -48,7 +53,7 @@ const menu: MenuItem[] = [
   },
   {
     label: 'e-Commerce',
-    href: '/e-commerce',
+    href: '/e-commerce/commerce-technology',
     children: [
       {label: 'Commerce Technology', href: '/e-commerce/commerce-technology'},
       {label: 'B2B Commerce', href: '/e-commerce/b2b-commerce'},
@@ -57,7 +62,7 @@ const menu: MenuItem[] = [
   },
   {
     label: 'Solutions',
-    href: '/solutions',
+    href: '/solutions/commerce-platform',
     children: [
       {label: 'Commerce Platform', href: '/solutions/commerce-platform'},
       {label: 'Logistics Platform', href: '/solutions/logistics-platform'},
@@ -67,7 +72,7 @@ const menu: MenuItem[] = [
   },
   {
     label: 'Project',
-    href: '/project',
+    href: '/project/reference',
     children: [
       {label: 'Reference', href: '/project/reference'},
       {label: 'Specialized Outcomes', href: '/project/specialized-outcomes'}

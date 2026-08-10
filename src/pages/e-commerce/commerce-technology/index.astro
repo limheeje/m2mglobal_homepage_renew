@@ -1,5 +1,408 @@
 ---
+// e-Commerce > Commerce Technology (/e-commerce/commerce-technology)
+// 참고: Figma "e-Commerce > Commerce Technology" 4개 프레임(제공기술 및 특징 / 활용 분야 / 주요 고객사 /
+// 주요 레퍼런스) — 전부 같은 "Tap_series"(box 스타일) 앵커 탭의 상태라 한 페이지로 합쳤다
+// (/company/history, /ai-engine/*, /robot-logistics/* 와 동일 패턴).
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import IconCircle from '~/components/IconCircle.astro'
+import TextList from '~/components/TextList.astro'
+import Footer from '~/components/Footer.astro'
+import type {ImageMetadata} from 'astro'
+
+const sectionTabs = [
+  {label: '제공기술 및 특징', href: '#features'},
+  {label: '활용 분야', href: '#usage'},
+  {label: '주요 고객사', href: '#clients'},
+  {label: '주요 레퍼런스', href: '#references'}
+]
+
+// --- 제공기술 및 특징 (9개 "라벨_타이틀_설명_Box") ---
+const featureCards = [
+  {
+    icon: 'ico_commerce_platform',
+    title: '웹 표준 준수',
+    items: [
+      '표준 준수 및 검증된 검색기술 (Elastics Search) 적용으로 SEO (Search engine optimization) 구현',
+      '고객 구매 패턴 분석을 통한 최적의 마케팅 활용'
+    ]
+  },
+  {
+    icon: 'ico_ai_data_collection',
+    title: '경영 관리 기능',
+    items: [
+      'WMS (재고관리), 기초 정보 관리, 전자 세금계산서, 전자 계약 체결 등 폭넓은 ERP 연계',
+      '외부시스템 솔루션 연동 탑제를 통해 시간과 비용 절약 효과 (택배사, 인증기관, 제휴사, 검색, SMS, 배송 추천… 연계 시간과 비용)'
+    ]
+  },
+  {
+    icon: 'ico_ai_monitoring',
+    title: '입점/오픈마켓 구조',
+    items: [
+      '다양한 셀러 및 정산 관리를 기반으로 종합몰, 오픈 마켓 구축 시 안정적, 원활하게 구축 가능'
+    ]
+  },
+  {
+    icon: 'ico_ai_scalability',
+    title: 'B2C, B2B, B2E',
+    items: [
+      'B2B에 최적화 된 커머스 시스템 제공',
+      'B2C에 최적화 된 커머스 시스템 제공',
+      'B2E에 최적화 된 커머스 시스템 제공'
+    ]
+  },
+  {
+    icon: 'ico_robot_platform',
+    title: '글로벌 통합 시스템',
+    items: [
+      'Language, Currency설계, Open API 제공을 통해 국내 외 채널들과 연동하고 국가 언어, 화폐에 따라 반응하는 글로벌 몰을 제공함'
+    ]
+  },
+  {
+    icon: 'ico_ai_personalization',
+    title: '모바일',
+    items: [
+      'IOS, Android 앱 모바일 전시 관리, 프로모션 등 컨텐츠를 관리 및 위치 기반의 컨텐츠 및 알림을 제공하여 최적의 개인화 된 서비스 제공'
+    ]
+  },
+  {
+    icon: 'ico_ai_ops_optimization',
+    title: '통계/분석툴 연계 제공',
+    items: [
+      '방문자, 소비자 활동 수집 해석을 통한 구매율을 높이기 위한 데이터 분석 / 제공',
+      '외부 분석 TOOL 연계 제공 가능'
+    ]
+  },
+  {
+    icon: 'ico_chart_bar',
+    title: '보안',
+    items: ['웹 보안 시스템 지원', 'ISMS 대응 및 HW / SW / NET 보안 영역까지 컨설팅 제공']
+  },
+  {
+    icon: 'ico_ai_controllable',
+    title: '유연한 커스터마이징',
+    items: ['커머스 구축 Case에 따라 특화 된 기능 등 자체 구현 및 제공 가능']
+  }
+]
+
+// --- 활용 분야 ---
+const mallTypes = [
+  'B2C 종합 몰',
+  'B2C 종합 몰',
+  'B2E 기업 몰',
+  'B2C 종합 온-오프라인 통합 몰',
+  '온-오프라인 통합몰',
+  '국내외 전문 몰 제휴 연계',
+  '쇼핑몰 솔류션 공급',
+  'Mobile Web / App'
+]
+
+const coreFunctions = [
+  '회원',
+  '상품',
+  '주문/결제',
+  '배송/물류',
+  '전시/메인',
+  '이벤트',
+  '정산/통계',
+  '글로벌',
+  'CS/알림 기타'
+]
+
+const frontFeatures = [
+  ['회원 가입', '본인 인증', 'SNS 가입/로그인', 'ID/PW 관리', '직원 관리'],
+  ['상품 정보', '상품 구매', '후기 작성', '검색/공유'],
+  ['장바구니', '주문서 작성', '결제하기', '주문 확인'],
+  ['배송 추적', '배송 주소 수정', '배송지 관리'],
+  ['GNB', '카테고리', '배너관리', '기획전/할인'],
+  ['할인쿠폰', '적립금', '쿠폰', '회원 등급/혜택'],
+  ['일 / 주 / 월 정산', '수시 정산 지원', '전자세금계산서'],
+  ['국가/언어/통화', '배송/배대지선택', '해외 결제'],
+  ['상품 문의', '1:1 문의', '입점 신청', '고객센터', '알림 제공']
+]
+
+const backofficeFeatures = [
+  ['회원관리', '회원등급', '휴먼/탈퇴', '가입불가', '권한관리'],
+  [
+    '상품, 옵션등록',
+    '재고, 가격설정',
+    '상품 후기 관리',
+    '서류 관리',
+    '기초 정보 관리 (카테고리, 브랜드…)'
+  ],
+  ['PG,간편결제', '주문 내역', '서류 관리', '메시지 관리 (메일, 톡, SMS…)'],
+  ['배송 정책', '송장 관리', '택배 배송추척'],
+  ['카테고리 관리', '배너 관리', '기획전 관리'],
+  ['할인/쿠폰 설정', '적립금 설정', '등급별 혜택설정', '혜택일괄지급', '이벤트 생성관리'],
+  ['셀러 정산 관리', '세금계산서 연계', '회계 I/F', '매출 및 통계'],
+  ['국가 관리', '언어 관리', '통화/환율 관리', '영업일 관리', '글로벌 판매 설정'],
+  ['고객 문의 관리', '셀러 입점 관리', '알림 관리', '메시지 발송']
+]
+
+const interfaceGroups = [
+  {label: '내부 시스템', value: 'ERP / SCM / WMS  기간계 시스템'},
+  {label: '외부 시스템', value: '택배사. 인증기관, 제휴사 종합, 소셜 쇼핑몰…'},
+  {label: '관련 솔루션', value: '검색 엔진, SMS, AI, 배송 추척, 웹 로그, GA, 마케팅'}
+]
+
+// --- 주요 고객사: 8개 로고 (Figma 커머스 연관 로고 8종 재사용, /company, /ai-engine과 동일 자산) ---
+const clientKeys = [
+  '01-nonghyupmall',
+  '02-daiso',
+  '03-semimarket',
+  '04-kcar',
+  '05-suhyupshopping',
+  '06-lotteon',
+  '07-lotteimall',
+  '08-eshop'
+]
+const clientLogos = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
+  eager: true
+})
+const logoSrc = (key: string) =>
+  clientLogos[`/src/assets/images/clients/ico_client_${key}.png`].default.src
+
+// --- 주요 레퍼런스 (7건) ---
+const references = [
+  {
+    title: '수협중앙회 쇼핑몰 재구축',
+    // 참고: Figma 원본 desc 텍스트가 아래쪽 "세마마켓 반도체 거래 플랫폼" 항목과 동일한 문구로
+    // 되어 있음(복사·붙여넣기 흔적으로 추정) — 디자이너 확인 없이 임의로 고치지 않고 원문 그대로 옮김.
+    desc: '바이어와 셀러 간의 반도체 장비, 부품 커머스 기반 거래 플랫폼 설계 및 구현',
+    list: [
+      '4개 채널 (수협몰/복지몰/공제 사은품/특판)',
+      '3개 전문관 (회원조합/바다마트/수산시장)',
+      '최신 이커머스 프레임워크 적용, 온라인 통합 플랫폼 구축',
+      '오픈마켓 기반의 회원가입/상품등록/주문결제/배송',
+      '개인화 추천 등 최신 디지털 기술 적용'
+    ]
+  },
+  {
+    title: '농협몰 구축 / 고도화 / 운영',
+    desc: '산지직송, 하나로마트배송, 식자재몰, MRO, 제휴연계',
+    list: [
+      'B2C몰, B2B몰, B2E몰, 콕푸드',
+      '현업 관리자시스템(NGIN), 공급업체 관리자시스템(PSCM)',
+      '내부시스템 연계 (전자세금계산서, SMS, Push, MCA 등)',
+      '대외기관 연계 (농협중앙회, 농협은행, 네이버, 링크프라이스 등)',
+      '제휴사 연계 (11번가, G마켓, 옥션, 현대H몰, 무림오피스, 네이버 등)'
+    ]
+  },
+  {
+    title: '다이소 커머스 플랫폼 구축',
+    desc: '다이소 쇼핑몰을 차세대 플랫폼으로 전면 고도화',
+    list: [
+      '오프라인 매장의 온라인 옴니 채널 구축',
+      '온라인 운영 대상 통합 BO 구축',
+      '온라인 주문 시 오프라인 상품 피킹 시스템 구현',
+      '클라우드 인프라 도입을 통한 안정성을 확보한 시스템 구축',
+      '모바일 시스템 구축'
+    ]
+  },
+  {
+    title: 'C2C 직거래플랫폼 구축',
+    desc: 'Kcar.com 개인간 중고차 안심 직거래 서비스 추가 개발',
+    list: [
+      '실차주 인증 기반, 매물직거래',
+      '보험 정비 / 사고 이력 공개',
+      '직거래 품질인증 / 개인정보보호',
+      '온라인 명의이전 제공',
+      '직거래 전용 대출 연동',
+      '웹, 모바일 구축'
+    ]
+  },
+  {
+    title: '롯데ON 통합 EC구축',
+    desc: '롯데그룹 6개 이커머스 통합 플랫폼 구축',
+    list: [
+      '7개 온라인 상거래 서비스의 오픈마켓 기반 단일 서비스 통합 구축',
+      '총 21개의 이커머스 업무영역에 대한 기능 구현 (FO/BO통합)',
+      'MSA 기반 설계 (모듈별 분산처리 및 독립적 개발-운영-배포 구현)',
+      '구매자와 판매자 중개플랫폼, 온라인서비스/채널연동',
+      '판매자를 위한 특화광고/부가서비스 제공'
+    ]
+  },
+  {
+    title: '세마마켓 반도체 거래 플랫폼',
+    desc: '바이어와 셀러 간의 반도체 장비, 부품 커머스 기반 거래  플랫폼 설계 및 구현',
+    list: [
+      'Equipment, Parts, Extras 아이템 구매 기능',
+      '셀러 판매자 샵 구축',
+      '오퍼, 물류견적 기능',
+      '통합 백오피스 구축',
+      '모바일 서비스 구축'
+    ]
+  },
+  {
+    title: '서린상사 B2B 온라인 플랫폼',
+    desc: '비철 금속 B2B거래 플랫폼',
+    list: [
+      '하이브리드 모바일 기반 비철금속에 특화된 커머스 시스템 기능 구현',
+      '주문/결제 (아연라이브, 아연고정가, 주문고도화 및 여신_보증사 보증 연계, 복합결제 등)',
+      '상품/회원 (판매고도화, 등급별 회원관리/증거금, 영업/마케팅)',
+      'Pricing (라이브대응), 물류/배송 (소량/아연/톤차)',
+      '모바일 서비스 구축'
+    ]
+  }
+]
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="e-Commerce"
+    subtitle={[
+      'Commerce Platform에 속도와 생산성을 높이다.',
+      '"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.'
+    ]}
+  />
+
+  <Title
+    variant="hero"
+    title="Commerce Technology"
+    subtitle={[
+      '"일반 커머스를 비롯 ~ 실시간 시세, 환율, 재고 연동형 거래 및 기업간의 자재, 원자재 거래를 플랫폼으로 구현한 B2B 특화된 커머스 기술력을 보유하고 있습니다."',
+      '「Front ↔ BackOffice ↔ Interface」 상호 간의 최적화 된 e-Commerce 프레임워크 기반 커머스 시스템 제공'
+    ]}
+  />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <Tab variant="box" items={sectionTabs} activeIndex={0} />
+
+    <section id="features" class="ec-section">
+      <Title variant="section" prefix="제공 " highlight="기술 및 특징" />
+
+      <div class="ec__feature-grid">
+        {
+          featureCards.map((card) => (
+            <div class="ai-ml__feature-card">
+              <div class="ai-ml__feature-head">
+                <IconCircle icon={card.icon} />
+                <p class="ai-ml__feature-title">{card.title}</p>
+              </div>
+              <div class="ai-ml__feature-list">
+                {card.items.map((text) => (
+                  <TextList>{text}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="usage" class="ec-section">
+      <Title variant="section" prefix="활용 " highlight="분야" />
+
+      <div class="ec__tag-row">
+        {mallTypes.map((type) => <span class="ec__tag">{type}</span>)}
+      </div>
+
+      <Title variant="banner" title="e-Commerce 프레임워크" class="ec__banner" />
+
+      <div class="ec__tag-row ec__block">
+        {coreFunctions.map((fn) => <span class="ec__tag">{fn}</span>)}
+      </div>
+
+      <div class="ec__layer">
+        <p class="ec__layer-label">프론트 (사용자)</p>
+        <div class="ec__cat-grid">
+          {
+            coreFunctions.map((fn, i) => (
+              <div class="ec__cat-group">
+                <p class="ec__cat-title">{fn}</p>
+                <div class="ec__cat-items">
+                  {frontFeatures[i].map((item) => (
+                    <p class="ec__cat-item">{item}</p>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="ec__layer">
+        <p class="ec__layer-label">백오피스 (관리자)</p>
+        <div class="ec__cat-grid">
+          {
+            coreFunctions.map((fn, i) => (
+              <div class="ec__cat-group">
+                <p class="ec__cat-title">{fn}</p>
+                <div class="ec__cat-items">
+                  {backofficeFeatures[i].map((item) => (
+                    <p class="ec__cat-item">{item}</p>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="ec__layer">
+        <p class="ec__layer-label">Interface</p>
+        <div class="ec__cat-grid">
+          {
+            interfaceGroups.map((group) => (
+              <div class="ec__cat-group">
+                <p class="ec__cat-title">{group.label}</p>
+                <p class="ec__cat-item">{group.value}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="clients" class="ec-section">
+      <Title
+        variant="section"
+        prefix="주요 "
+        highlight="고객사"
+        subtitle={[
+          '다양한 커머스 플랫폼 프로젝트를 성공적으로 수행하며 실행력을 입증했으며, 신뢰할 수 있는 상생 파트너로 자리매김을 했습니다.'
+        ]}
+      />
+      <div class="ai-commerce__client-grid">
+        {
+          clientKeys.map((key) => (
+            <div class="ai-commerce__client-card">
+              <img src={logoSrc(key)} alt="주요 고객사 로고" loading="lazy" />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="references" class="ec-section">
+      <Title variant="section" prefix="주요 " highlight="레퍼런스" />
+      <div class="ec__box-grid">
+        {
+          references.map((item) => (
+            <div class="ec__ref-card">
+              <div class="ec__ref-head">
+                <div class="ec__ref-title-row">
+                  <p class="ec__ref-title">{item.title}</p>
+                </div>
+                <p class="ec__ref-desc">{item.desc}</p>
+              </div>
+              <div class="ec__ref-list">
+                {item.list.map((text) => (
+                  <TextList>{text}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+
+  <Footer />
+</Layout>

@@ -1,5 +1,277 @@
 ---
+// AI Engine > AI & Machine Learning (/ai-engine/machine-learning)
+// 참고: Figma "AI > AI & Machine Learning" 5개 프레임(서비스 특징/핵심기능/비즈니스 구성도/
+// 구축분야 및 기술 스택/구축사례) — 전부 같은 "Tap_box_series" 앵커 탭의 상태라 한 페이지로 합쳤다
+// (/company/history와 동일 패턴).
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import Box from '~/components/Box.astro'
+import IconCircle from '~/components/IconCircle.astro'
+import TextList from '~/components/TextList.astro'
+import Footer from '~/components/Footer.astro'
+import flowArrowUrl from '~/assets/images/flow-arrow.svg'
+
+const sectionTabs = [
+  {label: '서비스 특징', href: '#features'},
+  {label: '핵심기능', href: '#core'},
+  {label: '비즈니스구성도', href: '#architecture'},
+  {label: '구축분야 및 기술 스택', href: '#stack'},
+  {label: '구축 사례', href: '#cases'}
+]
+
+const features = [
+  {
+    icon: 'ico_ai_personalization',
+    title: '개인화 추천 시스템',
+    items: [
+      'Collaborative Filtering',
+      'Content-Based Recommendation',
+      'Learning-to-Rank',
+      'Hybrid Recommendation',
+      'Real-time Re-ranking'
+    ]
+  },
+  {
+    icon: 'ico_ai_behavior_analysis',
+    title: '사용자 행동 분석',
+    items: [
+      'KMeans Clustering',
+      'Similarity Analysis',
+      'Feature Engineering',
+      'User Segmentation',
+      '이탈 위험 탐지'
+    ]
+  },
+  {
+    icon: 'ico_ai_image_analysis',
+    title: 'AI 기반 이미지 분석',
+    items: [
+      'YOLO 기반 객체 탐지',
+      'ONNX Runtime 최적화',
+      '경량 AI 모델 운영',
+      '실시간 이미지 검증',
+      '자동 품질 검사'
+    ]
+  },
+  {
+    icon: 'ico_ai_ops_optimization',
+    title: '운영 환경 최적화',
+    items: [
+      'On-Premise / Cloud',
+      'GPU / Non-GPU 환경',
+      '대용량 데이터 처리',
+      'Docker 컨테이너 기반',
+      'MSA 아키텍처'
+    ]
+  }
+]
+
+const coreFeatures = [
+  {
+    icon: 'ico_ai_data_collection',
+    title: '데이터 수집',
+    desc: ['이벤트/로그/CSV 등', '다양한 소스 수집 파이프라인']
+  },
+  {
+    icon: 'ico_ai_realtime_event',
+    title: '실시간 이벤트 처리',
+    desc: 'Kafka 기반 스트리밍 이벤트 수집 및 처리'
+  },
+  {
+    icon: 'ico_ai_batch_learning',
+    title: '배치 학습 시스템',
+    desc: '주기적 모델 재학습 및 성능 평가'
+  },
+  {
+    icon: 'ico_ai_recommend_api',
+    title: '추천 API 서버',
+    desc: 'FastAPI/Spring Boot 기반 지연 추천 서비스'
+  },
+  {icon: 'ico_ai_ab_test', title: '정보 조회', desc: '모델 운영관리/A/B 비교·롤백'},
+  {icon: 'ico_ai_monitoring', title: '정보 조회', desc: '운영 지표 모니터링 및 성능 분석'}
+]
+
+const flowStages = [
+  {title: 'Data Source', items: ['사용자 이벤트', '클릭·구매·열람 로그']},
+  {title: 'Data Pipeline', items: ['실시간 스트리밍', 'Kafka 이벤트 처리']},
+  {title: 'ML Engine', items: ['배치 학습', 'PyTorch·LightGBM', 'Scikit-learn']},
+  {title: 'Serving', items: ['추천 API', 'FastAPI / Spring Boot']},
+  {title: 'Operation', items: ['모델 버전 관리', 'A/B 비교·롤백']}
+]
+
+const buildFields = [
+  {title: 'AI 추천 플랫폼', desc: '개인화 추천·웹장·유지경 제공'},
+  {title: 'AI 커머스 플랫폼', desc: '행동 분석 기반 카테고리 최적화'},
+  {title: '스마트 물류 시스템', desc: '수요 예측, 재고 최적화'},
+  {title: '수요 예측 시스템', desc: '시계열 데이터 분석'},
+  {title: '고객 행동 분석', desc: '세그먼트 정의 및 분류'},
+  {title: 'AI 이미지 분석', desc: '제품 탐지 및 품질 검사'}
+]
+
+const techStack = [
+  {title: 'Backend', desc: 'Java · Spring Boot · Python · FastAPI'},
+  {title: 'AI / ML', desc: 'PyTorch · Scikit-learn · LightGBM · ONNX Runtime'},
+  {title: 'Data', desc: 'MySQL · MSSQL · Redis · Kafka'},
+  {title: 'Infra', desc: 'AWS · Docker · Linux · Nginx'}
+]
+
+const cases = [
+  {
+    title: '수협중앙회 쇼핑몰 재구축',
+    date: '2025.03 ~ 2026.03',
+    desc: 'AI 데이터 분석 기법을 활용한 고객 맞춤형 상품 자동 추천 기능'
+  },
+  {
+    title: '서플러스글로벌 반도체장비 마켓플레이스 구축',
+    date: '2025.08 ~ 2026.01',
+    desc: 'AI 기반 자동화 상품추천'
+  }
+]
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="AI Engine"
+    subtitle={[
+      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
+      '모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다.'
+    ]}
+  />
+
+  <Title
+    variant="hero"
+    title="AI & Machine Learning"
+    subtitle={[
+      '데이터 기반 AI 추천 및 예측 플랫폼으로 비즈니스 성과를 극대화하는',
+      'End-to-End AI/ML 솔루션을 제공합니다.'
+    ]}
+  />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <Tab variant="box" items={sectionTabs} activeIndex={0} />
+
+    <section id="features" class="ai-section">
+      <div class="ai-ml__feature-grid">
+        {
+          features.map((feature) => (
+            <div class="ai-ml__feature-card">
+              <div class="ai-ml__feature-head">
+                <IconCircle icon={feature.icon} />
+                <p class="ai-ml__feature-title">{feature.title}</p>
+              </div>
+              <div class="ai-ml__feature-list">
+                {feature.items.map((item) => (
+                  <TextList>{item}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="core" class="ai-section">
+      <div class="ai-ml__core-grid">
+        {
+          coreFeatures.map((feature) => (
+            <Box icon={feature.icon} title={feature.title}>
+              {Array.isArray(feature.desc)
+                ? feature.desc.map((line, i) => (
+                    <>
+                      {i > 0 && <br />}
+                      {line}
+                    </>
+                  ))
+                : feature.desc}
+            </Box>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="architecture" class="ai-section">
+      <div class="ai-ml__flow">
+        {
+          flowStages.map((stage, i) => (
+            <>
+              <div class="ai-ml__flow-box">
+                <div class="ai-ml__flow-head">
+                  <p class="ai-ml__flow-title">{stage.title}</p>
+                </div>
+                <div class="ai-ml__flow-list">
+                  {stage.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
+              </div>
+              {i < flowStages.length - 1 && (
+                <span class="ai-ml__flow-arrow" aria-hidden="true">
+                  <img src={flowArrowUrl.src} alt="" />
+                </span>
+              )}
+            </>
+          ))
+        }
+      </div>
+
+      <Title
+        variant="banner"
+        title="Deployment Infrastructure: AWS / On-Premise · Docker · Linux · Nginx · GPU/Non-GPU 환경 지원"
+        class="ai-ml__deploy-banner"
+      />
+    </section>
+
+    <section id="stack" class="ai-section">
+      <div class="ai-ml__spec-group">
+        <p class="ai-ml__spec-pill">구축 가능 분야</p>
+        {
+          buildFields.map((field) => (
+            <div class="ai-ml__spec-row">
+              <span class="ai-ml__spec-label">{field.title}</span>
+              <span class="ai-ml__spec-value">{field.desc}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="ai-ml__spec-group">
+        <p class="ai-ml__spec-pill">주요 기술 스택</p>
+        {
+          techStack.map((stack) => (
+            <div class="ai-ml__spec-row">
+              <span class="ai-ml__spec-label">{stack.title}</span>
+              <span class="ai-ml__spec-value">{stack.desc}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section id="cases" class="ai-section">
+      <div class="ai-ml__cases">
+        {
+          cases.map((item) => (
+            <div class="ai-ml__case-card">
+              <div class="ai-ml__case-thumb" />
+              <div class="ai-ml__case-body">
+                <div class="ai-ml__case-title-row">
+                  <p class="ai-ml__case-title">{item.title}</p>
+                  <span class="ai-ml__case-date">{item.date}</span>
+                </div>
+                <p class="ai-ml__case-desc">{item.desc}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </Container>
+
+  <Footer />
+</Layout>

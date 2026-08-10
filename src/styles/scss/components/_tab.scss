@@ -93,6 +93,11 @@
 // ---------- box: 블록형 탭(그리드) ----------
 .tab--box {
   gap: 0;
+  // 탭 라벨이 길어 항목 합계가 뷰포트보다 넓어지는 경우(예: 로봇 물류 페이지의 9탭) 페이지 전체가
+  // 옆으로 늘어나지 않도록 탭 바 자체에서만 가로 스크롤 — 짧은 라벨(AI 페이지 등)에서는 다 들어가서
+  // 스크롤이 아예 생기지 않는다.
+  overflow-x: auto;
+  flex-wrap: nowrap;
 
   .tab__item {
     @include m.body(22);
@@ -102,6 +107,7 @@
     background-color: m.color('bg-muted');
     border-bottom: m.rem(1px) solid m.color('border-default');
     color: m.color('text-secondary');
+    white-space: nowrap;
 
     &.is-active {
       background-color: m.color('action-primary');

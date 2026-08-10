@@ -7,7 +7,7 @@
 // 사용 예:
 //   <Button variant="primary" size="lg" icon="ico_download">회사소개서 다운로드</Button>
 //   <Button variant="secondary" size="md" icon="ico_arrow_right" iconPosition="right">Read More</Button>
-//   <Button variant="third" href="/company" icon="ico_external_link">바로가기</Button>
+//   <Button variant="third" href="/company/info" icon="ico_external_link">바로가기</Button>
 
 import Icon from '~/components/Icon.astro'
 
@@ -25,6 +25,8 @@ export interface Props {
   disabled?: boolean
   /** 지정 시 <a>, 아니면 <button> 으로 렌더링 */
   href?: string
+  /** href와 함께 쓰는 <a> target 속성 (예: '_blank'로 외부 링크 새 탭 열기) */
+  target?: string
   /** <button> 렌더링일 때만 사용되는 HTML type 속성 */
   type?: 'button' | 'submit' | 'reset'
   class?: string
@@ -39,6 +41,7 @@ const {
   fullWidth = false,
   disabled = false,
   href,
+  target,
   type = 'button',
   class: className
 } = Astro.props
@@ -62,6 +65,8 @@ const Tag = href ? 'a' : 'button'
 <Tag
   class={classes}
   href={href}
+  target={href ? target : undefined}
+  rel={href && target === '_blank' ? 'noopener noreferrer' : undefined}
   type={!href ? type : undefined}
   disabled={!href && disabled ? true : undefined}
   aria-disabled={href && disabled ? 'true' : undefined}

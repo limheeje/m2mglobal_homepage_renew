@@ -43,7 +43,9 @@ import IconButton from '~/components/IconButton.astro'
     height: 100%;
   }
 
-  .layout__top-btn {
+  /* IconButton은 자식 Astro 컴포넌트라 scoped 스타일의 data-astro-cid 속성이 그 루트 엘리먼트까지
+     전달되지 않는다 — :global()로 감싸서 클래스 셀렉터 그대로 매칭되게 한다. */
+  :global(.layout__top-btn) {
     position: fixed;
     right: var(--space-24);
     bottom: var(--space-24);

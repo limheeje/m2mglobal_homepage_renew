@@ -1,5 +1,214 @@
 ---
+// Company > News (/company/news)
+// 참고: Figma "About us > IRPR" 프레임(node 2964:51784)
 import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/Gnb.astro'
+import PageBanner from '~/components/PageBanner.astro'
+import Tab from '~/components/Tab.astro'
+import Title from '~/components/Title.astro'
+import Container from '~/components/Container.astro'
+import Button from '~/components/Button.astro'
+import Footer from '~/components/Footer.astro'
+import {route} from '@config/route'
+
+const tabs = [
+  {label: '회사 개요', href: route['/company/info']},
+  {label: 'CEO 인사말', href: route['/company/ceo-message']},
+  {label: '회사 연혁', href: route['/company/history']},
+  {label: '인재 채용', href: route['/company/careers']},
+  {label: 'News', href: route['/company/news']},
+  {label: '위치 및 연락처', href: route['/company/address']},
+  {label: '사업 문의', href: route['/company/contact-us']}
+]
+
+// Figma 실측 그대로 — 개별 기사 링크(외부 언론사/보도자료). "주주 배정 유상증자..." 건은
+// Figma 원본에서도 href 없이 비활성 버튼으로만 표시돼 있다(아직 연결된 외부 링크가 없는 상태).
+const newsItems = [
+  {
+    tag: '공지사항',
+    title: '수협쇼핑 전면 재구축 완료…AI 맞춤형 쇼핑 시대 연다',
+    date: '2026.03.19',
+    href: 'https://www.suhyupnews.co.kr/news/articleView.html?idxno=34389'
+  },
+  {
+    tag: 'IR',
+    title: '주주 배정 유상증자 신주발행 공고문 (25년 7월 7일)',
+    date: '2025.07.07',
+    href: null
+  },
+  {
+    tag: '공지사항',
+    title: '수협쇼핑, 수산 전문 온라인 쇼핑몰 전면 재구축 추진',
+    date: '2025.03.13',
+    href: 'https://www.suhyupnews.co.kr/news/articleView.html?idxno=34389'
+  },
+  {
+    tag: '공지사항',
+    title: '"IT 개발" 노하우 통한 전자상거래 플랫폼 구축',
+    date: '2024.06.10',
+    href: 'https://www.chosun.com/special/special_section/2024/06/10/UMOVNTXGPRGNJENEHBQBLAYBIY/'
+  },
+  {
+    tag: '공지사항',
+    title: '엠투엠글로벌, 20년 이상 축적 IT 기술로 이커머스 선도',
+    date: '2023.09.25',
+    href: 'https://www.sedaily.com/article/13768659'
+  },
+  {
+    tag: '공지사항',
+    title: '엠투엠글로벌, 비철금속 이커머스 플랫폼 고도화',
+    date: '2023.04.24',
+    href: 'https://zdnet.co.kr/view/?no=20230424090631'
+  },
+  {
+    tag: '공지사항',
+    title: '한국무역정보통신, 물류 B2B활성화 위한 시스템 구축',
+    date: '2023.04.24',
+    href: 'https://n.news.naver.com/mnews/article/029/0000021896?sid=105'
+  }
+]
+
+// 로고 이미지는 Figma 실측 원본을 그대로 다운로드해 src/assets/images/clients/에 보관 —
+// 실제 고객사 브랜드 로고라 currentColor 대상이 아니고 원색 그대로 사용한다.
+const clientLogos = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
+  eager: true
+})
+const logoSrc = (key: string) =>
+  clientLogos[`/src/assets/images/clients/ico_client_${key}.png`].default.src
+
+const clientCategories = [
+  {
+    title: '온라인쇼핑몰 분야',
+    clients: [
+      {name: '농협몰', key: '01-nonghyupmall'},
+      {name: '다이소', key: '02-daiso'},
+      {name: 'SemiMarket', key: '03-semimarket'},
+      {name: '케이카', key: '04-kcar'},
+      {name: '수협쇼핑', key: '05-suhyupshopping'},
+      {name: 'Lotte On', key: '06-lotteon'},
+      {name: '롯데i몰', key: '07-lotteimall'},
+      {name: 'eshop', key: '08-eshop'}
+    ]
+  },
+  {
+    title: '유통 분야',
+    clients: [
+      {name: '농협하나로유통', key: '09-nhhanaro'},
+      {name: 'ASUNG DAISO', key: '10-asungdaiso'},
+      {name: 'SurplusGlobal', key: '11-surplusglobal'},
+      {name: 'CJ Logistics', key: '12-cjlogistics'},
+      {name: 'LG U+', key: '13-lguplus'},
+      {name: 'KYOBO 교보문고', key: '14-kyobo'},
+      {name: '롯데하이마트', key: '15-lottehimart'},
+      {name: 'Vopak', key: '16-vopak'},
+      {name: '롯데쇼핑 e커머스', key: '17-lotteshopping-ecommerce'},
+      {name: '롯데홈쇼핑', key: '18-lottehomeshopping'},
+      {name: 'STX Corporation', key: '19-stxcorp'}
+    ]
+  },
+  {
+    title: '제조 분야',
+    clients: [
+      {name: 'LG전자', key: '20-lgelectronics'},
+      {name: 'HYUNDAI MOBIS', key: '21-hyundaimobis'},
+      {name: '금호석유화학', key: '22-kumhopetrochem'},
+      {name: 'KUMHO TIRE', key: '23-kumhotire'},
+      {name: 'SAMJIN', key: '24-samjin'},
+      {name: 'CS WIND', key: '25-cswind'}
+    ]
+  },
+  {
+    title: 'IT 분야',
+    clients: [
+      {name: '농협정보시스템', key: '26-nhinfo'},
+      {name: 'LG CNS', key: '27-lgcns'},
+      {name: 'SAMSUNG SDS', key: '28-samsungsds'},
+      {name: '롯데정보통신', key: '29-lotteinfo'},
+      {name: 'KT ds', key: '30-ktds'},
+      {name: '아시아나 IDT', key: '31-asianaidt'},
+      {name: 'Microsoft', key: '32-microsoft'},
+      {name: 'IBM', key: '33-ibm'},
+      {name: 'KT net', key: '34-ktnet'},
+      {name: 'Bell I&S', key: '35-bellians'},
+      {name: 'NHN KCP', key: '36-nhnkcp'}
+    ]
+  },
+  {
+    title: '금융 분야',
+    clients: [{name: '농협은행', key: '37-nhbank'}]
+  },
+  {
+    title: '항공 분야',
+    clients: [
+      {name: 'Parata air', key: '38-parataair'},
+      {name: 'Jejuair', key: '39-jejuair'}
+    ]
+  }
+]
 ---
 
-<Layout />
+<Layout>
+  <Gnb />
+
+  <PageBanner
+    title="Company"
+    subtitle={[
+      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
+      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
+    ]}
+  />
+
+  <Tab variant="line" size="large" items={tabs} activeIndex={4} />
+
+  <Title variant="hero" title="News" />
+
+  <Container maxWidth={1760} class="company-page-end">
+    <div class="company-news__list">
+      {
+        newsItems.map((item) => (
+          <div class="company-news__row">
+            <div class="company-news__row-main">
+              <span class="company-news__tag">{item.tag}</span>
+              <p class="company-news__title">{item.title}</p>
+              <span class="company-news__date">{item.date}</span>
+            </div>
+            <Button
+              variant="secondary"
+              size="md"
+              icon="ico_external_link"
+              href={item.href ?? undefined}
+              target={item.href ? '_blank' : undefined}
+              disabled={!item.href}
+              class="company-news__link"
+            >
+              바로가기
+            </Button>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="company-news__clients">
+      {
+        clientCategories.map((category) => (
+          <div class="company-news__client-category">
+            <Title
+              variant="section"
+              highlight={category.title}
+              class="company-news__category-title"
+            />
+            <div class="company-news__client-grid">
+              {category.clients.map((client) => (
+                <div class="company-news__client-card">
+                  <img src={logoSrc(client.key)} alt={client.name} loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+
+  <Footer />
+</Layout>

@@ -30,3 +30,6 @@
 // 페이지 전용 스타일 — 공통 컴포넌트로 커버 안 되는 마크업만, 1뎁스 라우트 그룹 기준 파일 하나씩.
 // 예) /company/* 전부 page/_company.scss 안에서 `.company-xxx` 블록으로 나눠 관리.
 @use 'page/company';
+@use 'page/ai-engine';
+@use 'page/robot-logistics';
+@use 'page/e-commerce';

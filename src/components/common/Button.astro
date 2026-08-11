@@ -1,0 +1,26 @@
+---
+export interface Props {
+  href?: string
+  useBlock?: boolean
+  useSuffixIcon?: 'copy' | 'blank' | 'plus' | 'toggle' | 'next' | 'download'
+  size?: 'md' | 'sm' | 'lg'
+  variant?: 'default' | 'white' | 'primary'
+}
+const {href, useBlock, useSuffixIcon, size = 'md', variant = 'default'} = Astro.props
+const Tag = href ? 'a' : 'button'
+---
+
+<Tag
+  class="bs-button"
+  class:list={{
+    'use-block': useBlock
+  }}
+  data-variant={variant}
+  data-size={size}
+  href={href}
+>
+  <div class="bs-inner">
+    <span class="b-tx"><slot /></span>
+    {useSuffixIcon && <span class="b-suff" data-type={useSuffixIcon} />}
+  </div>
+</Tag>

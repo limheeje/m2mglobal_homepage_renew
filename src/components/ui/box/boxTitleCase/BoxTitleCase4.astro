@@ -1,0 +1,17 @@
+---
+import Label from '~/components/common/Label.astro'
+const {title = '', label = '', prefix} = Astro.props
+---
+
+<!-- 피그미기 기준 Box_Case 상단-->
+<div class="bs-box-title-case-4">
+  <div class="bbtc4-inner">
+    <div class="bsb-label">
+      <Label type="type_2">{label}</Label>
+    </div>
+    <div class="bsb-title-wrap">
+      <div class="bsb-title" set:html={title} />
+      {prefix && <div class="bsb-title-pref" set:html={prefix} />}
+    </div>
+  </div>
+</div>

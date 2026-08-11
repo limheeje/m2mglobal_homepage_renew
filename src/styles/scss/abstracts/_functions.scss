@@ -1,22 +1,109 @@
-@use 'sass:math';
+@use '_variables' as *;
 
-// ---------------------------------------------
-// px → rem 변환
-// html { font-size: 62.5%; } (base/_typography.scss) 로 루트 폰트 사이즈를 10px로 맞춰뒀다
-// (브라우저 기본값 16px 기준). 그래서 Figma에서 확인한 px 값을 10으로 나누기만 하면 바로
-// rem 값이 된다 — 16px → 1.6rem, 24px → 2.4rem.
-//
-// abstracts/_variables.scss(:root 커스텀 프로퍼티 생성)와 abstracts/_mixins.scss(컴포넌트에서
-// m.rem()으로 호출) 양쪽이 이 함수를 쓰는데, 두 파일이 서로를 @use하면 순환 참조라 별도
-// 파일로 분리했다. 컴포넌트 SCSS에서 새 px 값을 쓸 일이 생기면 절대 그냥 `16px`라고 쓰지 말고
-// 반드시 `m.rem(16px)`으로 감쌀 것 — 단, breakpoint()/container-max-width처럼 컴파일 타임
-// 미디어쿼리 조건에 쓰이는 값은 예외(아래 참고, abstracts/_mixins.scss의 breakpoint() 주석).
-// ---------------------------------------------
-$rem-base: 10px;
+@function icon-map(){
+  $icon-map:(
+    'icon_calender':'<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.5L25 7.5M11.875 15L25 15M5 22.5L25 22.5" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>',
+    'icon_check':'<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.9015 0.265294C9.25193 -0.0871207 9.82168 -0.0885613 10.1742 0.261778C10.5265 0.612182 10.5288 1.18196 10.1785 1.53443L3.73441 8.01461C3.56549 8.1844 3.33583 8.28004 3.09632 8.28004C2.85681 8.28003 2.62714 8.18442 2.45824 8.01461L0.261848 5.80592C-0.0886311 5.45346 -0.0870973 4.88286 0.265364 4.53238C0.617844 4.18214 1.18762 4.18439 1.53802 4.53678L3.09544 6.10299L8.9015 0.265294Z" fill="white"/></svg>',
+    'icon_assignment':'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.66667 10.6663H9.33333V11.9997H4.66667V10.6663ZM4.66667 7.99967H11.3333V9.33301H4.66667V7.99967ZM4.66667 5.33301H11.3333V6.66634H4.66667V5.33301ZM12.6667 2.66634H9.88C9.6 1.89301 8.86667 1.33301 8 1.33301C7.13333 1.33301 6.4 1.89301 6.12 2.66634H3.33333C3.24 2.66634 3.15333 2.67301 3.06667 2.69301C2.80667 2.74634 2.57333 2.87967 2.39333 3.05967C2.27333 3.17967 2.17333 3.32634 2.10667 3.48634C2.04 3.63967 2 3.81301 2 3.99967V13.333C2 13.513 2.04 13.693 2.10667 13.853C2.17333 14.013 2.27333 14.153 2.39333 14.2797C2.57333 14.4597 2.80667 14.593 3.06667 14.6463C3.15333 14.6597 3.24 14.6663 3.33333 14.6663H12.6667C13.4 14.6663 14 14.0663 14 13.333V3.99967C14 3.26634 13.4 2.66634 12.6667 2.66634ZM8 2.49967C8.27333 2.49967 8.5 2.72634 8.5 2.99967C8.5 3.27301 8.27333 3.49967 8 3.49967C7.72667 3.49967 7.5 3.27301 7.5 2.99967C7.5 2.72634 7.72667 2.49967 8 2.49967ZM12.6667 13.333H3.33333V3.99967H12.6667V13.333Z" fill="#B7B7B7"/></svg>',
+    'icon_assessment':'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6667 2H3.33333C2.6 2 2 2.6 2 3.33333V12.6667C2 13.4 2.6 14 3.33333 14H12.6667C13.4 14 14 13.4 14 12.6667V3.33333C14 2.6 13.4 2 12.6667 2ZM12.6667 12.6667H3.33333V3.33333H12.6667V12.6667ZM4.66667 6.66667H6V11.3333H4.66667V6.66667ZM7.33333 4.66667H8.66667V11.3333H7.33333V4.66667ZM10 8.66667H11.3333V11.3333H10V8.66667Z" fill="#B7B7B7"/></svg>',
+    'icon_copy':'<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.375 0.75H3.375C2.55 0.75 1.875 1.425 1.875 2.25V12.75H3.375V2.25H12.375V0.75ZM14.625 3.75H6.375C5.55 3.75 4.875 4.425 4.875 5.25V15.75C4.875 16.575 5.55 17.25 6.375 17.25H14.625C15.45 17.25 16.125 16.575 16.125 15.75V5.25C16.125 4.425 15.45 3.75 14.625 3.75ZM14.625 15.75H6.375V5.25H14.625V15.75Z" fill="#B7B7B7"/></svg>',
+    'icon_plus':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5L10 15M15 10L5 10" stroke="#B7B7B7" stroke-width="2" stroke-linecap="round"/></svg>',
+  );
+  @return $icon-map;
+}
 
-@function rem($px) {
-  @if $px == 0 {
-    @return 0;
+@function str-replace($s, $sc, $r) {
+  $index: str-index($s, $sc);
+  @if $index {
+    @return str-slice($s, 1, $index - 1) + $r + str-replace(str-slice($s, $index + str-length($sc)), $sc, $r);
   }
-  @return math.div($px, $rem-base) * 1rem;
+  @return $s;
+}
+
+
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
+@function rem($px) {
+  @if $px == 1px{
+    @return #{$px};
+  }@else{
+    // @return $px;
+    @return calc($px / $base-font-size * 1rem)
+  }
+}
+
+
+@function color($s){
+  @if $s == 'Color/Blue Gray 800'{
+    @return $sub-font-color //#5A5E63
+  }@else if $s == 'Color/Black 100'{
+    @return $color-black-100 //#000000
+  }@else if $s == 'Color/Font/Font Color'{
+    @return $color-black-100 //#000000
+  }@else if $s == 'Color/Box/Border color'{
+    @return $color-black-20 //#B7B7B7
+  }@else if $s == 'Color/Font/Sub Font Color'{
+    @return $sub-font-color //#5A5E63
+  }@else if $s == 'Black/90'{
+    @return $color-black-90 //#0F0F0F
+  }@else if $s == 'Black/80'{
+    @return $color-black-80 //#1E1E1E
+  }@else if $s == 'Black/70'{
+    @return $color-black-100 //#000000
+  }@else if $s == 'Black/60'{
+    @return $color-black-60 //#3C3C3C
+  }@else if $s == 'Black/50'{
+    @return $color-black-50 //#4B4B4B
+  }@else if $s == 'Color/Black 40'{
+    @return $color-black-40 //#6F6F6F
+  }@else if $s == 'Black/30'{
+    @return $color-black-30 //#939393
+  }@else if $s == 'Color/Black 20'{
+    @return $color-black-20 //#B7B7B7
+  }@else if $s == 'Color/Black 10'{
+    @return $color-black-10 //#DBDBDB
+  }@else if $s == 'Black/5'{
+    @return $color-black-5 //#E9E9E9
+  }@else if $s == 'Color/Black 3'{
+    @return $color-black-3 //#F1F1F1
+  }@else if $s == 'Color/Box/Box BG'{
+    @return $color-black-3 //#F1F1F1
+  }@else if $s == 'Color/Black1'{
+    @return $color-black-1 //#F8F8F8
+  }@else if $s == 'Color/White'{
+    @return $color-white //#fff
+  }@else if $s == 'Primary/Blue100'{
+    @return $color-primary-100 //#16253F
+  }@else if $s == 'Primary/Blue80'{
+    @return $color-primary-80 //#133269
+  }@else if $s == 'Color/Primary Color'{
+    @return $color-primary-50 //#023894
+  }@else if $s == 'Primary/Blue30'{
+    @return $color-primary-30 //#82B0FF
+  }@else if $s == 'Primary/Blue10'{
+    @return $color-primary-10 //#ADCBFF
+  }@else if $s == 'Color/Secondary Color'{
+    @return $color-secondary-100 //#171D48
+  }@else if $s == 'Secondary/Lightblue80'{
+    @return $color-secondary-80 //#111E72
+  }@else if $s == 'Color/Third Color'{
+    @return $color-secondary-50 //#008CD6
+  }@else if $s == 'Secondary/Lightblue30'{
+    @return $color-secondary-30 //#A2C4EB
+  }@else if $s == 'Color/Blue 10'{
+    @return $color-secondary-10 //#E1EBF8
+  }@else if $s == 'Color/Accent Color'{
+    @return $accent-color-1 //#00CFD6
+  }@else if $s == 'Accent/2'{
+    @return $accent-color-2 //#00D695
+  }@else if $s == 'Accent/3'{
+    @return $accent-color-3 //#55D600
+  }@else if $s == 'Accent/4'{
+    @return $accent-color-4 //#0004D6
+  }@else if $s == 'Alert/1'{
+    @return $alert-color-1 //#D6D000 (기존 $alert-color-4 참조는 미정의 변수였음)
+  }@else if $s == 'Alert/2'{
+    @return $alert-color-2 //#D6000F
+  }
 }

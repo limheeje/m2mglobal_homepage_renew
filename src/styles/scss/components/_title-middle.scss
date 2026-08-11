@@ -1,0 +1,35 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+
+.bs-title-middle{
+    display: flex;
+    width: 100%;
+    padding: rem(20px) rem($spacing-left);
+    min-height: rem(75px);
+    align-items: center;
+    justify-content: center;
+    @include font('Body 24 R');
+    color: color('Color/White');
+    background-color: color('Color/Secondary Color');
+    border-radius: rem(24px);
+    gap: rem(10px);
+    .mark{
+        @include font('Body 14 R');
+    }
+}
+
+
+@media only screen and (max-width: $breakpoint-md){
+.bs-title-middle{
+    padding: rem(15px) rem($spacing-left);
+    min-height: rem(45px);
+    @include font('Body 22 R');
+    border-radius: rem(20px);
+    .mark{
+        @include font('Body 12 R');
+    }
+}
+
+}

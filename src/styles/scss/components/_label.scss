@@ -1,20 +1,25 @@
-@use '../abstracts/mixins' as m;
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
 
-// Label — 포인트/수치 강조용 pill 태그
-.label {
-  @include m.flex($justify: center, $align: center);
-  @include m.body(14);
-  display: inline-flex;
-  padding: m.spacing(4) m.spacing(20);
-  border-radius: var(--radius-pill);
-  color: m.color('action-primary');
-  white-space: nowrap;
+$type_1:'[data-type="type_1"]';
+$type_2:'[data-type="type_2"]';
 
-  &--neutral {
-    background-color: m.color('bg-muted');
-  }
+.bs-label{
+    @include font('Body 14 R');
+    padding: rem(4px) rem(20px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: rem(30px);
+    &#{$type_1}{
+        color: color('Color/Primary Color');
+        background-color: color('Color/Black 3');
+    }
+    &#{$type_2}{
+        color: color('Color/Primary Color');
+        background-color: color('Color/Blue 10');
+    }
 
-  &--accent {
-    background-color: m.core('blue-10');
-  }
 }

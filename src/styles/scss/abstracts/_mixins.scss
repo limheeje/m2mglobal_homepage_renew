@@ -1,105 +1,101 @@
-@use 'sass:map';
-@use 'variables' as v;
-@forward 'functions' show rem;
-
-// ---------------------------------------------
-// 토큰 조회 함수 — 전부 CSS 커스텀 프로퍼티(var(--...))를 반환한다.
-// SCSS 변수(v.$color-*, v.$spacing 등)를 컴포넌트 파일에서 직접 참조하지 말고
-// 반드시 이 함수/믹스인을 통해서만 값을 가져온다. 그래야 브라우저에서 실제 값이
-// var(--color-action-primary) 같은 커스텀 프로퍼티로 남아서, 나중에 :root 값만
-// 바꿔도(다크모드 등) 컴포넌트 CSS를 재컴파일하지 않고 반영된다.
-// 값 자체는 abstracts/_variables.scss 의 :root { ... } 블록에 정의돼 있다.
-// ---------------------------------------------
-
-// spacing(16) => var(--space-16)
-@function spacing($key) {
-  @if not map.has-key(v.$spacing, $key) {
-    @warn "spacing 토큰 `#{$key}` 이(가) $spacing map에 없습니다 — abstracts/_variables.scss 확인.";
-  }
-  @return var(--space-#{$key});
-}
-
-// radius(8) => var(--radius-8)
-@function radius($key) {
-  @if not map.has-key(v.$radius, $key) {
-    @warn "radius 토큰 `#{$key}` 이(가) $radius map에 없습니다 — abstracts/_variables.scss 확인.";
-  }
-  @return var(--radius-#{$key});
-}
-
-// Body 타이포 사이즈. 예) body-size(18) => var(--text-body-18)
-// 폰트 크기만 필요할 때 쓰고, font-size+line-height+weight를 통째로 쓰려면 @include body($size) 사용.
-@function body-size($key) {
-  @if not map.has-key(v.$font-size-body, $key) {
-    @warn "body 타이포 토큰 `#{$key}` 이(가) $font-size-body map에 없습니다 — abstracts/_variables.scss 확인.";
-  }
-  @return var(--text-body-#{$key});
-}
-
-// Semantic 색상. 예) color('action-primary') => var(--color-action-primary)
-@function color($name) {
-  @return var(--color-#{$name});
-}
-
-// Core 색상 (Semantic으로 마땅한 이름이 없을 때만 예외적으로 사용). 예) core('secondary') => var(--core-secondary)
-@function core($name) {
-  @return var(--core-#{$name});
-}
-
-// ---------------------------------------------
-// 타이포그래피 믹스인 — Figma "Typography" 섹션 네이밍을 그대로 따른다.
-// font-family/weight/line-height/font-size를 한 번에 지정한다.
-// ---------------------------------------------
-
-// 헤딩. 예) @include heading(1) => H1(48px) 스타일
-@mixin heading($level) {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-heading);
-  font-size: var(--font-size-h#{$level});
-}
-
-// 바디. 예) @include body(18) => Body 18px 스타일 (Figma Body 스케일: 14/15/16/18/20/22/24/30/36)
-@mixin body($size) {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-body);
-  font-size: var(--text-body-#{$size});
-}
-
-// ---------------------------------------------
-// 반응형 breakpoint — @media 조건식은 CSS 커스텀 프로퍼티를 못 받으므로
-// (미디어쿼리는 컴파일 타임에 값이 확정돼야 함) 여기만 예외적으로 SCSS 변수를 직접 쓴다.
-// px도 rem으로 바꾸지 않고 그대로 둔다 — 브라우저는 @media 조건식 안의 em/rem을
-// html의 실제(변경된) font-size가 아니라 "브라우저 기본값(보통 16px)"으로 계산하기 때문에,
-// 우리 프로젝트의 10px 기준 rem() 함수로 breakpoint를 변환하면 오히려 잘못된 폭에서
-// 반응형이 꺾인다. 그래서 breakpoint px 값은 의도적인 예외.
-// ---------------------------------------------
-@mixin breakpoint($name) {
-  $bp: map.get(v.$breakpoints, $name);
-
-  @if $bp {
-    @media (min-width: $bp) {
-      @content;
-    }
-  } @else {
-    @warn "breakpoint `#{$name}` 를 찾을 수 없습니다.";
-  }
-}
-
-// 여러 줄 말줄임 (토큰과 무관한 레이아웃 유틸)
-@mixin line-clamp($lines: 2) {
-  display: -webkit-box;
-  -webkit-line-clamp: $lines;
-  -webkit-box-orient: vertical;
+@use '_functions' as *;
+@mixin hidden() {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
   overflow: hidden;
 }
+@mixin text-ellipsis($lines: 1, $lineHeight: rem(20px)) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if $lines == 1 {
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+    max-height: calc($lineHeight * $lines);
+  }
+}
+@mixin get-background-svg($type, $color) {
+  $svg: map-get(icon-map(), $type);
+  $svg: str-replace($svg, '#', '%23');
+  $svg: str-replace($svg, '<', '%3C');
+  $svg: str-replace($svg, '>', '%3E');
+  $svg: str-replace($svg, '"', '%22');
+  $svg: str-replace($svg, ' ', '%20');
+  $svg-url: url("data:image/svg+xml;utf8,#{$svg}");
+  background-color: $color;
+  mask: $svg-url no-repeat center / contain;
+  -webkit-mask: $svg-url no-repeat center / contain;
+}
 
-// flex 정렬 축약 (토큰과 무관한 레이아웃 유틸)
-@mixin flex($direction: row, $justify: flex-start, $align: stretch, $gap: 0) {
-  display: flex;
-  flex-direction: $direction;
-  justify-content: $justify;
-  align-items: $align;
-  gap: $gap;
+@mixin font($s) {
+  font-weight: 400;
+  @if $s == 'H1' {
+    font-size: rem(48px);
+    line-height: 120%;
+    letter-spacing: 0%;
+  } @else if $s == 'H2' {
+    font-size: rem(40px);
+    line-height: 120%;
+    letter-spacing: 0%;
+  }@else if $s == 'H3' {
+    font-size: rem(36px);
+    line-height: 120%;
+    letter-spacing: 0%;
+  }@else if $s == 'H4' {
+    font-size: rem(30px);
+    line-height: 120%;
+    letter-spacing: 0%;
+  }@else if $s == 'H5' {
+    font-size: rem(24px);
+    line-height: 120%;
+    letter-spacing: 0%;
+  }@else if $s == 'H6' {
+    font-size: rem(20px);
+    line-height: 120%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 36 R' {
+    font-size: rem(36px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 30 R' {
+    font-size: rem(30px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 24 R' {
+    font-size: rem(24px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 22 R' {
+    font-size: rem(22px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 20 R' {
+    font-size: rem(20px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 18 R' {
+    font-size: rem(18px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 16 R' {
+    font-size: rem(16px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 15 R' {
+    font-size: rem(15px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }@else if $s == 'Body 14 R' {
+    font-size: rem(14px);
+    line-height: 140%;
+    letter-spacing: 0%;
+  }
 }

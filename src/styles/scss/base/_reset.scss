@@ -1,3 +1,49 @@
+@use 'sass:math';
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+
+html:root{
+  --sub-font-color: #5A5E63;
+  --font-color: #000000;
+  --footer-bg: #0F0F0F;
+  --primary-color: #0F0F0F;
+  --secondary-color: #171D48;
+  --third-color: #008CD6;
+  --point-color: #E1EBF8;
+  --th-color: #6F6F6F;
+  --border-color: #B7B7B7;
+  --box-color: #F1F1F1;
+  --accent-color-1: #00CFD6;
+  --accent-color-2: #00D695;
+  --accent-color-3: #55D600;
+  --accent-color-4: #0004D6;
+  --alert-color-1: #D6D000;
+  --alert-color-2: #D6000F;
+  --color-black-100: #000000;
+  --color-black-90: #0F0F0F;
+  --color-black-80: #1E1E1E;
+  --color-black-70: #2D2D2D;
+  --color-black-60: #3C3C3C;
+  --color-black-50: #4B4B4B;
+  --color-black-40: #6F6F6F;
+  --color-black-30: #939393;
+  --color-black-20: #B7B7B7;
+  --color-black-10: #DBDBDB;
+  --color-black-5: #E9E9E9;
+  --color-black-3: #F1F1F1;
+  --color-black-1: #F8F8F8;
+  --color-white: #fff;
+  --color-primary-100: #16253F;
+  --color-primary-80: #133269;
+  --color-primary-50: #023894;
+  --color-primary-30: #82B0FF;
+  --color-primary-10: #ADCBFF;
+  --color-secondary-100: #171D48;
+  --color-secondary-80: #111E72;
+  --color-secondary-50: #008CD6;
+  --color-secondary-30: #A2C4EB;
+  --color-secondary-10: #E1EBF8;
+}
 *,
 *::before,
 *::after {
@@ -9,6 +55,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  font-size: $base-font-size;
 }
 
 html,
@@ -17,7 +64,10 @@ body {
   height: 100%;
 }
 
-img,
+img{
+  vertical-align: top;
+  max-width: 100%;
+}
 picture,
 video,
 canvas,
@@ -25,7 +75,9 @@ svg {
   display: block;
   max-width: 100%;
 }
-
+button{
+  cursor: pointer;
+}
 button,
 input,
 select,
@@ -44,4 +96,80 @@ a {
 ul,
 ol {
   list-style: none;
+}
+.innerWrap {
+  max-width: $innerWrap;
+  .innerWrap{
+    max-width: 100%;
+  }
+}
+.gl-container{}
+.mark{color: color('Color/Primary Color') !important}
+
+// ==========================================================================
+// Grid: container / row / col — 부트스트랩 스타일 12컬럼
+// breakpoint는 abstracts/_variables.scss의 $breakpoint-sm/md/lg/xlg 그대로 사용
+// gutter는 20px 고정 (컬럼 간격 임의 변경 금지)
+// ==========================================================================
+$grid-columns: 12;
+$grid-gutter: 20px;
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-inline: rem(math.div($grid-gutter, 2));
+
+  @media (min-width: $breakpoint-sm) {
+    max-width: $breakpoint-sm;
+  }
+  @media (min-width: $breakpoint-md) {
+    max-width: $breakpoint-md;
+  }
+  @media (min-width: $breakpoint-lg) {
+    max-width: $breakpoint-lg;
+  }
+  @media (min-width: $breakpoint-xlg) {
+    max-width: $breakpoint-xlg;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-inline: rem(math.div($grid-gutter, 2) * -1);
+}
+
+.col {
+  flex: 1 0 0%;
+  padding-inline: rem(math.div($grid-gutter, 2));
+}
+
+@for $i from 1 through $grid-columns {
+  .col-#{$i} {
+    flex: 0 0 auto;
+    width: percentage(math.div($i, $grid-columns));
+    padding-inline: rem(math.div($grid-gutter, 2));
+  }
+}
+
+$grid-breakpoints: (
+  sm: $breakpoint-sm,
+  md: $breakpoint-md,
+  lg: $breakpoint-lg,
+  xlg: $breakpoint-xlg
+);
+
+@each $bp-name, $bp-value in $grid-breakpoints {
+  @media (min-width: $bp-value) {
+    .col-#{$bp-name} {
+      flex: 1 0 0%;
+    }
+    @for $i from 1 through $grid-columns {
+      .col-#{$bp-name}-#{$i} {
+        flex: 0 0 auto;
+        width: percentage(math.div($i, $grid-columns));
+      }
+    }
+  }
 }

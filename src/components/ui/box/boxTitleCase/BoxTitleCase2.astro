@@ -1,0 +1,15 @@
+---
+import Label from '~/components/common/Label.astro'
+
+const {label = '', title = ''} = Astro.props
+---
+
+<!-- 피그미기 기준 Box_Case 상단-->
+<div class="bs-box-title-case-2">
+  <div class="bbtc1-inner">
+    <div class="bsb-label">
+      <Label>{label}</Label>
+    </div>
+    <div class="bsb-title" set:html={title} />
+  </div>
+</div>

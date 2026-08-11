@@ -1,0 +1,47 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+$SIZE_SM:'[data-size="sm"]';
+$SIZE_MD:'[data-size="md"]';
+$SIZE_LG:'[data-size="lg"]';
+
+.bs-table{
+    table-layout: fixed;
+    width: 100%;
+    th{
+        color: color('Color/Black 40');
+        @include font('Body 18 R');
+        border-bottom: rem(1px) solid color('Color/Black 10');
+    }
+    td{
+        color: color('Color/Black 100');
+        @include font('Body 18 R');
+        border-bottom: rem(1px) solid color('Color/Black 10');
+    }
+    &#{$SIZE_SM}{
+        th{
+            padding: rem(12px) rem(20px);
+        }
+        td{
+            padding: rem(12px) rem(20px);
+        }
+    }
+    &#{$SIZE_MD}{
+        th{
+            padding: rem(20px);
+        }
+        td{
+            padding: rem(20px);
+        }
+    }
+    &#{$SIZE_LG}{
+        th{
+            padding: rem(40px) rem(20px);
+        }
+        td{
+            padding: rem(40px) rem(20px);
+        }
+    }
+}

@@ -1,0 +1,15 @@
+---
+export type Item = {
+  codeId: string | number
+  codeName: string
+}
+export interface Props {
+  items: Item[]
+}
+
+const {items} = Astro.props
+---
+
+<div class="bt-tags-group">
+  {items && items.map((item) => <span class="b-tags">{item.codeName}</span>)}
+</div>

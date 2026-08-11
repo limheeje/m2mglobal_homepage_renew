@@ -1,0 +1,47 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+.bs-sub-banner{
+    width: 100%;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: rem(273px);
+    padding: rem(15px);
+    background-color: #171D48;
+    &:after{
+        content: '';
+        background: no-repeat center center url(~/assets/images/subpage-banner-pattern.png);
+        background-size: cover;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        pointer-events: none;
+    }
+    .tit{
+        @include font('H3');
+        color: color('Color/White');
+        text-align: center;
+    }
+    .desc{
+        text-align: center;
+        @include font('Body 18 R');
+        color: color('Color/White');
+        margin-top: rem(20px);
+        display: block;
+    }
+}
+
+@media only screen and (max-width: $breakpoint-md){
+    .bs-sub-banner{
+        min-height: rem(230px);
+        .tit{@include font('H4');}
+        .desc{@include font('Body 16 R');}
+    }
+}

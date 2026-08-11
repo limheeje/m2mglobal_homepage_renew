@@ -1,48 +1,190 @@
-@use '../abstracts/mixins' as m;
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
 
-// Box — 포인트 카드 (아이콘/번호 + 라벨 + 타이틀 + 설명)
-// 참고: https://comet-take-17267726.figma.site/card-list
 
-.box {
-  @include m.flex($direction: column, $align: center, $gap: m.spacing(20));
-  width: m.rem(336px);
-  max-width: 100%;
-  padding: m.spacing(36);
-  border-radius: m.radius(24);
-  text-align: center;
+$USE_BACKGROUND : 'use-background';
+$USE_SLOTFOOT : 'use-slotfoot';
 
-  &--bordered {
-    background-color: m.color('bg-surface');
-    border: m.rem(1px) solid m.color('border-default');
-  }
-
-  &--filled {
-    background-color: m.color('bg-muted');
-  }
+.bs-box{
+    padding: rem(36px);
+    border: rem(1px) solid color('Color/Box/Border color');
+    border-radius: rem(24px);
+    &.#{$USE_BACKGROUND}{
+        background-color: color('Color/Box/Box BG');
+        border-color: color('Color/Box/Box BG');
+    }
+    &.#{$USE_SLOTFOOT}{
+        position: relative;
+        padding-bottom: rem(105px);
+    }
+    .b-inner{}
+    .bt-tags-group{
+        margin: rem(20px) 0;
+        padding: 0 rem(20px);
+        padding-bottom: rem(45px);
+        gap: rem(5px);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        .b-tags{
+            @include font('Body 18 R');
+            color: color('Color/Font/Font Color');
+        }
+    }
+    .bt-noti-group{
+        border-top: rem(1px) solid color('Color/Box/Border color');
+        padding: rem(20px);
+        padding-bottom: 0;
+        .b-lst{
+            display: flex;
+            align-items: flex-start;
+            gap: rem(10px);
+            .dt{
+                min-width: rem(142px);
+                @include font('Body 16 R');
+                color: color('Color/Black 40');
+                display: flex;
+                align-items: center;
+                gap: rem(6px);
+                &:before{
+                    width: rem(16px);
+                    height: rem(16px);
+                    display: flex;
+                }
+                &.ico1:before{
+                    content: '';
+                    @include get-background-svg(icon_assignment, color('Color/Black 20'));
+                }
+                &.ico2:before{
+                    content: '';
+                    @include get-background-svg(icon_assessment, color('Color/Black 20'));
+                }
+            }
+            .dd{
+                text-align: left;
+                @include font('Body 16 R');
+                color: color('Color/Font/Font Color');
+                width: calc(100% - rem(142px));
+                word-break: break-all;
+            }
+            &+.b-lst{
+                margin-top: rem(10px);
+            }
+        }
+    }
+    .bsb-icon{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: rem(100px);
+        height: rem(100px);
+        border-radius: 50%;
+    }
+    .bs-gl-content{
+        @include font('Body 16 R');
+        color: color('Color/Font/Font Color');
+        text-align: center;
+    }
+    .bs-box-title-case-1,
+    .bs-box-title-case-2{
+        text-align: center;
+        .bsb-icon{
+            margin-bottom: rem(20px);
+        }
+        .bsb-label{
+            margin-bottom: rem(20px);
+        }
+        .bsb-title{
+            @include font('Body 24 R');
+            @include text-ellipsis;
+            color: color('Color/Font/Font Color');
+            margin-bottom: rem(20px);
+        }
+    }
+    .bs-box-title-case-5{
+        text-align: center;
+        .bsb-icon{
+            margin-bottom: rem(20px);
+        }
+        .bsb-title{
+            @include font('Body 30 R');
+            @include text-ellipsis;
+            color: color('Color/Font/Font Color');
+            margin-bottom: rem(20px);
+        }
+        .bsb-description{
+            @include font('Body 18 R');
+            color: color('Color/Font/Font Color');
+            margin-bottom: rem(20px);
+        }
+    }
+    .bs-box-title-case-3{
+        margin-bottom: rem(20px);
+        .bbtc3-inner{
+            width: 100%;
+            padding-bottom: rem(20px);
+            border-bottom: rem(1px) solid color('Color/Primary Color');
+            display: flex;
+            align-items: center;
+            gap: rem(12px);
+        }
+        .bsb-icon{
+            margin-left: 0;
+            margin-right: 0;
+        }
+        .bsb-title{
+            text-align: left;
+            width: calc(100% - rem(100px) - rem(12px));
+            word-break: break-all;
+            @include font('Body 30 R');
+            @include text-ellipsis;
+            color: color('Color/Secondary Color');
+        }
+    }
+    .bs-box-title-case-4{
+        margin-bottom: rem(20px);
+        .bbtc4-inner{
+            border-bottom: rem(1px) solid color('Color/Primary Color');
+        }
+        .bsb-label{
+            text-align: left;
+            margin-bottom: rem(12px);
+        }
+        .bsb-title-wrap{
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            width: 100%;
+            padding-bottom: rem(20px);
+        }
+        .bsb-title-pref{
+            width: fit-content;
+            white-space: nowrap;
+            @include font('Body 18 R');
+            color: color('Color/Black 100');
+        }
+        .bsb-title{
+            @include font('Body 30 R');
+            color: color('Color/Black 100');
+            @include text-ellipsis;
+        }
+    }
+    .bs-gl-bottom{
+        position: absolute;
+        width: 100%;
+        padding: rem(36px);
+        padding-top: 0;
+        left: 0;
+        bottom: 0;
+    }
 }
 
-.box__number {
-  @include m.body(24);
-  color: m.color('action-primary');
+
+@media only screen and (max-width: $breakpoint-md){
+.bs-box{
+    padding: rem(36px);
 }
-
-.box__head {
-  @include m.flex($direction: column, $align: center, $gap: m.spacing(20));
-  width: 100%;
-}
-
-.box__title {
-  @include m.body(24);
-  color: m.color('text-primary');
-}
-
-.box__desc {
-  @include m.body(16);
-  color: m.color('text-primary');
-
-  // Figma 원본의 강조 텍스트(파란색 primary) — description slot 안에서 <mark> 사용.
-  mark {
-    background: none;
-    color: m.color('action-primary');
-  }
 }

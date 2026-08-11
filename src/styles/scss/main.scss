@@ -1,36 +1,19 @@
-// ---------------------------------------------
-// Watch Sass 진입점 파일.
-// VSCode 상태바의 "Watch Sass"는 이 파일(과 이 파일이 참조하는 모든 파일)을
-// 감시해서 ../css/main.css 로 컴파일한다.
-// 새 partial을 추가하면 반드시 이 파일에 @use로 등록할 것.
-// ---------------------------------------------
-
 @use 'base/reset';
 @use 'base/fonts';
-@use 'base/typography';
 
-@use 'components/layout-grid';
-@use 'components/icon';
-@use 'components/icon-circle';
-@use 'components/button';
-@use 'components/text-button';
-@use 'components/icon-button';
+
 @use 'components/tab';
-@use 'components/label';
-@use 'components/grid';
+@use 'components/sub-banner';
+@use 'components/title-main';
+@use 'components/title-sub';
+@use 'components/title-third';
+@use 'components/title-middle';
+@use 'components/navigation';
 @use 'components/box';
-@use 'components/title';
+@use 'components/label';
+@use 'components/icon';
 @use 'components/text-list';
-@use 'components/list-item';
-@use 'components/spec-group';
+@use 'components/button';
+@use 'components/table';
 
-@use 'layout/header';
-@use 'layout/page-banner';
-@use 'layout/footer';
-
-// 페이지 전용 스타일 — 공통 컴포넌트로 커버 안 되는 마크업만, 1뎁스 라우트 그룹 기준 파일 하나씩.
-// 예) /company/* 전부 page/_company.scss 안에서 `.company-xxx` 블록으로 나눠 관리.
-@use 'page/company';
-@use 'page/ai-engine';
-@use 'page/robot-logistics';
-@use 'page/e-commerce';
+@use 'layout/gnb';

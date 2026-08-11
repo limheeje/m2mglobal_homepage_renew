@@ -1,0 +1,10 @@
+---
+const {title = 'Company', description = ''} = Astro.props
+---
+
+<div class="bs-sub-banner">
+  <div class="innerWrap">
+    <div class="tit" set:html={title} />
+    <div class="desc" set:html={description} />
+  </div>
+</div>

@@ -1,7 +1,0 @@
-<!-- Figma 실측(Top FAB 버튼): 24px 프레임 안에서 화살표는 지름의 약 50%만 차지.
-     viewBox를 24x24로 패딩. -->
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g transform="translate(6,5.8)">
-<path d="M6 2.82L10.59 7.41L12 6L6 0L0 6L1.41 7.41L6 2.82ZM0 12.41H12V10.41H0V12.41Z" fill="currentColor"/>
-</g>
-</svg>

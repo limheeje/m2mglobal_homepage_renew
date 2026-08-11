@@ -1,104 +1,104 @@
-@use '../abstracts/mixins' as m;
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
 
-// Button 공통 컴포넌트
-// 공식: Type(variant) + Size + State + Option
-// 참고: https://comet-take-17267726.figma.site/button
-//
-// 절대 금지: 여기 정의된 수치를 페이지에서 임의로 덮어쓰기, btn2/btn-blue 같은 임의 variant 생성,
-//           loading을 버튼 State로 취급하기 (loading은 별도 UI로 처리).
+$USE_BLOCK: 'use-block';
+$SIZE_SM: '[data-size="sm"]';
+$SIZE_MD: '[data-size="md"]';
+$SIZE_LG: '[data-size="lg"]';
+$VARIANT_DEFAULT: '[data-variant="default"]';
+$VARIANT_WHITE: '[data-variant="white"]';
+$VARIANT_PRIMARY: '[data-variant="primary"]';
+$ICON_COPY: '[data-type="copy"]';
+$ICON_BLANK: '[data-type="blank"]';
+$ICON_PLUS: '[data-type="plus"]';
+$ICON_TOGGLE: '[data-type="toggle"]';
+$ICON_NEXT: '[data-type="next"]';
+$ICON_DOWNLOAD: '[data-type="download"]';
 
-.btn {
-  @include m.flex($justify: center, $align: center, $gap: m.spacing(4));
-  border: m.rem(1px) solid transparent;
-  border-radius: var(--radius-pill);
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease;
-
-  &:focus-visible {
-    outline: #{m.rem(2px)} solid m.color('border-focus');
-    outline-offset: #{m.rem(2px)};
-  }
-
-  // ---------- Size ----------
-  &--lg {
-    @include m.body(18);
-    gap: m.spacing(12);
-    padding: m.spacing(24) m.spacing(30);
-  }
-
-  &--md {
-    @include m.body(16);
-    padding: m.spacing(12) m.spacing(24);
-  }
-
-  &--sm {
-    @include m.body(14);
-    padding: m.spacing(8) m.spacing(16);
-  }
-
-  // ---------- Type (variant) ----------
-  &--primary {
-    background-color: m.color('action-primary');
-    border-color: m.color('action-primary');
-    color: m.color('text-inverse');
-
-    &:hover {
-      background-color: m.color('action-primary-hover');
-      border-color: m.color('action-primary-hover');
+.bs-button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: rem(1px) solid transparent;
+    &.#{$USE_BLOCK}{
+        width: 100%;
     }
-  }
-
-  &--secondary {
-    background-color: m.color('action-secondary-bg');
-    border-color: m.color('border-default');
-    color: m.color('text-primary');
-
-    &:hover {
-      background-color: m.color('action-secondary-bg-hover');
+    .b-tx{
+        display: block;
     }
-
-    // Figma 소스: secondary + lg 조합만 테두리 없이 더 짙은 배경(#f1f1f1)을 쓴다.
-    &.btn--lg {
-      background-color: m.color('bg-muted');
-      border-color: transparent;
-
-      &:hover {
-        background-color: m.core('black-5');
-      }
+    .bs-inner{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: rem(4px);
     }
-  }
-
-  &--third {
-    background-color: m.color('action-third');
-    border-color: m.color('action-third');
-    color: m.color('text-inverse');
-
-    &:hover {
-      filter: brightness(0.92);
+    .b-suff{
+        display: block;
+        width: rem(20px);
+        height: rem(20px);
     }
-  }
-
-  // ---------- State: disabled ----------
-  &:disabled,
-  &[aria-disabled='true'] {
-    background-color: m.color('action-disabled-bg');
-    border-color: m.color('action-disabled-bg');
-    color: m.color('action-disabled-text');
-    cursor: not-allowed;
-    pointer-events: none;
-  }
-
-  // ---------- Option ----------
-  &--full {
-    width: 100%;
-  }
-}
-
-.btn__icon {
-  color: inherit;
+    &#{$SIZE_MD}{
+        border-radius: rem(49px);
+        padding: rem(12px) rem(24px);
+        height: rem(49px);
+        .b-tx{
+            @include font('Body 18 R');
+        }
+    }
+    &#{$SIZE_SM}{
+        border-radius: rem(46px);
+        height: rem(46px);
+        .b-tx{
+            @include font('Body 16 R');
+        }
+    }
+    &#{$SIZE_SM}{
+        border-radius: rem(59px);
+        height: rem(59px);
+        .b-tx{
+            @include font('Body 18 R');
+        }
+    }
+    &#{$VARIANT_DEFAULT}{
+        background-color: color('Color/Black1');
+        border-color: color('Color/Black 20');
+        .b-tx{
+            color: color('Color/Black 100');
+        }
+        .b-suff{
+            &#{$ICON_COPY}{width: rem(18px);height: rem(18px);@include get-background-svg(icon_copy, color('Color/Black 20'));}
+            &#{$ICON_PLUS}{@include get-background-svg(icon_plus, color('Color/Black 20'));}
+        }
+        &:hover{
+            .b-suff{
+                &#{$ICON_COPY}{@include get-background-svg(icon_copy, color('Color/White'));}
+                &#{$ICON_PLUS}{@include get-background-svg(icon_plus, color('Color/White'));}
+            }
+        }
+       
+    }
+    &#{$VARIANT_WHITE}{
+        background-color: color('Color/White');
+        border-color: color('Color/Black 20');
+        .b-tx{
+            color: color('Color/Black 100');
+        }
+    }
+    &#{$VARIANT_WHITE}{
+        background-color: color('Color/Third Color');
+        border-color: color('Color/Third Color');
+        .b-tx{
+            color: color('Color/White');
+        }
+    }
+     &:hover{
+        background-color: color('Color/Primary Color');
+        border-color: color('Color/Primary Color');
+        .b-tx{
+            color: color('Color/White');
+        }
+    }
 }

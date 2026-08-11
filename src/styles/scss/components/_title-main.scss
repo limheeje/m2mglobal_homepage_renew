@@ -1,0 +1,51 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+
+.bs-main-title{
+    text-align: center;
+    word-break: break-all;
+    .bm-page-name{
+        @include font('H1');
+        color: color('Color/Black 100');
+        padding: rem(100px) rem(80px) rem(80px);
+    }
+    .bms-texts{
+        margin-top: rem(100px);
+        padding: rem(100px) rem(80px) rem(80px);
+        .bm-title{
+            @include font('H1');
+            color: color('Color/Black 100');
+        }
+        .bm-description{
+            @include font('Body 20 R');
+            color: color('Color/Black 100');
+            margin-top: rem(20px);
+        }
+    }
+}
+
+
+@media only screen and (max-width: $breakpoint-md){
+   .bs-main-title{
+        .bm-page-name{
+            @include font('H2');
+            color: color('Color/Black 100');
+            padding: rem(30px) rem($spacing-left) rem(20px);
+        }
+        .bms-texts{
+            margin-top: rem(30px);
+            padding: rem(30px) rem($spacing-left) rem(20px);
+            .bm-title{
+                @include font('H2');
+                color: color('Color/Black 100');
+            }
+            .bm-description{
+                @include font('Body 16 R');
+                color: color('Color/Black 100');
+                margin-top: rem(20px);
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+---
+const {title = '', description = ''} = Astro.props
+---
+
+<div class="bs-title-sub">
+  <div class="bs-title" set:html={title} />
+  {description && <div class="bs-description" set:html={description} />}
+</div>

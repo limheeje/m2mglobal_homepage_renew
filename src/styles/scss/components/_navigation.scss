@@ -1,0 +1,54 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+.bs-navigation{
+    .inner{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: rem(1px) solid color('Color/Black 20');
+        width: 100%;
+    }
+    .navi-group{
+        overflow: hidden;
+        overflow-x: auto;
+        padding-top: rem(20px);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .nvi-item{
+        .nvi-txt{
+            display: block;
+            padding: rem(12px) rem(24px);
+            color: color('Color/Font/Sub Font Color');
+            @include font('Body 18 R');
+            white-space: nowrap;
+            position: relative;
+            &.is-active{
+                color: color('Color/Primary Color');
+                &:after{
+                    content: '';
+                    width: 100%;
+                    height: rem(2px);
+                    position: absolute;
+                    left: 0;
+                    bottom: rem(-1px);
+                    background: color('Color/Primary Color');
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: $breakpoint-md){
+    .bs-navigation{
+        .nvi-item{
+            .nvi-txt{
+                @include font('Body 16 R');
+            }
+        }
+    }
+}

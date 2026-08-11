@@ -1,0 +1,10 @@
+---
+export interface Props {
+  type?: 'type_1' | 'type_2'
+}
+const {type = 'type_1'} = Astro.props
+---
+
+<span class="bs-label" data-type={type}>
+  <slot />
+</span>

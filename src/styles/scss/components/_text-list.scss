@@ -1,29 +1,49 @@
-@use '../abstracts/mixins' as m;
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
 
-// TextList — 체크 아이콘 + 텍스트
-.text-list {
-  @include m.flex($align: flex-start, $gap: m.spacing(12));
-  padding: m.spacing(8) 0;
+$TYPE_1:'[data-type="type_1"]';
+$TYPE_2:'[data-type="type_2"]';
 
-  &--highlighted {
-    align-items: center;
-    padding: m.spacing(12);
-    border-radius: m.radius(12);
-    background-color: m.color('bg-muted');
-  }
-}
-
-.text-list__icon {
-  flex-shrink: 0;
-  color: m.color('action-primary');
-  margin-top: m.rem(5px);
-}
-
-.text-list--highlighted .text-list__icon {
-  margin-top: 0;
-}
-
-.text-list__text {
-  @include m.body(18);
-  color: m.color('text-primary');
+.bs-text-list{
+    .bst-inner{
+        display: flex;
+        align-items: flex-start;
+        padding: rem(8px) 0;
+        gap: rem(12px);
+        .b-tx{
+            word-break: break-all;
+            @include font('Body 18 R');
+            color: color('Color/Black 100');
+            width: calc(100% - rem(18px) - rem(12px));
+        }
+        .b-syn{
+            display: block;
+            margin-top: rem(5px);
+            width: rem(18px);
+            height: rem(18px);
+            border-radius: 50%;
+            position: relative;
+            background-color: color('Color/Primary Color');
+            &:after{
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: rem(10px);
+                height: rem(8px);
+                border-radius: 50%;
+                @include get-background-svg('icon_check', color('Color/White'));
+            }
+        }
+    }
+    &#{$TYPE_2}{
+        .bst-inner{
+            padding: rem(12px);
+            background-color: color('Color/Black 3');
+            border-radius: rem(12px);
+        }
+    }
 }

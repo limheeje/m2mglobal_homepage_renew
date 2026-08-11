@@ -1,0 +1,8 @@
+---
+export interface Props {
+  size?: 'sm' | 'md' | 'lg'
+}
+const {size = 'md'} = Astro.props
+---
+
+<table class="bs-table" data-size={size}></table>

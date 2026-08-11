@@ -1,0 +1,13 @@
+---
+export interface Props {
+  type?: 'type_1' | 'type_2'
+}
+const {type = 'type_1'} = Astro.props
+---
+
+<div class="bs-text-list" data-type={type}>
+  <div class="bst-inner">
+    <span class="b-syn"></span>
+    <div class="b-tx"><slot /></div>
+  </div>
+</div>

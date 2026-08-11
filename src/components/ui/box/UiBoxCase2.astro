@@ -1,0 +1,12 @@
+---
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase2 from '~/components/ui/box/boxTitleCase/BoxTitleCase2.astro'
+const {label, title} = Astro.props
+---
+
+<Box useBackground={true}>
+  <BoxTitleCase2 label={label} title={title} />
+  <div class="bs-gl-content">
+    <slot />
+  </div>
+</Box>

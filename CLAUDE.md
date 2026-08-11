@@ -116,7 +116,7 @@ Figma 파일의 `Component` 페이지(Typography/Color/Tab/Label/Button/GNB 등)
 | `TextList` | `src/components/TextList.astro` | `components/_text-list.scss` |
 | `SpecGroup` (pill 타이틀 + label:value 행) | `src/components/SpecGroup.astro` | `components/_spec-group.scss` |
 | `ListItem` (사례형/공지형) | `src/components/ListItem.astro` | `components/_list-item.scss` |
-| `Gnb` (헤더) | `src/components/Gnb.astro` | `layout/_header.scss` |
+| `Gnb` (헤더) | `src/components/layout/Gnb.astro` | `layout/_header.scss` |
 | `PageBanner` (서브페이지 상단 배너) | `src/components/PageBanner.astro` | `layout/_page-banner.scss` |
 | `Footer` | `src/components/Footer.astro` | `layout/_footer.scss` |
 

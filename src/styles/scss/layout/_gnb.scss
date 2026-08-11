@@ -1,0 +1,71 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+.gnb-wrap{
+    background: transparent;
+    display: flex;
+    align-items: center;
+    padding: rem(20px) rem(80px);
+    .lts{
+        margin-left: 0;
+        margin-right: auto;
+    }
+    .rts{
+        margin-left: auto;
+        margin-right: 0;
+    }
+    .logo{
+        display: block;
+        width: rem(152px);
+        height: rem(40px);
+        font-size: 0;
+        background: no-repeat left center url(~/assets/images/m2m-global-logo.svg);
+    }
+    .gnb{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: rem(47px);
+        .gb-item{
+            display: block;
+            min-width: rem(180px);
+            .g-link{
+                @include font('Body 22 R');
+            }
+        }
+    }
+    .all-gnb{
+        display: flex;
+        width: rem(30px);
+        height: rem(30px);
+        align-items: center;
+        justify-content: center;
+        @include get-background-svg(icon_calender, color('Color/Black 100'));
+    }
+}
+
+
+@media only screen and (max-width: $breakpoint-lg){
+    .gnb-wrap{
+        padding: rem(20px) rem(45px);
+        .gnb{
+            gap: rem(15px);
+            .gb-item{
+                min-width: rem(120px);
+                .g-link{
+                    @include font('Body 18 R');
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-width: $breakpoint-md){
+    .gnb-wrap{
+        padding: rem(20px) rem(15px);
+        .gnb{
+            display: none;
+        }
+    }
+}

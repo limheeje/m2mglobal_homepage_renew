@@ -1,4 +1,4 @@
-// 라우트 맵 — 신규 GNB(src/components/Gnb.astro) 구조를 기준으로, @old/header.html에 있던
+// 라우트 맵 — 신규 GNB(src/components/layout/Gnb.astro) 구조를 기준으로, @old/header.html에 있던
 // 구버전 GNB(및 사이트맵 레이어)를 어디로 옮길지 매핑해둔다.
 // @old/header.html이 old 사이트의 실제 GNB 마크업(<nav class="gnb-area">)과 전체메뉴
 // 사이트맵(#sitemap, 3-depth까지)을 전부 포함하고 있어서, 이 파일이 old 쪽 라벨/구조의 근거다.

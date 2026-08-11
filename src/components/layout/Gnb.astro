@@ -1,0 +1,27 @@
+---
+import {route} from '@config/route/routeMap.ts'
+const localGnbItems = route
+---
+
+<div class="gnb-wrap">
+  <div class="lts">
+    <a href="/" class="logo">로고</a>
+  </div>
+  <div class="content">
+    <ul class="gnb">
+      {
+        localGnbItems &&
+          localGnbItems.map((item) => (
+            <li class="gb-item">
+              <a href={item.href} class="g-link">
+                {item.label}
+              </a>
+            </li>
+          ))
+      }
+    </ul>
+  </div>
+  <div class="rts">
+    <button class="all-gnb"></button>
+  </div>
+</div>

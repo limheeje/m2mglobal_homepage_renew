@@ -1,0 +1,14 @@
+---
+import Icon from '~/components/common/Icon.astro'
+const {title = '', icon = ''} = Astro.props
+---
+
+<!-- 피그미기 기준 Box_Case 상단-->
+<div class="bs-box-title-case-3">
+  <div class="bbtc3-inner">
+    <span class="bsb-icon">
+      <Icon name={icon} />
+    </span>
+    <div class="bsb-title" set:html={title} />
+  </div>
+</div>

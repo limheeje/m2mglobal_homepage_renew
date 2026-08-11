@@ -1,0 +1,70 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+
+.bs-title-sub{
+    text-align: left;
+    word-break: break-all;
+    .bs-title{
+        padding: rem(14px) 0 ;
+        padding-left: rem(18px);
+        @include font('H4');
+        color: color('Color/Font/Font Color');
+        position: relative;
+        &:before{
+            content: '';
+            width: rem(6px);
+            height: rem(36px);
+            border-radius: rem(4px);
+            background: color('Color/Primary Color');
+            position: absolute;
+            left: 0;
+            top: rem(14px);
+        }
+        &:after{
+            content: '';
+            width: rem(6px);
+            height: rem(15px);
+            border-radius: rem(4px);
+            background: color('Color/Secondary Color');
+            position: absolute;
+            left: 0;
+            top: rem(14px);
+        }
+    }
+    .bs-description{
+        @include font('Body 20 R');
+        color: color('Color/Font/Font Color');
+    }
+
+}
+
+
+@media only screen and (max-width: $breakpoint-md){
+.bs-title-sub{
+    .bs-title{
+        padding: rem(10px) 0 ;
+        padding-left: rem(14px);
+        @include font('H5');
+        color: color('Color/Font/Font Color');
+        position: relative;
+        &:before{
+            content: '';
+            height: rem(30px);
+            top: rem(10px);
+        }
+        &:after{
+            content: '';
+            height: rem(9px);
+            background: color('Color/Secondary Color');
+            top: rem(10px);
+        }
+    }
+    .bs-description{
+        @include font('Body 19 R');
+    }
+
+}
+
+}

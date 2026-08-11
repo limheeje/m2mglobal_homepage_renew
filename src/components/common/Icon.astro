@@ -1,0 +1,14 @@
+---
+const {name, width, height} = Astro.props
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+---
+
+<span
+  class="bs-icon"
+  style={{
+    width: width,
+    height: height
+  }}
+>
+  <img src={`${PUBLIC_BUILD_URL}/images/icons/${name}`} class="v-ic" alt="Icon" />
+</span>

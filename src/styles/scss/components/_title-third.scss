@@ -1,0 +1,31 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+
+.bs-title-third{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: rem(8px) rem(15px);
+    @include font('H5');
+    color: color('Color/Black 100');
+    background-color: color('Color/Black 3');
+    border-radius: rem(42px);
+    min-width: rem(277px);
+}
+
+
+@media only screen and (max-width: $breakpoint-lg){
+.bs-title-third{
+    min-width: rem(200px);
+}
+
+}
+@media only screen and (max-width: $breakpoint-md){
+.bs-title-third{
+    @include font('H6');
+    min-width: rem(0px);
+}
+
+}

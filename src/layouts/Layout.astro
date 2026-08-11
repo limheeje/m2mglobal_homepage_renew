@@ -1,6 +1,7 @@
 ---
 import '~/styles/css/main.css'
-import IconButton from '~/components/IconButton.astro'
+import Gnb from '~/components/layout/Gnb.astro'
+import Footer from '~/components/layout/Footer.astro'
 ---
 
 <!doctype html>
@@ -28,15 +29,15 @@ import IconButton from '~/components/IconButton.astro'
     <title>M2MGlobal</title>
   </head>
   <body>
-    <slot />
-
-    <!-- 모든 페이지 공통 — 스크롤 시 맨 위로 가기 FAB. -->
-    <IconButton icon="ico_arrow_top" ariaLabel="맨 위로 가기" class="layout__top-btn" />
-
+    <Gnb />
+    <div class="gl-container">
+      <slot />
+    </div>
     <script>
       import '~/scripts/tab-box-scrollspy.ts'
       import '~/scripts/scroll-to-top.ts'
     </script>
+    <Footer />
   </body>
 </html>
 
@@ -48,8 +49,6 @@ import IconButton from '~/components/IconButton.astro'
     height: 100%;
   }
 
-  /* IconButton은 자식 Astro 컴포넌트라 scoped 스타일의 data-astro-cid 속성이 그 루트 엘리먼트까지
-     전달되지 않는다 — :global()로 감싸서 클래스 셀렉터 그대로 매칭되게 한다. */
   :global(.layout__top-btn) {
     position: fixed;
     right: var(--space-24);

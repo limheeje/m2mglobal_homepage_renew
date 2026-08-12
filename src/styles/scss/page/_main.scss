@@ -1,0 +1,916 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+
+
+// 각 슬라이드 섹션의 높이는 "뷰포트 - 고정 GNB(80px)" — 슬라이드 JS(순환/컨트롤)는 나중에 붙인다.
+// 지금은 섹션당 슬라이드 아이템들을 세로로 그냥 이어 붙여둔 상태(스크롤하면 순서대로 보임).
+$slide-height: inherit;//calc(100vh - #{rem(80px)});
+
+.main-wrap {
+  .section1-slide,
+  .section2-slide,
+  .section3-slide,
+  .section4-slide,
+  .section5-slide {
+    width: 100%;
+  }
+
+  // --- Section 1: Main slogan (히어로 배경 이미지 + 카피 + 체크리스트 + CTA) ---
+  .section1-slide {
+    position: relative;
+    background: #000;
+    .section-item {
+      position: relative;
+      height: $slide-height;
+      padding: rem(80px);
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+      &:before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(22, 37, 63, 0) 50%, #16253f 100%);
+        pointer-events: none;
+      }
+      .content-inner {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-top: rem(200px);
+      }
+      .b-title {
+        @include font('H1');
+        color: color('Color/Accent Color');
+      }
+      .b-desc {
+        margin-top: rem(60px);
+        max-width: rem(853px);
+        @include font('Body 24 R');
+        color: color('Color/White');
+      }
+      .b-caption {
+        margin-top: rem(20px);
+        @include font('Body 20 R');
+        color: color('Color/White');
+      }
+      .b-list {
+        margin-top: rem(60px);
+        .b-li {
+          @include font('Body 24 R');
+          color: color('Color/White');
+          padding-left: rem(22px);
+          position: relative;
+          &:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: rem(15px);
+            width: rem(12px);
+            height: rem(9px);
+            @include get-background-svg(icon_check, color('Color/White'));
+          }
+          & + .b-li {
+            margin-top: rem(12px);
+          }
+        }
+      }
+      .ad-more {
+        display: inline-flex;
+        align-self: flex-start;
+        background: color('Color/Primary Color');
+        color: color('Color/White');
+        @include font('Body 16 R');
+        border-radius: rem(60px);
+        min-width: rem(160px);
+        height: rem(46px);
+        align-items: center;
+        justify-content: center;
+        gap: rem(4px);
+        &:after {
+          content: '';
+          width: rem(20px);
+          height: rem(20px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @include get-background-svg(icon_arrow_right, color('Color/White'));
+        }
+      }
+
+      // Variant4: 우측 5원 다이어그램(후보군 생성/AI 스코어링/비즈니스 룰 적용/최종 랭킹 + 중앙 AI Commerce)
+      .b-diagram {
+        position: absolute;
+        right: rem(80px);
+        top: 50%;
+        transform: translateY(-50%);
+        width: rem(553px);
+        height: rem(582px);
+      }
+      .b-diagram-node {
+        position: absolute;
+        width: rem(240px);
+        height: rem(240px);
+        border-radius: 50%;
+        border: rem(1px) dashed color('Color/White');
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: color('Color/White');
+        @include font('Body 16 R');
+        strong {
+          display: block;
+          @include font('Body 20 R');
+          font-weight: inherit;
+        }
+        &--tl {
+          left: rem(42px);
+          top: 0;
+        }
+        &--tr {
+          left: rem(272px);
+          top: 0;
+        }
+        &--bl {
+          left: rem(42px);
+          top: rem(286px);
+        }
+        &--br {
+          left: rem(272px);
+          top: rem(286px);
+        }
+        &--center {
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: rem(200px);
+          height: rem(200px);
+          background: color('Color/White');
+          border: none;
+          color: color('Color/Third Color');
+        }
+      }
+    }
+  }
+
+  // --- Section 2: 사업정보 (다크 블루 + Biz Area 원 다이어그램) ---
+  .section2-slide {
+    background-color: #111e72;
+    .section-item {
+      position: relative;
+      height: $slide-height;
+      padding: rem(80px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      &:before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: #111e72;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+    }
+    .content-inner {
+      position: relative;
+      flex: 1 0 0%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: rem(60px);
+      padding: rem(80px) 0 rem(120px);
+    }
+    .biz-eyebrow {
+      position: relative;
+      align-self: flex-start;
+      @include font('H6');
+      color: color('Color/Third Color');
+    }
+    .biz-core {
+      position: relative;
+      width: rem(276px);
+      height: rem(276px);
+      border-radius: 50%;
+      border: rem(2px) dashed color('Color/Third Color');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: color('Color/White');
+      @include font('Body 30 R');
+      span {
+        display: block;
+        color: color('Color/Accent Color');
+      }
+    }
+    .biz-grid {
+      position: relative;
+      display: flex;
+      gap: rem(20px);
+      justify-content: center;
+      width: 100%;
+    }
+    .biz-card {
+      flex: 1 1 0%;
+      max-width: rem(351px);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .biz-card-title {
+      border: rem(1px) dashed color('Color/Box/Border color');
+      border-radius: rem(240px);
+      padding: rem(30px) rem(36px);
+      text-align: center;
+      color: color('Color/White');
+      @include font('Body 24 R');
+    }
+    .biz-card-desc {
+      margin-top: rem(4px);
+      padding: rem(30px) rem(36px);
+      text-align: center;
+      color: color('Color/White');
+      @include font('Body 16 R');
+    }
+    .ad-more {
+      display: inline-flex;
+      align-self: center;
+      background: color('Color/Primary Color');
+      color: color('Color/White');
+      @include font('Body 16 R');
+      border-radius: rem(60px);
+      min-width: rem(160px);
+      height: rem(46px);
+      align-items: center;
+      justify-content: center;
+      gap: rem(4px);
+      &:after {
+        content: '';
+        width: rem(20px);
+        height: rem(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include get-background-svg(icon_arrow_right, color('Color/White'));
+      }
+    }
+  }
+
+  // --- Section 3: AI (화이트 배경 + 그라디언트 배너 + 5원 플로우 + 4열 하단 특징) ---
+  .section3-slide {
+    background-color: color('Color/White');
+    .section-item {
+      height: $slide-height;
+      padding: rem(80px);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .ai-eyebrow {
+      @include font('H6');
+      color: color('Color/Third Color');
+    }
+    .ai-head {
+      margin-top: rem(20px);
+      text-align: center;
+      @include font('H3');
+      color: color('Color/Primary Color');
+    }
+    .ai-banner {
+      margin-top: rem(20px);
+      border-radius: rem(24px);
+      background: linear-gradient(to top, rgba(22, 37, 63, 0.7) 30%, rgba(22, 37, 63, 0)),
+        color('Color/Third Color');
+      padding: rem(40px) rem(127px);
+      text-align: center;
+    }
+    .ai-banner-title {
+      @include font('H3');
+      color: color('Color/White');
+    }
+    .ai-banner-desc {
+      margin-top: rem(10px);
+      @include font('Body 20 R');
+      color: color('Color/Blue 10');
+    }
+    .ai-flow {
+      margin-top: rem(40px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: rem(20px);
+    }
+    .ai-flow-node {
+      width: rem(278px);
+      height: rem(278px);
+      border-radius: 50%;
+      background-color: color('Color/Black 3');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      @include font('Body 14 R');
+      color: color('Color/Black 100');
+      strong {
+        display: block;
+        margin-bottom: rem(10px);
+        @include font('Body 24 R');
+        font-weight: inherit;
+      }
+      &--accent {
+        border: rem(1px) dashed color('Color/Primary Color');
+        strong {
+          color: color('Color/Primary Color');
+        }
+      }
+    }
+    .ai-cols {
+      margin-top: rem(20px);
+      display: flex;
+      gap: rem(20px);
+    }
+    .ai-col {
+      flex: 1 1 0%;
+      padding-top: rem(24px);
+      border-top: rem(1px) solid color('Color/Box/Border color');
+    }
+    .ai-col-title {
+      @include font('Body 24 R');
+      color: color('Color/Font/Font Color');
+      margin-bottom: rem(10px);
+    }
+    .ai-col-desc {
+      @include font('Body 14 R');
+      color: color('Color/Font/Font Color');
+    }
+  }
+
+  // --- Section 4: Business (e-Commerce / Robot Logistics / Smart Factory) ---
+  .section4-slide {
+    .biz-item {
+      position: relative;
+      height: $slide-height;
+      padding: rem(80px);
+      overflow: hidden;
+      background-color: #133269;
+      &.biz-item--robot {
+        background-color: #0c295a;
+      }
+    }
+    .biz-bg-ph {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255, 255, 255, 0.04);
+      pointer-events: none;
+    }
+    .biz-eyebrow {
+      position: relative;
+      @include font('Body 20 R');
+      color: color('Color/Third Color');
+      margin-bottom: rem(60px);
+    }
+    .biz-body {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: rem(60px);
+      height: calc(100% - #{rem(80px)});
+    }
+    .biz-head {
+      display: flex;
+      flex-direction: column;
+      gap: rem(20px);
+    }
+    .biz-title-row {
+      display: flex;
+      align-items: center;
+      gap: rem(20px);
+    }
+    .biz-title {
+      @include font('H1');
+      color: color('Color/White');
+    }
+    .biz-arrow-ph {
+      display: inline-block;
+      width: rem(24px);
+      height: rem(24px);
+      flex-shrink: 0;
+    }
+    .biz-desc {
+      @include font('Body 20 R');
+      color: color('Color/White');
+    }
+
+    // 공통: 좌우 정렬 3단 구성(그리드/센터그래픽/사이드리스트)
+    .biz-cols {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: rem(20px);
+    }
+    .biz-cols--robot,
+    .biz-cols--factory {
+      justify-content: center;
+    }
+
+    // e-Commerce: 3x3 원형 그리드
+    .biz-circle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: rem(20px);
+    }
+    .biz-circle {
+      width: rem(160px);
+      height: rem(160px);
+      border-radius: 50%;
+      border: rem(1px) dashed color('Color/White');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      p {
+        @include font('Body 20 R');
+        color: color('Color/White');
+      }
+    }
+
+    // 센터 흐름 그래픽(이미지) 자리
+    .biz-center-ph {
+      flex-shrink: 0;
+      width: rem(150px);
+      height: rem(179px);
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    .biz-center-ph--robot {
+      width: rem(574px);
+      height: rem(520px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: rem(24px);
+    }
+    .biz-center-badge {
+      width: rem(438px);
+      height: rem(438px);
+      border-radius: 50%;
+      border: rem(1px) dashed color('Color/Black 20');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      p {
+        @include font('Body 20 R');
+        color: color('Color/White');
+      }
+    }
+
+    // 사이드 리스트(우측, 점선 구분선)
+    .biz-side-list {
+      flex-shrink: 0;
+      width: rem(279px);
+      display: flex;
+      flex-direction: column;
+    }
+    .biz-side-item {
+      padding: rem(12px) 0;
+      border-bottom: rem(1px) dashed color('Color/Box/Border color');
+      @include font('Body 20 R');
+      color: color('Color/White');
+      text-align: center;
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    .biz-side-list--plain .biz-side-item {
+      border-bottom: none;
+      & + .biz-side-item {
+        border-top: rem(1px) dashed color('Color/Box/Border color');
+      }
+    }
+
+    // Robot Logistics: 좌/우 pill + 설명 컬럼
+    .biz-pill-col {
+      flex-shrink: 0;
+      width: rem(275px);
+      display: flex;
+      flex-direction: column;
+      gap: rem(12px);
+    }
+    .biz-pill-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: rem(12px);
+      padding: rem(12px) 0;
+    }
+    .biz-pill {
+      width: 100%;
+      padding: rem(12px);
+      border-radius: rem(50px);
+      border: rem(1px) dashed color('Color/Box/Border color');
+      @include font('Body 20 R');
+      color: color('Color/White');
+      text-align: center;
+    }
+    .biz-pill-desc {
+      @include font('Body 16 R');
+      color: color('Color/White');
+      text-align: center;
+    }
+
+    // Smart Factory: 데이터 흐름(3원) + 공정 태그 + 디바이스 그리드
+    .biz-dataflow-col {
+      flex: 1 1 0%;
+      max-width: rem(722px);
+      display: flex;
+      flex-direction: column;
+      gap: rem(12px);
+    }
+    .biz-dataflow-row {
+      display: flex;
+      gap: rem(20px);
+    }
+    .biz-datacircle {
+      flex: 1 1 0%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      border: rem(1px) dashed color('Color/White');
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: rem(10px);
+      padding: rem(20px);
+      text-align: center;
+      p {
+        @include font('Body 20 R');
+        color: color('Color/White');
+      }
+    }
+    .biz-datacircle-icon-ph {
+      display: inline-block;
+      width: rem(43px);
+      height: rem(43px);
+    }
+    .biz-flow-row {
+      display: flex;
+      justify-content: center;
+      gap: rem(20px);
+      padding-top: rem(20px);
+    }
+    .biz-flow-tag {
+      flex: 1 1 0%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: rem(8px);
+      p {
+        padding: rem(8px) rem(12px);
+        border-radius: rem(90px);
+        @include font('Body 14 R');
+        color: color('Color/White');
+        text-align: center;
+        white-space: nowrap;
+      }
+    }
+    .biz-flow-line {
+      display: inline-block;
+      width: rem(1px);
+      height: rem(36px);
+      background-color: color('Color/White');
+    }
+    .biz-device-grid {
+      flex-shrink: 0;
+      display: flex;
+      gap: rem(20px);
+      width: rem(275px);
+    }
+    .biz-device-pill {
+      flex: 1 1 0%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      border: rem(1px) dashed color('Color/White');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      p {
+        @include font('Body 20 R');
+        color: color('Color/White');
+      }
+    }
+  }
+
+  // --- Section 5: Solution_Project (케이스 스터디 9카드) ---
+  .section5-slide {
+    background-color: color('Color/White');
+    .section-item {
+      height: $slide-height;
+      padding: rem(80px);
+      overflow-y: auto;
+    }
+    .sp-eyebrow {
+      @include font('Body 20 R');
+      color: color('Color/Third Color');
+      margin-bottom: rem(20px);
+    }
+    .sp-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: rem(20px);
+      margin-bottom: rem(32px);
+      .sp-title {
+        display: flex;
+        align-items: center;
+        gap: rem(8px);
+        @include font('H2');
+        color: color('Color/Black 100');
+      }
+      .sp-desc {
+        margin-top: rem(20px);
+        @include font('Body 20 R');
+        color: color('Color/Black 100');
+      }
+    }
+    .sp-arrow-ph {
+      display: inline-block;
+      width: rem(24px);
+      height: rem(24px);
+      flex-shrink: 0;
+    }
+    .sp-nav {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: rem(10px);
+    }
+    .sp-nav-btn {
+      width: rem(36px);
+      height: rem(36px);
+      border-radius: 50%;
+      border: rem(1px) solid color('Color/Black 10');
+      background-color: color('Color/White');
+    }
+
+    // --- 5-1. Solution 소개 카드 (6종) ---
+    .sp-solution-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: rem(20px);
+    }
+    .sp-solution-card {
+      flex: 1 1 0%;
+      min-width: rem(280px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: rem(20px);
+      padding: rem(36px);
+      border: rem(1px) solid color('Color/Black 20');
+      border-radius: rem(24px);
+    }
+    .sp-solution-icon-ph {
+      display: inline-block;
+      width: rem(100px);
+      height: rem(100px);
+      border-radius: 50%;
+      background-color: color('Color/Blue 10');
+    }
+    .sp-solution-title {
+      @include font('Body 30 R');
+      color: color('Color/Black 100');
+    }
+    .sp-solution-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: rem(8px);
+    }
+    .sp-solution-item {
+      display: flex;
+      align-items: center;
+      gap: rem(12px);
+      padding: rem(12px);
+      background-color: color('Color/Black 3');
+      border-radius: rem(12px);
+      p {
+        @include font('Body 18 R');
+        color: color('Color/Black 100');
+      }
+    }
+    .sp-solution-item-icon-ph {
+      display: inline-block;
+      width: rem(18px);
+      height: rem(18px);
+      flex-shrink: 0;
+    }
+
+    // --- 5-2. Why, M2MGLOBAL? 케이스 하이라이트 ---
+    .sp-why-body {
+      display: flex;
+      gap: rem(20px);
+    }
+    .sp-why-main {
+      flex: 1 1 0%;
+      display: flex;
+      flex-direction: column;
+      gap: rem(60px);
+    }
+    .sp-why-head {
+      display: flex;
+      flex-direction: column;
+      gap: rem(10px);
+    }
+    .sp-why-logo-ph {
+      display: inline-block;
+      width: rem(150px);
+      height: rem(45px);
+      background-color: color('Color/Black 3');
+      border-radius: rem(6px);
+    }
+    .sp-why-subtitle {
+      @include font('H4');
+      color: color('Primary/Blue100');
+    }
+    .sp-why-case-desc {
+      @include font('Body 20 R');
+      color: color('Color/Black 100');
+    }
+    .sp-why-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: rem(20px);
+    }
+    .sp-why-feature {
+      flex: 1 1 0%;
+      min-width: rem(240px);
+      padding-top: rem(20px);
+      border-top: rem(1px) solid color('Color/Black 100');
+    }
+    .sp-why-feature-title {
+      @include font('Body 20 R');
+      color: color('Color/Black 100');
+      margin-bottom: rem(4px);
+    }
+    .sp-why-feature-desc {
+      @include font('Body 16 R');
+      color: color('Black/60');
+    }
+    .sp-why-card {
+      flex-shrink: 0;
+      width: rem(425px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: rem(20px);
+      padding: rem(36px);
+      background-color: color('Color/Black 3');
+      border-radius: rem(24px);
+    }
+    .sp-why-card-title {
+      @include font('Body 30 R');
+      color: color('Color/Black 100');
+      text-align: center;
+    }
+    .sp-why-card-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: rem(8px);
+    }
+    .sp-why-card-item {
+      display: flex;
+      align-items: center;
+      gap: rem(12px);
+      padding: rem(12px);
+      background-color: color('Color/White');
+      border-radius: rem(12px);
+      p {
+        @include font('Body 18 R');
+        color: color('Color/Black 100');
+      }
+    }
+
+    .sp-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: rem(20px);
+    }
+    .sp-card {
+      display: flex;
+      flex-direction: column;
+    }
+    .sp-thumb {
+      width: 100%;
+      aspect-ratio: 237 / 69;
+      background-color: color('Color/Black 3');
+      border-radius: rem(12px);
+      margin-bottom: rem(20px);
+    }
+    .sp-title-text {
+      @include font('Body 18 R');
+      color: color('Color/Black 100');
+      margin-bottom: rem(20px);
+    }
+    .sp-list {
+      display: flex;
+      flex-direction: column;
+      p {
+        padding: rem(8px) rem(4px);
+        border-top: rem(1px) solid color('Color/Black 10');
+        @include font('Body 14 R');
+        color: color('Color/Black 100');
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .main-wrap {
+    .section1-slide .section-item,
+    .section2-slide .section-item,
+    .section3-slide .section-item {
+      padding: rem(30px) rem($spacing-left);
+    }
+    .section1-slide .section-item .content-inner {
+      padding-top: rem(80px);
+    }
+    .section1-slide .section-item .b-diagram {
+      display: none;
+    }
+    .biz-grid,
+    .ai-flow,
+    .ai-cols {
+      flex-direction: column;
+    }
+    .sp-grid {
+      grid-template-columns: 1fr;
+    }
+    .sp-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .sp-why-body {
+      flex-direction: column;
+    }
+    .sp-why-card {
+      width: 100%;
+    }
+
+    .section4-slide {
+      .biz-item {
+        padding: rem(30px) rem($spacing-left);
+      }
+      .biz-cols,
+      .biz-cols--robot,
+      .biz-cols--factory {
+        flex-direction: column;
+      }
+      .biz-circle-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: rem(8px);
+      }
+      .biz-circle {
+        width: rem(88px);
+        height: rem(88px);
+        p {
+          @include font('Body 14 R');
+        }
+      }
+      .biz-center-ph {
+        display: none;
+      }
+      .biz-center-ph--robot {
+        display: flex;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+      }
+      .biz-center-badge {
+        width: rem(220px);
+        height: rem(220px);
+      }
+      .biz-pill-col,
+      .biz-side-list,
+      .biz-device-grid,
+      .biz-dataflow-col {
+        width: 100%;
+      }
+      .biz-flow-row {
+        flex-wrap: wrap;
+      }
+    }
+  }
+}

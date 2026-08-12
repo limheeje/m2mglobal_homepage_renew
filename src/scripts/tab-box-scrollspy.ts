@@ -4,12 +4,12 @@
 // 1) 탭 아이템 클릭 → 해당 href(#anchor) 섹션으로 부드럽게 스크롤 + 클릭한 탭 즉시 active 처리
 // 2) 스크롤로 섹션이 바뀔 때마다 IntersectionObserver로 현재 보이는 섹션에 대응하는 탭을 active 처리
 //
-// 페이지에 `.tab--box`가 없으면(=대부분의 서브페이지에 없거나, in-page anchor 탭이 아닌 경우) 아무 것도
-// 하지 않는다 — 하드코딩된 페이지 종속 로직 없이 마크업 컨벤션(.tab--box > .tab__item[href^="#"] +
+// 페이지에 `.bs-tab-group`가 없으면(=대부분의 서브페이지에 없거나, in-page anchor 탭이 아닌 경우) 아무 것도
+// 하지 않는다 — 하드코딩된 페이지 종속 로직 없이 마크업 컨벤션(.bs-tab-group > .tab__item[href^="#"] +
 // 매칭되는 id를 가진 섹션)만으로 동작한다.
 
 function initTabBoxScrollspy() {
-  document.querySelectorAll<HTMLElement>('.tab--box').forEach((tabBar) => {
+  document.querySelectorAll<HTMLElement>('.bs-tab-group').forEach((tabBar) => {
     const items = Array.from(tabBar.querySelectorAll<HTMLAnchorElement>('.tab__item[href^="#"]'))
     if (items.length === 0) return
 

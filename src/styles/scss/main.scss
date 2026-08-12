@@ -15,6 +15,18 @@
 @use 'components/text-list';
 @use 'components/button';
 @use 'components/table';
+@use 'components/all-menu';
 
 @use 'layout/gnb';
 @use 'layout/footer';
+@use 'layout/top-btn';
+
+@use 'page/main';
+@use 'page/company';
+@use 'page/ai-engine';
+@use 'page/robot-logistics';
+@use 'page/e-commerce';
+@use 'page/solutions';
+@use 'page/project';
+@use 'page/privacy';
+@use 'page/page-list';

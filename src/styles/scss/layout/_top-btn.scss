@@ -1,0 +1,32 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// 전 페이지 공통 "맨 위로 가기" FAB — Layout.astro <body> 끝에 전역 렌더링,
+// scroll-to-top.ts가 .layout__top-btn 클래스를 훅으로 클릭 시 스크롤한다.
+.layout__top-btn {
+  position: fixed;
+  right: rem(24px);
+  bottom: rem(24px);
+  z-index: 50;
+  width: rem(48px);
+  height: rem(48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: color('Color/Secondary Color');
+  cursor: pointer;
+  &:hover {
+    background-color: color('Color/Primary Color');
+  }
+}
+.layout__top-btn-icon {
+  display: block;
+  width: rem(20px);
+  height: rem(20px);
+  transform: rotate(-90deg);
+  @include get-background-svg(icon_arrow_right, color('Color/White'));
+}

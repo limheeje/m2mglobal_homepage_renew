@@ -1,5 +1,184 @@
 ---
+// Solutions > Commerce Platform (/solutions/commerce-platform)
+// Figma "솔루션 소개 > Commerce Platform" 3개 프레임(솔루션 이해 / 기술 구성 안내 / 주요 특장점) —
+// 전부 같은 Tap_series 앵커 탭의 상태라 한 페이지로 합쳤다.
+//
+// 참고: "솔루션 이해" 탭의 삼각형(도식) 다이어그램은 사용자 요청에 따라 이미지로 대체할 자리만
+// 남기고 세부 구현은 하지 않았다.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import TitleSub from '~/components/common/TitleSub.astro'
+import TitleThird from '~/components/common/TitleThird.astro'
+import Navigation from '~/components/common/Navigation.astro'
+import TextList from '~/components/common/TextList.astro'
+
+const localNavigation = route.find((item) => item.href === '/solutions/commerce-platform')
+
+const sectionTabs = [
+  {id: 'understand', label: '솔루션 이해'},
+  {id: 'tech', label: '기술 구성 안내'},
+  {id: 'features', label: '주요 특장점'}
+]
+
+// --- 솔루션 이해: M2M-eMall / M2M-B2Bi / M2M-eCCP ---
+const understandCards = [
+  {
+    title: 'M2M-eMall',
+    items: [
+      '회원, 상품, 주문/결제, 배송/물류, 전시/메인, 이벤트, 정산/통계, 글로벌, CS/알림/기타 핵심 기능 보유',
+      'B2C, B2B 종합몰 구축',
+      'B2E / MRO 기업몰 구축',
+      '온-오프라인 통합 몰 구축',
+      '국 내외 전문몰 제휴 연계, 쇼핑몰 솔루션 공급, 운영'
+    ]
+  },
+  {
+    title: 'M2M-B2Bi',
+    items: [
+      '내부, 외부, 관련 타 솔루션 등 쉽게 연결할 수 있도록 지원하는 핵심 기능 탑재',
+      '내부 시스템 연동 (ERP/SCM/WMS 기간계 시스템 연동)',
+      '외부 시스템 연동 (택배사, 인증기관, 제휴사 종합, 소셜 쇼핑몰)',
+      '관련 솔루션과의 연동 (검색엔진, SMS, AI, 배송 추척, 웹로그, GA, 마케팅)'
+    ]
+  },
+  {
+    title: 'M2M-eCCP',
+    items: [
+      '최신 웹 개발 표준 프레임워크 기반의 최적화 된 기능을 탑재한 솔루션',
+      '쉽고 편리한 개발 및 유지보수 가능',
+      '타 솔루션 간의 원활한 연계 표준 개발환경',
+      '이커머스 기본 기능 탑재 (신속한 개발 가능)',
+      '공통 관리(공통코드, 메뉴, 권한, 화면, 사용자 외)를 통한 구축의 효율성 내재'
+    ]
+  }
+]
+
+// --- 기술 구성 안내: 컴포넌트 별 아키텍처 다이어그램 (이미지) ---
+const techGroups = ['M2M-eMall', 'M2M-B2Bi', 'M2M-eCCP']
+
+// --- 주요 특장점 (11개) ---
+const featureCards = [
+  {
+    title: '표준 프레임워크',
+    desc: '24년간의 다수의 커머스 플랫폼<br/>수행 노하우 기반의<br/>최적의 검증된 프레임워크'
+  },
+  {
+    title: 'JPA기반 객체지향적 구조',
+    desc: '객체지향적 프로그래밍을 통해<br/>확장성 및 유지보수 용이하며<br/>작업 생산성-효율성이 향상됨'
+  },
+  {
+    title: '3rd Party 기능 모듈화',
+    desc: '부가 기능을 모듈화 함으로써<br/>Core Process을 활용하되<br/>빠르고 쉽게 맞춤 커스터마이징 가능'
+  },
+  {
+    title: 'Front/BackOffice 컴포넌트화',
+    desc: '고객측면, 관리자측면의 기능을<br/>컴포넌트화하여 개발 효율성, 확장성,<br/>유지보수 용이성, 재사용성을 확보함'
+  },
+  {
+    title: '검색 엔진',
+    desc: 'Elastic Search 탑재<br/>자동완성, 초성검색, 추천 제공<br/>상품 리스팅 속도 개선'
+  },
+  {title: '결제 (PG)', desc: '운영 지표 모니터링 및 성능 분석'},
+  {
+    title: '본인 인증',
+    desc: 'KG이니시스 통합인증 연동<br/>네이버, 토스, 패스, 카카오<br/>페이코, 금융인증서 등 지원'
+  },
+  {
+    title: '주소찾기/메일, 메시지',
+    desc: '주소 찾기 연동, 알림톡 등 연동<br/>STMP서버를 통한 고객 대상<br/>자동 발송 이메일 기능 제공'
+  },
+  {title: '배송/물류', desc: '택배사 연동을 통해 배송 추적,<br/>Goodsflow 서비스 연동'},
+  {title: '개인정보 보안', desc: 'ISMS 요구사항에 준하는<br/>보안 지침 반영'},
+  {
+    title: '웹로그, GA, 마케팅',
+    desc: '웹로그 분석, GA 데이터를 통해<br/>효과적인 기업 마케팅 활용 지표 활용'
+  }
+]
 ---
 
-<Layout />
+<Layout>
+  <SubBanner
+    title="Solutions"
+    description="다년간의 프로젝트 축적된 경험과 노하우를 바탕으로 연구 · 개발 · 실행하여<br/>성공적으로 입증한 최적의 Smart Solution을 소개합니다."
+  />
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-SOLUTIONS-ID-1'} />
+  <TitleMain title="Commerce Platform" />
+
+  <div class="innerWrap">
+    <div class="bs-tab-group">
+      {
+        sectionTabs.map((tab, i) => (
+          <a
+            class="bs-tab tab__item"
+            class:list={{'is-active': i === 0}}
+            data-type="box"
+            href={`#${tab.id}`}
+          >
+            {tab.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <section id="understand" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">솔루션 이해</span>`} />
+
+      <!-- TODO: 솔루션 구성도(삼각형 다이어그램) 이미지 삽입 -->
+      <div class="sol__diagram-placeholder" aria-hidden="true"></div>
+
+      <div class="sol__understand-grid">
+        {
+          understandCards.map((card) => (
+            <div class="sol__understand-card">
+              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+              <span class="sol__understand-icon" aria-hidden="true" />
+              <p class="sol__understand-title">{card.title}</p>
+              <div class="sol__understand-list">
+                {card.items.map((item) => (
+                  <TextList type="type_2">{item}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="tech" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">기술 구성 안내</span>`} />
+      {
+        techGroups.map((name) => (
+          <div class="sol__tech-group">
+            <TitleThird>{name}</TitleThird>
+            {/* <!-- TODO: 아키텍처 구성도 이미지 삽입 --> */}
+            <div class="sol__tech-diagram sol__diagram-placeholder" aria-hidden="true" />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="features" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">주요 특장점</span>`} />
+      <div class="sol__stat-grid">
+        {
+          featureCards.map((card) => (
+            <div class="sol__stat-card">
+              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+              <span class="sol__stat-icon" aria-hidden="true" />
+              <p class="sol__stat-title">{card.title}</p>
+              <p class="sol__stat-desc" set:html={card.desc} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

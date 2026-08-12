@@ -1,50 +1,48 @@
 ---
 // e-Commerce > B2B Commerce (/e-commerce/b2b-commerce)
-// 참고: Figma "e-Commerce > B2B Commerce" 4개 프레임(기업구매프로세스 / 구축사례 / 제공기술 및 특징 /
-// 시스템연계구조) — 전부 같은 "Tap_series"(box 스타일) 앵커 탭의 상태라 한 페이지로 합쳤다.
+// Figma "e-Commerce > B2B Commerce" 4개 프레임(기업구매프로세스 / 구축사례 / 제공기술 및 특징 /
+// 시스템연계구조) — 전부 같은 Tap_series(box 스타일) 앵커 탭의 상태라 한 페이지로 합쳤다.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
-import Gnb from '~/components/layout/Gnb.astro'
-import PageBanner from '~/components/PageBanner.astro'
-import Tab from '~/components/Tab.astro'
-import Title from '~/components/Title.astro'
-import Container from '~/components/Container.astro'
-import Box from '~/components/Box.astro'
-import IconCircle from '~/components/IconCircle.astro'
-import TextList from '~/components/TextList.astro'
-import Footer from '~/components/Footer.astro'
-import {route} from '@config/route'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import TitleSub from '~/components/common/TitleSub.astro'
+import TitleMiddle from '~/components/common/TitleMiddle.astro'
+import Navigation from '~/components/common/Navigation.astro'
+import TextList from '~/components/common/TextList.astro'
+import Label from '~/components/common/Label.astro'
 
-// 1Depth "e-Commerce" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
-const pageTabs = [
-  {label: 'Commerce Technology', href: route['/e-commerce/commerce-technology']},
-  {label: 'B2B Commerce', href: route['/e-commerce/b2b-commerce']},
-  {label: 'Marketplace', href: route['/e-commerce/marketplace']}
-]
+const localNavigation = route.find((item) => item.href === '/e-commerce/commerce-technology')
 
 const sectionTabs = [
-  {label: '기업구매프로세스', href: '#process'},
-  {label: '구축사례', href: '#cases'},
-  {label: '제공기술 및 특징', href: '#features'},
-  {label: '시스템연계구조', href: '#system'}
+  {id: 'process', label: '기업구매프로세스'},
+  {id: 'cases', label: '구축사례'},
+  {id: 'features', label: '제공기술 및 특징'},
+  {id: 'system', label: '시스템연계구조'}
 ]
 
-// --- 기업 구매 프로세스 (6단계 Box_Case) ---
-// 참고: STEP 05·06은 Figma Dev Mode MCP 호출이 일일 사용량 한도(rate limit)에 걸려 원문을
-// 확인하지 못했다 — 앞뒤 단계(발주·출고 → 정산 투명성 확보) 흐름과 하단 "정산 투명성 확보" 카드를
-// 근거로 추정한 임시 값이며, Figma 재확인 후 교체가 필요하다.
+// --- 기업 구매 프로세스 (6단계) ---
 const processSteps = [
   {step: 'STEP 01', title: '구매 요청', desc: ['품목 검색', '장바구니 담기']},
   {step: 'STEP 02', title: '견적 · 단가', desc: ['계약단가 자동 적용', '견적서 발행']},
   {step: 'STEP 03', title: '결재 승인', desc: ['다단계 결재', '예산 한도 검증']},
   {step: 'STEP 04', title: '발주 · 출고', desc: ['ERP 발주 전송', 'WMS 출고 지시']},
-  {step: 'STEP 05', title: '입고 확인', desc: ['수령 확인', '반품/클레임 접수'], inferred: true},
-  {step: 'STEP 06', title: '정산', desc: ['세금계산서 발행', '여신 마감 처리'], inferred: true}
+  {step: 'STEP 05', title: '입고 확인', desc: ['납품 검수', '반품·교환 처리']},
+  {step: 'STEP 06', title: '마감 · 정산', desc: ['여신 관리', '세금계산서 발행']}
 ]
-
 const processFeatures = [
-  {title: '구매 리드타임 단축', desc: '계약단가·승인 라인 자동화로 발주까지 걸리는 시간을 단축'},
-  {title: '단가 오류 차단', desc: '거래처별 계약단가 자동 적용으로 수기 입력 오류 방지'},
-  {title: '정산 투명성 확보', desc: '여신·마감·세금계산서 처리 이력을 한 화면에서 추적'}
+  {
+    title: '구매 리드타임 단축',
+    desc: '요청·승인·발주가 한 화면에서 이어져<br/>수기 문서 왕복이 사라집니다.'
+  },
+  {
+    title: '단가 오류 차단',
+    desc: '거래처별 계약단가가 자동 적용되어<br/>수기 입력 오류를 원천 제거합니다.'
+  },
+  {
+    title: '정산 투명성 확보',
+    desc: '거래 이력과 여신·마감 데이터가<br/>실시간으로 일치합니다.'
+  }
 ]
 
 // --- 구축사례 (3건) ---
@@ -66,10 +64,9 @@ const cases = [
   }
 ]
 
-// --- 제공기술 및 특징 (3개 "라벨_타이틀_설명_Box") ---
+// --- 제공기술 및 특징 (3개) ---
 const featureCards = [
   {
-    icon: 'ico_robot_rcs',
     title: '몰 구축',
     items: [
       ['기업 전용 쇼핑몰 (B2B Mall)', '기업 고객 전용 주문 · 조회 환경 구축'],
@@ -78,7 +75,6 @@ const featureCards = [
     ]
   },
   {
-    icon: 'ico_robot_wes',
     title: '거래 관리',
     items: [
       ['기업 구매 시스템', '부서·직급별 구매 권한 및 예산 통제'],
@@ -87,7 +83,6 @@ const featureCards = [
     ]
   },
   {
-    icon: 'ico_robot_scheduling',
     title: '운영 연계',
     items: [
       ['ERP · SCM · WMS 연계', '주문·재고·출고 데이터 실시간 동기화'],
@@ -98,139 +93,123 @@ const featureCards = [
 
 // --- 시스템 연계 구조 (4단 매트릭스) ---
 const systemLayers = [
-  {
-    label: 'Front 구매 채널',
-    cols: [
-      {title: 'B2B Mall'},
-      {title: '폐쇄몰 (Private)'},
-      {title: '특판몰'},
-      {title: '협력사 전용몰'}
-    ]
-  },
+  {label: 'Front 구매 채널', cols: ['B2B Mall', '폐쇄몰 (Private)', '특판몰', '협력사 전용몰']},
   {
     label: 'BackOffice',
     cols: [
-      {title: '회원·거래처 관리'},
-      {title: '계약단가·견적'},
-      {title: '주문·승인 결재'},
-      {title: '재고·상품 관리'},
-      {title: '정산·여신 관리'}
+      '회원·거래처 관리',
+      '계약단가·견적',
+      '주문·승인 결재',
+      '재고·상품 관리',
+      '정산·여신 관리'
     ]
   },
   {
     label: 'Interface 연계규격',
-    cols: [
-      {title: 'REST API'},
-      {title: 'EDI'},
-      {title: '배치 파일 연계'},
-      {title: 'Message Queue'},
-      {title: 'Web Service (SOAP)'}
-    ]
+    cols: ['REST API', 'EDI', '배치 파일 연계', 'Message Queue', 'Web Service (SOAP)']
   },
   {
     label: 'External 고객사 기간계 시스템',
-    cols: [
-      {title: 'ERP'},
-      {title: 'SCM'},
-      {title: 'WMS'},
-      {title: '그룹웨어 결재'},
-      {title: 'PG · 전자세금계산서'}
-    ]
+    cols: ['ERP', 'SCM', 'WMS', '그룹웨어 결재', 'PG · 전자세금계산서']
   }
 ]
 ---
 
 <Layout>
-  <Gnb />
-
-  <PageBanner
+  <SubBanner
     title="e-Commerce"
-    subtitle={[
-      'Commerce Platform에 속도와 생산성을 높이다.',
-      '"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.'
-    ]}
+    description={`Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.`}
   />
-
-  <Tab variant="line" size="large" items={pageTabs} activeIndex={1} />
-
-  <Title
-    variant="hero"
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-E-COMMERCE-ID-2'} />
+  <TitleMain
     title="B2B Commerce"
-    subtitle={[
-      '"기업 전용몰 구축부터 계약단가 · 승인결재 · 정산까지" 기업 구매 전 과정을 하나의 흐름으로 연결합니다.',
-      'ERP · SCM · WMS와 실시간 연계되는 엔터프라이즈 커머스 플랫폼을 제공합니다.'
-    ]}
+    description={`"기업 전용몰 구축부터 계약단가 · 승인결재 · 정산까지" 기업 구매 전 과정을 하나의 흐름으로 연결합니다.<br/>ERP · SCM · WMS와 실시간 연계되는 엔터프라이즈 커머스 플랫폼을 제공합니다.`}
   />
 
-  <Container maxWidth={1760} class="company-page-end">
-    <Tab variant="box" items={sectionTabs} activeIndex={0} />
+  <div class="innerWrap">
+    <div class="bs-tab-group">
+      {
+        sectionTabs.map((tab, i) => (
+          <a
+            class="bs-tab tab__item"
+            class:list={{'is-active': i === 0}}
+            data-type="box"
+            href={`#${tab.id}`}
+          >
+            {tab.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
 
-    <section id="process" class="ec-section">
-      <Title variant="section" prefix="기업 " highlight="구매 프로세스" />
-
+  <section id="process" class="g-section">
+    <div class="innerWrap">
+      <TitleSub
+        title={`기업 구매 <span class="mark">프로세스</span>`}
+        description="구매 요청부터 정산까지 전 단계를 단일 플랫폼에서 처리합니다."
+      />
       <div class="ec__box-grid ec__box-grid--6">
         {
           processSteps.map((item) => (
-            <Box variant="filled" label={item.step} title={item.title}>
-              {item.desc.join(' · ')}
-            </Box>
+            <div class="ec__step-card">
+              <Label type="type_1">{item.step}</Label>
+              <p class="ec__step-title">{item.title}</p>
+              <p class="ec__step-desc">{item.desc.join(' · ')}</p>
+            </div>
           ))
         }
       </div>
 
-      <Title
-        variant="banner"
-        title="M2M Global  B2B Commerce Platform"
-        caption="전 단계 단일 플랫폼 처리"
-      />
+      <TitleMiddle>M2M Global B2B Commerce Platform — 전 단계 단일 플랫폼 처리</TitleMiddle>
 
-      <div class="ec__feature-grid">
+      <div class="ec__stat-grid">
         {
           processFeatures.map((f) => (
-            <div class="ai-ml__feature-card">
-              <div class="ai-ml__feature-head">
-                <p class="ai-ml__feature-title">{f.title}</p>
-              </div>
-              <div class="ai-ml__feature-list">
-                <TextList>{f.desc}</TextList>
-              </div>
+            <div class="ec__stat-card">
+              {/* TODO: 아이콘 이미지 삽입 */}
+              <span class="ec__stat-icon" aria-hidden="true" />
+              <p class="ec__stat-title">{f.title}</p>
+              <p class="ec__stat-desc" set:html={f.desc} />
             </div>
           ))
         }
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="cases" class="ec-section">
-      <Title variant="section" prefix="구축 " highlight="사례" />
-      <div class="ai-ml__cases">
+  <section id="cases" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`구축 <span class="mark">사례</span>`} />
+      <div class="ec__case-grid">
         {
           cases.map((item) => (
-            <div class="ai-ml__case-card">
-              <div class="ai-ml__case-thumb" />
-              <div class="ai-ml__case-body">
-                <div class="ai-ml__case-title-row">
-                  <p class="ai-ml__case-title">{item.title}</p>
-                  <span class="ai-ml__case-date">{item.date}</span>
-                </div>
-                <p class="ai-ml__case-desc">{item.desc}</p>
-              </div>
+            <div class="ec__case-card">
+              {/* <!-- TODO: 이미지 삽입 --> */}
+              <div class="ec__case-thumb ec__thumb-ph" aria-hidden="true" />
+              <p class="ec__case-title">{item.title}</p>
+              <span class="ec__case-date">{item.date}</span>
+              <p class="ec__case-desc">{item.desc}</p>
             </div>
           ))
         }
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="features" class="ec-section">
-      <Title variant="section" prefix="제공 " highlight="기술 및 특징" />
+  <section id="features" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
       <div class="ec__feature-grid">
         {
           featureCards.map((card) => (
-            <div class="ai-ml__feature-card">
-              <div class="ai-ml__feature-head">
-                <IconCircle icon={card.icon} />
-                <p class="ai-ml__feature-title">{card.title}</p>
+            <div class="ec__feature-card">
+              <div class="ec__feature-head">
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span class="ec__feature-icon" aria-hidden="true" />
+                <p class="ec__feature-title">{card.title}</p>
               </div>
-              <div class="ai-ml__feature-list">
+              <div>
                 {card.items.map((lines) => (
                   <TextList>
                     {lines[0]}
@@ -243,35 +222,29 @@ const systemLayers = [
           ))
         }
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="system" class="ec-section">
-      <Title
-        variant="section"
-        prefix="시스템 "
-        highlight="연계 구조"
-        subtitle={[
-          'Front ↔ BackOffice ↔ Interface 3계층 프레임워크 위에서 기간계 시스템과 연동됩니다.'
-        ]}
+  <section id="system" class="g-section">
+    <div class="innerWrap">
+      <TitleSub
+        title={`시스템 <span class="mark">연계 구조</span>`}
+        description="Front ↔ BackOffice ↔ Interface 3계층 프레임워크 위에서 기간계 시스템과 연동됩니다."
       />
-      <div>
-        {
-          systemLayers.map((layer) => (
-            <div class="ec__matrix-row">
-              <p class="ec__matrix-label">{layer.label}</p>
-              <div class="ec__matrix-cols">
-                {layer.cols.map((col) => (
-                  <div class="ec__matrix-col">
-                    <p class="ec__matrix-col-title">{col.title}</p>
-                  </div>
-                ))}
-              </div>
+      {
+        systemLayers.map((layer) => (
+          <div class="ec__matrix-row">
+            <p class="ec__matrix-label">{layer.label}</p>
+            <div class="ec__matrix-cols">
+              {layer.cols.map((col) => (
+                <div class="ec__matrix-col">
+                  <p class="ec__matrix-col-title">{col}</p>
+                </div>
+              ))}
             </div>
-          ))
-        }
-      </div>
-    </section>
-  </Container>
-
-  <Footer />
+          </div>
+        ))
+      }
+    </div>
+  </section>
 </Layout>

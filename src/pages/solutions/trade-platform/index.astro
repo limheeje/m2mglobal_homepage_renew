@@ -1,5 +1,217 @@
 ---
+// Solutions > Trade Platform (/solutions/trade-platform)
+// Figma "솔루션 소개 > Trade Solution" 3개 프레임(솔루션 이해 / 기술 구성 안내 / 주요 특장점) —
+// 전부 같은 Tap_series 앵커 탭의 상태라 한 페이지로 합쳤다 (/solutions/commerce-platform과 동일 패턴).
+//
+// 참고: "솔루션 이해" 탭의 삼각형(도식) 다이어그램은 사용자 요청에 따라 이미지로 대체할 자리만
+// 남기고 세부 구현은 하지 않았다.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import TitleSub from '~/components/common/TitleSub.astro'
+import TitleThird from '~/components/common/TitleThird.astro'
+import Navigation from '~/components/common/Navigation.astro'
+import TextList from '~/components/common/TextList.astro'
+
+const localNavigation = route.find((item) => item.href === '/solutions/commerce-platform')
+
+const sectionTabs = [
+  {id: 'understand', label: '솔루션 이해'},
+  {id: 'tech', label: '기술 구성 안내'},
+  {id: 'features', label: '주요 특장점'}
+]
+
+// --- 솔루션 이해: M2M-eTrade / M2M-FTA / M2M-eDrawback ---
+const understandCards = [
+  {
+    title: 'M2M-eTrade',
+    items: [
+      '전자 문서 : 인보이스, 패킹리스트, 선적서류, 통관서류를 전자화 하며 EDI 기반으로 기업 간 편리하게 처리',
+      '수출입 절차 자동화 : 전자통관(세관신고), 무역관련 인증 / 원산지 증명 전자 발급 처리',
+      '전자 결제 연계 : L/C(신용장) 전자화, 전자 송금, 무역금융, 보험 연계 제공',
+      '물류 추적 연계 : 운송, 통관 시스템과 연계하여 실시간 배송 추적 제공, CVO-TMS-WMS 등과 통합 제공',
+      '바이어 셀러 매칭 : 플랫폼을 통해 셀러 바이어 거래 매칭 지원 및 거래 후 사후 지원을 위한 해외결제, 국제 물류 지원'
+    ]
+  },
+  {
+    title: 'M2M-FTA',
+    items: [
+      'FTA를 효과적으로 준비해야 하는 국내 기업들이 실제 얻을 수 있는 관세 환급의 혜택을 확인할 수 있도록 지원함',
+      '충실한 기본정보 관리기능 : HS, 재료, 제품, BOM / 다양한 경로의 재료 원산지 관리(구매,수입) / 제품 관리 기능 (출하,선적,재고)',
+      '우수한 판정 : Rule Base Method / Accurate, fast, convenient judgment function / 시뮬레이션 지원 / 판정History / 대용량 데이터 처리',
+      '다양한 연계 : ERP연동, 기관 발급 지원 (관세청, 상공회의소), 기업간 원산지 연계 처리 제공',
+      '사후검증 대응 : 원산지증명서 보관 (PDF,XML) / 판정 근거서류 보관 (구매, 원가) / 판정 History 추적 / 문서 검색 기능'
+    ]
+  },
+  {
+    title: 'M2M-eDrawback',
+    items: [
+      '수출입 기업의 Drawback 환급 신청과 관리 업무 프로세스를<br/>플랫폼을 통해 자동화한 시스템 (무역 비용을 최소화)',
+      '환급신청 자동화 : 필요한 서류 생성 및 신청 프로세스를 제공함으로써 편리성을 제공함',
+      '검증 및 보고 : 세관 검증을 위한 데이터 검증, 이력관리, 보고서 생성 관리의 효율성 제공',
+      '통계 및 분석 : 환급액 분석, 프로세스 효율성 분석, 리스트 관리 등 다양한 Report 제공'
+    ]
+  }
+]
+
+// --- 기술 구성 안내: 컴포넌트 별 아키텍처 다이어그램 (이미지) ---
+const techGroups = ['M2M-eTrade', 'M2M-FTA', 'M2M-eDrawback']
+
+// --- 주요 특장점 (20개) ---
+const featureCards = [
+  {title: '무역 프로세스 효율화', desc: '수출입 거래 전 과정을 전자화 하여<br/>시간, 비용 절감'},
+  {title: '투명성 강화', desc: '문서 위 변조 방지<br/>실시간 정보 공유'},
+  {
+    title: '거래 매칭',
+    desc: '플랫폼을 통한 거래 매칭에 따라<br/>해외 바이어, 셀러 발굴 용이<br/>글로벌 접근성 확대'
+  },
+  {
+    title: '리스크 관리',
+    desc: '통관, 운송 데이터 실시간 확인<br/>주문관리, 해외결제, 수출신고, 클레임 관리'
+  },
+  {
+    title: '정부-기업 간 연계',
+    desc: '국가 간 전자무역 협정 및 시스템 연동<br/>(신용장 개설, 로컬L/C개설, 구매확인서,<br/>수출입통관, 관세환급, FTA원산지증명)'
+  },
+  {
+    title: '원산지 관리 자동화',
+    desc: '로케이션 단위로 재고 위치 파악<br/>입출고이력, 유효기간, LOT관리'
+  },
+  {title: '우수한 판정', desc: '실시간 데이터 갱신<br/>재고 오류 최소화<br/>실사 부담 감소'},
+  {title: '관세 혜택 극대화', desc: '주문에 맞는 최적의 피킹 경로 제시<br/>출고 지연 방지'},
+  {
+    title: '관세 리스트 최소화',
+    desc: '과잉재고, 품절 방지<br/>안전 재고 자동 알림<br/>작업 동선, 작업시간 단축'
+  },
+  {
+    title: '통합 시스템 연계',
+    desc: 'ERP, WMS, SCM 등과<br/>연계하여 데이터 일원화<br/>원산지 관리 체계 구축'
+  },
+  {
+    title: '업무 효율성',
+    desc: '전산 자동화에 따른 수작업 제로<br/>증명서 발급, 협력사 원산지 확인서 관리<br/>등 즉시 처리 가능'
+  },
+  {
+    title: '투명한 이력관리',
+    desc: '협력사 원산지 확인서 수치, 판정근거,<br/>발급 내역 등 이력 추적 기능<br/>감사-사후 검증 시 증빙 제출 용이'
+  },
+  {
+    title: '다국어, 다협정 지원',
+    desc: '한•미, 한•EU, RCEP 등<br/>다양한 FTA 협정룰 지원<br/>글로벌 공급만 관리에 적합'
+  },
+  {
+    title: '자동화 된 환급절차',
+    desc: '수입신고서, 수출신고서, 환급신청서<br/>자동 연계, 처리 제공<br/>수기 작업 최소화에 따른 업무 향상'
+  },
+  {
+    title: '정확한 환급관리',
+    desc: '관세환급 가능금액 자동 계산<br/>누락, 중복 환급 방지<br/>(기업손실최소화)'
+  },
+  {
+    title: '관세청 시스템 연동',
+    desc: '관세청 전자환급 시스템 연계<br/>서류 제출 간소화 & 신속한 환급 진행'
+  },
+  {
+    title: '투명한 데이터 관리',
+    desc: '모든 환급 이력을 전산화<br/>감사와 내부 통제 용이<br/>ERP, WMS, TMS 등 타 시스템과 통합 가능'
+  },
+  {
+    title: '비용 절감/수출 경쟁력강화',
+    desc: '인력 투입 감소에 따른 운영비용 절감<br/>환급 누락 방식에 따른 추가이익 창출'
+  },
+  {
+    title: '자동 업데이트·리스크 관리',
+    desc: '법령 변경, 환급 기준 변화에<br/>자동 업데이트 지원함으써<br/>관리의 효율성 강화'
+  },
+  {
+    title: '경영 의사결정 지원',
+    desc: '환급내역, 예상액 등 데이터 제공<br/>재무/회계 관리와 연계하여<br/>최적의 전략 수립 도움'
+  }
+]
 ---
 
-<Layout />
+<Layout>
+  <SubBanner
+    title="Solutions"
+    description="다년간의 프로젝트 축적된 경험과 노하우를 바탕으로 연구 · 개발 · 실행하여<br/>성공적으로 입증한 최적의 Smart Solution을 소개합니다."
+  />
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-SOLUTIONS-ID-3'} />
+  <TitleMain title="Trade Platform" />
+
+  <div class="innerWrap">
+    <div class="bs-tab-group">
+      {
+        sectionTabs.map((tab, i) => (
+          <a
+            class="bs-tab tab__item"
+            class:list={{'is-active': i === 0}}
+            data-type="box"
+            href={`#${tab.id}`}
+          >
+            {tab.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <section id="understand" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">솔루션 이해</span>`} />
+
+      <!-- TODO: 솔루션 구성도(삼각형 다이어그램) 이미지 삽입 -->
+      <div class="sol__diagram-placeholder" aria-hidden="true"></div>
+
+      <div class="sol__understand-grid">
+        {
+          understandCards.map((card) => (
+            <div class="sol__understand-card">
+              {/* TODO: 아이콘 이미지 삽입 */}
+              <span class="sol__understand-icon" aria-hidden="true" />
+              <p class="sol__understand-title">{card.title}</p>
+              <div class="sol__understand-list">
+                {card.items.map((item) => (
+                  <TextList type="type_2" set:html={item} />
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="tech" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">기술 구성 안내</span>`} />
+      {
+        techGroups.map((name) => (
+          <div class="sol__tech-group">
+            <TitleThird>{name}</TitleThird>
+            {/* <!-- TODO: 아키텍처 구성도 이미지 삽입 --> */}
+            <div class="sol__tech-diagram sol__diagram-placeholder" aria-hidden="true" />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="features" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">주요 특장점</span>`} />
+      <div class="sol__stat-grid">
+        {
+          featureCards.map((card) => (
+            <div class="sol__stat-card">
+              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+              <span class="sol__stat-icon" aria-hidden="true" />
+              <p class="sol__stat-title">{card.title}</p>
+              <p class="sol__stat-desc" set:html={card.desc} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

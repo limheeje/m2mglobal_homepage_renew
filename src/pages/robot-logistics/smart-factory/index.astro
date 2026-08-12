@@ -1,29 +1,22 @@
 ---
 // Robot Logistics > 스마트 팩토리 (/robot-logistics/smart-factory)
-// 참고: Figma "Robot Logistics > 스마트 팩토리" 3개 프레임 — 전부 같은 "Tap_series"(box 스타일) 앵커 탭의
-// 상태라 한 페이지로 합쳤다 (/robot-logistics/overview와 동일 패턴).
+// Figma "Robot Logistics > 스마트 팩토리" 3개 프레임(M2M-MES 특장점 / 시스템구성 / 구축사례) — 전부
+// 같은 Tap_box_series 앵커 탭의 상태라 한 페이지로 합쳤다 (/robot-logistics/overview와 동일 패턴).
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
-import Gnb from '~/components/layout/Gnb.astro'
-import PageBanner from '~/components/PageBanner.astro'
-import Tab from '~/components/Tab.astro'
-import Title from '~/components/Title.astro'
-import Container from '~/components/Container.astro'
-import IconCircle from '~/components/IconCircle.astro'
-import TextList from '~/components/TextList.astro'
-import Icon from '~/components/Icon.astro'
-import Footer from '~/components/Footer.astro'
-import {route} from '@config/route'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import TitleSub from '~/components/common/TitleSub.astro'
+import TitleMiddle from '~/components/common/TitleMiddle.astro'
+import Navigation from '~/components/common/Navigation.astro'
+import TextList from '~/components/common/TextList.astro'
 
-// 1Depth "Robot Logistics" 하위 2Depth 페이지 간 이동용 line 탭 — 페이지 링크 이동(in-page anchor 아님).
-const pageTabs = [
-  {label: 'Robot Logistics', href: route['/robot-logistics/overview']},
-  {label: 'Smart Factory', href: route['/robot-logistics/smart-factory']}
-]
+const localNavigation = route.find((item) => item.href === '/robot-logistics/overview')
 
 const sectionTabs = [
-  {label: 'M2M-MES 특장점', href: '#benefits'},
-  {label: '시스템구성', href: '#system'},
-  {label: '구축사례', href: '#cases'}
+  {id: 'benefits', label: 'M2M-MES 특장점'},
+  {id: 'system', label: '시스템구성'},
+  {id: 'cases', label: '구축사례'}
 ]
 
 const pipelineStages = ['데이터 수집', '데이터 정제 · 관리', '데이터 활용']
@@ -84,38 +77,44 @@ const cases = [
 ---
 
 <Layout>
-  <Gnb />
-
-  <PageBanner
+  <SubBanner
     title="Robot Logistics"
-    subtitle={[
-      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
-      '모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다.'
-    ]}
+    description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다."
   />
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-ROBOT-LOGISTICS-ID-2'} />
+  <TitleMain title="스마트 팩토리" />
 
-  <Tab variant="line" size="large" items={pageTabs} activeIndex={1} />
+  <div class="innerWrap">
+    <div class="bs-tab-group">
+      {
+        sectionTabs.map((tab, i) => (
+          <a
+            class="bs-tab tab__item"
+            class:list={{'is-active': i === 0}}
+            data-type="box"
+            href={`#${tab.id}`}
+          >
+            {tab.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
 
-  <Title variant="hero" title="스마트 팩토리" />
-
-  <Container maxWidth={1760} class="company-page-end">
-    <Tab variant="box" items={sectionTabs} activeIndex={0} />
-
-    <section id="benefits" class="rl-section">
-      <Title variant="section" prefix="제공 " highlight="기술 및 특징" />
+  <section id="benefits" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
 
       <div class="rl__process-flow">
         {
           pipelineStages.map((stage, i) => (
             <>
               <div class="rl__process-stage">
-                <div class="ai-ml__flow-box">
-                  <p class="rl__process-stage-title">{stage}</p>
-                </div>
+                <p class="rl__process-stage-title">{stage}</p>
               </div>
               {i < pipelineStages.length - 1 && (
-                <span class="rl__process-chevron" aria-hidden="true">
-                  <Icon name="ico_chevron_right" size={24} />
+                <span class="rl__overview-arrow" aria-hidden="true">
+                  ›
                 </span>
               )}
             </>
@@ -129,59 +128,57 @@ const cases = [
         {pipelineDevices.map((dev) => <span class="rl__pipeline-chip">{dev}</span>)}
       </div>
 
-      <Title
-        variant="banner"
-        title="M2M-MES"
-        caption="Manufacturing Execution System"
-        class="rl__mes-banner"
-      />
+      <div class="rl__mes-banner">
+        <TitleMiddle>
+          M2M-MES <span class="mark">Manufacturing Execution System</span>
+        </TitleMiddle>
+      </div>
 
       <div class="rl__benefit-grid">
         {
           benefitCards.map((card) => (
             <div class="rl__benefit-card">
               <div class="rl__benefit-head">
-                <IconCircle icon="ico_mes_benefit" />
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span class="rl__icon-ph" aria-hidden="true" />
                 <p class="rl__benefit-title">{card.title}</p>
               </div>
-              <div class="rl__benefit-list">
-                <TextList>{card.top}</TextList>
-                <span class="rl__benefit-arrow" aria-hidden="true">
-                  <Icon name="ico_chevron_right" size={18} />
-                </span>
-                <TextList>{card.bottom}</TextList>
-              </div>
+              <TextList>{card.top}</TextList>
+              <span class="rl__benefit-arrow" aria-hidden="true">
+                ↓
+              </span>
+              <TextList>{card.bottom}</TextList>
             </div>
           ))
         }
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="system" class="rl-section">
-      <Title variant="section" prefix="시스템 " highlight="구성도" />
-      <div class="rl__diagram-placeholder" style="aspect-ratio: 1190/678;"></div>
-    </section>
+  <section id="system" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`시스템 <span class="mark">구성도</span>`} />
+      <!-- TODO: 시스템구성도 이미지 삽입 -->
+      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
+    </div>
+  </section>
 
-    <section id="cases" class="rl-section">
-      <Title variant="section" prefix="구축 " highlight="사례" />
-      <div class="ai-ml__cases">
+  <section id="cases" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`구축 <span class="mark">사례</span>`} />
+      <div class="rl__case-grid">
         {
           cases.map((item) => (
-            <div class="ai-ml__case-card">
-              <div class="ai-ml__case-thumb" />
-              <div class="ai-ml__case-body">
-                <div class="ai-ml__case-title-row">
-                  <p class="ai-ml__case-title">{item.title}</p>
-                  <span class="ai-ml__case-date">{item.date}</span>
-                </div>
-                <p class="ai-ml__case-desc">{item.desc}</p>
+            <div class="rl__case-card">
+              <div class="rl__case-title-row">
+                <p class="rl__case-title">{item.title}</p>
+                <span class="rl__case-date">{item.date}</span>
               </div>
+              <p class="rl__case-desc">{item.desc}</p>
             </div>
           ))
         }
       </div>
-    </section>
-  </Container>
-
-  <Footer />
+    </div>
+  </section>
 </Layout>

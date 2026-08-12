@@ -21,6 +21,22 @@ Consult these guides before working on related tasks:
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
 
+## 작업 요청 포맷 (수정요청)
+
+사용자가 아래 포맷으로 페이지 수정 요청을 준다 — 이 포맷을 인식하면 반드시 다음 절차를 따른다.
+
+```
+경로 : /ai-engine/ai-commerce
+[피그마참조할 내용 (수치확인 후 적용)]
+- "추천 아키텍처 전환" 부분에 .... 수정내용
+[기능개선]
+- 내용..
+```
+
+- **`[피그마참조할 내용]`**: 짐작으로 수정하지 않는다 — 반드시 Figma Dev Mode MCP(`get_design_context`/`get_metadata`/`get_screenshot`)로 해당 프레임을 먼저 조회해서 px·color·spacing·정렬 등 실제 수치를 확인한 뒤 그대로 적용한다. Figma 파일은 조회 전용(아래 "Figma MCP 연동" 규칙) — 절대 편집하지 않는다. 노드를 못 찾겠으면 짐작해서 진행하지 말고 사용자에게 프레임 선택을 요청하거나, 이미 검증된 사이트 내 동일 패턴(다른 페이지의 동일 컴포넌트 스타일)을 근거로 통일하고 그 사실을 명시한다.
+- **`[기능개선]`**: Figma 시각 요소가 아니라 동작/로직 개선 요청(버튼 클릭 기능 연결, 네비게이션 데이터 버그, 스크롤 동작 등) — Figma 조회 없이 실제 코드/런타임 동작을 점검해서 고친다. 두 섹션은 하나만 올 수도, 둘 다 올 수도 있다.
+- **이미지/아이콘 파일**: 원칙적으로 사용자가 직접 준비/삽입한다 (다운로드 금지 — TODO 플레이스홀더만 남길 것, 아래 "아이콘 / 이미지" 규칙 참고). 단, 사용자가 명시적으로 이미지 처리까지 요청하는 경우는 예외적으로 진행 가능 — 매번 기본값(TODO만 남김)으로 가정하지 말고 요청 문구를 확인한다.
+
 ## Styling (SCSS via VSCode Watch Sass)
 
 이 프로젝트는 Astro의 내장 vite-sass 파이프라인을 쓰지 않고, VSCode **Live Sass Compile**(`glenn2223.live-sass-compiler`) 확장의 watch 컴파일 방식을 사용한다.
@@ -136,7 +152,7 @@ Figma 파일의 `Component` 페이지(Typography/Color/Tab/Label/Button/GNB 등)
 
 **아직 스크립트(JS) 미구현 — TODO**: GNB 모바일 드로어 열기/닫기. 지금은 마크업/CSS만 있고 GNB 데스크탑 메가메뉴만 `:hover`/`:focus-within` CSS로 동작한다. GNB 메가메뉴는 항목별 개별 드롭다운이 아니라 **1Depth 아무거나 hover하면 6개 컬럼 전체가 하나의 패널로 열리는 구조**(Figma 원본 그대로) — 항목별 드롭다운으로 바꾸지 말 것.
 
-**전역 스크립트는 `src/scripts/*.ts` + `Layout.astro`의 `<body>` 끝 `<script>` 태그에서 import**: `tab-box-scrollspy.ts`(`.tab--box` 클릭 시 부드러운 스크롤 + IntersectionObserver로 스크롤 위치에 따른 탭 자동 활성화), `scroll-to-top.ts`(맨 위로 가기 FAB 클릭 시 부드러운 스크롤). 페이지 종속 로직 없이 클래스/id 마크업 컨벤션만으로 동작하므로 새 페이지에서 별도 연결 코드 필요 없음.
+**전역 스크립트는 `src/scripts/*.ts` + `Layout.astro`의 `<body>` 끝 `<script>` 태그에서 import**: `tab-box-scrollspy.ts`(`.bs-tab-group` 클릭 시 부드러운 스크롤 + IntersectionObserver로 스크롤 위치에 따른 탭 자동 활성화), `scroll-to-top.ts`(맨 위로 가기 FAB 클릭 시 부드러운 스크롤). 페이지 종속 로직 없이 클래스/id 마크업 컨벤션만으로 동작하므로 새 페이지에서 별도 연결 코드 필요 없음.
 
 **"맨 위로 가기" 버튼은 `Layout.astro`에 전역으로 있다**: 모든 페이지의 `<body>` 끝에서 자동으로 렌더링되는 `<IconButton icon="ico_arrow_top" .../>`(fixed, 우측 하단) — 새 페이지에서 페이지마다 다시 추가하지 말 것.
 
@@ -152,6 +168,18 @@ Figma 파일의 `Component` 페이지(Typography/Color/Tab/Label/Button/GNB 등)
   - 새 토큰이 필요하면 `_variables.scss`의 Sass 변수(Core 정의용) + `:root` 블록(런타임 노출용) 양쪽 다 추가할 것 — 하나만 추가하면 `m.color()`/`var()` 참조가 깨진다.
 
 **의도적으로 만들지 않은 것**: `Carousel`(요청으로 제외), `Arrow`(장식용 그래픽 모티프라 컴포넌트화 근거 약함), `라벨_타이틀_설명_Box` 대형 서비스카드(IconCircle+Label+Title+TextList+Button 조합으로 페이지에서 직접 구성).
+
+**⚠️ 위 "공통 컴포넌트" 표와 실제 코드 불일치 주의 (2026-08-12 확인)**: 표에 있는 `IconButton`, `ListItem`, `SpecGroup`, `Box`, `Title`, `TextButton`, `Container`/`Row`/`Col`, `Grid`는 **`src/components/`에 실제 파일이 없다** — 사용 전에 `Glob`으로 먼저 존재를 확인할 것(없으면 이 문서가 아직 못 따라간 것이니 만들거나 다른 방식으로 처리). 또한 `Icon` 컴포넌트의 실제 구현은 위 설명(`src/assets/icons/*.svg` glob)과 다르다 — 실제로는 `src/components/common/Icon.astro`가 `public/images/icons/{name}`을 `PUBLIC_BUILD_URL` 기준 `<img src>`로 로드하는 방식이고, 아이콘 파일은 `public/images/icons/*.svg`에 있다.
+- 화살표류 장식 그래픽(예: 5단계 플로우 사이 화살표)은 다운로드 대상이 아니라 **직접 제작한 벡터**로 처리한 전례가 있다 — `src/assets/images/step-arrow.svg`(반투명 그라데이션 화살표, `/company/ceo-message`에서 최초 제작 후 `/ai-engine/machine-learning`·`/ai-engine/ai-commerce`의 플로우/화살표에도 재사용 중). 비슷한 장식용 화살표가 또 필요하면 이 자산을 재사용하거나 같은 방식(직접 제작)으로 만들 것 — Figma에서 다운로드하지 않는다.
+
+## 작업 로그 (진행 기록)
+
+### 2026-08-12
+- `/company/address`, `/company/contact-us`: 정보 박스 테두리/간격, "사업 문의" 카드 전체(흰 배경+테두리, 인라인 라벨+이메일, 연회색 필 다운로드 버튼)를 Figma 실측대로 재구축 — 기존 공용 `Button`(primary/H4) 오용이 원인이었음.
+- `/ai-engine/machine-learning`: "비즈니스 구성도" 플로우박스 배경(Color/Black 3)·타이틀 구분선(border-bottom Black 20, 중앙정렬)·박스 간 화살표·"구축분야 및 기술 스택" 리스트 상단 오프셋(Figma 실측 65px)·"구축 사례" 배경 등을 Figma 재검증 후 수정.
+- `/ai-engine/ai-commerce`: Level 카드 라벨 inline화(flex-column 부모가 stretch시켜 block처럼 보였던 문제), `.ai__meta-row` 라벨/값을 세로 스택으로 재구성, Level 타이틀 하단 테두리 추가, Hybrid Scoring 레이어 테두리를 박스 전체 → 타이틀 하단으로 이동, "Vector 기반 개인화 프로파일링" 카드 그룹 테두리를 개별 카드 → item+이미지+item 통합 테두리로 변경, "실행 사례" 고객사 로고를 `/company/news`와 동일 자산·카드 스타일로 통일.
+- 전역 "맨 위로 가기" 버튼: `Layout.astro`에 CSS 포지셔닝과 `scroll-to-top.ts` 클릭 훅만 있고 실제 `<button>` 엘리먼트가 없어 클릭할 대상 자체가 없던 상태였음 — 버튼 엘리먼트 추가, 스타일은 `layout/_top-btn.scss`로 신설. 동작 확인됨.
+- **버그 수정**: 9개 페이지(`ai-commerce`, `e-commerce/marketplace`, `e-commerce/b2b-commerce`, `solutions/trade-platform`, `solutions/logistics-platform`, `solutions/elivestock-platform`, `robot-logistics/smart-factory`, `project/specialized-outcomes`, `project/reference`)가 `route.find(item => item.href === 자기_자신의_href)`로 조회하고 있어서, 그룹 최상위 href와 달라 매칭 실패 → `Navigation`이 빈 값을 받아 2뎁스 서브 네비게이션이 사라졌었음. 전부 그룹 최상위 href로 수정. **새 페이지의 `route.find()`는 항상 그 메뉴 그룹의 최상위 href(= `routeMap`의 각 그룹 `href`, 보통 그 그룹 첫 번째 child의 href와 동일)로 조회할 것 — 페이지 자기 자신의 href를 넣지 않는다.**
 
 ## Figma MCP 연동 (Dev Mode MCP Server)
 

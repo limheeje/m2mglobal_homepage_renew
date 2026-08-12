@@ -1,5 +1,504 @@
 ---
+// Project > Specialized Outcomes (/project/specialized-outcomes)
+// Figma "프로젝트 전체" 섹션의 4개 프레임(Specialized Outcomes 개요 / Semimarket / SORIN /
+// CJ대한통운 로봇물류)을 한 페이지 앵커탭으로 통합 — 사용자가 AskUserQuestion에서
+// "한 페이지 안 앵커탭" 구조를 선택했고, 다른 멀티탭 페이지들과 동일한 패턴이다.
+//
+// 참고: 개요 탭 상단의 원형/네트워크 그래픽, Semimarket/SORIN의 화면 스크린샷 갤러리,
+// CJ대한통운의 "동작 구현 화면" 대형 이미지·PC/Tablet 화면 스크린샷은 전부 이미지라
+// 사용자 지시에 따라 빈 자리만 남기고 코딩하지 않았다.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import TitleSub from '~/components/common/TitleSub.astro'
+import TitleMiddle from '~/components/common/TitleMiddle.astro'
+import Navigation from '~/components/common/Navigation.astro'
+import TextList from '~/components/common/TextList.astro'
+
+const localNavigation = route.find((item) => item.href === '/project/reference')
+
+const sectionTabs = [
+  {id: 'overview', label: 'Specialized Outcomes'},
+  {id: 'semimarket', label: 'Semimarket'},
+  {id: 'sorin', label: 'SORIN'},
+  {id: 'cj', label: 'CJ대한통운 로봇물류'}
+]
+
+// --- 개요: Why M2M GLOBAL? 특별한 성과가 차이를 만듭니다 (3개 대표 사례 카드) ---
+const overviewCases = [
+  {
+    name: 'CJ April 로봇 물류',
+    items: ['통합관제 및 모니터링', '통합정보 관리시스템', '작업 관리 시스템'],
+    footer: '웹 / 태블릿 / 갤럭시워치 / PDA (1/2/3차 구축)'
+  },
+  {
+    name: '중고반도체거래(글로벌)',
+    items: [
+      'Equipment / Parts / Extras',
+      '셀러-바이어 거래',
+      'Seller 입접 사이트 제공',
+      '오퍼 구매, 견적 구매, 입찰 제공',
+      '다양한 결제수단 / 물류 추적 제공'
+    ],
+    footer: '웹 / 어드민 / 모바일 (1/2/3차 구축, 운영)'
+  },
+  {
+    name: '비철금속거래 서린닷컴',
+    items: [
+      '실시간 시세, 환율, 재고 연동',
+      'LME 시세 실시간 차트 구현',
+      '구매 유형 : 라이브, 평균가, 지정가',
+      '구매 입찰을 통한 재고 확보',
+      '선물거래, 수출입대행 구축'
+    ],
+    footer: '웹 / 어드민 / 모바일 (1/2/3차 구축)'
+  }
+]
+
+// --- Semimarket / SORIN 공용: PRODUCT&MEMBER / PRICING / PAYMENT / WAREHOUSE&LOGISTICS / Service ---
+const semimarketRows = [
+  {
+    label: 'PRODUCT &\nMEMBER',
+    summary: [
+      '상품 : Equipment, Parts, Extras / AI 추천을 통한 최적의 상품 매칭 및 매출 향상',
+      '회원 : 기업 회원 / 셀러 (구매 횟수, 가격 등 셀러 등급에 따른 프리미엄 차등 적용)'
+    ],
+    items: [
+      'Equipment, Parts, Extras : 3depth 구조로 아이템 판매',
+      '입찰을 통해 재고 확보-판매',
+      '고객 별, AI 상품 추천 연동 → 셀러와 바이어 판매 매칭 최적화 제공',
+      '등급별 회원 관리 / 여신 차등 프리미엄 / 영업-마케팅 연동'
+    ]
+  },
+  {
+    label: 'PRICING',
+    summary: [
+      'PRICING : 고정가, 오퍼, 멀티오퍼, 견적구매, 입찰구매',
+      'PREMIUM : DYNAMIC PREMIUM (고객 / 아이템 / 국가 / 결제에 따라 프리미엄 차등 적용)'
+    ],
+    items: [
+      '고정가 구매, 오퍼 구매(단일, 멀티), 견적 구매(물류비 포함), 입찰 구매',
+      '국가 별, 회원 별, 아이템 별 회원 등급에 따라 권한 차등 적용',
+      '상황에 맞는 프라이싱 책정(재고 변동, 주문량추이) & 회원 등급 별, 상품 별(구매액 기준, 주문빈도, 규칙성, 활동성) 프리미엄 관리 적용 확대 (3차 시 확대 예정)'
+    ]
+  },
+  {
+    label: 'PAYMENT',
+    summary: [
+      '통화(CURRENCY) : USD, KRW',
+      '결제(PAYMENT) : 신용장거래, D/A 등 은행기반의 국제결제수단'
+    ],
+    items: [
+      '현금(e-Wallet), 카드결제 제공',
+      '입출금 자동화를 통한 고객 클레임 Zero',
+      '결제 수단, 지원통화, 가상계좌, 쿠폰, 마일리지, 복합결제 확대 (3차 시 확대 예정)'
+    ]
+  },
+  {
+    label: 'WAREHOSE &\nLOGISTICS',
+    summary: [
+      '인도조건(INCOTERMS) : FOB/CIF/FOT/DAP',
+      '재고범위(STOCKS) : 계약재고 / 미착재고 / 기착재고 / 창고재고'
+    ],
+    items: [
+      '창고에 입고된 재고에 한정하여 FOT(트럭상차도)와 DAP(고객사도착도) 로 판매',
+      '국내 배송 실시간 추적',
+      '글로벌 배송 프로세스 관제 및 관리 확대 (3차 시 확대 예정)'
+    ]
+  },
+  {
+    label: 'Service',
+    summary: [
+      '서류자동화 및 주문관리에 대한 편의성 제공',
+      '회원 : 기업 회원 / 셀러 (구매 횟수, 가격 등 셀러 등급에 따른 프리미엄 차등 적용)'
+    ],
+    items: [
+      '계약서 / 계산서 / 출고증 / 인수증 자동발행',
+      '입금 / 출금 / 정산 / 환불내역 실시간 조회 가능',
+      '주문 / 대기 / 출고 / 배송상태 실시간 확인'
+    ]
+  }
+]
+
+const sorinRows = [
+  {
+    label: 'PRODUCT &\nMEMBER',
+    summary: [
+      '금속 : 알루미늄 / 아연 / 연 / 구리 / 니켈 / 주석',
+      '회원 : 기업 회원 (등급별 회원 관리 / 결제 차등 혜택 등 운영 )'
+    ],
+    items: [
+      '알루미늄 / 아연 / 연 / 구리 / 니켈 / 주석 판매',
+      '구매 입찰을 통한 재고 확보 / 판매진행',
+      '등급별 회원 관리 / 여신 차등 프리미엄 / 영업-마케팅 연동'
+    ]
+  },
+  {
+    label: 'PRICING',
+    summary: [
+      'PRICING : LIVE(시장가), 가단가, CSP, AVERAGE, FORWARD, LIMIT(지정가)',
+      'PREMIUM : DYNAMIC PREMIUM (고객 / 브랜드 / 국가 / 결제 / 여신기간별 프리미엄 차등 적용)'
+    ],
+    items: [
+      'LIVE(시장가), 가단가, 평균가, 지정가',
+      '고객별, 유통/제조사 등 프리미엄 적용',
+      '여신에 따른 차등 프리미엄 적용'
+    ]
+  },
+  {
+    label: 'PAYMENT',
+    summary: [
+      '통화(CURRENCY) : USD, RMB 등',
+      '결제(PAYMENT) : 신용장거래, D/A 등 은행기반의 국제결제수단'
+    ],
+    items: [
+      '현금(e-Wallet), 선수금(증거금), 여신(서린크레딧)',
+      '전자상거래보증, 구매자금, 마일리지, 복합결제',
+      '입출금 자동화를 통한 고객 클레임 Zero (에스크로-고객신뢰Up)'
+    ]
+  },
+  {
+    label: 'WAREHOSE &\nLOGISTICS',
+    summary: [
+      '인도조건(INCOTERMS) : FOB/CIF/FOT/DAP',
+      '재고범위(STOCKS) : 계약재고 / 미착재고 / 기착재고 / 창고재고'
+    ],
+    items: ['창고에 입고된 재고에 한정하여 FOT(트럭상차도)와 DAP(고객사도착도) 로 판매']
+  },
+  {
+    label: 'Service',
+    summary: ['서류자동화 및 주문 관리에 대한 편의성 제공'],
+    items: [
+      '계약서/계산서/출고증/인수증자동발행',
+      '입금/출금/정산/환불내역 실시간 조회가능',
+      '주문/대기/출고/배송상태 실시간확인'
+    ]
+  }
+]
+
+// --- CJ대한통운: 로봇기반 통합관제시스템 구축 사례 (타임라인) ---
+const cjTimelinePhases = [
+  {
+    label: '로봇물류플랫폼 기술확보',
+    dateRange: '2022.07 - 2024.12',
+    stages: [
+      {step: '1단계(2022.07-2023.03)', desc: '이기종무인운반차(AGV) 로봇통합관제플랫폼 개발'},
+      {step: '2단계(2023.05-2024.03)', desc: '이기종자율이동로봇(AMR) 로봇통합관제플랫폼개발'},
+      {
+        step: '3단계(2024.07-2024.12)',
+        desc: '로봇(셔틀및소형AGV), 기타IT 디바이스를 통해 이커머스 택배에서 활용가능 한 로봇 운영(피킹,보관) 플랫폼 개발'
+      }
+    ]
+  },
+  {
+    label: '현장 센터 시범적용 & 운용 (국내 1위 물류 업체 협업)',
+    dateRange: '2024.12 - 2025.12',
+    stages: [{step: '1차(2024.12-2025.03)', desc: 'AMR 25대적용(이천물류센터)'}]
+  }
+]
+
+// --- CJ대한통운: 구현 기능 (7개) ---
+const cjFeatures = [
+  'AGV 제어\nRoot-Planning',
+  '해당 기종\n로봇 트래픽\n제어',
+  '작업자 배치 ·\n주문 배치/할당\n알고리즘',
+  '비동기\n메시지 제어',
+  '3D Map\n구현/제어',
+  'MSA\n(Micro Service Architecture)',
+  '하드웨어 제어 · 빅데이터\n수집/가공'
+]
+
+// --- CJ대한통운: 연동 제조사 AMR / AGV ---
+const cjEquipment = [
+  {maker: 'LG', model: 'Cloi', type: 'AMR', usage: '피킹'},
+  {maker: 'ForwardX', model: 'Flex Series', type: 'AMR', usage: '피킹'},
+  {maker: 'Omron', model: 'LD/MD/HD', type: 'AMR', usage: '피킹'},
+  {maker: 'Geek+', model: 'P500R', type: 'AGV', usage: '보충/피킹'},
+  {maker: 'Hik', model: 'Q7-1000E', type: 'AMR', usage: '보충/피킹'},
+  {maker: 'Hik', model: 'F0-50DCH', type: 'AGV', usage: '보충/피킹'}
+]
+
+// --- CJ대한통운: 시스템 업무 구성 (8개 카드) ---
+const cjSystemCards = [
+  {
+    title: '정보 조회',
+    items: ['로봇 모니터링', '로봇 모니터링', '보충 작업 내역', '피킹 작업 내역']
+  },
+  {
+    title: '센터 관리',
+    items: [
+      '센터 정보 관리',
+      '구역 정보 관리',
+      '렉 관리',
+      '스테이션 관리',
+      '설비관리',
+      '맵 관리',
+      '화주 관리'
+    ]
+  },
+  {title: 'SKU 정보관리', items: []},
+  {title: '주문관리', items: ['보충 주문', '피킹 주문']},
+  {
+    title: '재고관리',
+    items: ['재고 조회', '재고 조사', '이상 재고 관리', '상품 점유 내역', '과잉/부족 관리']
+  },
+  {
+    title: '시스템관리',
+    items: ['권한그룹 관리', '사용자 관리', '메뉴 관리', '공통 코드 관리', '로그 관리']
+  },
+  {title: '통계', items: ['주문통계', '보관량 통계', '로봇 가동 통계', '작업 통계']},
+  {title: '작업자', items: ['보충 작업', '피킹 작업', '반출 피킹', '재고 조사']}
+]
+
+// --- CJ대한통운: 주요 기능 소개 (PC / Tablet) ---
+const cjCompareCols = [
+  {device: 'PC', items: ['보충주문', '일반 피킹', '반출 피킹', '재고조사']},
+  {device: 'Tablet', items: ['대시보드', '오더피킹', '맵 조회', '실시간 위치']}
+]
 ---
 
-<Layout />
+<Layout>
+  <SubBanner
+    title="Project"
+    description={`"전문 구축 경험 · 산업별 커스터마이징 · B2B 특화 솔루션 · 검증된 성과 · 높은 재계약률"<br/>24년간 꾸준히 수행해온 프로젝트가 엠투엠글로벌의 경쟁력을 입증합니다.`}
+  />
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-PROJECT-ID-2'} />
+  <TitleMain
+    title="Specialized Outcomes"
+    description={`“일반 커머스(B2C쇼핑몰)를 비롯~실시간 시세, 환율, 재고 연동형 거래 및 기업간의 대규모 자재, 원자재 거래” 실거래 수준으로 구현 및 AI Commerce 통해 거래·추천·분석까지 AI Commerce로 확장 적용 가능한 유일한 B2B 특화 Commerce 경험을 보유한 플랫폼 전문 기업.`}
+  />
+
+  <div class="innerWrap">
+    <div class="bs-tab-group">
+      {
+        sectionTabs.map((tab, i) => (
+          <a
+            class="bs-tab tab__item"
+            class:list={{'is-active': i === 0}}
+            data-type="box"
+            href={`#${tab.id}`}
+          >
+            {tab.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <section id="overview" class="g-section">
+    <div class="innerWrap">
+      <!-- TODO: 원형/네트워크 그래픽 이미지 삽입 -->
+      <div class="spec__banner-diagram" aria-hidden="true"></div>
+
+      <TitleMiddle>Why M2M GLOBAL? 특별한 성과가 차이를 만듭니다.</TitleMiddle>
+
+      <div class="spec__case-grid">
+        {
+          overviewCases.map((item) => (
+            <div class="spec__case-card">
+              <div class="spec__case-head">
+                {/* <!-- TODO: 로고 이미지 삽입 --> */}
+                <span class="spec__case-logo-ph" aria-hidden="true" />
+                <p class="spec__case-name">{item.name}</p>
+              </div>
+              <div class="spec__case-list">
+                {item.items.map((text) => (
+                  <TextList type="type_1">{text}</TextList>
+                ))}
+              </div>
+              <p class="spec__case-footer">{item.footer}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="semimarket" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">Semimarket</span>`} />
+      <div class="spec__row-grid">
+        {
+          semimarketRows.map((row) => (
+            <div class="spec__row">
+              <div class="spec__row-label">
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span class="spec__row-icon-ph" aria-hidden="true" />
+                <p set:html={row.label.replace('\n', '<br/>')} />
+              </div>
+              <div class="spec__row-summary">
+                {row.summary.map((text) => (
+                  <TextList type="type_1">{text}</TextList>
+                ))}
+              </div>
+              {/* <!-- TODO: 화살표 이미지 삽입 --> */}
+              <span class="spec__row-arrow-ph" aria-hidden="true" />
+              <div class="spec__row-list">
+                {row.items.map((text) => (
+                  <TextList type="type_2">{text}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <TitleSub title={`특별한 <span class="mark">성과</span>`} />
+      <div class="spec__gallery-grid">
+        {Array.from({length: 6}).map(() => <div class="spec__gallery-ph" aria-hidden="true" />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="sorin" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`<span class="mark">SORIN</span>`} />
+      <div class="spec__row-grid">
+        {
+          sorinRows.map((row) => (
+            <div class="spec__row">
+              <div class="spec__row-label">
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span class="spec__row-icon-ph" aria-hidden="true" />
+                <p set:html={row.label.replace('\n', '<br/>')} />
+              </div>
+              <div class="spec__row-summary">
+                {row.summary.map((text) => (
+                  <TextList type="type_1">{text}</TextList>
+                ))}
+              </div>
+              {/* <!-- TODO: 화살표 이미지 삽입 --> */}
+              <span class="spec__row-arrow-ph" aria-hidden="true" />
+              <div class="spec__row-list">
+                {row.items.map((text) => (
+                  <TextList type="type_2">{text}</TextList>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <TitleSub title={`특별한 <span class="mark">성과</span>`} />
+      <div class="spec__gallery-grid">
+        {Array.from({length: 6}).map(() => <div class="spec__gallery-ph" aria-hidden="true" />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="cj" class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`로봇기반 통합관제시스템 <span class="mark">구축 사례</span>`} />
+      <div class="spec__timeline">
+        {
+          cjTimelinePhases.map((phase) => (
+            <div class="spec__timeline-phase">
+              <p class="spec__timeline-phase-label">{phase.label}</p>
+              <p class="spec__timeline-phase-date">{phase.dateRange}</p>
+              <div class="spec__timeline-stages">
+                {phase.stages.map((stage) => (
+                  <div class="spec__timeline-stage">
+                    <p class="spec__timeline-step">{stage.step}</p>
+                    <p class="spec__timeline-desc">{stage.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <TitleSub title={`구현 <span class="mark">기능</span>`} />
+      <div class="spec__num-grid">
+        {
+          cjFeatures.map((text, i) => (
+            <div class="spec__num-card">
+              <p class="spec__num-index">{String(i + 1).padStart(2, '0')}</p>
+              <p class="spec__num-label" set:html={text.replace(/\n/g, '<br/>')} />
+            </div>
+          ))
+        }
+      </div>
+
+      <TitleSub title={`연동 제조사 <span class="mark">AMR / AGV</span>`} />
+      <div class="spec__equip-table">
+        <div class="spec__equip-row spec__equip-row--head">
+          <span>제조사</span><span>모델</span><span>유형</span><span>용도</span>
+        </div>
+        {
+          cjEquipment.map((row) => (
+            <div class="spec__equip-row">
+              <>
+                <span>{row.maker}</span>
+                <span>{row.model}</span>
+                <span>{row.type}</span>
+                <span>{row.usage}</span>
+              </>
+            </div>
+          ))
+        }
+      </div>
+
+      <TitleSub
+        title={`CJ 대한통운 APRIL 로봇통합플랫폼 : <span class="mark">동작 구현 화면</span>`}
+      />
+      <!-- TODO: 동작 구현 화면 이미지 삽입 -->
+      <div class="spec__image-ph spec__image-ph--wide" aria-hidden="true"></div>
+
+      <TitleSub title={`시스템 <span class="mark">업무 구성</span>`} />
+      <p class="spec__intro-text">
+        플랫폼 통합관제, 통합정보관리, 작업관리, 사용자 시스템을 통합 구현하여 로봇 운영과 물류
+        업무를 하나의 플랫폼에서 효율적으로 관리할 수 있는 환경을 제공합니다.
+      </p>
+      <div class="spec__sysmap-grid">
+        {
+          cjSystemCards.map((card) => (
+            <div class="spec__sysmap-card">
+              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+              <span class="spec__sysmap-icon-ph" aria-hidden="true" />
+              <p class="spec__sysmap-title">{card.title}</p>
+              {card.items.length > 0 && (
+                <ul class="spec__sysmap-list">
+                  {card.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))
+        }
+      </div>
+
+      <TitleSub title={`주요 <span class="mark">기능 소개</span>`} />
+      <p class="spec__intro-text">
+        PC는 보충주문, 일반 피킹, 반출 피킹, 재고조사 등 운영 관리 기능을 제공하고, 태블릿은
+        대시보드, 오더 피킹, 맵 조회, 실시간 위치 확인 등 현장 중심의 작업 지원 기능을 제공합니다.
+      </p>
+      <div class="spec__compare">
+        {
+          cjCompareCols.map((col, i) => (
+            <>
+              {
+                /* TODO: 화살표 이미지 삽입 */
+                i === 1 && <span class="spec__compare-arrow-ph" aria-hidden="true" />
+              }
+              <div class="spec__compare-col">
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span class="spec__compare-icon-ph" aria-hidden="true" />
+                <p class="spec__compare-device">{col.device}</p>
+                <div class="spec__compare-list">
+                  {col.items.map((text) => (
+                    <TextList type="type_2">{text}</TextList>
+                  ))}
+                </div>
+                {/* <!-- TODO: 화면 스크린샷 이미지 삽입 --> */}
+                <div class="spec__image-ph" aria-hidden="true" />
+              </div>
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

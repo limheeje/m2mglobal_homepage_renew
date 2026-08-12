@@ -1,0 +1,158 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /page-list 전용 마크업 — 개발/검수용 사이트맵 카드 그리드
+// ==========================================================================
+
+.page-list__summary {
+  @include font('Body 18 R');
+  color: color('Black/60');
+  margin-bottom: rem(40px);
+
+  strong {
+    color: color('Color/Primary Color');
+    font-weight: 700;
+  }
+}
+
+.page-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: rem(24px);
+}
+
+.page-list__group {
+  display: flex;
+  flex-direction: column;
+  padding: rem(24px);
+  background-color: color('Color/White');
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(16px);
+  box-shadow: $box-shadow;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 rem(8px) rem(24px) 0 rgba(0, 0, 0, 0.08);
+    transform: translateY(rem(-2px));
+  }
+}
+
+.page-list__group-head {
+  display: flex;
+  align-items: center;
+  gap: rem(10px);
+  padding-bottom: rem(16px);
+  margin-bottom: rem(16px);
+  border-bottom: rem(1px) solid color('Color/Black 10');
+}
+
+.page-list__depth {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: rem(2px) rem(10px);
+  border-radius: rem(30px);
+  background-color: color('Color/Primary Color');
+  color: color('Color/White');
+  @include font('Body 14 R');
+
+  &--sm {
+    background-color: color('Color/Black 3');
+    color: color('Color/Black 40');
+  }
+}
+
+.page-list__group-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  @include font('H5');
+  color: color('Color/Black 100');
+  a {
+    color: inherit;
+    &:hover,
+    &:focus-visible {
+      color: color('Color/Primary Color');
+      text-decoration: underline;
+    }
+  }
+}
+
+.page-list__count {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: rem(28px);
+  height: rem(28px);
+  padding: 0 rem(8px);
+  border-radius: rem(30px);
+  background-color: color('Color/Black 3');
+  color: color('Black/60');
+  @include font('Body 14 R');
+}
+
+.page-list__children {
+  display: flex;
+  flex-direction: column;
+  gap: rem(8px);
+}
+
+.page-list__link {
+  display: flex;
+  align-items: center;
+  gap: rem(10px);
+  padding: rem(12px) rem(14px);
+  border-radius: rem(10px);
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: color('Color/Black1');
+
+    .page-list__link-label {
+      color: color('Color/Primary Color');
+      text-decoration: underline;
+    }
+    .page-list__link-go {
+      color: color('Color/Primary Color');
+      transform: translate(rem(2px), rem(-2px));
+    }
+  }
+}
+
+.page-list__link-label {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  flex-shrink: 0;
+}
+
+.page-list__link-path {
+  flex: 1 1 auto;
+  min-width: 0;
+  @include font('Body 14 R');
+  color: color('Color/Black 40');
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.page-list__link-go {
+  flex-shrink: 0;
+  color: color('Color/Black 40');
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+@media only screen and (max-width: $breakpoint-lg) {
+  .page-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .page-list__link-path {
+    display: none;
+  }
+}

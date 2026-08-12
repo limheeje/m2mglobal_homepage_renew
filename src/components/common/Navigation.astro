@@ -5,6 +5,7 @@ export interface Props {
   activeMenuId: string
 }
 const {items, activeMenuId = ''} = Astro.props
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 ---
 
 <div class="bs-navigation">
@@ -16,7 +17,7 @@ const {items, activeMenuId = ''} = Astro.props
             <div class="nvi-item">
               {/* 활성화시 .is-active */}
               <a
-                href={item.href}
+                href={PUBLIC_BUILD_URL + item.href}
                 class="nvi-txt"
                 class:list={{
                   'is-active': item.id === activeMenuId

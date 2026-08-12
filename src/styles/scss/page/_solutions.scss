@@ -1,0 +1,193 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /solutions/* 공용 컴포넌트로 커버 안 되는 페이지 전용 마크업
+// (route 1뎁스 단위: commerce-platform, logistics-platform, trade-platform,
+// elivestock-platform 공용)
+// ==========================================================================
+
+.sol__icon-ph {
+  display: inline-block;
+  width: rem(48px);
+  height: rem(48px);
+  flex-shrink: 0;
+}
+.sol__diagram-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
+
+// --- 솔루션 이해: 아이콘+타이틀+체크리스트(회색박스) 카드 ---
+.sol__understand-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.sol__understand-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.sol__understand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+.sol__understand-title {
+  @include font('Body 30 R');
+  color: color('Color/Primary Color');
+  text-align: center;
+}
+.sol__understand-list {
+  width: 100%;
+}
+
+// --- 주요 특장점 / 적용 분야: 아이콘(또는 없음)+타이틀+설명 카드 (중앙정렬) ---
+.sol__stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.sol__stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  text-align: center;
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.sol__stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+.sol__stat-title {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+}
+.sol__stat-desc {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+.sol__scope-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  text-align: center;
+  padding: rem(36px);
+  background-color: color('Color/Box/Box BG');
+  border-radius: rem(24px);
+}
+.sol__scope-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+}
+.sol__scope-desc {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+}
+
+// --- 기술 구성 안내: Third Title 라벨 + 다이어그램(이미지) ---
+.sol__tech-group {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(20px);
+  & + & {
+    margin-top: rem(40px);
+  }
+}
+.sol__tech-diagram {
+  flex: 1 1 auto;
+  padding: rem(36px) rem(24px);
+  border: rem(1px) solid color('Color/Black 20');
+  border-radius: rem(24px);
+}
+
+// --- eLivestock 기술 구성 안내 상단: 경매 절차 플로우 ---
+.sol__auction-quote {
+  @include font('Body 18 R');
+  color: color('Color/Black 40');
+  margin-bottom: rem(8px);
+}
+.sol__auction-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: rem(12px);
+  margin: rem(40px) 0;
+}
+.sol__auction-step {
+  flex: 0 0 auto;
+  width: rem(279px);
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: color('Color/Black 3');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+}
+.sol__auction-plus {
+  flex-shrink: 0;
+  @include font('H4');
+  color: color('Color/Black 40');
+}
+
+// --- eLivestock 주요 특장점 하단: 주요 기능(앱 화면 스크린샷 + 캡션) ---
+.sol__screen-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: rem(10px);
+}
+.sol__screen-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(10px);
+}
+.sol__screen-ph {
+  width: 100%;
+  aspect-ratio: 277 / 577;
+  background-color: color('Color/Black 3');
+  border-radius: rem(16px);
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .sol__stat-grid {
+    grid-template-columns: 1fr;
+  }
+  .sol__tech-group {
+    flex-direction: column;
+  }
+  .sol__auction-step {
+    width: rem(140px);
+  }
+  .sol__screen-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

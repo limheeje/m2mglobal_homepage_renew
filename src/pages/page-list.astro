@@ -1,0 +1,83 @@
+---
+// 전체 페이지 목록 (/page-list) — 실 서비스 라우트 아님, 개발/검수 전용.
+// @config/route/routeMap.ts(route) 기반으로 자동 생성되므로 라우트가 추가/변경돼도 따로 손댈 필요 없음
+// — 새 1Depth/2Depth를 추가할 땐 routeMap.ts에만 등록하면 여기도 같이 반영된다.
+// 링크는 검수 중 원래 보던 페이지를 잃지 않도록 전부 새 탭(target=_blank)으로 연다.
+import Layout from '~/layouts/Layout.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import {route} from '@config/route/routeMap.ts'
+
+// routeMap에 없는 유틸리티/공용 페이지 (2Depth 없음)
+const etcPages = [
+  {label: '메인', href: '/'},
+  {label: '개인정보처리방침', href: '/privacy'},
+  {label: '스타일 가이드 (컴포넌트 검수용)', href: '/style-guide'},
+  {label: '전체 페이지 목록 (이 페이지)', href: '/page-list'}
+]
+
+const groups = [
+  {label: '기타', href: '', children: etcPages.map((p) => ({koLabel: p.label, href: p.href}))},
+  ...route.map((section) => ({
+    label: section.label,
+    href: section.href,
+    children: section.children
+  }))
+]
+const totalPages = groups.reduce((sum, g) => sum + g.children.length, 0)
+---
+
+<Layout>
+  <section class="g-section">
+    <div class="innerWrap">
+      <TitleMain
+        title="전체 페이지 목록"
+        description="실 서비스 라우트가 아닌 개발/검수용 페이지입니다. 1Depth/2Depth 구조는 routeMap.ts를 그대로 반영하며, 링크는 모두 새 탭으로 열립니다."
+      />
+
+      <p class="page-list__summary">
+        <strong>{groups.length}</strong>개 메뉴 · <strong>{totalPages}</strong>개 페이지
+      </p>
+
+      <div class="page-list">
+        {
+          groups.map((group) => (
+            <div class="page-list__group">
+              <div class="page-list__group-head">
+                <span class="page-list__depth">1Depth</span>
+                <p class="page-list__group-title">
+                  {group.href ? (
+                    <a href={group.href} target="_blank" rel="noopener noreferrer">
+                      {group.label}
+                    </a>
+                  ) : (
+                    group.label
+                  )}
+                </p>
+                <span class="page-list__count">{group.children.length}</span>
+              </div>
+              <ul class="page-list__children">
+                {group.children.map((child) => (
+                  <li>
+                    <a
+                      class="page-list__link"
+                      href={child.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <span class="page-list__depth page-list__depth--sm">2Depth</span>
+                      <span class="page-list__link-label">{child.koLabel}</span>
+                      <span class="page-list__link-path">{child.href}</span>
+                      <span class="page-list__link-go" aria-hidden="true">
+                        ↗
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

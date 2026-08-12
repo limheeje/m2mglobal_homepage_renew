@@ -1,0 +1,728 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /company/* 공용 컴포넌트로 커버 안 되는 페이지 전용 마크업
+// (route 1뎁스 단위로 파일 하나 — /company/info, /company/history 등 전부 여기)
+// ==========================================================================
+
+// 이미지/아이콘 미확정 영역 임시 표시용 빈 자리 (담당자가 직접 채워 넣음)
+.company__icon-ph {
+  display: inline-block;
+  width: rem(100px);
+  height: rem(100px);
+  flex-shrink: 0;
+  &--sm {
+    width: rem(24px);
+    height: rem(24px);
+  }
+}
+
+// --- General Overview: 회사 기본 정보 표 (label:value 2단 구성, 마지막 행만 전체폭) ---
+.company__info {
+  border-top: rem(1px) solid color('Color/Font/Font Color');
+}
+.company__info-row {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: rem(1px) solid color('Color/Black 20');
+  &:last-child{
+    border-bottom: none;
+  }
+}
+.company__info-cell {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  flex: 1 1 50%;
+  min-width: 0;
+  padding: rem(40px) rem(20px);
+  &--full {
+    flex: 1 1 100%;
+  }
+}
+.company__info-label {
+  flex-shrink: 0;
+  width: rem(108px);
+  @include font('Body 20 R');
+  color: color('Color/Black 40');
+}
+.company__info-value {
+  @include font('Body 20 R');
+  color: color('Color/Font/Font Color');
+  &--inline {
+    display: flex;
+    align-items: center;
+    gap: rem(8px);
+  }
+}
+
+// --- 숫자로 보는 M2M GLOBAL: 다크 풀블리드 통계 배너 ---
+.company__stats {
+  position: relative;
+  width: 100%;
+  padding: rem(80px);
+  background-color: color('Primary/Blue100');
+  overflow: hidden;
+  &:after {
+    content: '';
+    background: no-repeat center center url(~/assets/images/mainsection-banner-img.png);
+    background-size: cover;
+    position: absolute;
+    inset: 0;
+    opacity: 0.2;
+    pointer-events: none;
+  }
+}
+.company__stats-inner {
+  position: relative;
+  display: flex;
+  z-index: 1;
+  align-items: center;
+  gap: rem(20px);
+}
+.company__stats-label {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  flex-shrink: 0;
+  width: rem(277px);
+  p {
+    @include font('Body 30 R');
+    color: color('Color/White');
+  }
+}
+.company__stats-grid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.company__stats-card {
+  background-color: color('Color/White');
+  border-radius: rem(24px);
+  padding: rem(36px) rem(48px);
+  text-align: center;
+}
+.company__stats-num {
+  @include font('H1');
+  color: color('Color/Primary Color');
+  margin-bottom: rem(20px);
+  .unit {
+    @include font('Body 20 R');
+    color: color('Color/Black 100');
+  }
+}
+.company__stats-desc {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- Specialized Outcomes ①: 사업영역 하이라이트 4카드 ---
+.company__business-divider {
+  height: rem(206px);
+  font-size: 0;
+  background: no-repeat center top url(~/assets/images/company-info-worldmap.svg);
+  position: relative;
+  &:before{
+    content: '';
+    display: block;
+    width: rem(272px);
+    height: rem(38px);
+    position: absolute;
+    left: 50%;
+    margin-left: rem(-136px);
+    top: rem(94px);
+    font-size: 0;
+    background: no-repeat left center url(~/assets/images/m2m-global-logo.svg);
+    background-size: 100%;
+  }
+  @media only screen and (min-width: $breakpoint-lg) {
+    &:after{
+      content: '';
+      width: 100%;
+      height: 100%;
+      display: flex;
+      background: no-repeat center bottom url(~/assets/images/company-info-worldmap-guideline.svg);
+    }
+  }
+}
+.company__business-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.company__business-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+  text-align: center;
+}
+.company__business-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+  margin-bottom: rem(20px);
+}
+.company__business-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(20px);
+}
+.company__business-desc {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(20px);
+}
+.company__business-list {
+  text-align: left;
+}
+
+// --- Specialized Outcomes ②: B2B 특화 커머스 레퍼런스 3건 (공통 grid 대신 커스텀 flex 그리드) ---
+.company__case-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.company__case-item {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  display: flex;
+}
+.company__case-item .bs-box {
+  width: 100%;
+}
+
+// --- CEO 인사말 ---
+.company__ceo-intro {
+  @include font('Body 36 R');
+  color: color('Color/Black 100');
+  text-align: center;
+  margin-bottom: rem(40px);
+}
+.company__ceo-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem(12px);
+  margin-bottom: rem(80px);
+}
+.company__ceo-step {
+  flex: 1 1 0%;
+  max-width: rem(400px);
+  padding: rem(36px);
+  text-align: center;
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.company__ceo-step-label {
+  @include font('Body 20 R');
+  color: color('Color/Primary Color');
+}
+.company__ceo-step-title {
+  margin-top: rem(20px);
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+}
+.company__ceo-step-arrow {
+  flex-shrink: 0;
+  img {
+    display: block;
+  }
+}
+.company__ceo-quote {
+  padding: rem(36px);
+  margin-bottom: rem(80px);
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+  text-align: center;
+}
+.company__ceo-quote-text {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(20px);
+}
+.company__ceo-quote-sign {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  strong {
+    @include font('Body 30 R');
+    font-weight: 700;
+  }
+}
+.company__ceo-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.company__ceo-value {
+  flex: 1 1 0%;
+  min-width: rem(240px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  text-align: center;
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.company__ceo-value-icon {
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+.company__ceo-value-text {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 회사 연혁 ---
+.company__history-year-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: rem(1px) solid color('Color/Box/Border color');
+  margin-bottom: rem(12px);
+}
+.company__history-tab {
+  padding: rem(12px) rem(24px);
+  border-bottom: rem(2px) solid transparent;
+  margin-bottom: rem(-1px);
+  @include font('Body 24 R');
+  color: color('Color/Font/Sub Font Color');
+  &.is-active {
+    color: color('Color/Primary Color');
+    border-bottom-color: color('Color/Primary Color');
+  }
+}
+.company__history-panel {
+  display: none;
+  &.is-active {
+    display: block;
+  }
+}
+.company__history-row {
+  display: flex;
+  gap: rem(20px);
+  padding: rem(40px) 0;
+  border-bottom: rem(1px) solid color('Color/Box/Border color');
+  &.is-last {
+    border-bottom: none;
+  }
+}
+.company__history-cell {
+  flex: 1 1 50%;
+  min-width: 0;
+  display: flex;
+  gap: rem(20px);
+  padding: 0 rem(20px);
+}
+.company__history-year {
+  flex-shrink: 0;
+  width: rem(108px);
+  @include font('Body 20 R');
+  color: color('Color/Black 40');
+}
+.company__history-list {
+  padding-left: rem(30px);
+  @include font('Body 20 R');
+  color: color('Color/Font/Font Color');
+  li{
+    position: relative;
+    padding-left: rem(18px);
+    &:after{
+      content: '';
+      width: rem(4px);
+      height: rem(4px);
+      border-radius: 50%;
+      position: absolute;
+      background-color: color('Color/Font/Font Color');
+      left: 0;
+      top: rem(12px);
+    }
+  }
+  li + li {
+    margin-top: rem(4px);
+  }
+}
+
+// --- 인재 채용 ---
+// "M2M GLOBAL 복지 제도"는 Figma 실측상 좌측 타이틀(고정폭)과 우측 카드 그리드가 좌우 배치다.
+.company__careers-benefits {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(20px);
+  margin-bottom: rem(80px);
+  .bs-title-sub {
+    flex-shrink: 0;
+    min-width: rem(277px);
+    margin-bottom: 0;
+  }
+}
+.company__careers-grid {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.company__careers-card {
+  flex: 0 0 rem(350px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  text-align: center;
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.company__careers-card-title {
+  @include font('Body 24 R');
+  color: color('Color/Font/Font Color');
+}
+.company__careers-card-desc {
+  @include font('Body 16 R');
+  color: color('Color/Font/Font Color');
+}
+.company__careers-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem(20px);
+  margin-bottom: rem(80px);
+}
+.company__careers-field {
+  padding: rem(36px);
+  text-align: center;
+  background-color: color('Color/Box/Box BG');
+  border-radius: rem(24px);
+}
+.company__careers-field-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(12px);
+}
+.company__careers-field-desc {
+  @include font('Body 16 R');
+  color: color('Color/Font/Font Color');
+}
+.company__careers-process {
+  display: flex;
+  align-items: center;
+  gap: rem(48px);
+}
+.company__careers-process-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.company__careers-process-list {
+  display: flex;
+  flex-direction: column;
+  gap: rem(8px);
+  a {
+    color: color('Color/Primary Color');
+    text-decoration: underline;
+  }
+}
+
+// --- News ---
+.company__news-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: rem(80px);
+}
+.company__news-row {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(24px) 0;
+  border-bottom: rem(1px) solid color('Color/Box/Border color');
+  &:first-child {
+    border-top: rem(2px) solid color('Primary/Blue100');
+  }
+}
+.company__news-row-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+}
+.company__news-tag {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(128px);
+  padding: rem(10px);
+  border-radius: rem(40px);
+  background-color: color('Color/Black 3');
+  color: color('Color/Black 100');
+  @include font('Body 18 R');
+}
+.company__news-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+}
+.company__news-date {
+  flex-shrink: 0;
+  width: rem(186px);
+  text-align: center;
+  @include font('Body 18 R');
+  color: color('Color/Blue Gray 800');
+}
+.company__news-link {
+  flex-shrink: 0;
+}
+.company__news-client-category {
+  margin-bottom: rem(60px);
+}
+.company__news-client-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: rem(20px);
+}
+.company__news-client-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: rem(100px);
+  padding: rem(16px);
+  border: rem(1px) solid color('Color/Black 10');
+  border-radius: rem(12px);
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+// --- 위치 및 연락처 ---
+.company__address {
+  display: flex;
+  flex-direction: column;
+  gap: rem(40px);
+}
+.company__address-map {
+  width: 100%;
+  aspect-ratio: 1760 / 480;
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
+.company__address-info {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(86px);
+}
+.company__address-logo {
+  flex-shrink: 0;
+  padding-top: rem(20px);
+  img {
+    display: block;
+    width: rem(211px);
+  }
+}
+.company__address-rows {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.company__address-row {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(20px);
+  & + & {
+    border-top: rem(1px) solid color('Color/Black 10');
+  }
+}
+.company__address-row-label {
+  flex-shrink: 0;
+  width: rem(108px);
+  @include font('Body 20 R');
+  color: color('Color/Black 40');
+}
+.company__address-row-value {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 사업 문의 ---
+.company__contact-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: rem(20px);
+  padding: rem(36px);
+  background-color: color('Color/White');
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.company__contact-info {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+}
+.company__contact-label {
+  flex-shrink: 0;
+  width: rem(240px);
+  text-align: center;
+  @include font('Body 22 R');
+  color: color('Color/Black 100');
+}
+.company__contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: rem(6px);
+  @include font('Body 22 R');
+  color: color('Color/Black 100');
+  text-decoration: underline;
+  .company__icon-ph--sm{
+    display: inline-block;
+    width: rem(24px);
+    height: rem(24px);
+    @include get-background-svg(icon_mail, color('Black/30'));
+  }
+}
+.company__contact-download {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem(12px);
+  width: rem(254px);
+  padding: rem(24px) rem(30px);
+  border-radius: rem(70px);
+  background-color: color('Color/Black 3');
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  .company__icon-ph{
+    display: inline-block;
+    width: rem(24px);
+    height: rem(24px);
+    @include get-background-svg(icon_download, color('Color/Black 100'));
+  }
+  &:hover,
+  &:focus-visible {
+    background-color: color('Color/Primary Color');
+    color: color('Color/White');
+    .company__icon-ph{
+      @include get-background-svg(icon_download, color('Color/White'));
+    }
+  }
+  
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .company__info-cell {
+    flex: 1 1 100%;
+    padding: rem(24px) 0;
+  }
+  .company__info-label {
+    width: rem(88px);
+  }
+
+  .company__stats {
+    padding: rem(40px) rem($spacing-left);
+  }
+  .company__stats-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem(24px);
+  }
+  .company__stats-label {
+    width: 100%;
+    p {
+      @include font('Body 18 R');
+    }
+  }
+  .company__stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .company__stats-card {
+    padding: rem(24px);
+  }
+
+  .company__business-grid {
+    flex-direction: column;
+  }
+  .company__business-card {
+    min-width: 0;
+  }
+
+  .company__ceo-steps {
+    flex-direction: column;
+  }
+  .company__ceo-step-arrow {
+    transform: rotate(90deg);
+  }
+  .company__ceo-values {
+    flex-direction: column;
+  }
+
+  .company__history-row {
+    flex-direction: column;
+    gap: rem(20px);
+  }
+
+  .company__careers-benefits {
+    flex-direction: column;
+  }
+  .company__careers-card {
+    flex: 1 1 100%;
+  }
+  .company__careers-fields {
+    grid-template-columns: 1fr;
+  }
+  .company__careers-process {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .company__news-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .company__news-client-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .company__address-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .company__contact-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+@media only screen and (max-width: $breakpoint-md){
+  .company__info-cell{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem(10px);
+  }
+  .company__info-cell:last-child{
+    border-top: rem(1px) solid var(--color-black-20);
+  }
+  .company__info-cell:first-child{
+      border-top: none;
+  }
+  .company__business-card{
+    // padding-left: rem($spacing-left);
+    // padding-right: rem($spacing-right);
+  }
+}

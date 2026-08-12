@@ -6,6 +6,7 @@
 .bs-title-sub{
     text-align: left;
     word-break: break-all;
+    margin-bottom: rem(40px);
     .bs-title{
         padding: rem(14px) 0 ;
         padding-left: rem(18px);
@@ -43,6 +44,7 @@
 
 @media only screen and (max-width: $breakpoint-md){
 .bs-title-sub{
+    margin-bottom: rem(20px);
     .bs-title{
         padding: rem(10px) 0 ;
         padding-left: rem(14px);

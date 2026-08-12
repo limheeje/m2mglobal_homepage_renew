@@ -1,171 +1,135 @@
 ---
 // Company > 인재 채용 (/company/careers)
 // 참고: Figma "About us > 인재채용" 프레임(node 360:1185)
+// 예전 구(舊) 컴포넌트(PageBanner/Title/Container/Box/IconCircle/TextList) 참조로 깨져있던 페이지를
+// 현재 공용 컴포넌트(SubBanner/Navigation/TitleMain/TitleSub/TextList)로 재구축 — 콘텐츠는 그대로 유지.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
-import Gnb from '~/components/layout/Gnb.astro'
-import PageBanner from '~/components/PageBanner.astro'
-import Tab from '~/components/Tab.astro'
-import Title from '~/components/Title.astro'
-import Container from '~/components/Container.astro'
-import Box from '~/components/Box.astro'
-import IconCircle from '~/components/IconCircle.astro'
-import TextList from '~/components/TextList.astro'
-import Footer from '~/components/Footer.astro'
-import {route} from '@config/route'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import TitleSub from '~/components/common/TitleSub.astro'
+import Navigation from '~/components/common/Navigation.astro'
+import TextList from '~/components/common/TextList.astro'
+import Icon from '~/components/common/Icon.astro'
+import {ICON_KEY_NAME} from '~/constants/Icon'
 
-const tabs = [
-  {label: '회사 개요', href: route['/company/info']},
-  {label: 'CEO 인사말', href: route['/company/ceo-message']},
-  {label: '회사 연혁', href: route['/company/history']},
-  {label: '인재 채용', href: route['/company/careers']},
-  {label: 'News', href: route['/company/news']},
-  {label: '위치 및 연락처', href: route['/company/address']},
-  {label: '사업 문의', href: route['/company/contact-us']}
-]
+const localNavigation = route.find((item) => item.href === '/company/info')
 
 const benefits = [
   {
-    icon: 'ico_value_trust',
+    icon: ICON_KEY_NAME['인재채용1'],
     title: '임직원 건강검진 시행',
-    desc: ['국내 최고의 검진 기관을 통해', '임직원, 가족의 검진 비용 지원']
+    desc: '국내 최고의 검진 기관을 통해<br/>임직원, 가족의 검진 비용 지원'
   },
   {
-    icon: 'ico_benefit_culture',
+    icon: ICON_KEY_NAME['인재채용2'],
     title: '문화 외식비 지원',
-    desc: ['임직원의 문화 생활을 위한', '분기별 문화 회식비 지원']
+    desc: '임직원의 문화 생활을 위한<br/>분기별 문화 회식비 지원'
   },
   {
-    icon: 'ico_benefit_longterm',
+    icon: ICON_KEY_NAME['인재채용3'],
     title: '장기근속자 포상제도 시행',
-    desc: ['장기 근속 임직원에 대한', '근속년수 5년 단위 포상 제공']
+    desc: '장기 근속 임직원에 대한<br/>근속년수 5년 단위 포상 제공'
   },
   {
-    icon: 'ico_benefit_referral',
+    icon: ICON_KEY_NAME['인재채용4'],
     title: '인재 추천',
-    desc: ['정 직원 추천 및 채용 후 특정 기간 근속 시', '추천 직원에게 포상금액 지급']
+    desc: '정 직원 추천 및 채용 후 특정 기간 근속 시<br/>추천 직원에게 포상금액 지급'
   },
   {
-    icon: 'ico_benefit_training',
+    icon: ICON_KEY_NAME['인재채용5'],
     title: '직무교육 지원',
-    desc: ['직무교육, 세미나, 컨퍼런스,', '온라인 강의 지원']
+    desc: '직무교육, 세미나, 컨퍼런스,<br/>온라인 강의 지원'
   },
   {
-    icon: 'ico_benefit_cert',
+    icon: ICON_KEY_NAME['인재채용9'],
     title: '자격증 취득 지원',
-    desc: ['자격증 취득, 전문 교육과정 등', '자기성장교육 지원']
+    desc: '자격증 취득, 전문 교육과정 등<br/>자기성장교육 지원'
   },
   {
-    icon: 'ico_benefit_condolence',
+    icon: ICON_KEY_NAME['인재채용6'],
     title: '경조비 지원',
-    desc: ['임직원 본인 및 가족 경조사에 대한', '경조금 지급']
+    desc: '임직원 본인 및 가족 경조사에 대한<br/>경조금 지급'
   },
   {
-    icon: 'ico_benefit_holiday',
+    icon: ICON_KEY_NAME['인재채용7'],
     title: '명절 귀향비 지급',
-    desc: ['즐거운 명절을 위한', '명절 귀향비 지급']
+    desc: '즐거운 명절을 위한<br/>명절 귀향비 지급'
   }
 ]
 
 const fields = [
-  {title: ['플랫폼 전문', '구축 역량'], desc: ['PMO, QA, AA, TA, DA,', 'AI, Cloud, 영업지원']},
-  {title: '이커머스 플랫폼', desc: ['다이소, 농협몰, 수협몰 등', '이커머스 플랫폼 구축']},
-  {title: '물류 플랫폼', desc: ['CJ, 로봇, 무역에 관련', '물류 플랫폼 구축']},
-  {title: 'AI, 클라우드', desc: ['Appreneur, Microsoft AZURE,', 'IBM, AWS']},
+  {title: '플랫폼 전문<br/>구축 역량', desc: 'PMO, QA, AA, TA, DA,<br/>AI, Cloud, 영업지원'},
+  {title: '이커머스 플랫폼', desc: '다이소, 농협몰, 수협몰 등<br/>이커머스 플랫폼 구축'},
+  {title: '물류 플랫폼', desc: 'CJ, 로봇, 무역에 관련<br/>물류 플랫폼 구축'},
+  {title: 'AI, 클라우드', desc: 'Appreneur, Microsoft AZURE,<br/>IBM, AWS'},
   {title: '모바일 플랫폼', desc: 'Android, IOS 구축'},
-  {title: 'UI/UX', desc: ['기획, 디자인, 퍼블', '전문 팀 구성']}
+  {title: 'UI/UX', desc: '기획, 디자인, 퍼블<br/>전문 팀 구성'}
 ]
 ---
 
 <Layout>
-  <Gnb />
-
-  <PageBanner
+  <SubBanner
     title="Company"
-    subtitle={[
-      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
-      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
-    ]}
+    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
   />
-
-  <Tab variant="line" size="large" items={tabs} activeIndex={3} />
-
-  <Title
-    variant="hero"
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-4'} />
+  <TitleMain
     title="인재 채용"
-    subtitle={[
-      '미래를 함께 만들어가며, 성장과 성취를 함께할 창의적이고 도전적인 인재를 기다립니다.',
-      '엠투엠글로벌은 함께 나누고 성장하기 위해 다양한 복지제도를 운영하고 있습니다.'
-    ]}
+    description="미래를 함께 만들어가며, 성장과 성취를 함께할 창의적이고 도전적인 인재를 기다립니다.<br/>엠투엠글로벌은 함께 나누고 성장하기 위해 다양한 복지제도를 운영하고 있습니다."
   />
 
-  <Container maxWidth={1760} class="company-page-end">
-    <div class="company-careers">
-      <div class="company-careers__benefits">
-        <Title
-          variant="section"
-          prefix="M2M GLOBAL "
-          highlight="복지 제도"
-          class="company-careers__benefit-title"
-        />
-        <div class="company-careers__benefit-grid">
+  <section class="g-section">
+    <div class="innerWrap">
+      <div class="company__careers-benefits">
+        <TitleSub title={`M2M GLOBAL <br/><span class="mark">복지 제도</span>`} />
+        <div class="company__careers-grid">
           {
             benefits.map((benefit) => (
-              <Box icon={benefit.icon} title={benefit.title} class="company-careers__benefit-box">
-                {benefit.desc.map((line, i) => (
-                  <>
-                    {i > 0 && <br />}
-                    {line}
-                  </>
-                ))}
-              </Box>
+              <div class="company__careers-card">
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true">
+                  <Icon name={benefit.icon} />
+                </span>
+                <p class="company__careers-card-title">{benefit.title}</p>
+                <p class="company__careers-card-desc" set:html={benefit.desc} />
+              </div>
             ))
           }
         </div>
       </div>
 
-      <div>
-        <Title
-          variant="section"
-          prefix="인재 채용 "
-          highlight="분야 / 안내"
-          class="company-info__section-title"
-        />
-        <div class="company-careers__fields">
-          {
-            fields.map((field) => (
-              <Box variant="filled" title={field.title} class="company-careers__field-box">
-                {Array.isArray(field.desc)
-                  ? field.desc.map((line, i) => (
-                      <>
-                        {i > 0 && <br />}
-                        {line}
-                      </>
-                    ))
-                  : field.desc}
-              </Box>
-            ))
-          }
-        </div>
+      <TitleSub title={`인재 채용 <span class="mark">분야 / 안내</span>`} />
+      <div class="company__careers-fields">
+        {
+          fields.map((field) => (
+            <div class="company__careers-field">
+              <p class="company__careers-field-title" set:html={field.title} />
+              <p class="company__careers-field-desc" set:html={field.desc} />
+            </div>
+          ))
+        }
       </div>
 
-      <div class="company-careers__process">
-        <IconCircle icon="ico_benefit_process" />
-        <div class="company-careers__process-body">
-          <Title variant="section" prefix="채용 절차 " highlight="(상시)" />
-          <div class="company-careers__process-list">
-            <TextList>
+      <div class="company__careers-process">
+        <!-- TODO: 아이콘 이미지 삽입 -->
+        <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true">
+          <Icon name={ICON_KEY_NAME['인재채용8']} />
+        </span>
+        <div class="company__careers-process-body">
+          <TitleSub title={`채용 절차 <span class="mark">(상시)</span>`} />
+          <div class="company__careers-process-list">
+            <TextList type="type_1" circleType="type_2">
               1차 서류 전형 : 지원자는 이력서와 자기소개(경력자는 경력기술서 포함)를 인사지원팀
               이메일(<a href="mailto:recruit@m2mglobal.co.kr">recruit@m2mglobal.co.kr</a>) 로
               보내주세요
             </TextList>
-            <TextList
-              >제출한 입사지원 서류는 반환하지 않으며, 입사지원 검토용으로만 사용됩니다</TextList
-            >
+            <TextList type="type_1" circleType="type_2">
+              제출한 입사지원 서류는 반환하지 않으며, 입사지원 검토용으로만 사용됩니다
+            </TextList>
           </div>
         </div>
       </div>
     </div>
-  </Container>
-
-  <Footer />
+  </section>
 </Layout>

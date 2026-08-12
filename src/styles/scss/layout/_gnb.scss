@@ -4,7 +4,12 @@
 @use '../abstracts/_mixins' as *;
 
 .gnb-wrap{
-    background: transparent;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: color('Color/White');
     display: flex;
     align-items: center;
     padding: rem(20px) rem(80px);

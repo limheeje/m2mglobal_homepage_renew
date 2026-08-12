@@ -66,11 +66,22 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: rem(8px);
         padding: rem(12px) rem(24px);
-        border-radius: rem(999px);
+        border-radius: rem(30px);
         background: color('Color/Primary Color');
         color: color('Color/White');
         @include font('Body 15 R');
+        &:hover,
+        &:focus-visible {
+            background-color: color('Color/Third Color');
+        }
+    }
+    .download-btn-icon {
+        display: inline-block;
+        width: rem(20px);
+        height: rem(20px);
+        @include get-background-svg(icon_download, color('Color/White'));
     }
     .bottom{
         display: flex;
@@ -102,7 +113,47 @@
     .footer-wrap{
         padding: rem(30px) rem(15px);
         .top{
+            flex-direction: column;
+            align-items: flex-start;
+            gap: rem(24px);
             padding-bottom: rem(20px);
+        }
+        .info{
+            flex-direction: column;
+            align-items: flex-start;
+            gap: rem(12px);
+        }
+        .reach{
+            flex-wrap: wrap;
+            row-gap: rem(4px);
+        }
+        .downloads{
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+            gap: rem(12px);
+        }
+        .download-btn{
+            width: 100%;
+        }
+        .bottom{
+            flex-direction: column;
+            align-items: flex-start;
+            gap: rem(12px);
+        }
+    }
+}
+
+@media only screen and (max-width: $breakpoint-sm){
+    .footer-wrap{
+        .reach-item{
+            border-right: none;
+            padding: 0;
+        }
+        .reach{
+            flex-direction: column;
+            align-items: flex-start;
+            gap: rem(4px);
         }
     }
 }

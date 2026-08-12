@@ -3,30 +3,23 @@
 // 참고: Figma "About us > 회사연혁" 프레임(node 211:2154, 720:10439 — 2개로 나뉘어 있지만
 // 같은 페이지 안 "Tap_series"(연도 구간 전환 탭)의 두 상태라 한 페이지로 합쳤다)
 //
-// Tap_series는 스크립트 없는 지금 단계에서도 실제로 동작하도록 페이지 내 앵커(#recent/#archive)로
-// 연결한 진짜 링크로 구현했다 — Tab(line, small) 재사용.
+// 이 페이지의 연도 구간 탭(현재~2016 / 2015~2002)은 다른 페이지들의 앵커-스크롤 탭과 다르게
+// 실제 탭처럼 show/hide로 전환한다 — 페이지 하단 인라인 스크립트 참고.
+//
+// 예전 구(舊) 컴포넌트(PageBanner/Title/Container) 참조로 깨져있던 페이지를 현재 공용
+// 컴포넌트(SubBanner/Navigation/TitleMain/TitleSub)로 재구축 — 콘텐츠는 그대로 유지.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
-import Gnb from '~/components/layout/Gnb.astro'
-import PageBanner from '~/components/PageBanner.astro'
-import Tab from '~/components/Tab.astro'
-import Title from '~/components/Title.astro'
-import Container from '~/components/Container.astro'
-import Footer from '~/components/Footer.astro'
-import {route} from '@config/route'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import TitleSub from '~/components/common/TitleSub.astro'
+import Navigation from '~/components/common/Navigation.astro'
 
-const tabs = [
-  {label: '회사 개요', href: route['/company/info']},
-  {label: 'CEO 인사말', href: route['/company/ceo-message']},
-  {label: '회사 연혁', href: route['/company/history']},
-  {label: '인재 채용', href: route['/company/careers']},
-  {label: 'News', href: route['/company/news']},
-  {label: '위치 및 연락처', href: route['/company/address']},
-  {label: '사업 문의', href: route['/company/contact-us']}
-]
+const localNavigation = route.find((item) => item.href === '/company/info')
 
 const yearTabs = [
-  {label: '현재 ~ 2016', href: '#recent'},
-  {label: '2015 ~ 2002', href: '#archive'}
+  {id: 'recent', label: '현재 ~ 2016'},
+  {id: 'archive', label: '2015 ~ 2002'}
 ]
 
 const recentYears = [
@@ -207,92 +200,116 @@ function pairUp<T>(list: T[]): [T, T | null][] {
 ---
 
 <Layout>
-  <Gnb />
-
-  <PageBanner
+  <SubBanner
     title="Company"
-    subtitle={[
-      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
-      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
-    ]}
+    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
   />
-
-  <Tab variant="line" size="large" items={tabs} activeIndex={2} />
-
-  <Title
-    variant="hero"
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-3'} />
+  <TitleMain
     title="회사 연혁"
-    subtitle={[
-      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
-      '다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다. (고용노동부 지정 청년친화 강소기업)'
-    ]}
+    description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다. (고용노동부 지정 청년친화 강소기업)"
   />
 
-  <Container maxWidth={1760} class="company-page-end">
-    <Title variant="section" highlight="History" class="company-info__section-title" />
+  <section class="g-section">
+    <div class="innerWrap">
+      <TitleSub title={`History`} />
 
-    <Tab
-      variant="line"
-      size="small"
-      items={yearTabs}
-      activeIndex={0}
-      class="company-history__year-tabs"
-    />
+      <div class="company__history-year-tabs" id="historyYearTabs">
+        {
+          yearTabs.map((tab, i) => (
+            <a
+              class="company__history-tab"
+              class:list={{'is-active': i === 0}}
+              data-target={tab.id}
+              href={`#${tab.id}`}
+            >
+              {tab.label}
+            </a>
+          ))
+        }
+      </div>
 
-    <div id="recent">
-      {
-        pairUp(recentYears).map(([left, right]) => (
-          <div class="row company-history__row">
-            <div class="col-12 col-lg-6 company-history__cell">
-              <span class="company-history__year">{left.year}</span>
-              <ul class="company-history__list">
-                {left.items.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-            {right && (
-              <div class="col-12 col-lg-6 company-history__cell">
-                <span class="company-history__year">{right.year}</span>
-                <ul class="company-history__list">
-                  {right.items.map((item) => (
+      <div id="recent" class="company__history-panel is-active">
+        {
+          pairUp(recentYears).map(([left, right], i, arr) => (
+            <div class="company__history-row" class:list={{'is-last': i === arr.length - 1}}>
+              <div class="company__history-cell">
+                <span class="company__history-year">{left.year}</span>
+                <ul class="company__history-list">
+                  {left.items.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
               </div>
-            )}
-          </div>
-        ))
-      }
-    </div>
-
-    <div id="archive">
-      {
-        pairUp(archiveYears).map(([left, right]) => (
-          <div class="row company-history__row">
-            <div class="col-12 col-lg-6 company-history__cell">
-              <span class="company-history__year">{left.year}</span>
-              <ul class="company-history__list">
-                {left.items.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
+              {right && (
+                <div class="company__history-cell">
+                  <span class="company__history-year">{right.year}</span>
+                  <ul class="company__history-list">
+                    {right.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
-            {right && (
-              <div class="col-12 col-lg-6 company-history__cell">
-                <span class="company-history__year">{right.year}</span>
-                <ul class="company-history__list">
-                  {right.items.map((item) => (
+          ))
+        }
+      </div>
+
+      <div id="archive" class="company__history-panel">
+        {
+          pairUp(archiveYears).map(([left, right], i, arr) => (
+            <div class="company__history-row" class:list={{'is-last': i === arr.length - 1}}>
+              <div class="company__history-cell">
+                <span class="company__history-year">{left.year}</span>
+                <ul class="company__history-list">
+                  {left.items.map((item) => (
                     <li>{item}</li>
                   ))}
                 </ul>
               </div>
-            )}
-          </div>
-        ))
-      }
+              {right && (
+                <div class="company__history-cell">
+                  <span class="company__history-year">{right.year}</span>
+                  <ul class="company__history-list">
+                    {right.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))
+        }
+      </div>
     </div>
-  </Container>
-
-  <Footer />
+  </section>
 </Layout>
+
+<script>
+  // 이 페이지의 연도 구간 탭만 앵커-스크롤이 아니라 진짜 탭(show/hide)처럼 동작한다.
+  function initHistoryTabs() {
+    const wrap = document.getElementById('historyYearTabs')
+    if (!wrap) return
+    const tabs = wrap.querySelectorAll<HTMLAnchorElement>('.company__history-tab')
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', (event) => {
+        event.preventDefault()
+        const target = tab.dataset.target
+        if (!target) return
+
+        tabs.forEach((t) => t.classList.toggle('is-active', t === tab))
+        document.querySelectorAll('.company__history-panel').forEach((panel) => {
+          panel.classList.toggle('is-active', panel.id === target)
+        })
+      })
+    })
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHistoryTabs)
+  } else {
+    initHistoryTabs()
+  }
+</script>

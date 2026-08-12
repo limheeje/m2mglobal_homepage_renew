@@ -1,13 +1,18 @@
 ---
-const {pageName = '', title = '', description = ''} = Astro.props
+const {title = '', description = ''} = Astro.props
 ---
 
 <div class="bs-main-title">
   <div class="innerWrap">
-    <div class="bm-page-name" set:html={pageName} />
-    <div class="bms-texts">
-      <div class="bm-title" set:html={title} />
-      <div class="bm-description" set:html={description} />
-    </div>
+    {
+      description ? (
+        <div class="bms-texts">
+          <div class="bm-title" set:html={title} />
+          <div class="bm-description" set:html={description} />
+        </div>
+      ) : (
+        <div class="bm-page-name" set:html={title} />
+      )
+    }
   </div>
 </div>

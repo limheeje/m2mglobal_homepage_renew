@@ -1,0 +1,443 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /ai-engine/* 공용 컴포넌트로 커버 안 되는 페이지 전용 마크업
+// (route 1뎁스 단위: /ai-engine/machine-learning, /ai-engine/ai-commerce 공용)
+// ==========================================================================
+
+// --- 섹션 내부 앵커 탭바 (Tap_box_series) — tab-box-scrollspy.ts가 .bs-tab-group/.tab__item 훅으로 동작 ---
+
+
+// 이미지/아이콘 미확정 영역 임시 표시용 빈 자리 (담당자가 직접 채워 넣음)
+.ai__icon-ph {
+  display: inline-block;
+  width: rem(48px);
+  height: rem(48px);
+  flex-shrink: 0;
+}
+.ai__thumb-ph {
+  display: block;
+  width: 100%;
+  background-color: color('Color/Black 3');
+  border-radius: rem(12px);
+}
+
+// --- 서비스 특징 / 추천설계: 아이콘+타이틀(구분선)+체크리스트 카드 ---
+.ai__feature-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.ai__feature-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.ai__feature-head {
+  display: flex;
+  align-items: center;
+  gap: rem(12px);
+  padding-bottom: rem(20px);
+  margin-bottom: rem(12px);
+  border-bottom: rem(1px) solid color('Color/Primary Color');
+}
+.ai__feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+  flex-shrink: 0;
+}
+.ai__feature-title {
+  @include font('Body 30 R');
+  color: color('Color/Secondary Color');
+}
+
+// --- 핵심기능: 아이콘+타이틀+설명(중앙정렬, 체크리스트 없음) ---
+.ai__stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.ai__stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  text-align: center;
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.ai__stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+.ai__stat-title {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+}
+.ai__stat-desc {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 비즈니스 구성도 / 상황기반 고객 여정: n단계 flow + 화살표 ---
+.ai__flow {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: rem(20px);
+  margin-bottom: rem(40px);
+}
+.ai__flow-box {
+  flex: 0 0 rem(273px);
+  width: rem(273px);
+  display: flex;
+  flex-direction: column;
+  padding: rem(36px);
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
+.ai__flow-title {
+  width: 100%;
+  padding: rem(20px) 0;
+  border-bottom: rem(1px) solid color('Color/Black 20');
+  text-align: center;
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+}
+.ai__flow-box > .bs-text-list:first-of-type {
+  margin-top: rem(20px);
+}
+.ai__flow-arrow {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    display: block;
+    width: rem(40px);
+  }
+}
+
+// --- 구축분야 및 기술 스택: TitleThird 라벨 + label:value 행 ---
+.ai__spec-group {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(20px);
+  & + & {
+    margin-top: rem(20px);
+  }
+}
+.ai__spec-rows {
+  flex: 1 1 auto;
+  margin-top: rem(65px);
+  border-top: rem(1px) solid color('Color/Black 100');
+}
+.ai__spec-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(20px);
+  border-bottom: rem(1px) solid color('Color/Black 10');
+  &:last-child {
+    border-bottom: none;
+  }
+}
+.ai__spec-label {
+  flex-shrink: 0;
+  width: rem(256px);
+  @include font('Body 20 R');
+  color: color('Color/Black 40');
+}
+.ai__spec-value {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 구축사례: 썸네일 + 타이틀/일자/설명 카드 ---
+.ai__case-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.ai__case-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  padding: rem(36px);
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
+.ai__case-thumb {
+  aspect-ratio: 501 / 285;
+  margin-bottom: rem(20px);
+  border-radius: rem(24px);
+  overflow: hidden;
+}
+.ai__case-title {
+  text-align: center;
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(10px);
+}
+.ai__case-date {
+  text-align: center;
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+  display: block;
+  margin-bottom: rem(20px);
+}
+.ai__case-desc {
+  text-align: center;
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 아키텍처 전환: Level 카드 (라벨 + 타이틀 + 체크리스트 + 데이터/성과 메타) ---
+.ai__level-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.ai__level-card {
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+  > .bs-label {
+    align-self: flex-start;
+  }
+}
+.ai__level-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-top: rem(12px);
+  padding-bottom: rem(20px);
+  border-bottom: rem(1px) solid color('Color/Primary Color');
+}
+.ai__level-meta {
+  margin-top: auto;
+  padding-top: rem(20px);
+  border-top: rem(1px) solid color('Color/Black 10');
+  display: flex;
+  flex-direction: column;
+  gap: rem(12px);
+}
+.ai__meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: rem(4px);
+}
+.ai__meta-label {
+  @include font('Body 14 R');
+  color: color('Color/Black 40');
+}
+.ai__meta-value {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+}
+
+// --- 상황기반추천설계: 커머스 특성 3카드 + 화살표 + 결론 배너 ---
+.ai__strategy-row {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  margin-top: rem(40px);
+  flex-wrap: wrap;
+}
+.ai__strategy-card {
+  flex: 1 1 0%;
+  min-width: rem(220px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.ai__strategy-title {
+  @include font('Body 24 R');
+  color: color('Color/Primary Color');
+  margin-bottom: rem(12px);
+}
+.ai__strategy-arrow {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    display: block;
+    width: rem(40px);
+  }
+}
+.ai__strategy-banner {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  padding: rem(36px);
+  border-radius: rem(24px);
+  background-color: color('Color/Secondary Color');
+  color: color('Color/White');
+  text-align: center;
+}
+.ai__strategy-banner-title {
+  @include font('Body 24 R');
+  margin-bottom: rem(12px);
+}
+.ai__strategy-banner-desc {
+  @include font('Body 16 R');
+}
+
+// --- AI 스코어링: 2단 레이어 컬럼 + 중앙 이미지 ---
+.ai__scoring-grid {
+  display: grid;
+  grid-template-columns: 1fr rem(280px) 1fr;
+  gap: rem(20px);
+  align-items: start;
+}
+.ai__scoring-col-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(20px);
+}
+.ai__scoring-layer {
+  margin-bottom: rem(20px);
+}
+.ai__scoring-layer-head {
+  @include font('Body 18 R');
+  color: color('Color/Secondary Color');
+  padding-bottom: rem(12px);
+  margin-bottom: rem(8px);
+  border-bottom: rem(1px) solid color('Color/Box/Border color');
+}
+.ai__scoring-image {
+  aspect-ratio: 1/1;
+  align-self: center;
+}
+
+// --- 개인화: 아이콘+타이틀+부제+설명+체크리스트 카드 (item+이미지+item 전체를 하나의 테두리로 감쌈) ---
+.ai__personalize-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: rem(20px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.ai__personalize-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+}
+.ai__personalize-image {
+  flex-shrink: 0;
+  width: rem(200px);
+  border-radius: rem(12px);
+}
+.ai__personalize-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-top: rem(12px);
+}
+.ai__personalize-subtitle {
+  @include font('Body 16 R');
+  color: color('Color/Black 40');
+  margin-bottom: rem(12px);
+}
+.ai__personalize-desc {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(20px);
+}
+
+// --- 재구매 예측 / 재 랭킹 / 리밸런싱: 캡션 pill + 다이어그램(이미지 예정) ---
+.ai__diagram-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: rem(8px) rem(24px);
+  border-radius: rem(30px);
+  background-color: color('Color/Black 3');
+  color: color('Color/Primary Color');
+  @include font('Body 18 R');
+  margin-bottom: rem(40px);
+}
+.ai__diagram-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
+
+// --- 실행 사례: 고객사 로고 카드 ---
+.ai__client-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.ai__client-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: rem(100px);
+  padding: rem(16px);
+  border: rem(1px) solid color('Color/Black 10');
+  border-radius: rem(12px);
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .ai__feature-grid,
+  .ai__stat-grid,
+  .ai__level-grid,
+  .ai__personalize-grid,
+  .ai__client-grid {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  .ai__flow {
+    flex-direction: column;
+  }
+  .ai__flow-box {
+    width: 100%;
+  }
+  .ai__flow-arrow {
+    transform: rotate(90deg);
+  }
+  .ai__spec-group {
+    flex-direction: column;
+  }
+  .ai__spec-label {
+    width: 100%;
+  }
+  .ai__strategy-row {
+    flex-direction: column;
+  }
+  .ai__strategy-arrow {
+    transform: rotate(90deg);
+  }
+  .ai__scoring-grid {
+    grid-template-columns: 1fr;
+  }
+  .ai__scoring-image {
+    order: -1;
+    max-width: rem(200px);
+    margin-inline: auto;
+  }
+}

@@ -5,6 +5,8 @@
 
 $TYPE_1:'[data-type="type_1"]';
 $TYPE_2:'[data-type="type_2"]';
+$CIRCLE_TYPE_1:'[data-circle-type="type_1"]';
+$CIRCLE_TYPE_2:'[data-circle-type="type_2"]';
 
 .bs-text-list{
     .bst-inner{
@@ -13,6 +15,7 @@ $TYPE_2:'[data-type="type_2"]';
         padding: rem(8px) 0;
         gap: rem(12px);
         .b-tx{
+            text-align: left;
             word-break: break-all;
             @include font('Body 18 R');
             color: color('Color/Black 100');
@@ -20,30 +23,42 @@ $TYPE_2:'[data-type="type_2"]';
         }
         .b-syn{
             display: block;
-            margin-top: rem(5px);
-            width: rem(18px);
-            height: rem(18px);
-            border-radius: 50%;
-            position: relative;
-            background-color: color('Color/Primary Color');
-            &:after{
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                width: rem(10px);
-                height: rem(8px);
-                border-radius: 50%;
-                @include get-background-svg('icon_check', color('Color/White'));
-            }
         }
+    }
+    &#{$CIRCLE_TYPE_1} .b-syn{
+        margin-top: rem(5px);
+        width: rem(18px);
+        height: rem(18px);
+        border-radius: 50%;
+        position: relative;
+        background-color: color('Color/Primary Color');
+        &:after{
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: rem(10px);
+            height: rem(8px);
+            border-radius: 50%;
+            @include get-background-svg('icon_check', color('Color/White'));
+        }
+    }
+    &#{$CIRCLE_TYPE_2} .b-syn{
+        margin-top: rem(4px);
+        width: rem(20px);
+        height: rem(20px);
+        border-radius: 50%;
+        position: relative;
     }
     &#{$TYPE_2}{
         .bst-inner{
             padding: rem(12px);
             background-color: color('Color/Black 3');
             border-radius: rem(12px);
+        }
+        &+.bs-text-list{
+            margin-top: rem(8px);
         }
     }
 }

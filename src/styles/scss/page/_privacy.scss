@@ -1,0 +1,24 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /privacy 페이지 전용 마크업
+// ==========================================================================
+
+.privacy__list {
+  border-top: rem(2px) solid color('Primary/Blue100');
+}
+.privacy__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: rem(20px);
+  padding: rem(24px) 0;
+  border-bottom: rem(1px) solid color('Color/Black 20');
+}
+.privacy__title {
+  @include font('Body 22 R');
+  color: color('Color/Black 100');
+}

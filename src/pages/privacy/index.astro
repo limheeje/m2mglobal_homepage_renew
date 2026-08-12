@@ -1,0 +1,39 @@
+---
+// 개인정보처리방침 (/privacy)
+// Figma "개인정보처리방침" — 버전별 정책 문서 리스트. 실제 PDF는 외부(m2mglobal.co.kr)에 있어
+// "자세히보기"는 해당 안내 페이지로 연결한다.
+import Layout from '~/layouts/Layout.astro'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import Button from '~/components/common/Button.astro'
+
+const PRIVACY_DOC_URL = 'http://www.m2mglobal.co.kr/etc/privacy.html'
+
+const policies = [
+  {title: '개인정보 처리방침 (26.02.01)'},
+  {title: '개인정보 처리방침 (24.12.24)'},
+  {title: '개인정보 처리방침 (21.11.12)'}
+]
+---
+
+<Layout>
+  <SubBanner title="개인정보처리방침" />
+  <TitleMain title="개인정보 처리방침" />
+
+  <section class="g-section">
+    <div class="innerWrap">
+      <div class="privacy__list">
+        {
+          policies.map((item) => (
+            <div class="privacy__row">
+              <p class="privacy__title">{item.title}</p>
+              <Button href={PRIVACY_DOC_URL} variant="white" size="sm" useSuffixIcon="blank">
+                자세히보기
+              </Button>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

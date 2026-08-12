@@ -1,0 +1,329 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /e-commerce/* 공용 컴포넌트로 커버 안 되는 페이지 전용 마크업
+// (route 1뎁스 단위: commerce-technology, b2b-commerce, marketplace 공용)
+// ==========================================================================
+
+.ec__icon-ph {
+  display: inline-block;
+  width: rem(48px);
+  height: rem(48px);
+  flex-shrink: 0;
+}
+.ec__thumb-ph {
+  display: block;
+  width: 100%;
+  background-color: color('Color/Black 3');
+  border-radius: rem(12px);
+}
+.ec__diagram-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
+
+// --- 라벨+타이틀+설명 Box (STEP / Box_Case 등) ---
+.ec__box-grid {
+  display: grid;
+  gap: rem(20px);
+  &--5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  &--6 {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+.ec__step-card {
+  padding: rem(36px);
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+  text-align: center;
+}
+.ec__step-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin: rem(20px) 0;
+}
+.ec__step-desc {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+}
+
+// --- 제공기술 및 특징: 아이콘+타이틀(구분선)+체크리스트 카드 ---
+.ec__feature-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.ec__feature-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.ec__feature-head {
+  display: flex;
+  align-items: center;
+  gap: rem(12px);
+  padding-bottom: rem(20px);
+  margin-bottom: rem(12px);
+  border-bottom: rem(1px) solid color('Color/Primary Color');
+}
+.ec__feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+  flex-shrink: 0;
+}
+.ec__feature-title {
+  @include font('Body 30 R');
+  color: color('Color/Secondary Color');
+}
+
+// --- 아이콘+타이틀+설명 카드 (중앙정렬, 체크리스트 없음) ---
+.ec__stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem(20px);
+}
+.ec__stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  text-align: center;
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.ec__stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+.ec__stat-title {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+}
+.ec__stat-desc {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 구축사례: 썸네일 + 타이틀/일자/설명 카드 ---
+.ec__case-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.ec__case-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+}
+.ec__case-thumb {
+  aspect-ratio: 501 / 285;
+  margin-bottom: rem(20px);
+}
+.ec__case-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(4px);
+}
+.ec__case-date {
+  @include font('Body 16 R');
+  color: color('Color/Black 40');
+  display: block;
+  margin-bottom: rem(8px);
+}
+.ec__case-desc {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 활용 분야: 태그 목록 ---
+.ec__tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(8px);
+}
+.ec__tag {
+  display: inline-flex;
+  padding: rem(8px) rem(16px);
+  border-radius: rem(30px);
+  background-color: color('Color/Black 3');
+  color: color('Color/Black 100');
+  @include font('Body 16 R');
+}
+
+// --- 주요 레퍼런스 ---
+.ec__ref-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.ec__ref-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.ec__ref-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(8px);
+}
+.ec__ref-desc {
+  @include font('Body 16 R');
+  color: color('Color/Black 40');
+  margin-bottom: rem(20px);
+}
+
+// --- 주요 고객사: 로고 카드 ---
+.ec__client-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.ec__client-card {
+  aspect-ratio: 277 / 133;
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include font('Body 16 R');
+  color: color('Color/Black 40');
+}
+
+// --- B2B 시스템 연계 구조: Front/BackOffice/Interface/External 매트릭스 ---
+.ec__matrix-row {
+  padding: rem(20px) 0;
+  border-bottom: rem(1px) solid color('Color/Black 10');
+}
+.ec__matrix-label {
+  @include font('Body 18 R');
+  color: color('Color/Primary Color');
+  margin-bottom: rem(12px);
+}
+.ec__matrix-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(8px);
+}
+.ec__matrix-col {
+  padding: rem(8px) rem(16px);
+  border-radius: rem(30px);
+  background-color: color('Color/Black 3');
+}
+.ec__matrix-col-title {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+}
+
+// --- Marketplace 거래 중개 구조: SELLER / MARKETPLACE / BUYER ---
+.ec__role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: rem(20px);
+}
+.ec__role-card {
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+  &--accent {
+    background-color: color('Color/Secondary Color');
+    .ec__role-title {
+      color: color('Color/White');
+    }
+  }
+}
+.ec__role-head {
+  margin-bottom: rem(20px);
+}
+.ec__role-title {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-top: rem(12px);
+}
+
+// --- Auction Platform: 타이틀+설명 행 목록 ---
+.ec__pair-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+  padding: rem(16px) 0;
+  border-bottom: rem(1px) solid color('Color/Black 10');
+}
+.ec__pair-title {
+  flex-shrink: 0;
+  width: rem(220px);
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+.ec__pair-desc {
+  @include font('Body 16 R');
+  color: color('Color/Black 40');
+}
+
+// --- Auction Platform: label + desc 행 / flow ---
+.ec__layer-label {
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(12px);
+  &.ec__block {
+    margin-top: rem(40px);
+  }
+}
+.ec__flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: rem(12px);
+}
+.ec__flow-item {
+  flex: 1 1 0%;
+  min-width: rem(160px);
+}
+.ec__flow-arrow {
+  flex-shrink: 0;
+  @include font('H4');
+  color: color('Color/Black 40');
+}
+.ec__flow-note {
+  @include font('Body 16 R');
+  color: color('Color/Black 40');
+  margin-top: rem(12px);
+  &.ec__block {
+    margin-top: rem(20px);
+  }
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .ec__box-grid,
+  .ec__client-grid,
+  .ec__role-grid,
+  .ec__stat-grid {
+    grid-template-columns: 1fr;
+  }
+  .ec__flow {
+    flex-direction: column;
+  }
+  .ec__flow-arrow {
+    transform: rotate(90deg);
+  }
+}

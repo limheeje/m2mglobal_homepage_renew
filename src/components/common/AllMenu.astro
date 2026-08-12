@@ -1,0 +1,63 @@
+---
+// All 메뉴 — GNB 우측 all-gnb 버튼으로 여닫는 전체 메뉴 오버레이(Figma "All 메뉴" 심볼, node 2932:22685).
+// 화면 전체(GNB 포함)를 덮는 최상위 레이어라 Layout.astro의 <body> 최상단에 둔다.
+// 2Depth 항목은 Figma 텍스트를 그대로 옮기지 않고 @config/route/routeMap.ts(route)를 그대로 사용한다 —
+// Gnb.astro/Navigation.astro와 동일한 단일 소스라 라우트가 바뀌어도 항상 최신 상태로 맞다.
+// (참고: Figma는 Company 2Depth에서 "News"가 빠져있지만, 실제 내비게이션 완전성을 위해
+// routeMap의 전체 children을 그대로 노출한다.)
+import {route} from '@config/route/routeMap.ts'
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+---
+
+<div class="all-menu" id="allMenu" aria-hidden="true">
+  <!-- TODO: 배경 이미지(스크린 블렌드 합성) 삽입 — 사용자가 직접 작업 -->
+  <div class="all-menu__bg-ph" aria-hidden="true"></div>
+
+  <button class="all-menu__close" type="button" aria-label="전체 메뉴 닫기">
+    <!-- TODO: 닫기(clear) 아이콘 이미지 삽입 -->
+    <span class="all-menu__close-icon" aria-hidden="true"></span>
+  </button>
+
+  <div class="all-menu__inner">
+    <div class="all-menu__body">
+      <div class="all-menu__head">
+        <p class="all-menu__eyebrow">e-Commerce Leading Technology Partner</p>
+        <p class="all-menu__brand">M2M GLOBAL</p>
+      </div>
+
+      <nav class="all-menu__nav">
+        <div class="all-menu__depth1-row">
+          {
+            route.map((section) => (
+              <div class="all-menu__depth1">
+                <p class="all-menu__depth1-title">{section.label}</p>
+                <span class="all-menu__depth1-line" aria-hidden="true" />
+                <ul class="all-menu__depth2-col">
+                  {section.children.map((child) => (
+                    <li>
+                      <a href={PUBLIC_BUILD_URL + child.href}>{child.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </nav>
+    </div>
+
+    <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href (Footer.astro와 동일) -->
+    <div class="all-menu__downloads">
+      <a href="#" class="all-menu__download-btn">
+        회사소개서
+        <!-- TODO: 다운로드 아이콘 이미지 삽입 -->
+        <span class="all-menu__download-icon" aria-hidden="true"></span>
+      </a>
+      <a href="#" class="all-menu__download-btn">
+        로봇물류 소개서
+        <!-- TODO: 다운로드 아이콘 이미지 삽입 -->
+        <span class="all-menu__download-icon" aria-hidden="true"></span>
+      </a>
+    </div>
+  </div>
+</div>

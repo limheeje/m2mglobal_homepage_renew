@@ -1,63 +1,46 @@
 ---
 // Company > 사업 문의 (/company/contact-us)
 // 참고: Figma "About us > 사업 문의" 프레임(node 360:1715)
+// 카드는 흰 배경+회색 테두리 박스이고, 우측은 공용 Button이 아니라 연회색 필 형태의
+// 자체 다운로드 링크(rounded-70, bg Black 3)다 — Figma 실측 그대로 재구축.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
-import Gnb from '~/components/layout/Gnb.astro'
-import PageBanner from '~/components/PageBanner.astro'
-import Tab from '~/components/Tab.astro'
-import Title from '~/components/Title.astro'
-import Container from '~/components/Container.astro'
-import Button from '~/components/Button.astro'
-import Icon from '~/components/Icon.astro'
-import Footer from '~/components/Footer.astro'
-import {route} from '@config/route'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import Navigation from '~/components/common/Navigation.astro'
 
-const tabs = [
-  {label: '회사 개요', href: route['/company/info']},
-  {label: 'CEO 인사말', href: route['/company/ceo-message']},
-  {label: '회사 연혁', href: route['/company/history']},
-  {label: '인재 채용', href: route['/company/careers']},
-  {label: 'News', href: route['/company/news']},
-  {label: '위치 및 연락처', href: route['/company/address']},
-  {label: '사업 문의', href: route['/company/contact-us']}
-]
+const localNavigation = route.find((item) => item.href === '/company/info')
 ---
 
 <Layout>
-  <Gnb />
-
-  <PageBanner
+  <SubBanner
     title="Company"
-    subtitle={[
-      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
-      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
-    ]}
+    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
   />
-
-  <Tab variant="line" size="large" items={tabs} activeIndex={6} />
-
-  <Title
-    variant="hero"
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-7'} />
+  <TitleMain
     title="사업 문의"
-    subtitle={[
-      'AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.',
-      '다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.',
-      '빠른 시일 내에 답변 드리겠습니다.'
-    ]}
+    description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.<br/>빠른 시일 내에 답변 드리겠습니다."
   />
 
-  <Container maxWidth={1760} class="company-page-end">
-    <div class="company-contact__card">
-      <div class="company-contact__info">
-        <p class="company-contact__label">사업 문의</p>
-        <a href="mailto:help@m2mglobal.co.kr" class="company-contact__email">
-          help@m2mglobal.co.kr
-          <Icon name="ico_mail" size={24} />
+  <section class="g-section">
+    <div class="innerWrap">
+      <div class="company__contact-card">
+        <div class="company__contact-info">
+          <p class="company__contact-label">사업 문의</p>
+          <a href="mailto:help@m2mglobal.co.kr" class="company__contact-email">
+            help@m2mglobal.co.kr
+            <!-- TODO: 아이콘 이미지 삽입 -->
+            <span class="company__icon-ph company__icon-ph--sm" aria-hidden="true"></span>
+          </a>
+        </div>
+        <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href (Footer.astro와 동일) -->
+        <a href="#" class="company__contact-download">
+          회사소개서 다운로드
+          <!-- TODO: 아이콘 이미지 삽입 -->
+          <span class="company__icon-ph company__icon-ph--sm" aria-hidden="true"></span>
         </a>
       </div>
-      <Button variant="secondary" size="lg" icon="ico_download">회사소개서 다운로드</Button>
     </div>
-  </Container>
-
-  <Footer />
+  </section>
 </Layout>

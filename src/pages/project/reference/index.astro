@@ -1,5 +1,29 @@
 ---
+// Project > Reference (/project/reference)
+// 참고: Figma "About us > Header"(node 1210:78058, Project 카테고리 공용 배너) +
+// "프로젝트 &gt; Reference" 1차 타이틀(node 1210:78060).
+//
+// TODO: 본문(레퍼런스 목록/사례 카드)은 아직 Figma 콘텐츠 조사 전 — 지금은 다른 페이지들과
+// 동일한 SubBanner/Navigation/TitleMain 헤더 구성만 채워 "네비게이션 없음" 문제를 해결한다.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import Navigation from '~/components/common/Navigation.astro'
+
+const localNavigation = route.find((item) => item.href === '/project/reference')
 ---
 
-<Layout />
+<Layout>
+  <SubBanner
+    title="Project"
+    description={`"전문 구축 경험 · 산업별 커스터마이징 · B2B 특화 솔루션 · 검증된 성과 · 높은 재계약률"<br/>24년간 꾸준히 수행해온 프로젝트가 엠투엠글로벌의 경쟁력을 입증합니다.`}
+  />
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-PROJECT-ID-1'} />
+  <TitleMain
+    title="Reference"
+    description="엠투엠글로벌의 전문 기술력과 성공적인 수행력을 입증하였습니다.<br/>명확한 목적과 체계적인 실행력을 바탕으로, 경험과 전문성을 겸비한 프로젝트 수행 인력이 한 팀이 되어, 고객사의 비즈니스 성공을 위해 끊임없이 노력하고 성장 중입니다."
+  />
+
+  <!-- TODO: 레퍼런스 목록/사례 카드 본문 — Figma 콘텐츠 조사 후 작성 -->
+</Layout>

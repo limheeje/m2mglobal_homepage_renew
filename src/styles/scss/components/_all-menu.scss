@@ -1,0 +1,184 @@
+@charset 'utf-8';
+@use 'sass:math';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// 화면 전체(GNB 포함)를 덮는 최상위 오버레이 — Figma "All 메뉴" 심볼(1920x980, dark navy bg).
+// gnb-wrap의 z-index(100)보다 높게 잡아 헤더까지 전부 가린다.
+// 열림/닫힘은 body.is-allmenu-open 클래스(scripts/all-menu-toggle.ts)로 토글한다.
+.all-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow-y: auto;
+  background-color: color('Color/Secondary Color');
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s;
+}
+
+body.is-allmenu-open .all-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+// 배경 합성 이미지 자리 — 사용자가 직접 삽입 예정이라 빈 자리만 잡아둠(내용 스타일 X)
+.all-menu__bg-ph {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.all-menu__close {
+  position: absolute;
+  top: rem(80px);
+  right: rem(80px);
+  z-index: 1;
+  width: rem(48px);
+  height: rem(48px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.all-menu__close-icon {
+  display: inline-block;
+  width: rem(48px);
+  height: rem(48px);
+  @include get-background-svg(icon_close, color('Color/White'));
+}
+
+.all-menu__inner {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: rem(40px);
+  padding: rem(80px);
+}
+
+.all-menu__body {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+}
+
+.all-menu__head {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12px);
+}
+.all-menu__eyebrow {
+  @include font('H1');
+  color: color('Color/Accent Color');
+}
+.all-menu__brand {
+  @include font('H1');
+  color: color('Color/White');
+}
+
+.all-menu__nav {
+  display: flex;
+  flex-direction: column;
+}
+// 1Depth 컬럼 하나(타이틀 + 언더라인 + 그 밑에 자기 소속 2Depth 리스트)가 세로로 쌓이는 단위 —
+// 2Depth를 1Depth의 자식으로 두는 DOM 구조라야 "몇 번째 1Depth의 하위 메뉴인지"가 마크업만 보고도 맞다.
+.all-menu__depth1-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.all-menu__depth1 {
+  flex: 1 1 0%;
+  min-width: rem(160px);
+  display: flex;
+  flex-direction: column;
+  gap: rem(40px);
+}
+.all-menu__depth1-title {
+  @include font('H3');
+  color: color('Color/White');
+}
+.all-menu__depth1-line {
+  display: block;
+  width: rem(28px);
+  height: rem(1px);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.all-menu__depth2-col {
+  display: flex;
+  flex-direction: column;
+  gap: rem(12px);
+
+  a {
+    @include font('Body 16 R');
+    color: color('Color/White');
+    &:hover,
+    &:focus-visible {
+      color: color('Color/Accent Color');
+    }
+  }
+}
+
+.all-menu__downloads {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+}
+.all-menu__download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: rem(8px);
+  padding: rem(12px) rem(24px);
+  border-radius: rem(30px);
+  background-color: color('Color/Primary Color');
+  @include font('Body 15 R');
+  color: color('Color/White');
+  &:hover,
+  &:focus-visible {
+    background-color: color('Color/Third Color');
+  }
+}
+.all-menu__download-icon {
+  display: inline-block;
+  width: rem(20px);
+  height: rem(20px);
+  @include get-background-svg(icon_download, color('Color/White'));
+}
+
+@media only screen and (max-width: $breakpoint-lg) {
+  .all-menu__inner {
+    padding: rem(45px);
+  }
+  .all-menu__close {
+    top: rem(45px);
+    right: rem(45px);
+  }
+  .all-menu__depth1 {
+    flex: 1 1 33.333%;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .all-menu__inner {
+    padding: rem(24px) rem(15px);
+    gap: rem(24px);
+  }
+  .all-menu__close {
+    top: rem(24px);
+    right: rem(15px);
+  }
+  .all-menu__eyebrow,
+  .all-menu__brand {
+    @include font('H4');
+  }
+  .all-menu__depth1 {
+    flex: 1 1 50%;
+  }
+  .all-menu__downloads {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

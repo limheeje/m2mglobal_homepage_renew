@@ -1,6 +1,7 @@
 ---
 import {route} from '@config/route/routeMap.ts'
 const localGnbItems = route
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 ---
 
 <div class="gnb-wrap">
@@ -13,7 +14,7 @@ const localGnbItems = route
         localGnbItems &&
           localGnbItems.map((item) => (
             <li class="gb-item">
-              <a href={item.href} class="g-link">
+              <a href={PUBLIC_BUILD_URL + item.href} class="g-link">
                 {item.label}
               </a>
             </li>

@@ -1,0 +1,363 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /project/* 공용 컴포넌트로 커버 안 되는 페이지 전용 마크업
+// (route 1뎁스 단위: specialized-outcomes, reference 공용)
+// ==========================================================================
+
+.spec__image-ph {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+
+  &--wide {
+    aspect-ratio: 1760 / 652;
+  }
+}
+
+// --- 개요: 원형/네트워크 그래픽 + Why M2M GLOBAL 사례 카드 ---
+.spec__banner-diagram {
+  width: 100%;
+  aspect-ratio: 1760 / 744;
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+  margin-bottom: rem(40px);
+}
+
+.spec__case-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+  margin-top: rem(40px);
+}
+.spec__case-card {
+  flex: 1 1 0%;
+  min-width: rem(280px);
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+  padding: rem(36px);
+  background-color: color('Color/White');
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.spec__case-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding-bottom: rem(20px);
+  border-bottom: rem(1px) solid color('Color/Primary Color');
+}
+.spec__case-logo-ph {
+  display: inline-block;
+  width: rem(160px);
+  height: rem(36px);
+  background-color: color('Color/Black 10');
+  border-radius: rem(6px);
+}
+.spec__case-name {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+  text-align: center;
+}
+.spec__case-list {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 rem(20px);
+}
+.spec__case-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: rem(24px) 0;
+  background-color: color('Color/Black1');
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(6px);
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  text-align: center;
+}
+
+// --- Semimarket / SORIN: 스펙 행(아이콘+라벨 / 요약 / 화살표 / 체크리스트) ---
+.spec__row-grid {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+  margin-bottom: rem(80px);
+}
+.spec__row {
+  display: flex;
+  align-items: stretch;
+  gap: rem(20px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(12px);
+}
+.spec__row-label {
+  flex: 0 0 auto;
+  width: rem(170px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: rem(8px);
+  padding-right: rem(20px);
+  border-right: rem(1px) solid color('Color/Box/Border color');
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+  text-align: center;
+}
+.spec__row-icon-ph {
+  display: inline-block;
+  width: rem(24px);
+  height: rem(24px);
+  background-color: color('Color/Black 10');
+  border-radius: rem(6px);
+}
+.spec__row-summary {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.spec__row-arrow-ph {
+  flex: 0 0 auto;
+  width: rem(60px);
+  align-self: center;
+  height: rem(2px);
+  background-color: color('Color/Black 20');
+}
+.spec__row-list {
+  flex: 0 0 auto;
+  width: rem(360px);
+  display: flex;
+  flex-direction: column;
+  padding: rem(24px);
+  background-color: color('Color/Black 3');
+  border-radius: rem(12px);
+}
+
+// --- Semimarket / SORIN: 특별한 성과(화면 스크린샷 갤러리) ---
+.spec__gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: rem(10px);
+}
+.spec__gallery-ph {
+  width: 100%;
+  aspect-ratio: 277 / 577;
+  background-color: color('Color/Black 3');
+  border-radius: rem(16px);
+}
+
+// --- CJ대한통운: 로봇기반 통합관제시스템 구축 사례 타임라인 ---
+.spec__timeline {
+  display: flex;
+  gap: rem(20px);
+  margin-bottom: rem(80px);
+}
+.spec__timeline-phase {
+  flex: 1 1 0%;
+  text-align: center;
+}
+.spec__timeline-phase-label {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(8px);
+}
+.spec__timeline-phase-date {
+  @include font('Body 18 R');
+  color: color('Color/Primary Color');
+  margin-bottom: rem(12px);
+}
+.spec__timeline-stages {
+  display: flex;
+  border-top: rem(2px) solid color('Color/Black 20');
+}
+.spec__timeline-stage {
+  flex: 1 1 0%;
+  padding: rem(16px) rem(8px) 0;
+  & + & {
+    border-left: rem(1px) solid color('Color/Black 10');
+  }
+}
+.spec__timeline-step {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(8px);
+}
+.spec__timeline-desc {
+  @include font('Body 14 R');
+  color: color('Black/60');
+}
+
+// --- CJ대한통운: 구현 기능(번호 카드) ---
+.spec__num-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(20px);
+  margin-bottom: rem(80px);
+}
+.spec__num-card {
+  flex: 1 1 0%;
+  min-width: rem(180px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
+.spec__num-index {
+  @include font('Body 24 R');
+  color: color('Color/Primary Color');
+}
+.spec__num-label {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+  text-align: center;
+}
+
+// --- CJ대한통운: 연동 제조사 AMR/AGV 스펙 테이블 ---
+.spec__equip-table {
+  display: flex;
+  flex-direction: column;
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(12px);
+  overflow: hidden;
+  margin-bottom: rem(80px);
+}
+.spec__equip-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  & + & {
+    border-top: rem(1px) solid color('Color/Black 10');
+  }
+  span {
+    padding: rem(12px) rem(20px);
+    @include font('Body 18 R');
+    color: color('Color/Black 100');
+    text-align: center;
+  }
+  &--head span {
+    background-color: color('Color/Black 3');
+    font-weight: 700;
+  }
+}
+
+// --- CJ대한통운: 시스템 업무 구성 ---
+.spec__intro-text {
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(40px);
+}
+.spec__sysmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+  margin-bottom: rem(80px);
+}
+.spec__sysmap-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.spec__sysmap-icon-ph {
+  display: inline-flex;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+.spec__sysmap-title {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+  text-align: center;
+}
+.spec__sysmap-list {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  text-align: center;
+  li + li {
+    margin-top: rem(4px);
+  }
+}
+
+// --- CJ대한통운: 주요 기능 소개 (PC / Tablet 비교) ---
+.spec__compare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: rem(20px);
+  padding: rem(36px) rem(24px);
+  background-color: color('Color/White');
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+}
+.spec__compare-col {
+  flex: 1 1 0%;
+  max-width: rem(425px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+}
+.spec__compare-icon-ph {
+  display: inline-flex;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+.spec__compare-device {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+}
+.spec__compare-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: rem(8px);
+}
+.spec__compare-arrow-ph {
+  flex: 0 0 auto;
+  width: rem(60px);
+  height: rem(2px);
+  background-color: color('Color/Black 20');
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .spec__case-grid,
+  .spec__timeline,
+  .spec__compare {
+    flex-direction: column;
+  }
+  .spec__row {
+    flex-direction: column;
+  }
+  .spec__row-label,
+  .spec__row-list {
+    width: 100%;
+  }
+  .spec__gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .spec__num-grid,
+  .spec__sysmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .spec__equip-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

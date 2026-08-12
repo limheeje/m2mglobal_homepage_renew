@@ -50,12 +50,13 @@ $ICON_DOWNLOAD: '[data-type="download"]';
     }
     &#{$SIZE_SM}{
         border-radius: rem(46px);
+        padding: rem(12px) rem(24px);
         height: rem(46px);
         .b-tx{
             @include font('Body 16 R');
         }
     }
-    &#{$SIZE_SM}{
+    &#{$SIZE_LG}{
         border-radius: rem(59px);
         height: rem(59px);
         .b-tx{
@@ -73,12 +74,17 @@ $ICON_DOWNLOAD: '[data-type="download"]';
             &#{$ICON_PLUS}{@include get-background-svg(icon_plus, color('Color/Black 20'));}
         }
         &:hover{
+            background-color: color('Color/Primary Color');
+            border-color: color('Color/Primary Color');
+            .b-tx{
+                color: color('Color/White');
+            }
             .b-suff{
                 &#{$ICON_COPY}{@include get-background-svg(icon_copy, color('Color/White'));}
                 &#{$ICON_PLUS}{@include get-background-svg(icon_plus, color('Color/White'));}
             }
         }
-       
+
     }
     &#{$VARIANT_WHITE}{
         background-color: color('Color/White');
@@ -86,19 +92,29 @@ $ICON_DOWNLOAD: '[data-type="download"]';
         .b-tx{
             color: color('Color/Black 100');
         }
-    }
-    &#{$VARIANT_WHITE}{
-        background-color: color('Color/Third Color');
-        border-color: color('Color/Third Color');
-        .b-tx{
-            color: color('Color/White');
+        .b-suff{
+            &#{$ICON_BLANK}{width: rem(20px);height: rem(20px);@include get-background-svg(icon_blank, color('Color/Black 20'));}
+        }
+        &:hover{
+            background-color: color('Color/Primary Color');
+            border-color: color('Color/Primary Color');
+            .b-tx{
+                color: color('Color/White');
+            }
+            .b-suff{
+                &#{$ICON_BLANK}{@include get-background-svg(icon_blank, color('Color/White'));}
+            }
         }
     }
-     &:hover{
+    &#{$VARIANT_PRIMARY}{
         background-color: color('Color/Primary Color');
         border-color: color('Color/Primary Color');
         .b-tx{
             color: color('Color/White');
+        }
+        &:hover{
+            background-color: color('Color/Secondary Color');
+            border-color: color('Color/Secondary Color');
         }
     }
 }

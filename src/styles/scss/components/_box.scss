@@ -31,6 +31,7 @@ $USE_SLOTFOOT : 'use-slotfoot';
         justify-content: flex-start;
         .b-tags{
             @include font('Body 18 R');
+            text-align: left;
             color: color('Color/Font/Font Color');
         }
     }
@@ -99,7 +100,6 @@ $USE_SLOTFOOT : 'use-slotfoot';
         }
         .bsb-title{
             @include font('Body 24 R');
-            @include text-ellipsis;
             color: color('Color/Font/Font Color');
             margin-bottom: rem(20px);
         }
@@ -111,7 +111,6 @@ $USE_SLOTFOOT : 'use-slotfoot';
         }
         .bsb-title{
             @include font('Body 30 R');
-            @include text-ellipsis;
             color: color('Color/Font/Font Color');
             margin-bottom: rem(20px);
         }
@@ -140,7 +139,6 @@ $USE_SLOTFOOT : 'use-slotfoot';
             width: calc(100% - rem(100px) - rem(12px));
             word-break: break-all;
             @include font('Body 30 R');
-            @include text-ellipsis;
             color: color('Color/Secondary Color');
         }
     }
@@ -169,7 +167,6 @@ $USE_SLOTFOOT : 'use-slotfoot';
         .bsb-title{
             @include font('Body 30 R');
             color: color('Color/Black 100');
-            @include text-ellipsis;
         }
     }
     .bs-gl-bottom{
@@ -186,5 +183,15 @@ $USE_SLOTFOOT : 'use-slotfoot';
 @media only screen and (max-width: $breakpoint-md){
 .bs-box{
     padding: rem(36px);
+    .bs-box-title-case-4{
+        .bsb-title-wrap{
+            align-items: flex-start;
+            display: flex;
+            flex-direction: column;
+            .bsb-title-pref{
+                margin-left: auto;
+            }
+        }
+    }
 }
 }

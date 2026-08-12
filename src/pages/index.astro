@@ -1,11 +1,825 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+// 메인 페이지 (/) — Figma "Main slogan / 사업정보 / AI / Business / Solution_Project" 5개 슬라이드 섹션.
+// 참고: 슬라이드 전환 JS(자동재생·화살표·닷 네비게이션)는 나중에 붙인다 — 지금은 섹션별 슬라이드
+// 아이템 마크업/스타일만 순서대로 쌓아둔 상태. 각 슬라이드 높이는 "뷰포트 - 고정 GNB(80px)".
+// Business 섹션은 사용자 요청에 따라 슬라이드 전체를 이미지로 대체할 자리만 두고 코딩하지 않았다.
+import Layout from '~/layouts/Layout.astro'
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// --- Section 1: Main slogan (4개) ---
+const mainSlides = [
+  {
+    title: 'Where AI Transformation Begins<br/>Accelerating Business with AI',
+    list: [
+      'AI Commerce 기반의 이커머스 시스템을 통해 구축 실행력을 이미 입증하였습니다.',
+      '24년 간의 구축 경험으로 만든 안정성+성과로 증명하는 전문성으로 수행력을 입증합니다.',
+      'B2B 원자재·산업재 거래 특화 커머스 수행 경험이 특별함을 말합니다.'
+    ]
+  },
+  {
+    title:
+      'AI Engineering for Real Business<br/>AI 기반 비즈니스 혁신을 현실로 만드는<br/>엠투엠글로벌입니다.',
+    list: ['AI & Machine Learning', 'AI Commerce Platform', 'AI Robot & Logistics Knowledge']
+  },
+  {
+    title: 'B2B 원자재·산업재 거래 플랫폼을<br/>실거래 수준으로 구현한 유일한 기업',
+    desc: 'AI 기반 거래·추천·분석까지 확장 가능한<br/>커머스 구축 역량을 보유한 엠투엠글로벌입니다.',
+    caption: '(반도체 장비 거래 - 세미마켓 & 비철금속거래 – 서린닷컴 & 농협몰 등)'
+  },
+  {
+    title: 'AI Transformation의 시작점<br/>이제, 속도와 방향을 다시 설계합니다.',
+    desc: 'Hybrid Multi-Layer Scoring Framework로<br/>AI Commerce의 완성도를 높입니다.<br/>거래·추천·분석 전 과정을 아우르는<br/>엠투엠글로벌만의 지능형 AI 프레임워크',
+    diagram: true
+  }
+]
+
+// --- Section 2: 사업정보 (2개) ---
+const bizSlides = [
+  {
+    coreTitle: 'M2M GLOBAL',
+    coreSub: 'Biz Area',
+    cards: [
+      {
+        title: 'AI & Machine Learning',
+        desc: '데이터 수집부터 모델 학습, 실시간 추론, 운영 모니터링까지 전 주기를 지원하며, End-to-End AI 파이프라인을 제공하여 다양한 사업 환경에 맞춘 AI 서비스를 효율적으로 제공'
+      },
+      {
+        title: 'e-Commerce',
+        desc: '다년간의 프로젝트 경험과<br/>노하우를 바탕으로 안정적인<br/>e-Commerce 프레임 워크 제공<br/>(Web, Admin, Mobile)'
+      },
+      {
+        title: '지능형 Robot Logistics',
+        desc: 'AGV, AWR 기반 로봇 통합 관제<br/>및 실시간 모니터링을 통한<br/>택배 물류 센터 자동화 관리<br/>플랫폼 구축/운영'
+      },
+      {
+        title: 'AI Smart Factory',
+        desc: '"생산 현장 데이터를 실시간<br/>수집/가공/분석"을 통한<br/>자율 공장 실현이 가능한<br/>지능화 된 스마트 팩토리 제공'
+      }
+    ]
+  },
+  {
+    coreTitle: 'M2M GLOBAL',
+    coreSub: 'Solution',
+    cards: [
+      {
+        title: 'e-Commerce',
+        desc: '•AI Commerce (AI 추천)<br/>•M2M-eMall (쇼핑몰)<br/>•M2M-B2Bi (연계)<br/>•M2M-eCCP (개발플랫폼)'
+      },
+      {
+        title: 'Logistics Platform',
+        desc: '•M2M-SCM (공급망 관리)<br/>•M2M-WMS (창고관리)<br/>•M2M-TMS (운송관리)'
+      },
+      {
+        title: 'Trade Platform',
+        desc: '•M2M-FTA (원산지증명)<br/>•M2M-eTrade (수출입)<br/>•M2M-EDI (전자문서연계)'
+      },
+      {
+        title: 'Cloud / AI',
+        desc: '•AWS 공급 파트너<br/>•Microsoft 공급 파트너<br/>•넥스다임 공급 파트너'
+      }
+    ]
+  }
+]
+
+// --- Section 3: AI (2개) ---
+const aiSlides = [
+  {
+    eyebrow: 'AI Commerce',
+    head: 'AI Transformation의 시작점! AI로 비즈니스 성장을 가속화합니다.',
+    bannerTitle: 'AI Commerce',
+    bannerDesc:
+      'Hybrid Multi-Layer Scoring Framework를 통해 AI Commerce를 완성하다!<br/>AI Commerce를 통해 거래·추천·분석까지 AI Commerce 비즈니스를 실현 중인 M2M GLOBAL만의 지능형 프레임워크.',
+    flow: [
+      {title: '후보군 생성', sub: '(Candidate Generation)'},
+      {title: 'AI 스코어링', sub: '(AI Scoring)'},
+      {title: 'AI Commerce', accent: true},
+      {title: '비즈니스 룰 적용', sub: '(Business Rules)'},
+      {title: '최종 랭킹', sub: '(Ranking & Optimization)'}
+    ],
+    cols: [
+      {title: '상품 상세 추천', desc: '고객의 관심, 행동 데이터 기반의<br/>강력한 추천의 정확도'},
+      {
+        title: '메인/카테고리 개인화 영역',
+        desc: '초 개인화에 집중한 정확한 데이터 기반의 추천 구현<br/>높은 구매 전환률'
+      },
+      {
+        title: '장바구니/결제 추천',
+        desc: '함께 구매 가능성 상품 추천 강화를 통해<br/>객단가 상승 및 교차 판매 극대화'
+      },
+      {
+        title: '마케팅 캠페인 타겟팅',
+        desc: '고객 데이터 기반 세분화와 AI 분석을 통해<br/>개인 맞춤형 캠페인 실행가능 및 마케팅 성과 극대화'
+      }
+    ]
+  },
+  {
+    eyebrow: 'AI & Machine Learning',
+    head: 'AI Transformation의 시작점! AI로 비즈니스 성장을 가속화합니다.',
+    bannerTitle: 'AI & Machine Learning',
+    bannerDesc:
+      '데이터 수집부터 모델 학습, 실시간 추론, 운영 모니터링까지 전 주기를 지원하여<br/>비즈니스 성과를 극대화하는 End-to-End AI/ML Solution',
+    flow: [
+      {title: 'Data Source', sub: '사용자 이벤트<br/>클릭·구매·열람 로그'},
+      {title: 'Data Pipeline', sub: '실시간 스트리밍<br/>Kafka 이벤트 처리'},
+      {title: 'ML Engine', sub: '배치 학습<br/>PyTorch·LightGBM<br/>Scikit-learn'},
+      {title: 'Serving', sub: '추천 API<br/>FastAPI / Spring Boot'},
+      {title: 'Operation', sub: '모델 버전 관리<br/>A/B 비교·롤백'}
+    ],
+    footer: '데이터 수집 → 확충 → 서빙 → 모니터링까지의 End-to-End AI 플랫폼 아키텍처',
+    footerCaption:
+      'Deployment Infrastructure: AWS / On-Premise · Docker · Linux · Nginx · GPU/Non-GPU 환경 지원'
+  }
+]
+
+// --- Section 4: Business (3개) — Figma "Business" 프레임(node 151:830) 3개 심볼 그대로 ---
+// 배경/그래픽 이미지는 사용자가 직접 삽입 예정이라 빈 자리(TODO)만 잡아둔다.
+const ecommerceSlide = {
+  title: 'Modular Commerce Platform',
+  desc: 'Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 유연한 확장성 제공.',
+  circles: [
+    '회원',
+    '상품',
+    '주문/결제',
+    '배송/물류',
+    '전시/메인',
+    '이벤트',
+    '정산/통계',
+    '글로벌',
+    'CS/알림<br/>기타'
+  ],
+  rightList: [
+    'B2C 종합 몰',
+    'B2E 기업 몰',
+    'B2C 종합 온-오프라인 통합 몰',
+    '온-오프라인 통합 몰',
+    '국내외 전문 몰 제휴 연계',
+    '쇼핑몰 솔류션 공급',
+    'Mobile Web / App'
+  ]
+}
+
+const robotLogisticsSlide = {
+  title: 'ROBOT Logistics',
+  desc: '다양한 물류 로봇과 자동화 설비를 하나의 플랫폼으로 통합 제어하여 스마트 창고의 운영 효율 UP!<br/>AS/RS, AMR, 셔틀카 등 이기종 로봇을 유기적으로 연계해 안정적인 물류 운영 및 최적의 작업 환경 제공',
+  centerBadge: 'M2M-RLCK<br/>로봇물류제어기술',
+  leftPills: [
+    {
+      name: '자동화 창고(AS/RS',
+      desc: 'WMS 실시간 연계<br/>고밀도 저장 및 자동 입·출고<br/>스태커 크레인 기반 자동 운반<br/>재고 정확도 및 공간 활용 극대화'
+    },
+    {
+      name: 'AMR',
+      desc: '자율주행 기반 운반<br/>작업 우선순위 자동 배정<br/>장애물 회피 및 경로 최적화<br/>유연한 레이아웃 대응'
+    },
+    {
+      name: 'AGV',
+      desc: '랙(선반) 직접 운반<br/>고정 컨베이어 불필요<br/>레이아웃 변경 용이<br/>피킹 작업 효율 향상'
+    }
+  ],
+  rightPills: [
+    {
+      name: 'Stacker Crane',
+      desc: '고층 입체창고 운영<br/>대용량 팔레트 처리<br/>고속 입·출고 지원<br/>무인 자동화 운영'
+    },
+    {
+      name: 'Shuttle AGV',
+      desc: 'Bin 단위 자동 보관·피킹<br/>Goods-to-Person 방식 지원<br/>소형 상품 처리 최적화<br/>피킹 정확도 및 생산성 향상'
+    },
+    {
+      name: 'Shuttle Car',
+      desc: '고속 셔틀 기반 이송<br/>다층·고밀도 저장 지원<br/>입·출고 처리량 극대화<br/>공간 활용 및 처리 효율 향상'
+    }
+  ]
+}
+
+const smartFactorySlide = {
+  title: 'Smart Factory MES',
+  desc: '사람, 산업 공간, 업무 정보를 스마트하게 연결하다!<br/>생산 현장 데이터 실시간 수집/가공/분석"을 통한 자율 공장 실현 가능, 지능화 된 스마트 팩토리 시스템 보유',
+  dataFlow: ['데이터 수집', '데이터 정제 · 관리', '데이터 활용'],
+  processTags: [
+    '제조 실행',
+    '품질/수율관리',
+    '설비/엔지니어링',
+    '데이터 시각화',
+    '창고 관리 / 물류 관제'
+  ],
+  devices: ['센서', '게이트웨이', '모니터링 SW', '분석 SW'],
+  rightList: [
+    '생산성 증가',
+    '비용 절감',
+    '설비 운영 효율화',
+    '현장 사고 예방',
+    '분석 통합 레포팅<br/>자율 공장 실현 가능'
+  ]
+}
+
+// --- Section 5: Solution_Project — 실제로는 슬라이드 3종(Solution 소개 / Why,M2MGLOBAL? 케이스 하이라이트
+// / Project 구축사례 9건)이 이어지는 구성이다(Figma "Main"의 Solution_Project 인스턴스 3개: node
+// 1795:10005, 1913:17810, 1798:9729 — 각각 아래 solutionOverview / whyM2mCases / projectCases에 대응). ---
+
+// --- Section 5-1: Solution (자체 플랫폼 소개 6종) ---
+const solutionOverview = {
+  title:
+    '24년 안정적 수행 경험 위에 시장의 변화를 담았습니다. 실제 비즈니스를 움직이는 AI를 구축합니다.',
+  desc: '"이커머스, 물류(로봇, 무역), 클라우드" 영역에서 AI융합을 통해 지능형 솔루션으로 발전해나갑니다.',
+  cards: [
+    {
+      title: 'AI/ML Solution',
+      list: [
+        'AI추천 플랫폼',
+        'AI커머스 플랫폼',
+        '스마트 물류 시스템',
+        '수요 예측 시스템',
+        '고객 행동 분석',
+        'AI 이미지 분석'
+      ]
+    },
+    {
+      title: 'Commerce Platform',
+      list: ['M2M-eMall (쇼핑몰)', 'M2M-B2Bi (연계)', 'M2M-eCCP (개발플랫폼)']
+    },
+    {
+      title: 'Logistics Platform',
+      list: ['M2M-CVO (차량관제)', 'M2M-WMS (창고관리)', 'M2M-TMS (운송관리)']
+    },
+    {
+      title: 'Trade Platform',
+      list: ['M2M-FTA (원산지증명)', 'M2M-eTrade(수출입)', 'M2M-EDI (전자문서연계)']
+    },
+    {title: 'eLivestock Platform', list: ['M2M-eLivestock Auction', 'M2M-B2Bi', 'M2M-eCCP']},
+    {
+      title: '클라우드, AI',
+      list: ['AWS 클라우드 서비스', 'MS-Azure 클라우드 서비스', 'AI 마케팅 솔루션']
+    }
+  ]
+}
+
+// --- Section 5-2: Why, M2MGLOBAL? — B2B 케이스 하이라이트 4건(농협/수협/세미마켓/서린닷컴) ---
+// 4건 모두 공통으로 쓰는 타이틀/설명/3특징 컬럼(featureCols)은 Figma 원본에도 동일 텍스트가 재사용된다.
+const whyM2mIntro = {
+  title: 'B2B 현장을 잘 아는, 24년 경험의 e-Commerce 전문 기업',
+  desc: 'AI & Machine Learning 기술력으로 데이터 수집부터 모델 학습, 실시간 추론, 운영 모니터링까지 전 주기를 지원하여 고객 비즈니스에 맞게 AI를 설계하고 구축하였습니다.'
+}
+const whyM2mFeatureCols = [
+  {
+    title: '독자적 프레임워크와<br/>플랫폼 M2M-eCCP 보유',
+    desc: '고객이 원하는 최적의 맞춤 커머스<br/>플랫폼으로 Customization!'
+  },
+  {
+    title: '특별한 운영<br/>파트너쉽',
+    desc: '커머스 전문 컨설팅 조직 & 경험과 전문성을 겸비한 프로젝트 수행 팀으로 성공 수행'
+  },
+  {title: '다양한 Device 기반 최적의 커머스 시스템<br/>구축 가능', desc: ''}
+]
+const whyM2mCases = [
+  {
+    name: '농협',
+    desc: '상품·주문·물류를 통합한 이커머스 플랫폼 : 농협몰.<br/>농협의 온라인 쇼핑 플랫폼을 구축·고도화하여 상품 판매부터 주문·정산·물류까지 전 과정을 통합 운영하는 이커머스 시스템!',
+    cardTitle: '농협 온라인 쇼핑몰<br/>구축/고도화',
+    cardList: [
+      '산지직송, 하나로마트, 식자재몰, MRO',
+      'B2C, B2B, B2E, 콕푸드',
+      '현업 관리자시스템(NGIN)',
+      '공급업체 관리자시스템(PSCM)',
+      '새벽배송 / 선물하기 구축'
+    ]
+  },
+  {
+    name: '수협',
+    desc: 'AI Commerce 기술력을 접목한 AI 기반 수산물 전문 커머스 시스템 구축.<br/>AI 추천 적용된 공공 커머스 / 산지 기반 B2B → B2C 확장 구조 / 전문관 중심 카테고리 설계 모델 / O2O까지 확장 가능한 구조 구축!',
+    cardTitle: 'AI 기반 수산물 전문<br/>커머스몰',
+    cardList: [
+      'AI 기반 개인화 쇼핑 경험',
+      '지능형 상품 추천 및 전환율 향상',
+      '데이터 기반 전시 및 큐레이션',
+      '마케팅 자동화 및 타겟팅 고도화',
+      '산지 직거래 기반 플랫폼 고도화'
+    ]
+  },
+  {
+    name: '세미마켓',
+    desc: 'AI Commerce 기술력으로 셀러-바이어 간의 반도체 장비 거래 시스템 구축.<br/>강력한 개인화 추천, 셀러 입점, 상품등록, 가격-재고 설정 판매 및 실시간 시세, 환율, 재고와 연동된 거래형 B2B플랫폼 성공 구축!',
+    cardTitle: '반도체 장비 거래<br/>글로벌 마켓 구축',
+    cardList: [
+      'Equipment, Parts, Extras 구매',
+      'Seller 입점 및 Seller Shop 구축',
+      '오퍼, 물류견적 기능',
+      '통합 백오피스 구축',
+      '모바일 서비스 구축'
+    ]
+  },
+  {
+    name: '서린닷컴',
+    desc: '셀러 - 바이어 간의 비철 금속 거래 : 비철금속거래 서린닷컴.<br/>셀러 입점, 상품등록, 가격-재고 설정 판매 및 실시간 시세, 환율, 재고와 연동된 거래형 B2B플랫폼 성공 구축 경험!',
+    cardTitle: '서린상사 비철금속<br/>B2B 판매 플랫폼',
+    cardList: [
+      '알루미늄, 아연… B2B 구매/결제 기능',
+      '실시간 Live 가격 기반 구매',
+      '평균가 / 지정가 / 견적 / 구매입찰 제공',
+      '선물거래, 수출입 대행 구축',
+      'BO / MO 서비스 구축'
+    ]
+  }
+]
+
+// --- Section 5-3: Project (구축 사례 9건) ---
+const projectCases = [
+  {
+    title: '수협중앙회 쇼핑몰 재구축',
+    list: [
+      'AI 기반 개인화 쇼핑 경험',
+      '지능형 상품 추천 및 전환율 향상',
+      '데이터 기반 전시 및 큐레이션',
+      '마케팅 자동화 및 타겟팅 고도화',
+      '산지 직거래 기반 플랫폼 고도화'
+    ]
+  },
+  {
+    title: '농협 온라인 쇼핑몰 구축/고도화',
+    list: [
+      '산지직송, 하나로마트 배송, 식자재 몰, MRO, 제휴 연계',
+      'B2C몰,B2B몰, B2E몰, 콕푸드',
+      '현업 관리자시스템(NGIN), 공급업체 관리자시스템(PSCM)',
+      'DFC 서비스 구축',
+      '선물하기, 새벽배송 서비스 구축'
+    ]
+  },
+  {
+    title: '다이소 차세대 커머스 플랫폼 구축',
+    list: [
+      '오프라인 매장의 온라인 옴니 채널 구축',
+      '통합 백오피스 구축',
+      '온라인 주문 시 오프라인 상품 피킹 시스템 구현',
+      '클라우드 인프라 도입을 통한 안정성을 확보한 시스템 구축'
+    ]
+  },
+  {
+    title: 'C2C 직거래 온라인 플랫폼 재구축',
+    list: [
+      '실차주 인증 기반, 매물직거래',
+      '보험 정비 / 사고 이력 공개',
+      '직거래 품질인증 / 개인정보보호',
+      '온라인 명의이전 제공',
+      '직거래 전용 대출 연동'
+    ]
+  },
+  {
+    title: '제주항공 기내판매시스템',
+    list: [
+      '제주항공 기내판매시스템 개편',
+      '케이터링 시스템 구축',
+      '승무원 판매 단말 UI/UX개편 (에어카페 개편 진행)'
+    ]
+  },
+  {
+    title: 'K Car 직영 온라인 플랫폼 재구축',
+    list: [
+      '온라인 결제 간소화',
+      'AI추천 기반, 모바일 플랫폼 구축',
+      '직영거래, 인증서비스 강화',
+      'AI추천/음성검색/생체인식 등 신기술 도입',
+      'AWS 클라우드 기반 서비스 구축'
+    ]
+  },
+  {
+    title: '롯데ON구축 롯데그룹 6개 이커머스 통합 플랫폼 구축',
+    list: [
+      '롯데닷컴, 롯데백화점, 롯데마트, 롯데슈퍼, 하이마트, 롯데롭스',
+      '총 21개의 이커머스 업무영역에 대한 기능 구현 (FO/BO통합)',
+      'MSA 기반 설계 (모듈별 분산처리 및 독립적 개발-운영-배포 처리 구현)',
+      '구매자와 판매자 중개플랫폼, 온라인서비스/채널연동'
+    ]
+  },
+  {
+    title: '반도체 장비 거래 글로벌 마켓 구축',
+    list: [
+      'AI 초개인화 추천을 통한 셀러-바이어 간의 반도체 장비 거래',
+      'Equipment, Parts, Extras 구매',
+      'Seller 입점 및 Seller Shop 구축',
+      '오퍼, 물류견적 기능'
+    ]
+  },
+  {
+    title: '서린상사 비철금속 B2B 판매 플랫폼',
+    list: [
+      '알루미늄, 아연… B2B 구매 기능',
+      '실시간 Live 가격 기반 구매',
+      '평균가 구매 / 지정가 구매',
+      '견적 구매 / 구매 입찰 제공',
+      '선물거래, 수출입 대행 구축',
+      'B2B Payment 구축'
+    ]
+  }
+]
 ---
 
 <Layout>
-	<Welcome />
+  <div class="main-wrap">
+    <!-- Section 1: Main slogan -->
+    <div class="section1-slide">
+      {
+        mainSlides.map((slide) => (
+          <div class="section-item">
+            {/* <!-- TODO: 슬라이드 배경 이미지 삽입 (인라인 style="background-image:url(...)") --> */}
+            <div class="content-inner">
+              <div class="b-texts">
+                <div class="b-title" set:html={slide.title} />
+                {slide.desc && <div class="b-desc" set:html={slide.desc} />}
+                {slide.caption && <div class="b-caption" set:html={slide.caption} />}
+                {slide.list && (
+                  <div class="b-list">
+                    {slide.list.map((li) => (
+                      <div class="b-li">{li}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <a href="#" class="ad-more">
+                Read More
+              </a>
+
+              {slide.diagram && (
+                <div class="b-diagram">
+                  <div class="b-diagram-node b-diagram-node--tl">
+                    <span>
+                      <strong>후보군 생성</strong>(Candidate Generation)
+                    </span>
+                  </div>
+                  <div class="b-diagram-node b-diagram-node--tr">
+                    <span>
+                      <strong>AI 스코어링</strong>(AI Scoring)
+                    </span>
+                  </div>
+                  <div class="b-diagram-node b-diagram-node--bl">
+                    <span>
+                      <strong>비즈니스 룰 적용</strong>(Business Rules)
+                    </span>
+                  </div>
+                  <div class="b-diagram-node b-diagram-node--br">
+                    <span>
+                      <strong>최종 랭킹</strong>(Ranking & Optimization)
+                    </span>
+                  </div>
+                  <div class="b-diagram-node b-diagram-node--center">AI Commerce</div>
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Section 2: 사업정보 -->
+    <div class="section2-slide">
+      {
+        bizSlides.map((slide) => (
+          <div class="section-item">
+            {/* <!-- TODO: 슬라이드 배경 이미지 삽입 --> */}
+            <div class="content-inner">
+              <p class="biz-eyebrow">M2MGLOBAL Biz</p>
+              <div class="biz-core">
+                {slide.coreTitle}
+                <br />
+                <span>{slide.coreSub}</span>
+              </div>
+              <div class="biz-grid">
+                {slide.cards.map((card) => (
+                  <div class="biz-card">
+                    <p class="biz-card-title">{card.title}</p>
+                    <p class="biz-card-desc" set:html={card.desc} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <a href="#" class="ad-more">
+              Read More
+            </a>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Section 3: AI -->
+    <div class="section3-slide">
+      {
+        aiSlides.map((slide) => (
+          <div class="section-item">
+            <p class="ai-eyebrow">{slide.eyebrow}</p>
+            <p class="ai-head">{slide.head}</p>
+            <div class="ai-banner">
+              <p class="ai-banner-title">{slide.bannerTitle}</p>
+              <p class="ai-banner-desc" set:html={slide.bannerDesc} />
+            </div>
+            <div class="ai-flow">
+              {slide.flow.map((node) => (
+                <div class:list={['ai-flow-node', {'ai-flow-node--accent': node.accent}]}>
+                  {node.sub ? (
+                    <span>
+                      <strong>{node.title}</strong>
+                      <span set:html={node.sub} />
+                    </span>
+                  ) : (
+                    node.title
+                  )}
+                </div>
+              ))}
+            </div>
+            {slide.cols && (
+              <div class="ai-cols">
+                {slide.cols.map((col) => (
+                  <div class="ai-col">
+                    <p class="ai-col-title">{col.title}</p>
+                    <p class="ai-col-desc" set:html={col.desc} />
+                  </div>
+                ))}
+              </div>
+            )}
+            {slide.footer && (
+              <div class="ai-cols">
+                <div class="ai-col">
+                  <p class="ai-col-title">{slide.footer}</p>
+                  <p class="ai-col-desc">{slide.footerCaption}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Section 4: Business (3개) -->
+    <div class="section4-slide">
+      <div class="section-item biz-item biz-item--ecommerce">
+        <!-- TODO: 배경 이미지 삽입 -->
+        <div class="biz-bg-ph" aria-hidden="true"></div>
+        <p class="biz-eyebrow">Business</p>
+        <div class="biz-body">
+          <div class="biz-head">
+            <div class="biz-title-row">
+              <p class="biz-title">{ecommerceSlide.title}</p>
+              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
+              <span class="biz-arrow-ph" aria-hidden="true"></span>
+            </div>
+            <p class="biz-desc" set:html={ecommerceSlide.desc} />
+          </div>
+          <div class="biz-cols">
+            <div class="biz-circle-grid">
+              {
+                ecommerceSlide.circles.map((text) => (
+                  <div class="biz-circle">
+                    <p set:html={text} />
+                  </div>
+                ))
+              }
+            </div>
+            <!-- TODO: 흐름 화살표 그래픽 이미지 삽입 -->
+            <div class="biz-center-ph" aria-hidden="true"></div>
+            <div class="biz-side-list">
+              {ecommerceSlide.rightList.map((text) => <p class="biz-side-item">{text}</p>)}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-item biz-item biz-item--robot">
+        <!-- TODO: 배경 이미지 삽입 -->
+        <div class="biz-bg-ph" aria-hidden="true"></div>
+        <p class="biz-eyebrow">Business</p>
+        <div class="biz-body">
+          <div class="biz-head">
+            <div class="biz-title-row">
+              <p class="biz-title">{robotLogisticsSlide.title}</p>
+              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
+              <span class="biz-arrow-ph" aria-hidden="true"></span>
+            </div>
+            <p class="biz-desc" set:html={robotLogisticsSlide.desc} />
+          </div>
+          <div class="biz-cols biz-cols--robot">
+            <div class="biz-pill-col">
+              {
+                robotLogisticsSlide.leftPills.map((pill) => (
+                  <div class="biz-pill-group">
+                    <p class="biz-pill">{pill.name}</p>
+                    <p class="biz-pill-desc" set:html={pill.desc} />
+                  </div>
+                ))
+              }
+            </div>
+            <div class="biz-center-ph biz-center-ph--robot" aria-hidden="true">
+              <!-- TODO: 로봇/창고 사진 6컷 이미지 삽입 -->
+              <div class="biz-center-badge">
+                <p set:html={robotLogisticsSlide.centerBadge} />
+              </div>
+            </div>
+            <div class="biz-pill-col">
+              {
+                robotLogisticsSlide.rightPills.map((pill) => (
+                  <div class="biz-pill-group">
+                    <p class="biz-pill">{pill.name}</p>
+                    <p class="biz-pill-desc" set:html={pill.desc} />
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-item biz-item biz-item--factory">
+        <!-- TODO: 배경 이미지 삽입 -->
+        <div class="biz-bg-ph" aria-hidden="true"></div>
+        <p class="biz-eyebrow">Business</p>
+        <div class="biz-body">
+          <div class="biz-head">
+            <div class="biz-title-row">
+              <p class="biz-title">{smartFactorySlide.title}</p>
+              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
+              <span class="biz-arrow-ph" aria-hidden="true"></span>
+            </div>
+            <p class="biz-desc" set:html={smartFactorySlide.desc} />
+          </div>
+          <div class="biz-cols biz-cols--factory">
+            <div class="biz-dataflow-col">
+              <div class="biz-dataflow-row">
+                {
+                  smartFactorySlide.dataFlow.map((text) => (
+                    <div class="biz-datacircle">
+                      {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                      <span class="biz-datacircle-icon-ph" aria-hidden="true" />
+                      <p>{text}</p>
+                    </div>
+                  ))
+                }
+              </div>
+              <div class="biz-flow-row">
+                {
+                  smartFactorySlide.processTags.map((text) => (
+                    <div class="biz-flow-tag">
+                      <span class="biz-flow-line" aria-hidden="true" />
+                      <p>{text}</p>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+            <div class="biz-device-grid">
+              {
+                smartFactorySlide.devices.map((text) => (
+                  <div class="biz-device-pill">
+                    <p>{text}</p>
+                  </div>
+                ))
+              }
+            </div>
+            <!-- TODO: 흐름 화살표 그래픽 이미지 삽입 -->
+            <div class="biz-center-ph" aria-hidden="true"></div>
+            <div class="biz-side-list biz-side-list--plain">
+              {
+                smartFactorySlide.rightList.map((text) => (
+                  <p class="biz-side-item" set:html={text} />
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Solution_Project — Solution 소개 / Why,M2MGLOBAL? 케이스 하이라이트 / Project 구축사례 -->
+    <div class="section5-slide">
+      <!-- 5-1. Solution -->
+      <div class="section-item">
+        <p class="sp-eyebrow">Solution</p>
+        <div class="sp-head">
+          <div>
+            <p class="sp-title">
+              {solutionOverview.title}
+              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
+              <span class="sp-arrow-ph" aria-hidden="true"></span>
+            </p>
+            <p class="sp-desc">{solutionOverview.desc}</p>
+          </div>
+          <div class="sp-nav">
+            <!-- TODO: 이전/다음 화살표 아이콘 이미지 삽입 -->
+            <button class="sp-nav-btn" aria-label="이전"></button>
+            <button class="sp-nav-btn" aria-label="다음"></button>
+          </div>
+        </div>
+        <div class="sp-solution-grid">
+          {
+            solutionOverview.cards.map((card) => (
+              <div class="sp-solution-card">
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span class="sp-solution-icon-ph" aria-hidden="true" />
+                <p class="sp-solution-title">{card.title}</p>
+                <div class="sp-solution-list">
+                  {card.list.map((text) => (
+                    <div class="sp-solution-item">
+                      {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                      <span class="sp-solution-item-icon-ph" aria-hidden="true" />
+                      <p>{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- 5-2. Why, M2MGLOBAL? (농협/수협/세미마켓/서린닷컴 케이스 4건) -->
+      {
+        whyM2mCases.map((item) => (
+          <div class="section-item">
+            <p class="sp-eyebrow">Why, M2MGLOBAL?</p>
+            <div class="sp-head">
+              <div>
+                <p class="sp-title">
+                  {whyM2mIntro.title}
+                  {/* <!-- TODO: 화살표 아이콘 이미지 삽입 --> */}
+                  <span class="sp-arrow-ph" aria-hidden="true" />
+                </p>
+                <p class="sp-desc">{whyM2mIntro.desc}</p>
+              </div>
+              <div class="sp-nav">
+                {/* <!-- TODO: 이전/다음 화살표 아이콘 이미지 삽입 --> */}
+                <button class="sp-nav-btn" aria-label="이전" />
+                <button class="sp-nav-btn" aria-label="다음" />
+              </div>
+            </div>
+            <div class="sp-why-body">
+              <div class="sp-why-main">
+                <div class="sp-why-head">
+                  {/* <!-- TODO: 로고 이미지 삽입 --> */}
+                  <span class="sp-why-logo-ph" aria-hidden="true" />
+                  <p class="sp-why-subtitle">Why, M2MGlobal?</p>
+                  <p class="sp-why-case-desc" set:html={item.desc} />
+                </div>
+                <div class="sp-why-features">
+                  {whyM2mFeatureCols.map((col) => (
+                    <div class="sp-why-feature">
+                      <p class="sp-why-feature-title" set:html={col.title} />
+                      {col.desc && <p class="sp-why-feature-desc" set:html={col.desc} />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div class="sp-why-card">
+                {/* <!-- TODO: 로고 이미지 삽입 --> */}
+                <span class="sp-why-logo-ph" aria-hidden="true" />
+                <p class="sp-why-card-title" set:html={item.cardTitle} />
+                <div class="sp-why-card-list">
+                  {item.cardList.map((text) => (
+                    <div class="sp-why-card-item">
+                      {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                      <span class="sp-solution-item-icon-ph" aria-hidden="true" />
+                      <p>{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+
+      <!-- 5-3. Project (구축 사례 9건) -->
+      <div class="section-item">
+        <p class="sp-eyebrow">Project</p>
+        <div class="sp-head">
+          <div>
+            <p class="sp-title">
+              Proving Our Capabilities Through Successful Projects
+              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
+              <span class="sp-arrow-ph" aria-hidden="true"></span>
+            </p>
+            <p class="sp-desc">
+              실제 비즈니스를 움직이는 AI를 구축합니다. 다년 간의 경험과 전문성을 겸비한 인력과 AI가
+              한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.
+            </p>
+          </div>
+          <div class="sp-nav">
+            <!-- TODO: 이전/다음 화살표 아이콘 이미지 삽입 -->
+            <button class="sp-nav-btn" aria-label="이전"></button>
+            <button class="sp-nav-btn" aria-label="다음"></button>
+          </div>
+        </div>
+        <div class="sp-grid">
+          {
+            projectCases.map((item) => (
+              <div class="sp-card">
+                {/* <!-- TODO: 프로젝트 썸네일 이미지 삽입 --> */}
+                <div class="sp-thumb" aria-hidden="true" />
+                <p class="sp-title-text">{item.title}</p>
+                <div class="sp-list">
+                  {item.list.map((text) => (
+                    <p>{text}</p>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 </Layout>

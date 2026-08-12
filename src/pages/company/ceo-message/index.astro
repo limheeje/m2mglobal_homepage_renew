@@ -1,27 +1,18 @@
 ---
 // Company > CEO 인사말 (/company/ceo-message)
 // 참고: Figma "About us > CEO인사말" 프레임(node 211:2235)
+// 예전 구(舊) 컴포넌트(PageBanner/Title/Container/Box/IconCircle) 참조로 깨져있던 페이지를
+// 현재 공용 컴포넌트(SubBanner/Navigation/TitleMain/TitleSub)로 재구축 — 콘텐츠는 그대로 유지.
+import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
-import Gnb from '~/components/layout/Gnb.astro'
-import PageBanner from '~/components/PageBanner.astro'
-import Tab from '~/components/Tab.astro'
-import Title from '~/components/Title.astro'
-import Container from '~/components/Container.astro'
-import Box from '~/components/Box.astro'
-import IconCircle from '~/components/IconCircle.astro'
-import Footer from '~/components/Footer.astro'
+import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMain from '~/components/common/TitleMain.astro'
+import Navigation from '~/components/common/Navigation.astro'
+import Label from '~/components/common/Label.astro'
 import stepArrowUrl from '~/assets/images/step-arrow.svg'
-import {route} from '@config/route'
-
-const tabs = [
-  {label: '회사 개요', href: route['/company/info']},
-  {label: 'CEO 인사말', href: route['/company/ceo-message']},
-  {label: '회사 연혁', href: route['/company/history']},
-  {label: '인재 채용', href: route['/company/careers']},
-  {label: 'News', href: route['/company/news']},
-  {label: '위치 및 연락처', href: route['/company/address']},
-  {label: '사업 문의', href: route['/company/contact-us']}
-]
+import Icon from '~/components/common/Icon.astro'
+import {ICON_KEY_NAME} from '~/constants/Icon'
+const localNavigation = route.find((item) => item.href === '/company/info')
 
 const steps = [
   {label: 'Step 1', title: '프로젝트 수행 의도'},
@@ -30,80 +21,83 @@ const steps = [
 ]
 
 const values = [
-  {icon: 'ico_value_growth', text: '시대의 흐름을 읽고 변화와 혁신으로 발전하는 회사'},
   {
-    icon: 'ico_value_trust',
-    text: '고객의 가치를 우선시하고, 끝까지 완성도 있게 함께 완수하는 신뢰 받는 회사'
+    codeIcon: ICON_KEY_NAME['CEP 인사말1'],
+    codeContent: '시대의 흐름을 읽고 변화와 혁신으로 발전하는 회사'
   },
   {
-    icon: 'ico_value_pride',
-    text: '고도의 기술력과 성공적인 프로젝트 완수를 통해 실제 성취에 자부심을 느끼는 회사'
+    codeIcon: ICON_KEY_NAME['CEP 인사말2'],
+    codeContent: '고객의 가치를 우선시하고, 끝까지 완성도 있게 함께 완수하는 신뢰 받는 회사'
   },
   {
-    icon: 'ico_value_culture',
-    text: '임직원 개개인의 성취와 발전을 위해 함께 생각을 나누고 도움을 주는 즐거운 회사'
+    codeIcon: ICON_KEY_NAME['CEP 인사말3'],
+    codeContent: '고도의 기술력과 성공적인 프로젝트 완수를 통해 실제 성취에 자부심을 느끼는 회사'
+  },
+  {
+    codeIcon: ICON_KEY_NAME['CEP 인사말4'],
+    codeContent: '임직원 개개인의 성취와 발전을 위해 함께 생각을 나누고 도움을 주는 즐거운 회사'
   }
 ]
 ---
 
 <Layout>
-  <Gnb />
-
-  <PageBanner
+  <SubBanner
     title="Company"
-    subtitle={[
-      'Where AI Transformation Begins—Turning Market Change into Speed and Direction',
-      '24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner'
-    ]}
+    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
   />
+  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-2'} />
+  <TitleMain title="CEO 인사말" />
 
-  <Tab variant="line" size="large" items={tabs} activeIndex={1} />
-
-  <Title variant="hero" title="CEO 인사말" />
-
-  <Container maxWidth={1760}>
-    <div class="company-ceo">
-      <div class="company-ceo__steps">
-        <p class="company-ceo__intro text-body-36">
-          엠투엠글로벌은 프로젝트 수행에 있어 세 가지 본질적인 흐름을 최우선 가치로 삼고 있습니다.
-        </p>
-        <div class="company-ceo__step-row">
-          {
-            steps.map((step, i) => (
-              <>
-                <Box label={step.label} title={step.title} class="company-ceo__step-box" />
-                {i < steps.length - 1 && (
-                  <span class="company-ceo__step-arrow" aria-hidden="true">
-                    <img src={stepArrowUrl.src} alt="" />
-                  </span>
-                )}
-              </>
-            ))
-          }
-        </div>
+  <section class="g-section">
+    <div class="innerWrap">
+      <p class="company__ceo-intro">
+        엠투엠글로벌은 프로젝트 수행에 있어 세 가지 본질적인 흐름을 최우선 가치로 삼고 있습니다.
+      </p>
+      <div class="company__ceo-steps">
+        {
+          steps.map((step, i) => (
+            <>
+              <div class="company__ceo-step">
+                <Label>{step.label}</Label>
+                <p class="company__ceo-step-title">{step.title}</p>
+              </div>
+              {i < steps.length - 1 && (
+                <span class="company__ceo-step-arrow" aria-hidden="true">
+                  <img src={stepArrowUrl.src} alt="" />
+                </span>
+              )}
+            </>
+          ))
+        }
       </div>
 
-      <div class="company-ceo__quote">
-        <p class="company-ceo__quote-text">
+      <div class="company__ceo-quote">
+        <p class="company__ceo-quote-text">
           AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br />
           다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이
           실행하고 성장합니다.
         </p>
-        <p class="company-ceo__quote-sign">대표이사 <strong>김 승 원</strong></p>
+        <p class="company__ceo-quote-sign">
+          대표이사 <strong>김 승 원</strong>
+        </p>
       </div>
 
-      <div class="company-ceo__values">
+      <div class="company__ceo-values">
         {
-          values.map((value) => (
-            <div class="company-ceo__value-item">
-              <IconCircle icon={value.icon} />
-              <p class="company-ceo__value-text">{value.text}</p>
+          values.map((item) => (
+            <div class="company__ceo-value">
+              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+              <span
+                class="company__icon-ph company__icon-ph--lg company__ceo-value-icon"
+                aria-hidden="true"
+              >
+                <Icon name={item.codeIcon} />
+              </span>
+              <p class="company__ceo-value-text">{item.codeContent}</p>
             </div>
           ))
         }
       </div>
     </div>
-  </Container>
-
-  <Footer />
+  </section>
 </Layout>

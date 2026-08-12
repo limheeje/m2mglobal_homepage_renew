@@ -1,5 +1,5 @@
 ---
-const {name, width, height} = Astro.props
+const {name, width = '10rem', height = '10rem'} = Astro.props
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 ---
 

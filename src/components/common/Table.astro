@@ -1,8 +1,17 @@
 ---
 export interface Props {
   size?: 'sm' | 'md' | 'lg'
+  tleft?: boolean
 }
-const {size = 'md'} = Astro.props
+const {size = 'md', tleft} = Astro.props
 ---
 
-<table class="bs-table" data-size={size}></table>
+<table
+  class="bs-table"
+  class:list={{
+    'is-tleft': tleft
+  }}
+  data-size={size}
+>
+  <slot />
+</table>

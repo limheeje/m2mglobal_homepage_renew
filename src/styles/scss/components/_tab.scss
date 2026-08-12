@@ -1,5 +1,51 @@
 @use '../abstracts/mixins' as *;
 @use '../abstracts/functions' as *;
 
+$TYPE_ROUND:'[data-type="round"]';
+$TYPE_LINE:'[data-type="line"]';
+$TYPE_BOX:'[data-type="box"]';
+$IS_ACTIVE:'is-active';
+
 .bs-tab{
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    &#{$TYPE_ROUND}{
+        padding: rem(16px) rem(20px);
+        border-radius: rem(30px);
+        @include font('Body 20 R');
+        color: color('Color/Blue Gray 800');
+        border: rem(1px) solid color('Color/Black 20');
+        min-width: rem(96px);
+        &.#{$IS_ACTIVE}{
+            background-color: color('Color/Secondary Color');
+            border-color: color('Color/Secondary Color');
+            color: color('Color/White');
+        }
+    }
+    &#{$TYPE_BOX}{
+        padding: rem(12px) rem(24px);
+        @include font('Body 24 R');
+        color: color('Color/Font/Sub Font Color');
+        border-bottom: rem(1px) solid color('Color/Black 20');
+        background-color: color('Color/Black 3');
+        min-width: rem(91px);
+        &.#{$IS_ACTIVE}{
+            background-color: color('Color/Primary Color');
+            border-color: color('Color/Primary Color');
+            color: color('Color/White');
+        }
+    }
+    &#{$TYPE_LINE}{
+        padding: rem(12px) rem(24px);
+        @include font('Body 24 R');
+        color: color('Color/Font/Sub Font Color');
+        border-bottom: rem(1px) solid color('Color/Black 20');
+        min-width: rem(91px);
+        &.#{$IS_ACTIVE}{
+            border-color: color('Color/Primary Color');
+            color: color('Color/Primary Color');
+        }
+    }
 }

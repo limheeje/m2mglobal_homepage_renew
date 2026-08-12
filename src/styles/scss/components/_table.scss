@@ -6,19 +6,31 @@
 $SIZE_SM:'[data-size="sm"]';
 $SIZE_MD:'[data-size="md"]';
 $SIZE_LG:'[data-size="lg"]';
+$IS_TLEFT:'is-tleft';
 
 .bs-table{
+    border:none;
+    border-collapse:collapse;
+    border-spacing:0;
     table-layout: fixed;
     width: 100%;
+    border-top: rem(1px) solid color('Color/Font/Font Color');
     th{
         color: color('Color/Black 40');
         @include font('Body 18 R');
         border-bottom: rem(1px) solid color('Color/Black 10');
+        text-align: center;
     }
     td{
         color: color('Color/Black 100');
         @include font('Body 18 R');
         border-bottom: rem(1px) solid color('Color/Black 10');
+        text-align: center;
+    }
+    &.#{$IS_TLEFT}{
+        th,td{
+            text-align: left;
+        }
     }
     &#{$SIZE_SM}{
         th{

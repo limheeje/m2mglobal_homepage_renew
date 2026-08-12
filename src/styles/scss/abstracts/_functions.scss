@@ -60,7 +60,7 @@
   }@else if $s == 'Black/30'{
     @return $color-black-30 //#939393
   }@else if $s == 'Color/Black 20'{
-    @return $color-black-20 //#B7B7B7
+    @return $color-black-20 //#B7B7B7 
   }@else if $s == 'Color/Black 10'{
     @return $color-black-10 //#DBDBDB
   }@else if $s == 'Black/5'{

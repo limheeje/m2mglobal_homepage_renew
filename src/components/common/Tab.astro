@@ -1,5 +1,10 @@
 ---
-
+export interface Props {
+  is?: 'span' | 'button'
+  type?: 'round' | 'line' | 'box'
+}
+const {type = 'round', is = 'button'} = Astro.props
+const Tag = is
 ---
 
-<div class="bs-tab"></div>
+<Tag class="bs-tab" data-type={type}><slot /></Tag>

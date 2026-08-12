@@ -18,6 +18,8 @@ import BoxTitleCase3 from '~/components/ui/box/boxTitleCase/BoxTitleCase3.astro'
 import BoxTitleCase4 from '~/components/ui/box/boxTitleCase/BoxTitleCase4.astro'
 import BoxTitleCase5 from '~/components/ui/box/boxTitleCase/BoxTitleCase5.astro'
 import Label from '~/components/common/Label.astro'
+import Table from '~/components/common/Table.astro'
+import Tab from '~/components/common/Tab.astro'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/company/info')
@@ -84,4 +86,37 @@ const localNavigation = route.find((item) => item.href === '/company/info')
   <Label type="type_1">LabelLabelLabel</Label>
   <TextList>asdfsdf</TextList>
   <TextList type="type_2">asdfsdf</TextList>
+  <Table>
+    <thead>
+      <tr>
+        <th>1</th>
+        <th>1</th>
+        <th>1</th>
+        <th>1</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+    </tbody>
+  </Table>
+  <Table tleft>
+    <tbody>
+      <tr>
+        <th>Length</th>
+        <td>L950*W702*H275 mm</td>
+      </tr>
+      <tr>
+        <th>Length</th>
+        <td>L950*W702*H275 mm</td>
+      </tr>
+    </tbody>
+  </Table>
+  <Tab>12</Tab>
+  <Tab type="line">12</Tab>
+  <Tab type="box">12</Tab>
 </Layout>

@@ -8,23 +8,39 @@
 import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
 import SubBanner from '~/components/common/SubBanner.astro'
+import TitleMiddle from '~/components/common/TitleMiddle.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
+import Icon from '~/components/common/Icon.astro'
+import Button from '~/components/common/Button.astro'
+import SYMBOL007 from '~/assets/images/common/symbol007.png'
+import IMG1 from '~/assets/images/common/e_comm_prod_001.png'
+import IMG1_1 from '~/assets/images/common/e_comm_prod_001_1.png'
+import IMG2 from '~/assets/images/common/e_comm_prod_002.png'
+import IMG2_1 from '~/assets/images/common/e_comm_prod_002_1.png'
+import IMG3 from '~/assets/images/common/e_comm_prod_003.png'
+import IMG3_1 from '~/assets/images/common/e_comm_prod_003_1.png'
+import IMG4 from '~/assets/images/common/e_comm_prod_004.png'
+import IMG4_1 from '~/assets/images/common/e_comm_prod_004_1.png'
+import IMG5 from '~/assets/images/common/e_comm_prod_005.png'
+import IMG5_1 from '~/assets/images/common/e_comm_prod_005_1.png'
+import {ICON_KEY_NAME} from '~/constants/Icon'
+import ClientLogoGrid from '~/components/common/ClientLogoGrid.astro'
 
 const localNavigation = route.find((item) => item.href === '/e-commerce/commerce-technology')
-
 const sectionTabs = [
-  {id: 'features', label: '제공기술 및 특징'},
-  {id: 'usage', label: '활용 분야'},
-  {id: 'references', label: '주요 레퍼런스'},
+  {id: 'features', label: '제공 기술 및 특징'},
+  {id: 'usage', label: 'e-Commerce Framework'},
+  {id: 'references', label: '구축사례'},
   {id: 'clients', label: '주요 고객사'}
 ]
 
 // --- 제공기술 및 특징 (9개) ---
 const featureCards = [
   {
+    icon: ICON_KEY_NAME['Business2-1'],
     title: '웹 표준 준수',
     items: [
       '표준 준수 및 검증된 검색기술 (Elastics Search) 적용으로 SEO (Search engine optimization) 구현',
@@ -32,6 +48,7 @@ const featureCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business2-2'],
     title: '경영 관리 기능',
     items: [
       'WMS (재고관리), 기초 정보 관리, 전자 세금계산서, 전자 계약 체결 등 폭넓은 ERP 연계',
@@ -39,12 +56,14 @@ const featureCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business2-3'],
     title: '입점/오픈마켓 구조',
     items: [
       '다양한 셀러 및 정산 관리를 기반으로 종합몰, 오픈 마켓 구축 시 안정적, 원활하게 구축 가능'
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business2-4'],
     title: 'B2C, B2B, B2E',
     items: [
       'B2B에 최적화 된 커머스 시스템 제공',
@@ -53,18 +72,21 @@ const featureCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business2-5'],
     title: '글로벌 통합 시스템',
     items: [
       'Language, Currency설계, Open API 제공을 통해 국내 외 채널들과 연동하고 국가 언어, 화폐에 따라 반응하는 글로벌 몰을 제공함'
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business2-6'],
     title: '모바일',
     items: [
       'IOS, Android 앱 모바일 전시 관리, 프로모션 등 컨텐츠를 관리 및 위치 기반의 컨텐츠 및 알림을 제공하여 최적의 개인화 된 서비스 제공'
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business2-7'],
     title: '통계/분석툴 연계 제공',
     items: [
       '방문자, 소비자 활동 수집 해석을 통한 구매율을 높이기 위한 데이터 분석 / 제공',
@@ -72,10 +94,12 @@ const featureCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business2-8'],
     title: '보안',
     items: ['웹 보안 시스템 지원', 'ISMS 대응 및 HW / SW / NET 보안 영역까지 컨설팅 제공']
   },
   {
+    icon: ICON_KEY_NAME['Business2-9'],
     title: '유연한 커스터마이징',
     items: ['커머스 구축 Case에 따라 특화 된 기능 등 자체 구현 및 제공 가능']
   }
@@ -96,6 +120,8 @@ const mallTypes = [
 // --- 주요 레퍼런스 (7건) ---
 const references = [
   {
+    imgPc: IMG1.src,
+    imgMobile: IMG1_1.src,
     title: '수협중앙회 쇼핑몰 재구축',
     desc: '바이어와 셀러 간의 반도체 장비, 부품 커머스 기반 거래 플랫폼 설계 및 구현',
     list: [
@@ -107,6 +133,8 @@ const references = [
     ]
   },
   {
+    imgPc: IMG2.src,
+    imgMobile: IMG2_1.src,
     title: '농협몰 구축 / 고도화 / 운영',
     desc: '산지직송, 하나로마트배송, 식자재몰, MRO, 제휴연계',
     list: [
@@ -118,6 +146,8 @@ const references = [
     ]
   },
   {
+    imgPc: IMG3.src,
+    imgMobile: IMG3_1.src,
     title: '다이소 커머스 플랫폼 구축',
     desc: '다이소 쇼핑몰을 차세대 플랫폼으로 전면 고도화',
     list: [
@@ -129,6 +159,8 @@ const references = [
     ]
   },
   {
+    imgPc: IMG4.src,
+    imgMobile: IMG4_1.src,
     title: 'C2C 직거래플랫폼 구축',
     desc: 'Kcar.com 개인간 중고차 안심 직거래 서비스 추가 개발',
     list: [
@@ -141,6 +173,8 @@ const references = [
     ]
   },
   {
+    imgPc: IMG5.src,
+    imgMobile: IMG5_1.src,
     title: '롯데ON 통합 EC구축',
     desc: '롯데그룹 6개 이커머스 통합 플랫폼 구축',
     list: [
@@ -150,41 +184,20 @@ const references = [
       '구매자와 판매자 중개플랫폼, 온라인서비스/채널연동',
       '판매자를 위한 특화광고/부가서비스 제공'
     ]
-  },
-  {
-    title: '세마마켓 반도체 거래 플랫폼',
-    desc: '바이어와 셀러 간의 반도체 장비, 부품 커머스 기반 거래  플랫폼 설계 및 구현',
-    list: [
-      'Equipment, Parts, Extras 아이템 구매 기능',
-      '셀러 판매자 샵 구축',
-      '오퍼, 물류견적 기능',
-      '통합 백오피스 구축',
-      '모바일 서비스 구축'
-    ]
-  },
-  {
-    title: '서린상사 B2B 온라인 플랫폼',
-    desc: '비철 금속 B2B거래 플랫폼',
-    list: [
-      '하이브리드 모바일 기반 비철금속에 특화된 커머스 시스템 기능 구현',
-      '주문/결제 (아연라이브, 아연고정가, 주문고도화 및 여신_보증사 보증 연계, 복합결제 등)',
-      '상품/회원 (판매고도화, 등급별 회원관리/증거금, 영업/마케팅)',
-      'Pricing (라이브대응), 물류/배송 (소량/아연/톤차)',
-      '모바일 서비스 구축'
-    ]
   }
 ]
 
-// --- 주요 고객사 (8개, 로고는 이미지로 삽입) ---
+// --- 주요 고객사 (9개, 로고는 이미지로 삽입 — Figma 실측 순서) ---
 const clients = [
-  '수협중앙회',
-  '다이소',
-  '세마마켓',
-  '케이카',
-  '수협쇼핑',
-  '롯데ON',
-  '롯데아이몰',
-  'e-shop'
+  {name: '농협몰', key: '01-nonghyupmall'},
+  {name: '다이소', key: '02-daiso'},
+  {name: '제주항공', key: '39-jejuair'},
+  {name: '케이카', key: '04-kcar'},
+  {name: '세마마켓', key: '03-semimarket'},
+  {name: '수협쇼핑', key: '05-suhyupshopping'},
+  {name: '롯데ON', key: '06-lotteon'},
+  {name: '롯데아이몰', key: '07-lotteimall'},
+  {name: 'e-shop', key: '08-eshop'}
 ]
 ---
 
@@ -225,7 +238,9 @@ const clients = [
             <div class="ec__feature-card">
               <div class="ec__feature-head">
                 {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="ec__feature-icon" aria-hidden="true" />
+                <span class="ec__feature-icon" aria-hidden="true">
+                  <Icon name={card.icon} />
+                </span>
                 <p class="ec__feature-title">{card.title}</p>
               </div>
               <div>
@@ -246,10 +261,15 @@ const clients = [
       <div class="ec__tag-row">
         {mallTypes.map((type) => <span class="ec__tag">{type}</span>)}
       </div>
+      <div class="ec__banne_pl">
+        <TitleMiddle>e-Commerce 프레임워크</TitleMiddle>
+      </div>
 
       <!-- TODO: "e-Commerce 프레임워크"(프론트(사용자)/핵심기능/백오피스(관리자)) 다이어그램 이미지 삽입 —
            사용자 요청에 따라 세부 구현은 하지 않고 이미지로 대체 -->
-      <div class="ec__diagram-placeholder" aria-hidden="true"></div>
+      <div class="ec__diagram-placeholder" aria-hidden="true">
+        <img src={SYMBOL007.src} alt="" />
+      </div>
     </div>
   </section>
 
@@ -259,16 +279,34 @@ const clients = [
         title={`주요 <span class="mark">레퍼런스</span>`}
         description="다양한 커머스 플랫폼 프로젝트를 성공적으로 수행하며 실행력을 입증했으며, 신뢰할 수 있는 상생 파트너로 자리매김을 했습니다."
       />
-      <div class="ec__ref-grid">
+      <div class="ec__ref-list-wrap">
         {
           references.map((item) => (
-            <div class="ec__ref-card">
-              <p class="ec__ref-title">{item.title}</p>
-              <p class="ec__ref-desc">{item.desc}</p>
-              <div>
-                {item.list.map((text) => (
-                  <TextList>{text}</TextList>
-                ))}
+            <div class="ec__ref-row">
+              <div class="ec__ref-media">
+                {/* TODO: 구축 사례 화면 이미지 삽입 (담당자 작업 예정) */}
+                <div class="ec__ref-media-main ec__thumb-ph" aria-hidden="true">
+                  <img src={item.imgPc} alt="" />
+                </div>
+                <div class="ec__ref-media-sub ec__thumb-ph" aria-hidden="true">
+                  <img src={item.imgMobile} alt="" />
+                </div>
+              </div>
+              <div class="ec__ref-content">
+                <div class="ec__ref-head">
+                  <div class="ec__ref-head-row">
+                    <p class="ec__ref-title">{item.title}</p>
+                    <Button variant="white" size="sm" useSuffixIcon="blank">
+                      바로가기
+                    </Button>
+                  </div>
+                  <p class="ec__ref-desc">{item.desc}</p>
+                </div>
+                <div class="ec__ref-features">
+                  {item.list.map((text) => (
+                    <TextList>{text}</TextList>
+                  ))}
+                </div>
               </div>
             </div>
           ))
@@ -279,17 +317,11 @@ const clients = [
 
   <section id="clients" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`주요 <span class="mark">고객사</span>`} />
-      <div class="ec__client-grid">
-        {
-          clients.map((name) => (
-            <div class="ec__client-card">
-              {/* <!-- TODO: 로고 이미지 삽입 --> */}
-              {name}
-            </div>
-          ))
-        }
-      </div>
+      <TitleSub
+        title={`주요 <span class="mark">고객사</span>`}
+        description="다양한 커머스 플랫폼 프로젝트를 성공적으로 수행하며 실행력을 입증했으며, 신뢰할 수 있는 상생 파트너로 자리매김을 했습니다."
+      />
+      <ClientLogoGrid clients={clients} />
     </div>
   </section>
 </Layout>

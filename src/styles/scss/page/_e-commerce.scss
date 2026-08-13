@@ -22,15 +22,18 @@
 }
 .ec__diagram-placeholder {
   width: 100%;
-  aspect-ratio: 16 / 7;
-  background-color: color('Color/Black 3');
+  aspect-ratio: 1760 / 926;
   border-radius: rem(24px);
 }
 
 // --- 라벨+타이틀+설명 Box (STEP / Box_Case 등) ---
+.ec__stat-bann {
+  margin: rem(40px) 0;
+}
 .ec__box-grid {
   display: grid;
   gap: rem(20px);
+  margin-top: rem(20px);
   &--5 {
     grid-template-columns: repeat(5, 1fr);
   }
@@ -56,8 +59,8 @@
 
 // --- 제공기술 및 특징: 아이콘+타이틀(구분선)+체크리스트 카드 ---
 .ec__feature-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: rem(20px);
 }
 .ec__feature-card {
@@ -87,7 +90,7 @@
 }
 .ec__feature-title {
   @include font('Body 30 R');
-  color: color('Color/Secondary Color');
+  color: color('Primary/Blue100');
 }
 
 // --- 아이콘+타이틀+설명 카드 (중앙정렬, 체크리스트 없음) ---
@@ -116,7 +119,7 @@
   background-color: color('Color/Blue 10');
 }
 .ec__stat-title {
-  @include font('Body 30 R');
+  @include font('Body 24 R');
   color: color('Color/Black 100');
 }
 .ec__stat-desc {
@@ -124,91 +127,115 @@
   color: color('Color/Black 100');
 }
 
-// --- 구축사례: 썸네일 + 타이틀/일자/설명 카드 ---
-.ec__case-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(20px);
-}
-.ec__case-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-}
-.ec__case-thumb {
-  aspect-ratio: 501 / 285;
-  margin-bottom: rem(20px);
-}
-.ec__case-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(4px);
-}
-.ec__case-date {
-  @include font('Body 16 R');
-  color: color('Color/Black 40');
-  display: block;
-  margin-bottom: rem(8px);
-}
-.ec__case-desc {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
+// (주의) "구축사례" 썸네일+타이틀+일자+설명 카드는 ~/components/common/CaseCardGrid.astro
+// (components/_case-card-grid.scss, cc__*)로 컴포넌트화되어 이동했다.
+.ec__banne_pl {
+  margin-top: rem(40px);
 }
 
 // --- 활용 분야: 태그 목록 ---
 .ec__tag-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
   gap: rem(8px);
 }
 .ec__tag {
-  display: inline-flex;
-  padding: rem(8px) rem(16px);
+  display: block;
+  padding: rem(40px) rem(16px) rem(90px);
   border-radius: rem(30px);
-  background-color: color('Color/Black 3');
-  color: color('Color/Black 100');
-  @include font('Body 16 R');
+  text-align: center;
+  color: color('Color/Primary Color');
+  @include font('Body 20 R');
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    margin-left: rem(-2px);
+    bottom: rem(64px);
+    width: rem(6px);
+    height: rem(6px);
+    border-radius: 50%;
+    background: color('Color/Box/Border color');
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: rem(1px);
+    height: rem(62px);
+    border: rem(1px) dashed color('Color/Box/Border color');
+  }
 }
 
-// --- 주요 레퍼런스 ---
-.ec__ref-grid {
+// --- 주요 레퍼런스: 디바이스 목업(이미지는 담당자 작업 예정 — 자리만 확보) + 타이틀/버튼/설명/체크리스트 ---
+// (Figma 실측: 행 padding 80/147·gap 60, 이미지 401x283 + 152x283 오버랩(6px 블랙 테두리, radius 24))
+.ec__ref-list-wrap {
+  border-top: rem(1px) solid color('Color/Black 10');
+}
+.ec__ref-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: rem(20px);
+  align-items: flex-start;
+  justify-content: center;
+  gap: rem(60px);
+  padding: rem(80px) rem(147px);
+  border-bottom: rem(1px) solid color('Color/Black 10');
+  &:last-child {
+    border-bottom: none;
+  }
 }
-.ec__ref-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
+.ec__ref-media {
+  position: relative;
+  flex-shrink: 0;
+  width: rem(536px);
+  height: rem(324px);
+}
+.ec__ref-media-main {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: rem(401px);
+  height: rem(283px);
+  border: rem(6px) solid color('Color/Black 100');
   border-radius: rem(24px);
+  overflow: hidden;
 }
-.ec__ref-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(8px);
+.ec__ref-media-sub {
+  position: absolute;
+  left: rem(370px);
+  top: rem(35px);
+  width: rem(152px);
+  height: rem(283px);
+  border: rem(6px) solid color('Color/Black 100');
+  border-radius: rem(24px);
+  overflow: hidden;
 }
-.ec__ref-desc {
-  @include font('Body 16 R');
-  color: color('Color/Black 40');
-  margin-bottom: rem(20px);
+.ec__ref-content {
+  flex: 1 1 0%;
+  min-width: 0;
 }
-
-// --- 주요 고객사: 로고 카드 ---
-.ec__client-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: rem(20px);
-}
-.ec__client-card {
-  aspect-ratio: 277 / 133;
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(12px);
+.ec__ref-head-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  @include font('Body 16 R');
-  color: color('Color/Black 40');
+  justify-content: space-between;
+  gap: rem(20px);
 }
+.ec__ref-title {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+}
+.ec__ref-desc {
+  @include font('Body 18 R');
+  color: color('Black/60');
+  margin-top: rem(4px);
+}
+.ec__ref-features {
+  margin-top: rem(20px);
+}
+
+// (주의) "주요 고객사" 로고 카드는 ~/components/common/ClientLogoGrid.astro
+// (components/_client-logo-grid.scss, cl__*)로 컴포넌트화되어 이동했다.
 
 // --- B2B 시스템 연계 구조: Front/BackOffice/Interface/External 매트릭스 ---
 .ec__matrix-row {
@@ -235,95 +262,165 @@
   color: color('Color/Black 100');
 }
 
-// --- Marketplace 거래 중개 구조: SELLER / MARKETPLACE / BUYER ---
+// --- Marketplace 거래 중개 구조: SELLER / MARKETPLACE / BUYER (+연결 커넥터) ---
 .ec__role-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  // Figma 실측: SELLER/BUYER 카드는 self-stretch로 가장 높은(=MARKETPLACE) 카드에 맞춰 늘어난다
+  align-items: stretch;
   gap: rem(20px);
+  margin-bottom: rem(40px);
 }
 .ec__role-card {
+  flex: 1 1 rem(280px);
   padding: rem(36px);
+  background-color: color('Color/White');
   border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(24px);
+  // Figma 실측: MARKETPLACE는 배경 채움이 아니라 프라이머리 컬러 1px 테두리 강조(두께는 동일)
   &--accent {
-    background-color: color('Color/Secondary Color');
-    .ec__role-title {
-      color: color('Color/White');
-    }
+    border: rem(1px) solid color('Color/Primary Color');
   }
 }
 .ec__role-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: rem(12px);
+  padding-bottom: rem(20px);
   margin-bottom: rem(20px);
+  border-bottom: rem(1px) solid color('Color/Primary Color');
 }
 .ec__role-title {
-  @include font('Body 24 R');
+  @include font('Body 30 R');
   color: color('Color/Black 100');
-  margin-top: rem(12px);
 }
-
-// --- Auction Platform: 타이틀+설명 행 목록 ---
-.ec__pair-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(20px);
-  padding: rem(16px) 0;
-  border-bottom: rem(1px) solid color('Color/Black 10');
-}
-.ec__pair-title {
+// 카드 사이 장식용 연결 커넥터 (Figma "Union" 모티프 — 사용자 요청으로 원본 다운로드)
+.ec__role-connector {
+  display: none;
   flex-shrink: 0;
-  width: rem(220px);
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-}
-.ec__pair-desc {
-  @include font('Body 16 R');
-  color: color('Color/Black 40');
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  @media (min-width: $breakpoint-md) {
+    display: flex;
+  }
+  img {
+    display: block;
+    width: rem(50px);
+    height: rem(86.6px);
+  }
 }
 
-// --- Auction Platform: label + desc 행 / flow ---
-.ec__layer-label {
-  @include font('Body 20 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(12px);
+// --- Auction Platform: Third Title(좌) + 라벨-값 행 목록(우) ---
+.ec__pair-block {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(20px);
   &.ec__block {
     margin-top: rem(40px);
   }
 }
+.ec__pair-list {
+  flex: 1 1 0%;
+  min-width: 0;
+  border-top: rem(1px) solid color('Color/Black 100');
+  margin-top: rem(65px);
+}
+.ec__pair-row {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(20px);
+  border-bottom: rem(1px) solid color('Color/Black 10');
+  &:last-child {
+    border-bottom: none;
+  }
+}
+.ec__pair-title {
+  flex-shrink: 0;
+  width: rem(256px);
+  @include font('Body 20 R');
+  color: color('Color/Black 40');
+}
+.ec__pair-desc {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- Auction Platform: 경매 절차 플로우 (Black3 배경 박스 + 체크리스트 카드 + 화살표 + 유찰 주석) ---
+.ec__flow-wrap {
+  position: relative;
+  padding: rem(80px) rem(24px) rem(36px);
+  background-color: color('Color/Black 3');
+  border-radius: rem(24px);
+}
 .ec__flow {
   display: flex;
+  align-items: stretch;
   flex-wrap: wrap;
-  align-items: center;
-  gap: rem(12px);
+  gap: rem(20px);
 }
 .ec__flow-item {
   flex: 1 1 0%;
-  min-width: rem(160px);
+  min-width: rem(220px);
+  padding: rem(36px);
+  background-color: color('Color/White');
+  border-radius: rem(24px);
+  position: relative;
 }
+.ec__flow-title {
+  padding-bottom: rem(20px);
+  margin-bottom: rem(20px);
+  border-bottom: rem(1px) solid color('Color/Box/Border color');
+  text-align: center;
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+}
+// Figma 실측: 카드 사이 화살표는 다른 flow 섹션(ai-engine 등)과 동일한 step-arrow.svg 재사용, 회전 없음
 .ec__flow-arrow {
   flex-shrink: 0;
-  @include font('H4');
-  color: color('Color/Black 40');
-}
-.ec__flow-note {
-  @include font('Body 16 R');
-  color: color('Color/Black 40');
-  margin-top: rem(12px);
-  &.ec__block {
-    margin-top: rem(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    display: block;
+    width: rem(59px);
+    height: rem(146px);
   }
+}
+// Figma 실측: 2·3단계 화살표 위에 라벨 텍스트 + 아래가 뚫린 점선 박스("행거"형) 주석이 붙는다
+.ec__flow-note {
+  @include font('Body 14 R');
+  color: color('Alert/2');
+  width: 100%;
+  text-align: center;
+  margin-top: rem(15px);
 }
 
 @media only screen and (max-width: $breakpoint-md) {
   .ec__box-grid,
-  .ec__client-grid,
-  .ec__role-grid,
   .ec__stat-grid {
     grid-template-columns: 1fr;
+  }
+  .ec__role-grid {
+    flex-direction: column;
+  }
+  .ec__role-connector {
+    display: none;
   }
   .ec__flow {
     flex-direction: column;
   }
-  .ec__flow-arrow {
+  .ec__flow-arrow img {
     transform: rotate(90deg);
+  }
+  .ec__pair-block {
+    flex-direction: column;
+  }
+  .ec__ref-row {
+    flex-direction: column;
+    align-items: center;
+    padding: rem(40px) rem(20px);
   }
 }

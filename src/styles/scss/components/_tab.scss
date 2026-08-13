@@ -27,7 +27,7 @@ $IS_ACTIVE:'is-active';
     }
     &#{$TYPE_BOX}{
         padding: rem(12px) rem(24px);
-        @include font('Body 24 R');
+        @include font('Body 22 R');
         color: color('Color/Font/Sub Font Color');
         background-color: color('Color/Black 3');
         min-width: rem(91px);
@@ -38,7 +38,7 @@ $IS_ACTIVE:'is-active';
     }
     &#{$TYPE_LINE}{
         padding: rem(12px) rem(24px);
-        @include font('Body 24 R');
+        @include font('Body 22 R');
         color: color('Color/Font/Sub Font Color');
         border-bottom: rem(1px) solid color('Color/Black 20');
         min-width: rem(91px);
@@ -63,7 +63,15 @@ $IS_ACTIVE:'is-active';
 .tab__item {
   flex: 0 0 auto;
 }
-
+@media only screen and (max-width: $breakpoint-lg){
+.bs-tab-group{
+    .bs-tab{
+        &#{$TYPE_BOX}{
+            @include font('Body 18 R');
+        }
+    }
+}
+}
 @media only screen and (max-width: $breakpoint-md){
     .bs-tab-group{
         white-space: nowrap;

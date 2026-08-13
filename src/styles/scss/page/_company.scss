@@ -28,7 +28,7 @@
   display: flex;
   flex-wrap: wrap;
   border-bottom: rem(1px) solid color('Color/Black 20');
-  &:last-child{
+  &:last-child {
     border-bottom: none;
   }
 }
@@ -126,7 +126,7 @@
   font-size: 0;
   background: no-repeat center top url(~/assets/images/company-info-worldmap.svg);
   position: relative;
-  &:before{
+  &:before {
     content: '';
     display: block;
     width: rem(272px);
@@ -140,7 +140,7 @@
     background-size: 100%;
   }
   @media only screen and (min-width: $breakpoint-lg) {
-    &:after{
+    &:after {
       content: '';
       width: 100%;
       height: 100%;
@@ -335,10 +335,10 @@
   padding-left: rem(30px);
   @include font('Body 20 R');
   color: color('Color/Font/Font Color');
-  li{
+  li {
     position: relative;
     padding-left: rem(18px);
-    &:after{
+    &:after {
       content: '';
       width: rem(4px);
       height: rem(4px);
@@ -486,25 +486,8 @@
 .company__news-client-category {
   margin-bottom: rem(60px);
 }
-.company__news-client-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: rem(20px);
-}
-.company__news-client-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: rem(100px);
-  padding: rem(16px);
-  border: rem(1px) solid color('Color/Black 10');
-  border-radius: rem(12px);
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-}
+// (주의) 카테고리별 로고 그리드는 ~/components/common/ClientLogoGrid.astro
+// (components/_client-logo-grid.scss, cl__*)로 컴포넌트화되어 이동했다.
 
 // --- 위치 및 연락처 ---
 .company__address {
@@ -587,7 +570,7 @@
   @include font('Body 22 R');
   color: color('Color/Black 100');
   text-decoration: underline;
-  .company__icon-ph--sm{
+  .company__icon-ph--sm {
     display: inline-block;
     width: rem(24px);
     height: rem(24px);
@@ -606,7 +589,7 @@
   background-color: color('Color/Black 3');
   @include font('Body 18 R');
   color: color('Color/Black 100');
-  .company__icon-ph{
+  .company__icon-ph {
     display: inline-block;
     width: rem(24px);
     height: rem(24px);
@@ -616,11 +599,10 @@
   &:focus-visible {
     background-color: color('Color/Primary Color');
     color: color('Color/White');
-    .company__icon-ph{
+    .company__icon-ph {
       @include get-background-svg(icon_download, color('Color/White'));
     }
   }
-  
 }
 
 @media only screen and (max-width: $breakpoint-md) {
@@ -693,10 +675,6 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  .company__news-client-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .company__address-info {
     flex-direction: column;
     align-items: flex-start;
@@ -708,20 +686,19 @@
   }
 }
 
-
-@media only screen and (max-width: $breakpoint-md){
-  .company__info-cell{
+@media only screen and (max-width: $breakpoint-md) {
+  .company__info-cell {
     flex-direction: column;
     align-items: flex-start;
     gap: rem(10px);
   }
-  .company__info-cell:last-child{
+  .company__info-cell:last-child {
     border-top: rem(1px) solid var(--color-black-20);
   }
-  .company__info-cell:first-child{
-      border-top: none;
+  .company__info-cell:first-child {
+    border-top: none;
   }
-  .company__business-card{
+  .company__business-card {
     // padding-left: rem($spacing-left);
     // padding-right: rem($spacing-right);
   }

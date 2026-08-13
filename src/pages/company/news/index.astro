@@ -10,6 +10,7 @@ import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import Button from '~/components/common/Button.astro'
+import ClientLogoGrid from '~/components/common/ClientLogoGrid.astro'
 
 const localNavigation = route.find((item) => item.href === '/company/info')
 
@@ -62,12 +63,7 @@ const newsItems = [
 
 // 로고 이미지는 Figma 실측 원본을 그대로 다운로드해 src/assets/images/clients/에 보관 —
 // 실제 고객사 브랜드 로고라 currentColor 대상이 아니고 원색 그대로 사용한다.
-const clientLogos = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
-  eager: true
-})
-const logoSrc = (key: string) =>
-  clientLogos[`/src/assets/images/clients/ico_client_${key}.png`].default.src
-
+// (glob/logoSrc 자체는 ~/components/common/ClientLogoGrid.astro 내부로 옮겨감)
 const clientCategories = [
   {
     title: '온라인쇼핑물 분야',
@@ -180,13 +176,7 @@ const clientCategories = [
               <TitleSub
                 title={`${category.title.replace(/분야$/, '')}<span class="mark">분야</span>`}
               />
-              <div class="company__news-client-grid">
-                {category.clients.map((client) => (
-                  <div class="company__news-client-card">
-                    <img src={logoSrc(client.key)} alt={client.name} loading="lazy" />
-                  </div>
-                ))}
-              </div>
+              <ClientLogoGrid clients={category.clients} />
             </div>
           ))
         }

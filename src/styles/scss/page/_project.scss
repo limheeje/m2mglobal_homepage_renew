@@ -23,7 +23,6 @@
 .spec__banner-diagram {
   width: 100%;
   aspect-ratio: 1760 / 744;
-  background-color: color('Color/Black 3');
   border-radius: rem(24px);
   margin-bottom: rem(40px);
 }
@@ -84,7 +83,10 @@
   text-align: center;
 }
 
-// --- Semimarket / SORIN: 스펙 행(아이콘+라벨 / 요약 / 화살표 / 체크리스트) ---
+// --- Semimarket / SORIN: 스펙 행 ---
+// Figma 실측: 한 덩어리 테두리 박스가 아니라 (라벨+요약 묶음 테두리 박스) → 화살표(테두리 없음) →
+// (체크리스트, 회색 채움 박스·테두리 없음) 3단 구성. 체크리스트는 항목별 회색박스(type_2)가 아니라
+// 하나의 회색 컨테이너 안에 평범한 체크행이 나열되는 형태(type_1)라는 점도 기존 구현과 다르다.
 .spec__row-grid {
   display: flex;
   flex-direction: column;
@@ -95,13 +97,19 @@
   display: flex;
   align-items: stretch;
   gap: rem(20px);
+}
+.spec__row-box {
+  flex: 1 1 0%;
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
   padding: rem(36px);
   border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(12px);
 }
 .spec__row-label {
   flex: 0 0 auto;
-  width: rem(170px);
+  width: rem(210px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -122,242 +130,181 @@
 }
 .spec__row-summary {
   flex: 1 1 0%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-left: rem(20px);
 }
-.spec__row-arrow-ph {
+// Figma 실측: 다른 flow 섹션과 동일한 step-arrow.svg 재사용(회전 없음, 128x77 박스에 크롭되어 보임)
+.spec__row-arrow {
   flex: 0 0 auto;
-  width: rem(60px);
   align-self: center;
-  height: rem(2px);
-  background-color: color('Color/Black 20');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(128px);
+  height: rem(77px);
+  overflow: hidden;
+  img {
+    display: block;
+    width: rem(114px);
+    height: rem(131px);
+    flex-shrink: 0;
+  }
 }
 .spec__row-list {
   flex: 0 0 auto;
-  width: rem(360px);
+  width: rem(722px);
   display: flex;
   flex-direction: column;
-  padding: rem(24px);
+  padding: rem(36px);
   background-color: color('Color/Black 3');
   border-radius: rem(12px);
 }
 
-// --- Semimarket / SORIN: 특별한 성과(화면 스크린샷 갤러리) ---
+// --- Semimarket / SORIN: 특별한 성과(화면 스크린샷 이미지 + TitleThird 캡션, 상하 조합) ---
 .spec__gallery-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  gap: rem(20px);
+}
+.spec__gallery-card {
+  display: flex;
+  flex-direction: column;
   gap: rem(10px);
 }
 .spec__gallery-ph {
   width: 100%;
-  aspect-ratio: 277 / 577;
+  aspect-ratio: 277 / 520;
   background-color: color('Color/Black 3');
-  border-radius: rem(16px);
-}
-
-// --- CJ대한통운: 로봇기반 통합관제시스템 구축 사례 타임라인 ---
-.spec__timeline {
-  display: flex;
-  gap: rem(20px);
-  margin-bottom: rem(80px);
-}
-.spec__timeline-phase {
-  flex: 1 1 0%;
-  text-align: center;
-}
-.spec__timeline-phase-label {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(8px);
-}
-.spec__timeline-phase-date {
-  @include font('Body 18 R');
-  color: color('Color/Primary Color');
-  margin-bottom: rem(12px);
-}
-.spec__timeline-stages {
-  display: flex;
-  border-top: rem(2px) solid color('Color/Black 20');
-}
-.spec__timeline-stage {
-  flex: 1 1 0%;
-  padding: rem(16px) rem(8px) 0;
-  & + & {
-    border-left: rem(1px) solid color('Color/Black 10');
-  }
-}
-.spec__timeline-step {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(8px);
-}
-.spec__timeline-desc {
-  @include font('Body 14 R');
-  color: color('Black/60');
-}
-
-// --- CJ대한통운: 구현 기능(번호 카드) ---
-.spec__num-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(20px);
-  margin-bottom: rem(80px);
-}
-.spec__num-card {
-  flex: 1 1 0%;
-  min-width: rem(180px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
-  padding: rem(36px);
-  background-color: color('Color/Black 3');
+  border: rem(4px) solid color('Color/Black 100');
   border-radius: rem(24px);
-}
-.spec__num-index {
-  @include font('Body 24 R');
-  color: color('Color/Primary Color');
-}
-.spec__num-label {
-  @include font('Body 16 R');
-  color: color('Color/Black 100');
-  text-align: center;
-}
-
-// --- CJ대한통운: 연동 제조사 AMR/AGV 스펙 테이블 ---
-.spec__equip-table {
-  display: flex;
-  flex-direction: column;
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(12px);
   overflow: hidden;
-  margin-bottom: rem(80px);
-}
-.spec__equip-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  & + & {
-    border-top: rem(1px) solid color('Color/Black 10');
-  }
-  span {
-    padding: rem(12px) rem(20px);
-    @include font('Body 18 R');
-    color: color('Color/Black 100');
-    text-align: center;
-  }
-  &--head span {
-    background-color: color('Color/Black 3');
-    font-weight: 700;
-  }
 }
 
-// --- CJ대한통운: 시스템 업무 구성 ---
-.spec__intro-text {
-  @include font('Body 20 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(40px);
-}
-.spec__sysmap-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: rem(20px);
-  margin-bottom: rem(80px);
-}
-.spec__sysmap-card {
+// (주의) "CJ대한통운 로봇물류" 구축사례 전체(타임라인/구현기능/연동제조사/동작화면/시스템업무구성/
+// 주요기능소개)는 ~/components/common/CaseStudySection.astro(components/_case-study-section.scss,
+// cs__*)로 컴포넌트화되어 이동했다 — /robot-logistics/overview#cases와 완전히 동일 컴포넌트 재사용.
+
+// --- Reference: 프로젝트 리스트(로고 + 타이틀/설명 + 투입기간 + 바로가기) ---
+.ref__list {
   display: flex;
   flex-direction: column;
+  border-top: rem(2px) solid color('Primary/Blue100');
+  margin-bottom: rem(80px);
+}
+.ref__row {
+  display: flex;
   align-items: center;
   gap: rem(20px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
+  padding: rem(24px) rem(48px);
+  border-bottom: rem(1px) solid color('Color/Box/Border color');
 }
-.spec__sysmap-icon-ph {
-  display: inline-flex;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
+.ref__row-main {
+  flex: 1 1 0%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: rem(20px);
 }
-.spec__sysmap-title {
-  @include font('Body 30 R');
-  color: color('Color/Black 100');
-  text-align: center;
+.ref__row-left {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  min-width: 0;
 }
-.spec__sysmap-list {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-  text-align: center;
-  li + li {
-    margin-top: rem(4px);
-  }
-}
-
-// --- CJ대한통운: 주요 기능 소개 (PC / Tablet 비교) ---
-.spec__compare {
+.ref__logo {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: rem(20px);
-  padding: rem(36px) rem(24px);
-  background-color: color('Color/White');
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
+  width: rem(128px);
+  height: rem(68px);
+  img {
+    max-width: 100%;
+    max-height: rem(39px);
+    object-fit: contain;
+  }
 }
-.spec__compare-col {
-  flex: 1 1 0%;
-  max-width: rem(425px);
+.ref__logo-ph {
+  display: inline-block;
+  width: 100%;
+  height: rem(39px);
+  background-color: color('Color/Black 10');
+  border-radius: rem(6px);
+}
+.ref__row-text {
+  min-width: 0;
   display: flex;
   flex-direction: column;
+  gap: rem(4px);
+}
+.ref__row-title {
+  @include font('Body 22 R');
+  color: color('Color/Black 100');
+}
+.ref__row-desc {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+}
+.ref__row-period {
+  flex-shrink: 0;
+  width: rem(575px);
+  display: flex;
   align-items: center;
   gap: rem(20px);
 }
-.spec__compare-icon-ph {
-  display: inline-flex;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-}
-.spec__compare-device {
-  @include font('Body 30 R');
+.ref__period-value {
+  @include font('Body 18 R');
   color: color('Color/Black 100');
 }
-.spec__compare-list {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: rem(8px);
-}
-.spec__compare-arrow-ph {
-  flex: 0 0 auto;
-  width: rem(60px);
-  height: rem(2px);
-  background-color: color('Color/Black 20');
+.ref__link {
+  flex-shrink: 0;
 }
 
 @media only screen and (max-width: $breakpoint-md) {
-  .spec__case-grid,
-  .spec__timeline,
-  .spec__compare {
+  .ref__row {
     flex-direction: column;
+    align-items: flex-start;
   }
-  .spec__row {
+  .ref__row-main {
     flex-direction: column;
-  }
-  .spec__row-label,
-  .spec__row-list {
+    align-items: flex-start;
     width: 100%;
+  }
+  .ref__row-period {
+    width: 100%;
+  }
+  .spec__case-grid {
+    flex-direction: column;
   }
   .spec__gallery-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .spec__num-grid,
-  .spec__sysmap-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .spec__row {
+    flex-direction: column;
   }
-  .spec__equip-row {
-    grid-template-columns: repeat(2, 1fr);
+  .spec__row-box {
+    flex-direction: column;
+  }
+  .spec__row-label {
+    width: 100%;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: rem(1px) solid color('Color/Box/Border color');
+    padding-right: 0;
+    padding-bottom: rem(20px);
+  }
+  .spec__row-summary {
+    padding-left: 0;
+    padding-top: rem(20px);
+  }
+  .spec__row-arrow img {
+    transform: rotate(90deg);
+  }
+  .spec__row-list {
+    width: 100%;
   }
 }

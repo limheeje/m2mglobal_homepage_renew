@@ -19,18 +19,30 @@ import TitleSub from '~/components/common/TitleSub.astro'
 import TitleThird from '~/components/common/TitleThird.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
+import SYMBOL027 from '~/assets/images/common/symbol027.png'
+import SYMBOL028 from '~/assets/images/common/symbol028.png'
+import EL_SOLUT_MR001 from '~/assets/images/common/el_solut_mr001.png'
+import EL_SOLUT_MR002 from '~/assets/images/common/el_solut_mr002.png'
+import EL_SOLUT_MR003 from '~/assets/images/common/el_solut_mr003.png'
+import EL_SOLUT_MR004 from '~/assets/images/common/el_solut_mr004.png'
+import EL_SOLUT_MR005 from '~/assets/images/common/el_solut_mr005.png'
+import EL_SOLUT_MR006 from '~/assets/images/common/el_solut_mr006.png'
+import Icon from '~/components/common/Icon.astro'
+import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/solutions/commerce-platform')
 
 const sectionTabs = [
   {id: 'understand', label: '솔루션 이해'},
   {id: 'tech', label: '기술 구성 안내'},
-  {id: 'features', label: '주요 특장점'}
+  {id: 'features', label: '주요 특장점'},
+  {id: 'application', label: '적용 분야'}
 ]
 
 // --- 솔루션 이해: M2M-eLivestock Auction / M2M-B2Bi / M2M-eCCP ---
 const understandCards = [
   {
+    icon: ICON_KEY_NAME['Solution7-1'],
     title: 'M2M-eLivestock Auction',
     items: [
       '실시간 입찰(Bidding) 및 경매(Auction) 엔진 제공',
@@ -42,6 +54,7 @@ const understandCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Solution1-2'],
     title: 'M2M-B2Bi',
     items: [
       'ERP / WMS / 회계시스템 연계',
@@ -53,6 +66,7 @@ const understandCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Solution1-3'],
     title: 'M2M-eCCP',
     items: [
       '사용자 및 권한(Role) 관리',
@@ -71,23 +85,32 @@ const auctionFlowSteps = ['입찰', '낙찰/결과', '정산', '배송지시']
 // --- 주요 특장점 : 특장점 및 기능안내 (6개 카드) ---
 const featureCards = [
   {
+    icon: ICON_KEY_NAME['Solution7-1'],
     title: '축산 전문 경매',
     desc: '등급·중량·부분육 등 <br/>산물 고유 변수를 표준 기능으로 처리'
   },
   {
+    icon: ICON_KEY_NAME['Solution7-2'],
     title: '실시간 경매 운영',
     desc: '동시 입찰 경합 제어와 <br/>서버 시간 기준 순위 확정'
   },
-  {title: '투명한 거래 관리', desc: '전 입찰 이력 기록으로 <br/>거래 분쟁 근거 확보'},
   {
+    icon: ICON_KEY_NAME['Solution7-3'],
+    title: '투명한 거래 관리',
+    desc: '전 입찰 이력 기록으로 <br/>거래 분쟁 근거 확보'
+  },
+  {
+    icon: ICON_KEY_NAME['Solution7-4'],
     title: '통합 시스템 연계',
     desc: 'ERP·WMS·이력제·알림 채널과 표준 연동'
   },
   {
+    icon: ICON_KEY_NAME['Solution7-5'],
     title: '통합 운영 관리',
     desc: '회원·경매·낙찰·정산·배송을 백오피스에서 일괄 운영'
   },
   {
+    icon: ICON_KEY_NAME['Solution7-6'],
     title: '데이터 기반 시세 분석',
     desc: '체결가 기반 <br/>일일 시세 집계·공표 및 예측'
   }
@@ -95,12 +118,40 @@ const featureCards = [
 
 // --- 주요 특장점 : 주요 기능 (앱 화면 스크린샷 6개 + 캡션) ---
 const featureScreens = [
-  '경매장 목록',
-  '중도매인 계정',
-  '메인 – 경매 현황 확인',
-  '경매 상세',
-  '입찰 참여',
-  '시세 정보'
+  {imgSrc: EL_SOLUT_MR001.src, title: '경매장 목록'},
+  {imgSrc: EL_SOLUT_MR002.src, title: '중도매인 계정'},
+  {imgSrc: EL_SOLUT_MR003.src, title: '메인 – 경매 현황 확인'},
+  {imgSrc: EL_SOLUT_MR004.src, title: '경매 상세'},
+  {imgSrc: EL_SOLUT_MR005.src, title: '입찰 참여'},
+  {imgSrc: EL_SOLUT_MR006.src, title: '시세 정보'}
+]
+
+// --- 적용 분야 (6개, 4열 그리드) ---
+const applicationFields = [
+  {
+    title: '축산물 공판장',
+    desc: '실시간 경매, 낙찰, 정산까지 공판장 운영<br/>전 과정을 디지털화'
+  },
+  {
+    title: '도축장 · 육가공업체',
+    desc: '부분육 상장 및 온라인 경매를 통한<br/>판매 채널 확대'
+  },
+  {
+    title: '축산물 유통센터',
+    desc: '부위별 거래 및 시세 관리로<br/>유통 효율성 향상'
+  },
+  {
+    title: '농·축협 및 협동조합',
+    desc: '공정한 경매 운영과<br/>조합원 거래 관리 지원'
+  },
+  {
+    title: '식육 도매시장',
+    desc: '중도매인 중심의<br/>신속하고 투명한 경매 환경 제공'
+  },
+  {
+    title: '축산 전문 B2B 플랫폼',
+    desc: '온라인 기반 축산물 거래 및<br/>유통 플랫폼 구축'
+  }
 ]
 ---
 
@@ -131,17 +182,24 @@ const featureScreens = [
 
   <section id="understand" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">솔루션 이해</span>`} />
+      <TitleSub
+        title={`<span class="mark">솔루션 이해</span>`}
+        description="<span class='mark'>'eLiveBid ↔ BackOffice ↔ Interface'</span> 기반의 축산전문 경매 플랫폼으로 상장부터 경매, 낙찰, 정산, 출고까지 축산물 거래 전 과정을 디지털화하여 신속하고 투명한 경매 서비스를 제공합니다."
+      />
 
       <!-- TODO: 솔루션 구성도(삼각형 다이어그램) 이미지 삽입 -->
-      <div class="sol__diagram-placeholder" aria-hidden="true"></div>
+      <div class="sol__diagram-placeholder max-width-1760" aria-hidden="true">
+        <img src={SYMBOL027.src} alt="" />
+      </div>
 
       <div class="sol__understand-grid">
         {
           understandCards.map((card) => (
             <div class="sol__understand-card">
               {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="sol__understand-icon" aria-hidden="true" />
+              <span class="sol__understand-icon" aria-hidden="true">
+                <Icon name={card.icon} alt="" />
+              </span>
               <p class="sol__understand-title">{card.title}</p>
               <div class="sol__understand-list">
                 {card.items.map((item) => (
@@ -157,12 +215,14 @@ const featureScreens = [
 
   <section id="tech" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">기술 구성 안내</span>`} />
+      <TitleSub title={`기술<span class="mark"> 구성 안내</span>`} />
 
-      <p class="sol__auction-quote">
-        &quot;eLiveBid ↔ BackOffice ↔ Interface&quot; 기반으로 축산전문경매플랫폼
-      </p>
-      <TitleThird>M2M-eLivestock Auction</TitleThird>
+      <div class="sol__auction-head">
+        <p class="sol__auction-quote">
+          &quot;eLiveBid ↔ BackOffice ↔ Interface&quot; 기반으로 축산전문경매플랫폼
+        </p>
+        <p class="sol__auction-title">M2M-eLivestock Auction</p>
+      </div>
 
       <div class="sol__auction-flow">
         {
@@ -171,14 +231,18 @@ const featureScreens = [
               <div class="sol__auction-step">
                 <p>{step}</p>
               </div>
-              {i < auctionFlowSteps.length - 1 && <span class="sol__auction-plus">+</span>}
+              {i < auctionFlowSteps.length - 1 && (
+                <span class="sol__auction-plus" aria-hidden="true" />
+              )}
             </>
           ))
         }
       </div>
 
       <!-- TODO: BackOffice(관리기능)/API Gateway/Integration Layer/OS 매트릭스 이미지 삽입 -->
-      <div class="sol__tech-diagram sol__diagram-placeholder" aria-hidden="true"></div>
+      <div class="sol__tech-diagram-ty2" aria-hidden="true">
+        <img src={SYMBOL028.src} alt="" />
+      </div>
     </div>
   </section>
 
@@ -190,7 +254,9 @@ const featureScreens = [
           featureCards.map((card) => (
             <div class="sol__stat-card">
               {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="sol__stat-icon" aria-hidden="true" />
+              <span class="sol__stat-icon" aria-hidden="true">
+                <Icon name={card.icon} alt="" />
+              </span>
               <p class="sol__stat-title">{card.title}</p>
               <p class="sol__stat-desc" set:html={card.desc} />
             </div>
@@ -204,8 +270,29 @@ const featureScreens = [
           featureScreens.map((label) => (
             <div class="sol__screen-card">
               {/* <!-- TODO: 앱 화면 스크린샷 이미지 삽입 --> */}
-              <div class="sol__screen-ph" aria-hidden="true" />
-              <TitleThird>{label}</TitleThird>
+              <div class="sol__screen-ph" aria-hidden="true">
+                <img src={label.imgSrc} alt="" />
+              </div>
+              <TitleThird>{label.title}</TitleThird>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="application" class="g-section">
+    <div class="innerWrap">
+      <TitleSub
+        title={`적용 <span class="mark">분야</span>`}
+        description={`&quot;eLiveBid ↔ BackOffice ↔ Interface&quot; 기반으로 상장부터 경매, 낙찰, 정산, 출고까지 축산물 거래 전 과정을 신속하고 투명한 경매 서비스를 제공합니다.`}
+      />
+      <div class="sol__stat-grid">
+        {
+          applicationFields.map((field) => (
+            <div class="sol__scope-card">
+              <p class="sol__scope-title">{field.title}</p>
+              <p class="sol__scope-desc" set:html={field.desc} />
             </div>
           ))
         }

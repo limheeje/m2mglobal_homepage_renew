@@ -17,6 +17,9 @@
     gap: rem(10px);
     .mark{
         @include font('Body 14 R');
+        // base/_reset.scss의 전역 `.mark{color:Primary Color !important}`가 어두운 배경 위
+        // 흰 글씨를 파란색으로 덮어써버려서, 여기서 다시 흰색으로 되돌린다(동일 !important로 특이도 승리).
+        color: color('Color/White') !important;
     }
 }
 

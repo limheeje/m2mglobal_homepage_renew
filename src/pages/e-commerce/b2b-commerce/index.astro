@@ -11,14 +11,18 @@ import TitleMiddle from '~/components/common/TitleMiddle.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
 import Label from '~/components/common/Label.astro'
+import {ICON_KEY_NAME} from '~/constants/Icon'
+import Icon from '~/components/common/Icon.astro'
+import SYMBOL009 from '~/assets/images/common/symbol009.png'
+import CaseCardGrid from '~/components/common/CaseCardGrid.astro'
 
 const localNavigation = route.find((item) => item.href === '/e-commerce/commerce-technology')
-
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 const sectionTabs = [
-  {id: 'process', label: '기업구매프로세스'},
-  {id: 'cases', label: '구축사례'},
   {id: 'features', label: '제공기술 및 특징'},
-  {id: 'system', label: '시스템연계구조'}
+  {id: 'process', label: '기업구매프로세스'},
+  {id: 'system', label: '시스템연계구조'},
+  {id: 'cases', label: '구축사례'}
 ]
 
 // --- 기업 구매 프로세스 (6단계) ---
@@ -32,14 +36,17 @@ const processSteps = [
 ]
 const processFeatures = [
   {
+    icon: ICON_KEY_NAME['Business10-1'],
     title: '구매 리드타임 단축',
     desc: '요청·승인·발주가 한 화면에서 이어져<br/>수기 문서 왕복이 사라집니다.'
   },
   {
+    icon: ICON_KEY_NAME['Business10-2'],
     title: '단가 오류 차단',
     desc: '거래처별 계약단가가 자동 적용되어<br/>수기 입력 오류를 원천 제거합니다.'
   },
   {
+    icon: ICON_KEY_NAME['Business10-3'],
     title: '정산 투명성 확보',
     desc: '거래 이력과 여신·마감 데이터가<br/>실시간으로 일치합니다.'
   }
@@ -48,16 +55,19 @@ const processFeatures = [
 // --- 구축사례 (3건) ---
 const cases = [
   {
+    imageSrc: `${PUBLIC_BUILD_URL}/images/banner/banner002.png`,
     title: '서플러스글로벌 반도체장비 마켓플레이스 구축',
     date: '2025.08 ~ 2026.01',
     desc: 'AI 기반 자동화 상품추천'
   },
   {
+    imageSrc: `${PUBLIC_BUILD_URL}/images/banner/banner003.png`,
     title: '서플러스글로벌 반도체장비 파트너오피스 구축',
     date: '2025.03 ~ 2026.03',
     desc: 'AI 데이터 분석 기법을 활용한 고객 맞춤형 상품 자동 추천 기능'
   },
   {
+    imageSrc: `${PUBLIC_BUILD_URL}/images/banner/banner004.png`,
     title: '서린상사 B2B 온라인 플랫폼',
     date: '2022.03 ~ 2023.12',
     desc: '비철금속에 특화된 커머스 시스템 기능 구현'
@@ -67,6 +77,7 @@ const cases = [
 // --- 제공기술 및 특징 (3개) ---
 const featureCards = [
   {
+    icon: ICON_KEY_NAME['Business9-1'],
     title: '몰 구축',
     items: [
       ['기업 전용 쇼핑몰 (B2B Mall)', '기업 고객 전용 주문 · 조회 환경 구축'],
@@ -75,6 +86,7 @@ const featureCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business9-2'],
     title: '거래 관리',
     items: [
       ['기업 구매 시스템', '부서·직급별 구매 권한 및 예산 통제'],
@@ -83,34 +95,12 @@ const featureCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Business9-3'],
     title: '운영 연계',
     items: [
       ['ERP · SCM · WMS 연계', '주문·재고·출고 데이터 실시간 동기화'],
       ['거래처 및 정산 관리', '여신·마감·세금계산서 정산 자동화']
     ]
-  }
-]
-
-// --- 시스템 연계 구조 (4단 매트릭스) ---
-const systemLayers = [
-  {label: 'Front 구매 채널', cols: ['B2B Mall', '폐쇄몰 (Private)', '특판몰', '협력사 전용몰']},
-  {
-    label: 'BackOffice',
-    cols: [
-      '회원·거래처 관리',
-      '계약단가·견적',
-      '주문·승인 결재',
-      '재고·상품 관리',
-      '정산·여신 관리'
-    ]
-  },
-  {
-    label: 'Interface 연계규격',
-    cols: ['REST API', 'EDI', '배치 파일 연계', 'Message Queue', 'Web Service (SOAP)']
-  },
-  {
-    label: 'External 고객사 기간계 시스템',
-    cols: ['ERP', 'SCM', 'WMS', '그룹웨어 결재', 'PG · 전자세금계산서']
   }
 ]
 ---
@@ -142,61 +132,6 @@ const systemLayers = [
       }
     </div>
   </div>
-
-  <section id="process" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`기업 구매 <span class="mark">프로세스</span>`}
-        description="구매 요청부터 정산까지 전 단계를 단일 플랫폼에서 처리합니다."
-      />
-      <div class="ec__box-grid ec__box-grid--6">
-        {
-          processSteps.map((item) => (
-            <div class="ec__step-card">
-              <Label type="type_1">{item.step}</Label>
-              <p class="ec__step-title">{item.title}</p>
-              <p class="ec__step-desc">{item.desc.join(' · ')}</p>
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleMiddle>M2M Global B2B Commerce Platform — 전 단계 단일 플랫폼 처리</TitleMiddle>
-
-      <div class="ec__stat-grid">
-        {
-          processFeatures.map((f) => (
-            <div class="ec__stat-card">
-              {/* TODO: 아이콘 이미지 삽입 */}
-              <span class="ec__stat-icon" aria-hidden="true" />
-              <p class="ec__stat-title">{f.title}</p>
-              <p class="ec__stat-desc" set:html={f.desc} />
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section id="cases" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`구축 <span class="mark">사례</span>`} />
-      <div class="ec__case-grid">
-        {
-          cases.map((item) => (
-            <div class="ec__case-card">
-              {/* <!-- TODO: 이미지 삽입 --> */}
-              <div class="ec__case-thumb ec__thumb-ph" aria-hidden="true" />
-              <p class="ec__case-title">{item.title}</p>
-              <span class="ec__case-date">{item.date}</span>
-              <p class="ec__case-desc">{item.desc}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
   <section id="features" class="g-section">
     <div class="innerWrap">
       <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
@@ -206,7 +141,9 @@ const systemLayers = [
             <div class="ec__feature-card">
               <div class="ec__feature-head">
                 {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="ec__feature-icon" aria-hidden="true" />
+                <span class="ec__feature-icon" aria-hidden="true">
+                  <Icon name={card.icon} />
+                </span>
                 <p class="ec__feature-title">{card.title}</p>
               </div>
               <div>
@@ -224,6 +161,43 @@ const systemLayers = [
       </div>
     </div>
   </section>
+  <section id="process" class="g-section">
+    <div class="innerWrap">
+      <TitleSub
+        title={`기업 구매 <span class="mark">프로세스</span>`}
+        description="구매 요청부터 정산까지 전 단계를 단일 플랫폼에서 처리합니다."
+      />
+      <div class="ec__box-grid ec__box-grid--6">
+        {
+          processSteps.map((item) => (
+            <div class="ec__step-card">
+              <Label type="type_1">{item.step}</Label>
+              <p class="ec__step-title">{item.title}</p>
+              <p class="ec__step-desc">{item.desc.join(' · ')}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="ec__stat-bann">
+        <TitleMiddle>M2M Global B2B Commerce Platform — 전 단계 단일 플랫폼 처리</TitleMiddle>
+      </div>
+
+      <div class="ec__stat-grid">
+        {
+          processFeatures.map((f) => (
+            <div class="ec__stat-card">
+              {/* TODO: 아이콘 이미지 삽입 */}
+              <span class="ec__stat-icon" aria-hidden="true">
+                <Icon name={f.icon} />
+              </span>
+              <p class="ec__stat-title">{f.title}</p>
+              <p class="ec__stat-desc" set:html={f.desc} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
   <section id="system" class="g-section">
     <div class="innerWrap">
@@ -231,20 +205,10 @@ const systemLayers = [
         title={`시스템 <span class="mark">연계 구조</span>`}
         description="Front ↔ BackOffice ↔ Interface 3계층 프레임워크 위에서 기간계 시스템과 연동됩니다."
       />
-      {
-        systemLayers.map((layer) => (
-          <div class="ec__matrix-row">
-            <p class="ec__matrix-label">{layer.label}</p>
-            <div class="ec__matrix-cols">
-              {layer.cols.map((col) => (
-                <div class="ec__matrix-col">
-                  <p class="ec__matrix-col-title">{col}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))
-      }
+      <div class="sw-x-image">
+        <img src={SYMBOL009.src} alt="" />
+      </div>
     </div>
   </section>
+  <CaseCardGrid id="cases" columns={3} cases={cases} />
 </Layout>

@@ -18,8 +18,19 @@
 .sol__diagram-placeholder {
   width: 100%;
   aspect-ratio: 16 / 7;
-  background-color: color('Color/Black 3');
   border-radius: rem(24px);
+  margin-bottom: rem(40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    max-width: rem(1200px);
+  }
+  &.max-width-1760{
+    img{
+      max-width: rem(1760px);
+    }
+  }
 }
 
 // --- 솔루션 이해: 아이콘+타이틀+체크리스트(회색박스) 카드 ---
@@ -50,11 +61,24 @@
 }
 .sol__understand-title {
   @include font('Body 30 R');
-  color: color('Color/Primary Color');
+  color: color('Primary/Blue100');
   text-align: center;
 }
 .sol__understand-list {
   width: 100%;
+}
+
+// --- 주요 특장점: Third Title(상) + 카드 그리드(하) 그룹 — Figma 실측: 그룹 사이 40px ---
+.sol__feature-group {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+  & + & {
+    margin-top: rem(40px);
+  }
+  .bs-title-third{
+    max-width: fit-content;
+  }
 }
 
 // --- 주요 특장점 / 적용 분야: 아이콘(또는 없음)+타이틀+설명 카드 (중앙정렬) ---
@@ -62,6 +86,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: rem(20px);
+  margin-bottom: rem(80px);
 }
 .sol__stat-card {
   display: flex;
@@ -110,35 +135,51 @@
   color: color('Color/Black 100');
 }
 
-// --- 기술 구성 안내: Third Title 라벨 + 다이어그램(이미지) ---
+// --- 기술 구성 안내: Third Title 라벨(상) + 다이어그램(하) — Figma 실측: 좌우 배치가 아니라 상하 배치 ---
 .sol__tech-group {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
   gap: rem(20px);
   & + & {
     margin-top: rem(40px);
   }
+  .bs-title-third{
+    width:fit-content;
+  }
 }
+// Figma 실측: 테두리만 있는 흰 박스(회색 채움 없음) — .sol__diagram-placeholder(회색 채움 자리표시자)는
+// 안쪽에 별도로 넣는다. 두 클래스를 한 엘리먼트에 합치면 채움+테두리가 겹쳐 Figma보다 진하게 보인다.
+.sol__tech-diagram-ty2{}
 .sol__tech-diagram {
-  flex: 1 1 auto;
   padding: rem(36px) rem(24px);
-  border: rem(1px) solid color('Color/Black 20');
+  border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(24px);
 }
 
 // --- eLivestock 기술 구성 안내 상단: 경매 절차 플로우 ---
+.sol__auction-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(12px);
+  text-align: center;
+}
 .sol__auction-quote {
-  @include font('Body 18 R');
-  color: color('Color/Black 40');
-  margin-bottom: rem(8px);
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+}
+.sol__auction-title {
+  @include font('Body 36 R');
+  color: color('Color/Primary Color');
 }
 .sol__auction-flow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: rem(12px);
-  margin: rem(40px) 0;
+  gap: rem(20px);
+  margin-top: rem(40px);
+  margin-bottom: rem(20px);
 }
 .sol__auction-step {
   flex: 0 0 auto;
@@ -146,16 +187,19 @@
   aspect-ratio: 1/1;
   border-radius: 50%;
   background-color: color('Color/Black 3');
+  border: rem(1px) solid color('Black/5');
   display: flex;
   align-items: center;
   justify-content: center;
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
+  @include font('Body 30 R');
+  color: color('Color/Primary Color');
 }
 .sol__auction-plus {
   flex-shrink: 0;
-  @include font('H4');
-  color: color('Color/Black 40');
+  display: inline-block;
+  width: rem(24px);
+  height: rem(24px);
+  @include get-background-svg('icon_plus', color('Color/Black 20'));
 }
 
 // --- eLivestock 주요 특장점 하단: 주요 기능(앱 화면 스크린샷 + 캡션) ---
@@ -180,9 +224,6 @@
 @media only screen and (max-width: $breakpoint-md) {
   .sol__stat-grid {
     grid-template-columns: 1fr;
-  }
-  .sol__tech-group {
-    flex-direction: column;
   }
   .sol__auction-step {
     width: rem(140px);

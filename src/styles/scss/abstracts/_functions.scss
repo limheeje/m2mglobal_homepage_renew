@@ -2,118 +2,135 @@
 @use 'sass:color';
 @use '_variables' as *;
 
-@function icon-map(){
-  $icon-map:(
-    'icon_calender':'<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.5L25 7.5M11.875 15L25 15M5 22.5L25 22.5" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>',
-    'icon_check':'<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.9015 0.265294C9.25193 -0.0871207 9.82168 -0.0885613 10.1742 0.261778C10.5265 0.612182 10.5288 1.18196 10.1785 1.53443L3.73441 8.01461C3.56549 8.1844 3.33583 8.28004 3.09632 8.28004C2.85681 8.28003 2.62714 8.18442 2.45824 8.01461L0.261848 5.80592C-0.0886311 5.45346 -0.0870973 4.88286 0.265364 4.53238C0.617844 4.18214 1.18762 4.18439 1.53802 4.53678L3.09544 6.10299L8.9015 0.265294Z" fill="white"/></svg>',
-    'icon_check_type2':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 10C0 4.47715 4.47715 0 10 0C11.5671 0 13.0532 0.361243 14.376 1.00586C14.8721 1.24787 15.0786 1.84646 14.8369 2.34277C14.595 2.83925 13.9955 3.04564 13.499 2.80371C12.4432 2.28928 11.2568 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 9.44771 18.4477 9 19 9C19.5523 9 20 9.44771 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10Z" fill="#DBDBDB"/><path d="M16.8906 4.29477C17.2799 3.9032 17.913 3.9016 18.3046 4.29086C18.6962 4.6802 18.6987 5.31328 18.3095 5.70493L11.1493 12.9051C10.9617 13.0938 10.7065 13.2 10.4404 13.2C10.1742 13.2 9.91905 13.0938 9.73137 12.9051L7.29094 10.451C6.90152 10.0594 6.90323 9.4254 7.29485 9.03598C7.68649 8.64682 8.31958 8.64933 8.70891 9.04086L10.4394 10.7811L16.8906 4.29477Z" fill="#023894"/></svg>',
-    'icon_assignment':'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.66667 10.6663H9.33333V11.9997H4.66667V10.6663ZM4.66667 7.99967H11.3333V9.33301H4.66667V7.99967ZM4.66667 5.33301H11.3333V6.66634H4.66667V5.33301ZM12.6667 2.66634H9.88C9.6 1.89301 8.86667 1.33301 8 1.33301C7.13333 1.33301 6.4 1.89301 6.12 2.66634H3.33333C3.24 2.66634 3.15333 2.67301 3.06667 2.69301C2.80667 2.74634 2.57333 2.87967 2.39333 3.05967C2.27333 3.17967 2.17333 3.32634 2.10667 3.48634C2.04 3.63967 2 3.81301 2 3.99967V13.333C2 13.513 2.04 13.693 2.10667 13.853C2.17333 14.013 2.27333 14.153 2.39333 14.2797C2.57333 14.4597 2.80667 14.593 3.06667 14.6463C3.15333 14.6597 3.24 14.6663 3.33333 14.6663H12.6667C13.4 14.6663 14 14.0663 14 13.333V3.99967C14 3.26634 13.4 2.66634 12.6667 2.66634ZM8 2.49967C8.27333 2.49967 8.5 2.72634 8.5 2.99967C8.5 3.27301 8.27333 3.49967 8 3.49967C7.72667 3.49967 7.5 3.27301 7.5 2.99967C7.5 2.72634 7.72667 2.49967 8 2.49967ZM12.6667 13.333H3.33333V3.99967H12.6667V13.333Z" fill="#B7B7B7"/></svg>',
-    'icon_assessment':'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6667 2H3.33333C2.6 2 2 2.6 2 3.33333V12.6667C2 13.4 2.6 14 3.33333 14H12.6667C13.4 14 14 13.4 14 12.6667V3.33333C14 2.6 13.4 2 12.6667 2ZM12.6667 12.6667H3.33333V3.33333H12.6667V12.6667ZM4.66667 6.66667H6V11.3333H4.66667V6.66667ZM7.33333 4.66667H8.66667V11.3333H7.33333V4.66667ZM10 8.66667H11.3333V11.3333H10V8.66667Z" fill="#B7B7B7"/></svg>',
-    'icon_copy':'<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.375 0.75H3.375C2.55 0.75 1.875 1.425 1.875 2.25V12.75H3.375V2.25H12.375V0.75ZM14.625 3.75H6.375C5.55 3.75 4.875 4.425 4.875 5.25V15.75C4.875 16.575 5.55 17.25 6.375 17.25H14.625C15.45 17.25 16.125 16.575 16.125 15.75V5.25C16.125 4.425 15.45 3.75 14.625 3.75ZM14.625 15.75H6.375V5.25H14.625V15.75Z" fill="#B7B7B7"/></svg>',
-    'icon_plus':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5L10 15M15 10L5 10" stroke="#B7B7B7" stroke-width="2" stroke-linecap="round"/></svg>',
-    'icon_arrow_right':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.1367 3.63756C11.4296 3.34483 11.9044 3.34472 12.1973 3.63756L18.0303 9.47056C18.1707 9.61113 18.2499 9.80213 18.25 10.0008C18.2499 10.1995 18.1707 10.3906 18.0303 10.5311L12.1973 16.3651C11.9045 16.6575 11.4296 16.6573 11.1367 16.3651C10.8439 16.0723 10.8441 15.5975 11.1367 15.3045L15.6895 10.7508H2.5C2.08594 10.7508 1.75025 10.4148 1.75 10.0008C1.75014 9.58675 2.08588 9.25084 2.5 9.25084H15.6895L11.1367 4.6981C10.8439 4.40529 10.8441 3.93047 11.1367 3.63756Z" fill="white"/></svg>',
-    'icon_close':'<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 12.82L35.18 10L24 21.18L12.82 10L10 12.82L21.18 24L10 35.18L12.82 38L24 26.82L35.18 38L38 35.18L26.82 24L38 12.82Z" fill="white"/></svg>',
-    'icon_download':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.0007 12.5007V15.0007H5.00065V12.5007H3.33398V15.0007C3.33398 15.9173 4.08398 16.6673 5.00065 16.6673H15.0007C15.9173 16.6673 16.6673 15.9173 16.6673 15.0007V12.5007H15.0007ZM14.1673 9.16732L12.9923 7.99232L10.834 10.1423V3.33398H9.16732V10.1423L7.00898 7.99232L5.83398 9.16732L10.0007 13.334L14.1673 9.16732Z" fill="white"/></svg>',
-    'icon_blank':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.833 2.58398C11.2468 2.58434 11.5828 2.92014 11.583 3.33398C11.583 3.74798 11.2469 4.08363 10.833 4.08398H9.16602C7.99119 4.08398 7.1472 4.08449 6.48145 4.12988C5.82288 4.17482 5.39269 4.2613 5.04004 4.40723C3.9988 4.83852 3.17065 5.66682 2.73926 6.70801C2.59326 7.06067 2.50687 7.4908 2.46192 8.14941C2.4165 8.81516 2.41602 9.65913 2.41602 10.834C2.41602 12.0088 2.41652 12.8528 2.46192 13.5186C2.50686 14.1773 2.59328 14.6073 2.73926 14.96C3.17061 16.0013 3.99867 16.8294 5.04004 17.2607C5.39273 17.4067 5.82274 17.4931 6.48145 17.5381C7.14721 17.5835 7.99117 17.584 9.16602 17.584C10.3409 17.584 11.1848 17.5835 11.8506 17.5381C12.5092 17.4931 12.9393 17.4067 13.292 17.2607C14.3332 16.8293 15.1615 16.0012 15.5928 14.96C15.7387 14.6073 15.8252 14.1771 15.8701 13.5186C15.9155 12.8528 15.916 12.0088 15.916 10.834V9.16699C15.9164 8.75308 16.252 8.41699 16.666 8.41699C17.0799 8.41717 17.4157 8.75319 17.416 9.16699V10.834C17.416 11.9884 17.4169 12.8924 17.3672 13.6211C17.317 14.3562 17.2128 14.9684 16.9785 15.5342C16.395 16.943 15.2749 18.0628 13.8662 18.6465C13.3004 18.8808 12.6882 18.985 11.9531 19.0352C11.2245 19.0849 10.3205 19.084 9.16602 19.084C8.01158 19.084 7.10759 19.0849 6.37891 19.0352C5.64373 18.985 5.03168 18.8808 4.46582 18.6465C3.05691 18.0629 1.93711 16.9431 1.35352 15.5342C1.1192 14.9683 1.01502 14.3563 0.964845 13.6211C0.915145 12.8924 0.916017 11.9884 0.916017 10.834C0.916017 9.67955 0.915128 8.77554 0.964845 8.04688C1.01503 7.31178 1.11919 6.69961 1.35352 6.13379C1.93715 4.72506 3.05704 3.60502 4.46582 3.02148C5.03162 2.78724 5.64383 2.68298 6.37891 2.63281C7.10758 2.58312 8.01161 2.58398 9.16602 2.58398H10.833ZM18.332 0.917969C18.7462 0.917969 19.082 1.25376 19.082 1.66797V5.83496C19.0817 6.24888 18.746 6.58496 18.332 6.58496C17.9182 6.58479 17.5824 6.24877 17.582 5.83496V3.47852L10.5293 10.5312C10.2364 10.8239 9.7616 10.8239 9.46875 10.5312C9.17608 10.2384 9.17608 9.76356 9.46875 9.4707L16.5215 2.41797H14.166C13.7519 2.41797 13.4162 2.08203 13.416 1.66797C13.416 1.25376 13.7518 0.917969 14.166 0.917969H18.332Z" fill="#B7B7B7"/></svg>',
-    'icon_mail':'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 10.99L4 6H20ZM20 18H4V8L12 13L20 8V18Z" fill="#939393"/></svg>',
+@function icon-map() {
+  $icon-map: (
+    'icon_calender':
+      '<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 7.5L25 7.5M11.875 15L25 15M5 22.5L25 22.5" stroke="black" stroke-width="2" stroke-linecap="round"/></svg>',
+    'icon_check':
+      '<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.9015 0.265294C9.25193 -0.0871207 9.82168 -0.0885613 10.1742 0.261778C10.5265 0.612182 10.5288 1.18196 10.1785 1.53443L3.73441 8.01461C3.56549 8.1844 3.33583 8.28004 3.09632 8.28004C2.85681 8.28003 2.62714 8.18442 2.45824 8.01461L0.261848 5.80592C-0.0886311 5.45346 -0.0870973 4.88286 0.265364 4.53238C0.617844 4.18214 1.18762 4.18439 1.53802 4.53678L3.09544 6.10299L8.9015 0.265294Z" fill="white"/></svg>',
+    'icon_check_type2':
+      '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 10C0 4.47715 4.47715 0 10 0C11.5671 0 13.0532 0.361243 14.376 1.00586C14.8721 1.24787 15.0786 1.84646 14.8369 2.34277C14.595 2.83925 13.9955 3.04564 13.499 2.80371C12.4432 2.28928 11.2568 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 9.44771 18.4477 9 19 9C19.5523 9 20 9.44771 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10Z" fill="#DBDBDB"/><path d="M16.8906 4.29477C17.2799 3.9032 17.913 3.9016 18.3046 4.29086C18.6962 4.6802 18.6987 5.31328 18.3095 5.70493L11.1493 12.9051C10.9617 13.0938 10.7065 13.2 10.4404 13.2C10.1742 13.2 9.91905 13.0938 9.73137 12.9051L7.29094 10.451C6.90152 10.0594 6.90323 9.4254 7.29485 9.03598C7.68649 8.64682 8.31958 8.64933 8.70891 9.04086L10.4394 10.7811L16.8906 4.29477Z" fill="#023894"/></svg>',
+    'icon_assignment':
+      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.66667 10.6663H9.33333V11.9997H4.66667V10.6663ZM4.66667 7.99967H11.3333V9.33301H4.66667V7.99967ZM4.66667 5.33301H11.3333V6.66634H4.66667V5.33301ZM12.6667 2.66634H9.88C9.6 1.89301 8.86667 1.33301 8 1.33301C7.13333 1.33301 6.4 1.89301 6.12 2.66634H3.33333C3.24 2.66634 3.15333 2.67301 3.06667 2.69301C2.80667 2.74634 2.57333 2.87967 2.39333 3.05967C2.27333 3.17967 2.17333 3.32634 2.10667 3.48634C2.04 3.63967 2 3.81301 2 3.99967V13.333C2 13.513 2.04 13.693 2.10667 13.853C2.17333 14.013 2.27333 14.153 2.39333 14.2797C2.57333 14.4597 2.80667 14.593 3.06667 14.6463C3.15333 14.6597 3.24 14.6663 3.33333 14.6663H12.6667C13.4 14.6663 14 14.0663 14 13.333V3.99967C14 3.26634 13.4 2.66634 12.6667 2.66634ZM8 2.49967C8.27333 2.49967 8.5 2.72634 8.5 2.99967C8.5 3.27301 8.27333 3.49967 8 3.49967C7.72667 3.49967 7.5 3.27301 7.5 2.99967C7.5 2.72634 7.72667 2.49967 8 2.49967ZM12.6667 13.333H3.33333V3.99967H12.6667V13.333Z" fill="#B7B7B7"/></svg>',
+    'icon_assessment':
+      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.6667 2H3.33333C2.6 2 2 2.6 2 3.33333V12.6667C2 13.4 2.6 14 3.33333 14H12.6667C13.4 14 14 13.4 14 12.6667V3.33333C14 2.6 13.4 2 12.6667 2ZM12.6667 12.6667H3.33333V3.33333H12.6667V12.6667ZM4.66667 6.66667H6V11.3333H4.66667V6.66667ZM7.33333 4.66667H8.66667V11.3333H7.33333V4.66667ZM10 8.66667H11.3333V11.3333H10V8.66667Z" fill="#B7B7B7"/></svg>',
+    'icon_copy':
+      '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.375 0.75H3.375C2.55 0.75 1.875 1.425 1.875 2.25V12.75H3.375V2.25H12.375V0.75ZM14.625 3.75H6.375C5.55 3.75 4.875 4.425 4.875 5.25V15.75C4.875 16.575 5.55 17.25 6.375 17.25H14.625C15.45 17.25 16.125 16.575 16.125 15.75V5.25C16.125 4.425 15.45 3.75 14.625 3.75ZM14.625 15.75H6.375V5.25H14.625V15.75Z" fill="#B7B7B7"/></svg>',
+    'icon_plus':
+      '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 5L10 15M15 10L5 10" stroke="#B7B7B7" stroke-width="2" stroke-linecap="round"/></svg>',
+    'icon_arrow_right':
+      '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.1367 3.63756C11.4296 3.34483 11.9044 3.34472 12.1973 3.63756L18.0303 9.47056C18.1707 9.61113 18.2499 9.80213 18.25 10.0008C18.2499 10.1995 18.1707 10.3906 18.0303 10.5311L12.1973 16.3651C11.9045 16.6575 11.4296 16.6573 11.1367 16.3651C10.8439 16.0723 10.8441 15.5975 11.1367 15.3045L15.6895 10.7508H2.5C2.08594 10.7508 1.75025 10.4148 1.75 10.0008C1.75014 9.58675 2.08588 9.25084 2.5 9.25084H15.6895L11.1367 4.6981C10.8439 4.40529 10.8441 3.93047 11.1367 3.63756Z" fill="white"/></svg>',
+    'icon_close':
+      '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M38 12.82L35.18 10L24 21.18L12.82 10L10 12.82L21.18 24L10 35.18L12.82 38L24 26.82L35.18 38L38 35.18L26.82 24L38 12.82Z" fill="white"/></svg>',
+    'icon_download':
+      '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.0007 12.5007V15.0007H5.00065V12.5007H3.33398V15.0007C3.33398 15.9173 4.08398 16.6673 5.00065 16.6673H15.0007C15.9173 16.6673 16.6673 15.9173 16.6673 15.0007V12.5007H15.0007ZM14.1673 9.16732L12.9923 7.99232L10.834 10.1423V3.33398H9.16732V10.1423L7.00898 7.99232L5.83398 9.16732L10.0007 13.334L14.1673 9.16732Z" fill="white"/></svg>',
+    'icon_blank':
+      '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.833 2.58398C11.2468 2.58434 11.5828 2.92014 11.583 3.33398C11.583 3.74798 11.2469 4.08363 10.833 4.08398H9.16602C7.99119 4.08398 7.1472 4.08449 6.48145 4.12988C5.82288 4.17482 5.39269 4.2613 5.04004 4.40723C3.9988 4.83852 3.17065 5.66682 2.73926 6.70801C2.59326 7.06067 2.50687 7.4908 2.46192 8.14941C2.4165 8.81516 2.41602 9.65913 2.41602 10.834C2.41602 12.0088 2.41652 12.8528 2.46192 13.5186C2.50686 14.1773 2.59328 14.6073 2.73926 14.96C3.17061 16.0013 3.99867 16.8294 5.04004 17.2607C5.39273 17.4067 5.82274 17.4931 6.48145 17.5381C7.14721 17.5835 7.99117 17.584 9.16602 17.584C10.3409 17.584 11.1848 17.5835 11.8506 17.5381C12.5092 17.4931 12.9393 17.4067 13.292 17.2607C14.3332 16.8293 15.1615 16.0012 15.5928 14.96C15.7387 14.6073 15.8252 14.1771 15.8701 13.5186C15.9155 12.8528 15.916 12.0088 15.916 10.834V9.16699C15.9164 8.75308 16.252 8.41699 16.666 8.41699C17.0799 8.41717 17.4157 8.75319 17.416 9.16699V10.834C17.416 11.9884 17.4169 12.8924 17.3672 13.6211C17.317 14.3562 17.2128 14.9684 16.9785 15.5342C16.395 16.943 15.2749 18.0628 13.8662 18.6465C13.3004 18.8808 12.6882 18.985 11.9531 19.0352C11.2245 19.0849 10.3205 19.084 9.16602 19.084C8.01158 19.084 7.10759 19.0849 6.37891 19.0352C5.64373 18.985 5.03168 18.8808 4.46582 18.6465C3.05691 18.0629 1.93711 16.9431 1.35352 15.5342C1.1192 14.9683 1.01502 14.3563 0.964845 13.6211C0.915145 12.8924 0.916017 11.9884 0.916017 10.834C0.916017 9.67955 0.915128 8.77554 0.964845 8.04688C1.01503 7.31178 1.11919 6.69961 1.35352 6.13379C1.93715 4.72506 3.05704 3.60502 4.46582 3.02148C5.03162 2.78724 5.64383 2.68298 6.37891 2.63281C7.10758 2.58312 8.01161 2.58398 9.16602 2.58398H10.833ZM18.332 0.917969C18.7462 0.917969 19.082 1.25376 19.082 1.66797V5.83496C19.0817 6.24888 18.746 6.58496 18.332 6.58496C17.9182 6.58479 17.5824 6.24877 17.582 5.83496V3.47852L10.5293 10.5312C10.2364 10.8239 9.7616 10.8239 9.46875 10.5312C9.17608 10.2384 9.17608 9.76356 9.46875 9.4707L16.5215 2.41797H14.166C13.7519 2.41797 13.4162 2.08203 13.416 1.66797C13.416 1.25376 13.7518 0.917969 14.166 0.917969H18.332Z" fill="#B7B7B7"/></svg>',
+    'icon_mail':
+      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 10.99L4 6H20ZM20 18H4V8L12 13L20 8V18Z" fill="#939393"/></svg>',
+    'icon_arrow':'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5L13 10L8 15" stroke="#B7B7B7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   );
   @return $icon-map;
 }
 
+// (주의) 예전엔 재귀 호출(자기 자신을 다시 부름)로 구현되어 있었음 — icon-map()의 SVG 문자열처럼
+// 치환 대상 문자(공백 등)가 수십~수백 개인 긴 문자열에서는 그만큼 콜스택이 깊이 쌓여
+// Watch Sass/CLI 컴파일 시 "Stack Overflow"로 죽는 원인이었다. @while 루프(재귀 아님)로 교체.
 @function str-replace($s, $sc, $r) {
-  $index: string.index($s, $sc);
-  @if $index {
-    @return string.slice($s, 1, $index - 1) + $r + str-replace(string.slice($s, $index + string.length($sc)), $sc, $r);
+  $result: '';
+  $remaining: $s;
+  @while string.index($remaining, $sc) {
+    $index: string.index($remaining, $sc);
+    $result: $result + string.slice($remaining, 1, $index - 1) + $r;
+    $remaining: string.slice($remaining, $index + string.length($sc));
   }
-  @return $s;
+  @return $result + $remaining;
 }
-
 
 @function hexToRGB($hex) {
   @return color.channel($hex, 'red'), color.channel($hex, 'green'), color.channel($hex, 'blue');
 }
 @function rem($px) {
-  @if $px == 1px{
+  @if $px == 1px {
     @return #{$px};
-  }@else{
+  } @else {
     // @return $px;
-    @return calc($px / $base-font-size * 1rem)
+    @return calc($px / $base-font-size * 1rem);
   }
 }
 
-
-@function color($s){
-  @if $s == 'Color/Blue Gray 800'{
-    @return $sub-font-color //#5A5E63
-  }@else if $s == 'Color/Black 100'{
-    @return $color-black-100 //#000000
-  }@else if $s == 'Color/Font/Font Color'{
-    @return $color-black-100 //#000000
-  }@else if $s == 'Color/Box/Border color'{
-    @return $color-black-20 //#B7B7B7
-  }@else if $s == 'Color/Font/Sub Font Color'{
-    @return $sub-font-color //#5A5E63
-  }@else if $s == 'Black/90'{
-    @return $color-black-90 //#0F0F0F
-  }@else if $s == 'Black/80'{
-    @return $color-black-80 //#1E1E1E
-  }@else if $s == 'Black/70'{
-    @return $color-black-100 //#000000
-  }@else if $s == 'Black/60'{
-    @return $color-black-60 //#3C3C3C
-  }@else if $s == 'Black/50'{
-    @return $color-black-50 //#4B4B4B
-  }@else if $s == 'Color/Black 40'{
-    @return $color-black-40 //#6F6F6F
-  }@else if $s == 'Black/30'{
-    @return $color-black-30 //#939393
-  }@else if $s == 'Color/Black 20'{
-    @return $color-black-20 //#B7B7B7 
-  }@else if $s == 'Color/Black 10'{
-    @return $color-black-10 //#DBDBDB
-  }@else if $s == 'Black/5'{
-    @return $color-black-5 //#E9E9E9
-  }@else if $s == 'Color/Black 3'{
-    @return $color-black-3 //#F1F1F1
-  }@else if $s == 'Color/Box/Box BG'{
-    @return $color-black-3 //#F1F1F1
-  }@else if $s == 'Color/Black1'{
-    @return $color-black-1 //#F8F8F8
-  }@else if $s == 'Color/White'{
-    @return $color-white //#fff
-  }@else if $s == 'Primary/Blue100'{
-    @return $color-primary-100 //#16253F
-  }@else if $s == 'Primary/Blue80'{
-    @return $color-primary-80 //#133269
-  }@else if $s == 'Color/Primary Color'{
-    @return $color-primary-50 //#023894
-  }@else if $s == 'Primary/Blue30'{
-    @return $color-primary-30 //#82B0FF
-  }@else if $s == 'Primary/Blue10'{
-    @return $color-primary-10 //#ADCBFF
-  }@else if $s == 'Color/Secondary Color'{
-    @return $color-secondary-100 //#171D48
-  }@else if $s == 'Secondary/Lightblue80'{
-    @return $color-secondary-80 //#111E72
-  }@else if $s == 'Color/Third Color'{
-    @return $color-secondary-50 //#008CD6
-  }@else if $s == 'Secondary/Lightblue30'{
-    @return $color-secondary-30 //#A2C4EB
-  }@else if $s == 'Color/Blue 10'{
-    @return $color-secondary-10 //#E1EBF8
-  }@else if $s == 'Color/Accent Color'{
-    @return $accent-color-1 //#00CFD6
-  }@else if $s == 'Accent/2'{
-    @return $accent-color-2 //#00D695
-  }@else if $s == 'Accent/3'{
-    @return $accent-color-3 //#55D600
-  }@else if $s == 'Accent/4'{
-    @return $accent-color-4 //#0004D6
-  }@else if $s == 'Alert/1'{
-    @return $alert-color-1 //#D6D000 (기존 $alert-color-4 참조는 미정의 변수였음)
-  }@else if $s == 'Alert/2'{
-    @return $alert-color-2 //#D6000F
-  }@else{
+@function color($s) {
+  @if $s == 'Color/Blue Gray 800' {
+    @return $sub-font-color; //#5A5E63
+  } @else if $s == 'Color/Black 100' {
+    @return $color-black-100; //#000000
+  } @else if $s == 'Color/Font/Font Color' {
+    @return $color-black-100; //#000000
+  } @else if $s == 'Color/Box/Border color' {
+    @return $color-black-20; //#B7B7B7
+  } @else if $s == 'Color/Font/Sub Font Color' {
+    @return $sub-font-color; //#5A5E63
+  } @else if $s == 'Black/90' {
+    @return $color-black-90; //#0F0F0F
+  } @else if $s == 'Black/80' {
+    @return $color-black-80; //#1E1E1E
+  } @else if $s == 'Black/70' {
+    @return $color-black-100; //#000000
+  } @else if $s == 'Black/60' {
+    @return $color-black-60; //#3C3C3C
+  } @else if $s == 'Black/50' {
+    @return $color-black-50; //#4B4B4B
+  } @else if $s == 'Color/Black 40' {
+    @return $color-black-40; //#6F6F6F
+  } @else if $s == 'Black/30' {
+    @return $color-black-30; //#939393
+  } @else if $s == 'Color/Black 20' {
+    @return $color-black-20; //#B7B7B7
+  } @else if $s == 'Color/Black 10' {
+    @return $color-black-10; //#DBDBDB
+  } @else if $s == 'Black/5' {
+    @return $color-black-5; //#E9E9E9
+  } @else if $s == 'Color/Black 3' {
+    @return $color-black-3; //#F1F1F1
+  } @else if $s == 'Color/Box/Box BG' {
+    @return $color-black-3; //#F1F1F1
+  } @else if $s == 'Color/Black1' {
+    @return $color-black-1; //#F8F8F8
+  } @else if $s == 'Color/White' {
+    @return $color-white; //#fff
+  } @else if $s == 'Primary/Blue100' {
+    @return $color-primary-100; //#16253F
+  } @else if $s == 'Primary/Blue80' {
+    @return $color-primary-80; //#133269
+  } @else if $s == 'Color/Primary Color' {
+    @return $color-primary-50; //#023894
+  } @else if $s == 'Primary/Blue30' {
+    @return $color-primary-30; //#82B0FF
+  } @else if $s == 'Primary/Blue10' {
+    @return $color-primary-10; //#ADCBFF
+  } @else if $s == 'Color/Secondary Color' {
+    @return $color-secondary-100; //#171D48
+  } @else if $s == 'Secondary/Lightblue80' {
+    @return $color-secondary-80; //#111E72
+  } @else if $s == 'Color/Third Color' {
+    @return $color-secondary-50; //#008CD6
+  } @else if $s == 'Secondary/Lightblue30' {
+    @return $color-secondary-30; //#A2C4EB
+  } @else if $s == 'Color/Blue 10' {
+    @return $color-secondary-10; //#E1EBF8
+  } @else if $s == 'Color/Accent Color' {
+    @return $accent-color-1; //#00CFD6
+  } @else if $s == 'Accent/2' {
+    @return $accent-color-2; //#00D695
+  } @else if $s == 'Accent/3' {
+    @return $accent-color-3; //#55D600
+  } @else if $s == 'Accent/4' {
+    @return $accent-color-4; //#0004D6
+  } @else if $s == 'Alert/1' {
+    @return $alert-color-1; //#D6D000 (기존 $alert-color-4 참조는 미정의 변수였음)
+  } @else if $s == 'Alert/2' {
+    @return $alert-color-2; //#D6000F
+  } @else {
     // 선언되지 않은 토큰 이름이 들어오면 컴파일 전체가 죽는 대신 경고만 남기고 null 반환
     // (null이면 해당 속성 자체가 출력에서 생략됨 — 최소한 다른 페이지 스타일은 살아있음)
     @warn "color(): 정의되지 않은 토큰 '#{$s}' — _functions.scss의 color() 맵에 없음";

@@ -23,20 +23,60 @@
 .rl__diagram-placeholder {
   width: 100%;
   aspect-ratio: 16 / 7;
-  background-color: color('Color/Black 3');
   border-radius: rem(24px);
-}
-
-// --- M2M-RLCK 개요: RCS / WES 카드 + 화살표 + Seamless 프로세스 3단계 ---
-.rl__overview-grid {
+  background-color: color('Color/Black 3');
+  overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: center;
+  img{
+    max-width: rem(1190px);
+  }
+}
+// 시스템 구성도류 다이어그램(인프라/소프트웨어/시뮬레이션/스케줄링/구축사례) 공용 —
+// Figma는 섹션마다 이미지 원본 비율이 달라 실제 px는 각 페이지에서 인라인 style로 넘긴다.
+// (담당자가 실제 이미지로 교체할 자리 — 상하 36px 패딩 + 가운데 정렬은 공통)
+.rl__diagram-box {
+  display: flex;
+  justify-content: center;
+  padding: rem(36px) rem(24px);
+  border-radius: rem(24px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  overflow: hidden;
+  &--top {
+    margin-top: rem(20px);
+  }
+}
+.rl__diagram-img {
+  width: 100%;
+}
+
+// --- M2M-RLCK 개요: RCS / WES 카드(87x87 원형 칩 그리드) + Seamless 프로세스 3단계 ---
+// (Figma 실측: Frame 20/21 722x386, 칩 87x87 원형, 프로세스 박스는 점선 테두리 + 87x87 흰 원)
+.rl__overview-grid {
+  display: flex;
+  align-items: stretch;
   gap: rem(20px);
   flex-wrap: wrap;
+  position: relative;
+  &:after {
+    content: '';
+    width: 100%;
+    height: rem(237px);
+    position: absolute;
+    left: 0;
+    bottom: rem(-60px);
+    background: no-repeat center bottom url('~/assets/images/common/symbol008.png');
+    pointer-events: none;
+  }
 }
 .rl__overview-card {
   flex: 1 1 0%;
   min-width: rem(320px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
   padding: rem(36px);
   border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(24px);
@@ -44,42 +84,70 @@
 .rl__overview-head {
   display: flex;
   align-items: center;
-  gap: rem(12px);
-  margin-bottom: rem(20px);
+  gap: rem(20px);
+  width: 100%;
+  padding-left: rem(20px);
+}
+.rl__icon-circle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
 }
 .rl__overview-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
+  @include font('Body 30 R');
+  color: color('Color/Secondary Color');
 }
 .rl__overview-label {
-  @include font('Body 20 R');
-  color: color('Color/Black 40');
+  @include font('Body 30 R');
+  color: color('Color/Primary Color');
   text-align: center;
   flex-shrink: 0;
+  align-self: center;
 }
-.rl__overview-arrow {
-  flex-shrink: 0;
-  @include font('H4');
-  color: color('Color/Black 40');
+.rl__chip-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: rem(20px);
+  width: 100%;
 }
 .rl__chip-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: rem(8px);
+  align-items: center;
+  justify-content: center;
+  gap: rem(20px);
 }
 .rl__chip {
-  display: inline-flex;
-  padding: rem(8px) rem(16px);
-  border-radius: rem(30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: rem(87px);
+  height: rem(87px);
+  border-radius: 50%;
   background-color: color('Color/Black 3');
-  color: color('Color/Black 40');
+  color: color('Color/Black 100');
+  text-align: center;
   @include font('Body 16 R');
   &--active {
-    background-color: color('Color/Blue 10');
-    color: color('Color/Primary Color');
+    background-color: color('Color/Primary Color');
+    color: color('Color/White');
+  }
+  &--white {
+    background-color: color('Color/White');
+    color: color('Color/Black 100');
   }
 }
 
+// (주의) .rl__process-flow/.rl__process-stage/.rl__process-stage-title/.rl__overview-arrow는
+// /robot-logistics/smart-factory 의 "제공 기술 및 특징" 3단 플로우와 공용 — 아래 원래 정의 유지.
+// 이 페이지(M2M-RLCK 개요)의 Seamless 물류 프로세스 전용 스타일은 .rl__seamless-* 로 분리.
 .rl__process-flow {
   display: flex;
   flex-wrap: wrap;
@@ -97,10 +165,71 @@
   color: color('Color/Black 100');
   margin-bottom: rem(12px);
 }
-.rl__process-chip-grid {
+.rl__overview-arrow {
+  flex-shrink: 0;
+  @include font('H4');
+  color: color('Color/Black 40');
+}
+.rl__seamless-ban {
+  margin: rem(70px) 0 rem(40px);
+}
+.rl__seamless-flow {
   display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: color('Color/Black 3');
+  border-style: dashed;
+  border-color: color('Color/Primary Color');
+  border-width: rem(2px) rem(2px) rem(2px) 0;
+  border-radius: 0 rem(24px) rem(24px) 0;
+  padding: rem(60px) rem(24px);
+  flex-wrap: wrap;
+}
+.rl__seamless-stage {
+  flex: 0 0 auto;
+  width: rem(401px);
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+  &--fluid {
+    flex: 1 1 0%;
+    width: auto;
+    min-width: rem(320px);
+  }
+}
+.rl__seamless-stage-title {
+  @include font('Body 22 R');
+  color: color('Color/Black 100');
+  text-align: center;
+  padding-bottom: rem(8px);
+  border-bottom: rem(1px) solid color('Color/Box/Border color');
+}
+.rl__seamless-chip-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: rem(8px);
+}
+.rl__chevron {
+  flex-shrink: 0;
+  display: inline-block;
+  position: relative;
+  width: rem(24px);
+  height: rem(24px);
+  &::before {
+    content: '';
+    position: absolute;
+    top: rem(2px);
+    left: rem(2px);
+    width: rem(20px);
+    height: rem(20px);
+    @include get-background-svg(icon_arrow, color('Color/Box/Border color'));
+  }
+  &--flow {
+    align-self: flex-start;
+    margin-top: rem(27px);
+  }
 }
 
 // --- RLCK 구현 로봇: 로봇 스펙 카드 ---
@@ -116,56 +245,97 @@
 .rl__robot-group + .rl__robot-group {
   margin-top: rem(40px);
 }
+// Figma에는 카드 테두리가 없다 — 타이틀 하단 구분선(black-100) + 스펙 행별 구분선만 존재
+// 그룹 타이틀 → 첫 로봇 20px, 로봇 간 40px (Figma 실측)
 .rl__robot-card {
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
   margin-top: rem(20px);
 }
+.rl__robot-card + .rl__robot-card {
+  margin-top: rem(40px);
+}
 .rl__robot-name {
-  @include font('Body 24 R');
+  padding-left: rem(20px);
+  @include font('Body 20 R');
   color: color('Color/Black 100');
   margin-bottom: rem(20px);
 }
 .rl__robot-body {
   display: flex;
   gap: rem(20px);
+  border-top: rem(1px) solid color('Color/Black 100');
+  padding-top: rem(20px);
 }
 .rl__robot-thumb {
   flex-shrink: 0;
-  width: rem(240px);
-  aspect-ratio: 1/1;
+  width: rem(276px);
+  height: rem(294px);
 }
 .rl__spec-columns {
   flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: rem(8px) rem(24px);
-  align-content: start;
+  display: flex;
+}
+.rl__spec-col {
+  flex: 1 1 0%;
 }
 .rl__spec-row {
   display: flex;
-  justify-content: space-between;
-  gap: rem(12px);
-  padding: rem(8px) 0;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(12px) rem(20px);
   border-bottom: rem(1px) solid color('Color/Black 10');
-  @include font('Body 16 R');
 }
 .rl__spec-label {
+  flex-shrink: 0;
+  width: rem(224px);
   color: color('Color/Black 40');
+  @include font('Body 18 R');
 }
 .rl__spec-value {
   color: color('Color/Black 100');
-  text-align: right;
+  @include font('Body 16 R');
 }
 
-// --- 로봇물류제어기술: 아이콘+타이틀+업무과정 chip flow+특징 카드 ---
+// --- 로봇물류제어기술: 80x80 썸네일+타이틀 / 구분선 / 업무과정·특징 라벨-콘텐츠 2단 ---
+// (Figma 실측: 카드 573.33x460, 썸네일 80x80, 라벨 컬럼 71px 고정, 스텝 칩 12/4px 패딩+24px 화살표)
 .rl__tech-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: rem(20px);
 }
+.rl__tech-banne {
+  .inner {
+    background-color: color('Color/Black 3');
+    width: 100%;
+    height: rem(202px);
+    display: flex;
+    border-radius: rem(24px);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: rem(40px);
+    padding-top: rem(50px);
+    .tit {
+      @include font('Body 36 R');
+      color: color('Color/Primary Color');
+      position: relative;
+      &:after {
+        content: '';
+        width: rem(80px);
+        height: rem(80px);
+        position: absolute;
+        left: 50%;
+        bottom: rem(50px);
+        margin-left: rem(-20px);
+        background: no-repeat center center url(~/assets/images/common/icon_asset001.svg);
+        background-size: 100%;
+      }
+    }
+  }
+}
 .rl__tech-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
   padding: rem(36px);
   border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(24px);
@@ -173,56 +343,100 @@
 .rl__tech-head {
   display: flex;
   align-items: center;
-  gap: rem(12px);
-  margin-bottom: rem(20px);
+  gap: rem(20px);
+  width: 100%;
+  padding-left: rem(20px);
+}
+.rl__tech-thumb {
+  flex-shrink: 0;
+  width: rem(80px);
+  height: rem(80px);
+  border-radius: 50%;
 }
 .rl__tech-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
+  @include font('Body 30 R');
+  color: color('Primary/Blue100');
 }
-.rl__tech-row + .rl__tech-row {
-  margin-top: rem(16px);
+.rl__tech-body {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
+  width: 100%;
+  padding: rem(20px) rem(20px) 0;
+  border-top: rem(1px) solid color('Color/Primary Color');
+}
+.rl__tech-row {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(20px);
+  width: 100%;
 }
 .rl__tech-row-label {
+  flex-shrink: 0;
+  width: rem(71px);
+  padding: rem(8px) 0;
   @include font('Body 16 R');
-  color: color('Color/Black 40');
-  margin-bottom: rem(8px);
+  color: color('Color/Black 100');
 }
 .rl__tech-steps {
+  flex: 1 1 0%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: rem(4px);
+  gap: rem(8px) 0;
 }
 .rl__tech-step {
-  padding: rem(4px) rem(10px);
+  flex-shrink: 0;
+  padding: rem(4px) rem(12px);
   border-radius: rem(20px);
   background-color: color('Color/Black 3');
-  @include font('Body 14 R');
+  @include font('Body 16 R');
   color: color('Color/Black 100');
-}
-.rl__tech-step-arrow {
-  color: color('Color/Black 40');
+  white-space: nowrap;
 }
 .rl__tech-features {
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
 }
 
-// --- 소프트웨어 구성 / 시뮬레이션 / 스케줄링: 인사이트 카드 ---
-.rl__insight-grid {
+// --- 소프트웨어 구성 / 시뮬레이션: 구분선으로 나뉜 인사이트 3열(카드 테두리 없음, Figma 실측) ---
+.rl__divider-row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: stretch;
+  margin-bottom: rem(40px);
+}
+.rl__divider-item {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  border-right: rem(1px) solid color('Color/Box/Border color');
+  &:last-child {
+    border-right: none;
+  }
+}
+.rl__divider-desc {
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  text-align: center;
+}
+
+// --- 스케줄링, 경로계획, 영역제어: 인사이트 카드 (4열 그리드, 5번째는 다음 줄, Figma 실측) ---
+.rl__insight-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: rem(40px);
   gap: rem(20px);
 }
 .rl__insight-card {
-  flex: 1 1 0%;
-  min-width: rem(220px);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: rem(16px);
+  gap: rem(20px);
   padding: rem(36px);
   border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(24px);
@@ -232,153 +446,13 @@
   color: color('Color/Black 100');
 }
 
-// --- 구축사례: 타임라인 / 구현기능 넘버박스 / 연동 제조사 표 / 시스템 업무구성 / 디바이스 패널 ---
-.rl__timeline-heading {
-  display: flex;
-  justify-content: space-between;
-  gap: rem(20px);
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(20px);
-}
-.rl__timeline-track {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(20px);
-}
-.rl__timeline-phase {
-  flex: 1 1 0%;
-  min-width: rem(220px);
-  padding: rem(24px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(16px);
-}
-.rl__timeline-date {
-  @include font('Body 14 R');
-  color: color('Color/Black 40');
-  margin-bottom: rem(8px);
-}
-.rl__timeline-name {
-  @include font('Body 18 R');
-  color: color('Color/Primary Color');
-  margin-bottom: rem(8px);
-}
-.rl__timeline-desc {
-  @include font('Body 16 R');
-  color: color('Color/Black 100');
-}
+// (주의) "구축사례" 서브섹션(타임라인/구현기능/연동제조사표/시스템업무구성/디바이스패널)은
+// ~/components/common/CaseStudySection.astro + components/_case-study-section.scss(cs__*)로
+// 컴포넌트화되어 이동했다 — "프로젝트 전체" 등 다른 라우트에서도 재사용 가능하도록 페이지
+// 전용 scss에서 분리한 것. 새로 추가/수정할 내용은 그 파일에서 할 것.
 
-.rl__number-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: rem(20px);
-}
-
-.rl__vendor-tables {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: rem(20px);
-}
-.rl__vendor-table {
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(12px);
-  overflow: hidden;
-}
-.rl__vendor-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  &--head {
-    background-color: color('Color/Black 3');
-    .rl__vendor-cell {
-      color: color('Color/Black 40');
-    }
-  }
-  & + & {
-    border-top: rem(1px) solid color('Color/Black 10');
-  }
-}
-.rl__vendor-cell {
-  padding: rem(12px) rem(16px);
-  @include font('Body 16 R');
-  color: color('Color/Black 100');
-  text-align: center;
-}
-
-.rl__function-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: rem(20px);
-}
-
-.rl__device-panel {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: rem(20px);
-}
-.rl__device-card {
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-  text-align: center;
-}
-.rl__device-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-  margin-bottom: rem(20px);
-}
-.rl__device-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(20px);
-}
-.rl__device-list {
-  text-align: left;
-  margin-bottom: rem(20px);
-}
-.rl__device-image {
-  aspect-ratio: 16/9;
-  background-color: color('Color/Black 3');
-  border-radius: rem(12px);
-}
-
-// --- 구축사례: 타이틀/일자/설명 카드 (스마트 팩토리) ---
-.rl__case-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(20px);
-}
-.rl__case-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.rl__case-title-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: rem(12px);
-  margin-bottom: rem(8px);
-}
-.rl__case-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-}
-.rl__case-date {
-  @include font('Body 16 R');
-  color: color('Color/Black 40');
-  flex-shrink: 0;
-}
-.rl__case-desc {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-}
+// (주의) "구축사례" 썸네일+타이틀+일자+설명 카드는 ~/components/common/CaseCardGrid.astro
+// (components/_case-card-grid.scss, cc__*)로 컴포넌트화되어 이동했다.
 
 // --- 스마트 팩토리: 파이프라인 3단 + 특장점 카드 ---
 .rl__pipeline-chip-row {
@@ -396,7 +470,8 @@
   @include font('Body 16 R');
 }
 .rl__mes-banner {
-  margin-top: rem(20px);
+  margin-top: rem(80px);
+  margin-bottom: rem(40px);
 }
 .rl__benefit-grid {
   display: grid;
@@ -404,6 +479,9 @@
   gap: rem(20px);
 }
 .rl__benefit-card {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20px);
   padding: rem(36px);
   border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(24px);
@@ -412,43 +490,75 @@
   display: flex;
   align-items: center;
   gap: rem(12px);
-  margin-bottom: rem(20px);
+  width: 100%;
+  padding-bottom: rem(20px);
+  border-bottom: rem(1px) solid color('Color/Primary Color');
 }
 .rl__benefit-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
+  @include font('Body 30 R');
+  color: color('Primary/Blue100');
+}
+.rl__benefit-body {
+  padding-inline: rem(20px);
+  border-radius: rem(12px);
 }
 .rl__benefit-arrow {
-  display: block;
-  margin: rem(8px) 0;
-  color: color('Color/Black 40');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(48px);
+  height: rem(46px);
+  margin: rem(10px) auto;
+  img {
+    display: block;
+    width: rem(46px);
+    height: rem(48px);
+    transform: rotate(90deg);
+  }
 }
 
 @media only screen and (max-width: $breakpoint-md) {
   .rl__overview-grid,
-  .rl__process-flow,
   .rl__tech-grid,
   .rl__insight-grid,
-  .rl__timeline-track,
-  .rl__number-grid,
-  .rl__vendor-tables,
-  .rl__function-grid,
-  .rl__device-panel,
-  .rl__benefit-grid,
-  .rl__case-grid {
+  .rl__benefit-grid {
     grid-template-columns: 1fr;
     flex-direction: column;
+  }
+  .rl__divider-row {
+    flex-direction: column;
+  }
+  .rl__divider-item {
+    border-right: none;
+    border-bottom: rem(1px) solid color('Color/Box/Border color');
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  .rl__seamless-flow {
+    flex-direction: column;
+    border-width: 0 rem(2px) rem(2px) rem(2px);
+    border-radius: 0 0 rem(24px) rem(24px);
+  }
+  .rl__seamless-stage,
+  .rl__seamless-stage--fluid {
+    width: 100%;
+    min-width: 0;
+  }
+  .rl__chevron--flow {
+    align-self: flex-start;
+    margin-top: rem(0);
+    transform: rotate(90deg);
   }
   .rl__robot-body {
     flex-direction: column;
   }
   .rl__robot-thumb {
     width: 100%;
+    height: auto;
+    aspect-ratio: 276 / 294;
   }
   .rl__spec-columns {
-    grid-template-columns: 1fr;
-  }
-  .rl__vendor-row {
-    grid-template-columns: repeat(2, 1fr);
+    flex-direction: column;
   }
 }

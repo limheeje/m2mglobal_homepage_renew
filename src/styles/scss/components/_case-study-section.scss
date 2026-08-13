@@ -1,0 +1,304 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// CaseStudySection.astro 전용 스타일 (cs__ 접두사) — 페이지 전용 scss(rl__/ec__ 등)에
+// 의존하지 않는 독립 컴포넌트. 최초 /robot-logistics/overview#cases에서 추출했고
+// "프로젝트 전체" 등 다른 라우트에서도 그대로 재사용 가능해야 하므로 아이콘 자리·
+// 다이어그램 자리 같은 기본 프리미티브도 이 파일 안에서 자체적으로 정의한다.
+// ==========================================================================
+
+.cs__icon-ph {
+  display: inline-block;
+  width: rem(48px);
+  height: rem(48px);
+  flex-shrink: 0;
+}
+.cs__thumb-ph {
+  display: block;
+  width: 100%;
+  background-color: color('Color/Black 3');
+  border-radius: rem(12px);
+}
+.cs__icon-circle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: rem(100px);
+  height: rem(100px);
+  border-radius: 50%;
+  background-color: color('Color/Blue 10');
+}
+
+// --- 서브섹션 공통 간격 (Figma 실측: 블록 사이 80px) ---
+.cs__block + .cs__block {
+  margin-top: rem(80px);
+}
+
+// --- 타이틀 옆 파트너 로고 자리 ---
+.cs__head {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  position: relative;
+  .bs-title-sub {
+    flex: 1 1 0%;
+  }
+}
+.cs__partner-logos {
+  flex-shrink: 0;
+  width: rem(210px);
+  height: rem(42px);
+  @media screen and (min-width: $breakpoint-md) {
+    position: absolute;
+    left: rem(480px);
+    top: rem(10px);
+  }
+}
+
+// --- 좌(타이틀+설명 고정폭) / 우(콘텐츠 가변) 배치 — "시스템 업무 구성", "주요 기능 소개" 전용 ---
+.cs__split {
+  display: flex;
+  align-items: flex-start;
+  gap: rem(20px);
+}
+.cs__split-title {
+  flex-shrink: 0;
+  width: rem(425px);
+  .bs-title-sub {
+    margin-bottom: 0;
+  }
+}
+.cs__split-content {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+// "주요 기능 소개" 콘텐츠를 감싸는 흰 배경 테두리 박스 (Figma 실측)
+.cs__device-box {
+  background-color: color('Color/White');
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+  padding: rem(36px) rem(24px);
+}
+
+// --- 타임라인 ---
+// Figma 실측: 날짜는 4개 그리드 컬럼 중 일부를 span으로 묶는 "탭 모양" 필(배경 Black1 + 하단 점선 +
+// 위쪽만 둥근 모서리), 그 아래 파란색 라벨 텍스트, 그 아래 4개 컬럼 각각의 파란색 구분선(1개씩) 순서.
+.cs__timeline-header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+  margin-bottom: rem(20px);
+}
+.cs__timeline-period-group {
+  text-align: center;
+}
+.cs__timeline-range {
+  padding: rem(8px) rem(20px);
+  background-color: color('Color/Black1');
+  border-bottom: rem(1px) dashed color('Color/Box/Border color');
+  border-radius: rem(24px) rem(24px) 0 0;
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+.cs__timeline-label {
+  margin-top: rem(20px);
+  @include font('Body 16 R');
+  color: color('Color/Primary Color');
+}
+.cs__timeline-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.cs__timeline-phase {
+  padding-top: rem(20px);
+  border-top: rem(1px) solid color('Color/Primary Color');
+}
+.cs__timeline-name {
+  @include font('Body 18 R');
+  color: color('Color/Primary Color');
+  margin-bottom: rem(8px);
+}
+.cs__timeline-desc {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+}
+
+// --- 구현기능 넘버 카드 (7열 — 채워진 회색 박스 + 순번 텍스트) ---
+.cs__number-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: rem(20px);
+}
+.cs__number-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  background-color: color('Color/Box/Box BG');
+  border-radius: rem(24px);
+  text-align: center;
+}
+.cs__number-badge {
+  @include font('Body 24 R');
+  color: color('Color/Primary Color');
+}
+.cs__number-text {
+  @include font('Body 16 R');
+  color: color('Color/Black 100');
+}
+
+// --- 연동 제조사 표: 박스 테두리/헤더 배경 없음 — 상단 검정 1px 선 + 행별 하단 구분선만 ---
+.cs__vendor-tables {
+  display: flex;
+  gap: rem(1px);
+  border-top: rem(1px) solid color('Color/Black 100');
+}
+.cs__vendor-table {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+.cs__vendor-row {
+  display: flex;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(12px) rem(20px);
+  border-bottom: rem(1px) solid color('Color/Black 10');
+  &--head {
+    .cs__vendor-cell {
+      color: color('Color/Black 40');
+    }
+  }
+}
+.cs__vendor-cell {
+  flex: 1 1 0%;
+  min-width: 0;
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  text-align: center;
+}
+
+// --- 다이어그램/화면 캡처 자리 (이미지는 담당자 작업 예정) ---
+.cs__diagram-box {
+  display: flex;
+  justify-content: center;
+  padding: rem(36px) rem(24px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+  &--top {
+    margin-top: rem(20px);
+  }
+}
+.cs__diagram-img {
+  width: 100%;
+  border-radius: rem(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img{
+    max-width: rem(1156px);
+  }
+}
+
+// --- 시스템 업무 구성 카드 (아이콘+타이틀+불릿 없는 중앙정렬 텍스트) ---
+.cs__feature-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(20px);
+}
+.cs__feature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  padding: rem(36px);
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
+  text-align: center;
+}
+.cs__feature-title {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+}
+.cs__feature-list {
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+// --- 주요 기능 소개: PC/Tablet류 디바이스 패널(테두리 없는 흰 카드) + 가운데 + 연결 아이콘 ---
+.cs__device-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: rem(20px);
+}
+.cs__device-card {
+  align-self: flex-start;
+  flex: 0 1 rem(425px);
+  min-width: rem(280px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(40px);
+  padding: rem(36px) 0;
+  background-color: color('Color/White');
+  border-radius: rem(24px);
+  text-align: center;
+}
+.cs__device-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+}
+.cs__device-title {
+  @include font('Body 30 R');
+  color: color('Color/Black 100');
+}
+.cs__device-list {
+  text-align: left;
+  width: 100%;
+}
+.cs__device-image {
+  width: 100%;
+  max-width: rem(374px);
+}
+.cs__device-connector {
+  flex-shrink: 0;
+  display: inline-block;
+  width: rem(48px);
+  height: rem(48px);
+  align-self: center;
+  @include get-background-svg('icon_plus', color('Color/Black 20'));
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .cs__timeline-header,
+  .cs__timeline-track,
+  .cs__number-grid,
+  .cs__feature-grid {
+    grid-template-columns: 1fr;
+  }
+  .cs__head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cs__vendor-tables {
+    flex-direction: column;
+  }
+  .cs__vendor-row {
+    flex-wrap: wrap;
+  }
+  .cs__vendor-cell {
+    flex: 1 1 rem(120px);
+  }
+  .cs__device-connector {
+    transform: rotate(45deg);
+  }
+}

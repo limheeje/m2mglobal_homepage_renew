@@ -1,7 +1,6 @@
 @use 'base/reset';
 @use 'base/fonts';
 
-
 @use 'components/tab';
 @use 'components/sub-banner';
 @use 'components/title-main';
@@ -16,6 +15,9 @@
 @use 'components/button';
 @use 'components/table';
 @use 'components/all-menu';
+@use 'components/case-study-section';
+@use 'components/case-card-grid';
+@use 'components/client-logo-grid';
 
 @use 'layout/gnb';
 @use 'layout/footer';

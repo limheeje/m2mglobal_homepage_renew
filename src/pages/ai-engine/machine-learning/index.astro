@@ -14,6 +14,7 @@ import TextList from '~/components/common/TextList.astro'
 import stepArrowUrl from '~/assets/images/step-arrow.svg'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 import Icon from '~/components/common/Icon.astro'
+import CaseCardGrid from '~/components/common/CaseCardGrid.astro'
 
 const localNavigation = route.find((item) => item.href === '/ai-engine/machine-learning')
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
@@ -298,24 +299,5 @@ const cases = [
     </div>
   </section>
 
-  <section id="cases" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`구축 <span class="mark">사례</span>`} />
-      <div class="ai__case-grid">
-        {
-          cases.map((item) => (
-            <div class="ai__case-card">
-              {/* <!-- TODO: 이미지 삽입 --> */}
-              <div class="ai__case-thumb ai__thumb-ph" aria-hidden="true">
-                <img src={item.imageSrc} alt="" />
-              </div>
-              <p class="ai__case-title">{item.title}</p>
-              <span class="ai__case-date">{item.date}</span>
-              <p class="ai__case-desc">{item.desc}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <CaseCardGrid id="cases" columns={2} cases={cases} />
 </Layout>

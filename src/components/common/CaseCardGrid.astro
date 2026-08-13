@@ -1,0 +1,42 @@
+---
+// 구축사례 카드 그리드 (재사용 컴포넌트) — 썸네일 + 타이틀 + 일자 + 설명, 중앙정렬.
+// /ai-engine/machine-learning, /robot-logistics/smart-factory, /e-commerce/b2b-commerce에서
+// 각자 구현하던 동일 패턴(ai__case-*/rl__case-*/ec__case-*)을 통합한 것.
+// 이미지가 없는 케이스는 imageSrc를 생략하면 회색 placeholder 박스만 표시된다.
+import TitleSub from './TitleSub.astro'
+
+export interface Props {
+  id?: string
+  title?: string // set:html — 기본값은 프로젝트 전반에서 동일하게 쓰인 "구축 사례"
+  columns?: number
+  cases: {imageSrc?: string; title: string; date: string; desc: string}[]
+}
+
+const {
+  id = 'cases',
+  title = `구축 <span class="mark">사례</span>`,
+  columns = 3,
+  cases
+} = Astro.props
+---
+
+<section id={id} class="g-section">
+  <div class="innerWrap">
+    <TitleSub title={title} />
+    <div class="cc__grid" style={`--cc-cols: ${columns};`}>
+      {
+        cases.map((item) => (
+          <div class="cc__card">
+            {/* TODO: 이미지 삽입 */}
+            <div class="cc__thumb" aria-hidden={!item.imageSrc}>
+              {item.imageSrc && <img src={item.imageSrc} alt="" />}
+            </div>
+            <p class="cc__title">{item.title}</p>
+            <span class="cc__date">{item.date}</span>
+            <p class="cc__desc">{item.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

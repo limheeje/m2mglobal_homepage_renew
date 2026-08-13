@@ -143,5 +143,7 @@ export const ICON_KEY_NAME = Object.freeze({
   'Solution7-3': 'solution-7-3.svg',
   'Solution7-4': 'solution-7-4.svg',
   'Solution7-5': 'solution-7-5.svg',
-  'Solution7-6': 'solution-7-6.svg'
+  'Solution7-6': 'solution-7-6.svg',
+  pc: 'pc.svg',
+  tablet: 'tablet.svg'
 } as const)

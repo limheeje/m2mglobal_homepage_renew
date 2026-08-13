@@ -17,10 +17,20 @@ const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
               <a href={PUBLIC_BUILD_URL + item.href} class="g-link">
                 {item.label}
               </a>
+              {item.children && item.children.length > 0 && (
+                <ul class="gb-submenu">
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={PUBLIC_BUILD_URL + child.href}>{child.koLabel}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))
       }
     </ul>
+    <div class="gnb-mega-bg" aria-hidden="true"></div>
   </div>
   <div class="rts">
     <button class="all-gnb"></button>

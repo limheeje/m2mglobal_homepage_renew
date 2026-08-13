@@ -11,7 +11,10 @@
     z-index: 100;
     background: color('Color/White');
     display: flex;
-    align-items: center;
+    // stretch(기본값)이어야 .content > .gnb가 바(80px) 전체 높이를 채워서, 메가메뉴 서브패널이
+    // 폰트 크기와 무관하게 항상 바 바로 아래(정확한 위치)에 붙는다 — center면 링크 텍스트 높이만큼만
+    // 차지해서 서브메뉴가 바 중간에서 시작해버린다.
+    align-items: stretch;
     padding: rem(20px) rem(80px);
     .lts{
         margin-left: 0;
@@ -29,16 +32,90 @@
         background: no-repeat left center url(~/assets/images/m2m-global-logo.svg);
     }
     .gnb{
+        height: 100%;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: center;
         gap: rem(47px);
         .gb-item{
-            display: block;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             min-width: rem(180px);
             .g-link{
                 @include font('Body 22 R');
             }
+        }
+    }
+    // Figma "GNB > status=over": 1Depth 아무거나 hover하면 6개 컬럼 전체가 하나의 패널로 열리는
+    // 구조(항목별 개별 드롭다운 아님) — .gb-submenu는 자기 1Depth 바로 아래에 위치해서 반응형으로
+    // 창 너비가 바뀌어도 항상 정확히 그 위치에 오지만, 노출 트리거는 .gnb 전체에 걸려 있어서
+    // 어떤 항목에 올려도 전체 컬럼이 함께 열린다.
+    .gb-submenu{
+        position: absolute;
+        top: 100%;
+        // 1Depth 아이템의 왼쪽 축에 그대로 맞춘다(가운데 정렬 아님) — .gb-item과 폭이 같으므로
+        // left:0 만으로 왼쪽 끝이 정확히 일치한다.
+        left: 0;
+        // .gb-item 바로 아래(gap 없음)부터 히트 영역을 이어 붙이고, 시각적 간격(Figma 실측 pt-20 +
+        // .gnb-wrap의 padding-bottom 20px = 40px)은 margin이 아니라 padding으로 준다 — margin이면
+        // 링크와 서브메뉴 사이에 호버가 끊기는 빈 공간이 생겨서 마우스가 그 구간을 지나가는 순간
+        // 메뉴가 닫혀버린다. padding-top이면 그 구간도 서브메뉴 히트 영역에 포함돼 끊기지 않는다.
+        padding-top: rem(40px);
+        width: rem(180px);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: rem(12px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity .15s ease;
+        z-index: 2;
+        li{
+            width: 100%;
+        }
+        a{
+            display: block;
+            @include font('Body 16 R');
+            color: color('Color/Font/Sub Font Color');
+            // Figma는 컬럼 사이 여백이 넓어(227px 등) 대부분 한 줄로 들어가지만, 여기 컬럼은 1Depth
+            // 아이템 간격(47px)에 맞춰 더 촘촘해서 "AI & Machine Learning" 같은 긴 라벨은 nowrap이면
+            // 옆 컬럼을 침범한다 — 줄바꿈을 허용해 컬럼 폭(180px) 안에 담는다.
+            white-space: normal;
+            word-break: keep-all;
+            &:hover{
+                color: color('Color/Primary Color');
+            }
+        }
+    }
+    // Figma 실측: 전체 폭 흰 배경 + 연한 box-shadow(0px 4px 7.5px rgba(0,0,0,0.06)), 컬럼 뒤에 깔리는 패널
+    .gnb-mega-bg{
+        position: fixed;
+        top: rem(80px);
+        left: 0;
+        width: 100%;
+        height: rem(286px);
+        background-color: color('Color/White');
+        box-shadow: 0 rem(4px) rem(7.5px) rgba(0, 0, 0, 0.06);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity .15s ease;
+        z-index: 1;
+    }
+    .gnb:hover,
+    .gnb:focus-within{
+        .gb-submenu{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        ~ .gnb-mega-bg{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
         }
     }
     .all-gnb{
@@ -64,12 +141,22 @@
                 }
             }
         }
+        // 1Depth 아이템이 좁아지는(120px+15px gap) 구간에서도 서브메뉴 컬럼 폭을 맞춰줘야
+        // 옆 컬럼과 겹치지 않는다 — 데스크탑 180px를 그대로 두면 여기서부터 항상 겹친다.
+        .gb-submenu{
+            width: rem(120px);
+        }
     }
 }
 @media only screen and (max-width: $breakpoint-md){
     .gnb-wrap{
         padding: rem(20px) rem(15px);
         .gnb{
+            display: none;
+        }
+        // 모바일에서는 1Depth 자체가 안 보이니 메가메뉴 서브패널도 필요 없다 (전체메뉴는 all-gnb 버튼의
+        // AllMenu 오버레이로 대신 제공됨)
+        .gnb-mega-bg{
             display: none;
         }
     }

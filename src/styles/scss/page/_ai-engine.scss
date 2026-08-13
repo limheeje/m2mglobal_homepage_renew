@@ -10,18 +10,14 @@
 
 // --- 섹션 내부 앵커 탭바 (Tap_box_series) — tab-box-scrollspy.ts가 .bs-tab-group/.tab__item 훅으로 동작 ---
 
-
 // 이미지/아이콘 미확정 영역 임시 표시용 빈 자리 (담당자가 직접 채워 넣음)
 .ai__icon-ph {
   display: inline-block;
-  width: rem(48px);
-  height: rem(48px);
   flex-shrink: 0;
 }
 .ai__thumb-ph {
   display: block;
   width: 100%;
-  background-color: color('Color/Black 3');
   border-radius: rem(12px);
 }
 
@@ -104,8 +100,8 @@
   margin-bottom: rem(40px);
 }
 .ai__flow-box {
-  flex: 0 0 rem(273px);
-  width: rem(273px);
+  flex: 0 0 rem(282px);
+  width: rem(282px);
   display: flex;
   flex-direction: column;
   padding: rem(36px);
@@ -130,7 +126,8 @@
   justify-content: center;
   img {
     display: block;
-    width: rem(40px);
+    width: rem(55px);
+    height: rem(146px);
   }
 }
 
@@ -170,43 +167,8 @@
   color: color('Color/Black 100');
 }
 
-// --- 구축사례: 썸네일 + 타이틀/일자/설명 카드 ---
-.ai__case-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: rem(20px);
-}
-.ai__case-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-  padding: rem(36px);
-  background-color: color('Color/Black 3');
-  border-radius: rem(24px);
-}
-.ai__case-thumb {
-  aspect-ratio: 501 / 285;
-  margin-bottom: rem(20px);
-  border-radius: rem(24px);
-  overflow: hidden;
-}
-.ai__case-title {
-  text-align: center;
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(10px);
-}
-.ai__case-date {
-  text-align: center;
-  @include font('Body 20 R');
-  color: color('Color/Black 100');
-  display: block;
-  margin-bottom: rem(20px);
-}
-.ai__case-desc {
-  text-align: center;
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-}
+// (주의) "구축사례" 썸네일+타이틀+일자+설명 카드는 ~/components/common/CaseCardGrid.astro
+// (components/_case-card-grid.scss, cc__*)로 컴포넌트화되어 이동했다.
 
 // --- 아키텍처 전환: Level 카드 (라벨 + 타이틀 + 체크리스트 + 데이터/성과 메타) ---
 .ai__level-grid {
@@ -263,7 +225,7 @@
   flex-wrap: wrap;
 }
 .ai__strategy-card {
-  flex: 1 1 0%;
+  flex: 0 0 rem(326px);
   min-width: rem(220px);
   padding: rem(36px);
   border: rem(1px) solid color('Color/Box/Border color');
@@ -281,7 +243,8 @@
   justify-content: center;
   img {
     display: block;
-    width: rem(40px);
+    width: rem(125px);
+    height: rem(146px);
   }
 }
 .ai__strategy-banner {
@@ -289,22 +252,24 @@
   min-width: rem(280px);
   padding: rem(36px);
   border-radius: rem(24px);
-  background-color: color('Color/Secondary Color');
+  background-color: color('Color/Black 3');
   color: color('Color/White');
   text-align: center;
 }
 .ai__strategy-banner-title {
   @include font('Body 24 R');
+  color: color('Color/Primary Color');
   margin-bottom: rem(12px);
 }
 .ai__strategy-banner-desc {
+  color: color('Color/Black 100');
   @include font('Body 16 R');
 }
 
 // --- AI 스코어링: 2단 레이어 컬럼 + 중앙 이미지 ---
 .ai__scoring-grid {
   display: grid;
-  grid-template-columns: 1fr rem(280px) 1fr;
+  grid-template-columns: 1fr rem(577px) 1fr;
   gap: rem(20px);
   align-items: start;
 }
@@ -331,7 +296,6 @@
 // --- 개인화: 아이콘+타이틀+부제+설명+체크리스트 카드 (item+이미지+item 전체를 하나의 테두리로 감쌈) ---
 .ai__personalize-grid {
   display: flex;
-  flex-wrap: wrap;
   align-items: stretch;
   gap: rem(20px);
   padding: rem(36px);
@@ -339,13 +303,14 @@
   border-radius: rem(24px);
 }
 .ai__personalize-card {
-  flex: 1 1 0%;
+  flex: 1;
+  text-align: center;
   min-width: rem(280px);
 }
 .ai__personalize-image {
   flex-shrink: 0;
-  width: rem(200px);
-  border-radius: rem(12px);
+  align-self: center;
+  width: rem(574px);
 }
 .ai__personalize-title {
   @include font('Body 24 R');
@@ -370,44 +335,28 @@
   padding: rem(8px) rem(24px);
   border-radius: rem(30px);
   background-color: color('Color/Black 3');
-  color: color('Color/Primary Color');
-  @include font('Body 18 R');
+  color: color('Color/Black 100');
+  @include font('H5');
   margin-bottom: rem(40px);
 }
 .ai__diagram-placeholder {
   width: 100%;
   aspect-ratio: 16 / 7;
-  background-color: color('Color/Black 3');
-  border-radius: rem(24px);
-}
-
-// --- 실행 사례: 고객사 로고 카드 ---
-.ai__client-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: rem(20px);
-}
-.ai__client-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: rem(100px);
-  padding: rem(16px);
-  border: rem(1px) solid color('Color/Black 10');
-  border-radius: rem(12px);
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
+  border: rem(1px) solid color('Color/Box/Border color');
+  border-radius: rem(24px);
 }
+
+// (주의) "주요 고객사/실행 사례" 로고 카드는 ~/components/common/ClientLogoGrid.astro
+// (components/_client-logo-grid.scss, cl__*)로 컴포넌트화되어 이동했다.
 
 @media only screen and (max-width: $breakpoint-md) {
   .ai__feature-grid,
   .ai__stat-grid,
   .ai__level-grid,
-  .ai__personalize-grid,
-  .ai__client-grid {
+  .ai__personalize-grid {
     grid-template-columns: 1fr;
     flex-direction: column;
   }
@@ -439,5 +388,47 @@
     order: -1;
     max-width: rem(200px);
     margin-inline: auto;
+  }
+}
+.ai-com-sub-banner {
+  margin-bottom: rem(80px);
+  .inner {
+    background: #003894 no-repeat center calc(50% + rem(290px))
+      url('~/assets/images/common/symbol006.jpg');
+    height: rem(320px);
+    border-radius: rem(24px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(36px);
+  }
+  .item {
+    width: rem(240px);
+    height: rem(240px);
+    border-radius: 50%;
+    border: rem(1px) dashed color('Color/White');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .txt {
+      text-align: center;
+      .tit {
+        @include font('Body 24 R');
+        color: color('Color/White');
+        display: block;
+      }
+      .dec {
+        @include font('Body 18 R');
+        color: color('Color/White');
+      }
+    }
+    &.point {
+      background: color('Color/White');
+      .txt {
+        .tit {
+          color: color('Color/Third Color');
+        }
+      }
+    }
   }
 }

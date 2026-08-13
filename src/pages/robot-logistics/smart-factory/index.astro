@@ -10,8 +10,15 @@ import TitleSub from '~/components/common/TitleSub.astro'
 import TitleMiddle from '~/components/common/TitleMiddle.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
+import CaseCardGrid from '~/components/common/CaseCardGrid.astro'
+import stepArrowUrl from '~/assets/images/step-arrow.svg'
+import SYMBOL013 from '~/assets/images/common/symbol013.png'
+import SYMBOL014 from '~/assets/images/common/symbol014.png'
+import {ICON_KEY_NAME} from '~/constants/Icon'
+import Icon from '~/components/common/Icon.astro'
 
 const localNavigation = route.find((item) => item.href === '/robot-logistics/overview')
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 
 const sectionTabs = [
   {id: 'benefits', label: 'M2M-MES 특장점'},
@@ -19,38 +26,33 @@ const sectionTabs = [
   {id: 'cases', label: '구축사례'}
 ]
 
-const pipelineStages = ['데이터 수집', '데이터 정제 · 관리', '데이터 활용']
-const pipelineCategories = [
-  '제조 실행',
-  '품질/수율관리',
-  '설비/엔지니어링',
-  '데이터 시각화',
-  '창고 관리 / 물류 관제'
-]
-const pipelineDevices = ['센서', '게이트웨이', '모니터링 SW', '분석 SW']
-
 const benefitCards = [
   {
+    icon: ICON_KEY_NAME['Business8-1'],
     title: '생산성 증가',
     top: '정확한 생산 데이터 기반 원료, 재고 상황 확인 가능',
     bottom: '최적의 생산계획 수립에 따른 생산성 증가 효과'
   },
   {
+    icon: ICON_KEY_NAME['Business8-2'],
     title: '비용 절감',
     top: '스마트한 MES 시스템 도입 Downtime 감소',
     bottom: '생산성 향상, 품질 향상 비용 절감, 매출 증진 고객 만족도 증진'
   },
   {
+    icon: ICON_KEY_NAME['Business8-3'],
     title: '설비 운영 효율화',
     top: '자원의 상세 인력 & 설비 현황 실시간 제공',
     bottom: '설비의 오작동에 즉각 대응 및 효율적인 설비 운영 가능, 생산성/매출 증대 기대'
   },
   {
+    icon: ICON_KEY_NAME['Business8-4'],
     title: '현장 사고 예방',
     top: '실시간 현장 모니터링, 제조활동 모니터링',
     bottom: '긴급 상황 예방, 사고 시 긴급 대처에 따른 사고 건수 절감 및 글로벌 품질 역량 강화'
   },
   {
+    icon: ICON_KEY_NAME['Business8-5'],
     title: '분석 통합 레포팅',
     top: '업무 공정을 체계적으로 데이터화',
     bottom: '업무 ROSS 제로화 재고관리, 생산성 증대 문서관리의 편리성 제공'
@@ -59,16 +61,19 @@ const benefitCards = [
 
 const cases = [
   {
+    imageSrc: `${PUBLIC_BUILD_URL}/images/banner/banner005.png`,
     title: '금호폴리캠 MES 시스템 구축',
     date: '2019.06 ~ 2019.12',
     desc: '품질영량재고 및 생산현장 가시성 확보를 위한 MES 시스템 구축'
   },
   {
+    imageSrc: `${PUBLIC_BUILD_URL}/images/banner/banner006.png`,
     title: '씨에스윈드 MES 시스템 구축',
     date: '2018.06 ~ 2018.09',
     desc: '씨에스윈드 국내 MES와 해외 MES 시스템 통합 구현'
   },
   {
+    imageSrc: `${PUBLIC_BUILD_URL}/images/banner/banner007.png`,
     title: '디에이치라이팅 MES 시스템 구축',
     date: '1차 2017.07, 2차 2018.03',
     desc: 'Smart Jactory 구현을 위한 MES 시스템 구축 및 고도화'
@@ -104,30 +109,9 @@ const cases = [
   <section id="benefits" class="g-section">
     <div class="innerWrap">
       <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
-
-      <div class="rl__process-flow">
-        {
-          pipelineStages.map((stage, i) => (
-            <>
-              <div class="rl__process-stage">
-                <p class="rl__process-stage-title">{stage}</p>
-              </div>
-              {i < pipelineStages.length - 1 && (
-                <span class="rl__overview-arrow" aria-hidden="true">
-                  ›
-                </span>
-              )}
-            </>
-          ))
-        }
+      <div class="">
+        <img src={SYMBOL014.src} alt="" />
       </div>
-      <div class="rl__pipeline-chip-row">
-        {pipelineCategories.map((cat) => <span class="rl__pipeline-chip">{cat}</span>)}
-      </div>
-      <div class="rl__pipeline-chip-row">
-        {pipelineDevices.map((dev) => <span class="rl__pipeline-chip">{dev}</span>)}
-      </div>
-
       <div class="rl__mes-banner">
         <TitleMiddle>
           M2M-MES <span class="mark">Manufacturing Execution System</span>
@@ -139,15 +123,19 @@ const cases = [
           benefitCards.map((card) => (
             <div class="rl__benefit-card">
               <div class="rl__benefit-head">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="rl__icon-ph" aria-hidden="true" />
+                <span class="rl__icon-circle" aria-hidden="true">
+                  {/* TODO: 아이콘 이미지 삽입 */}
+                  <Icon name={card.icon} />
+                </span>
                 <p class="rl__benefit-title">{card.title}</p>
               </div>
-              <TextList>{card.top}</TextList>
-              <span class="rl__benefit-arrow" aria-hidden="true">
-                ↓
-              </span>
-              <TextList>{card.bottom}</TextList>
+              <div class="rl__benefit-body">
+                <TextList>{card.top}</TextList>
+                <span class="rl__benefit-arrow" aria-hidden="true">
+                  <img src={stepArrowUrl.src} alt="" />
+                </span>
+                <TextList>{card.bottom}</TextList>
+              </div>
             </div>
           ))
         }
@@ -159,26 +147,11 @@ const cases = [
     <div class="innerWrap">
       <TitleSub title={`시스템 <span class="mark">구성도</span>`} />
       <!-- TODO: 시스템구성도 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
-    </div>
-  </section>
-
-  <section id="cases" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`구축 <span class="mark">사례</span>`} />
-      <div class="rl__case-grid">
-        {
-          cases.map((item) => (
-            <div class="rl__case-card">
-              <div class="rl__case-title-row">
-                <p class="rl__case-title">{item.title}</p>
-                <span class="rl__case-date">{item.date}</span>
-              </div>
-              <p class="rl__case-desc">{item.desc}</p>
-            </div>
-          ))
-        }
+      <div class="rl__diagram-placeholder" aria-hidden="true">
+        <img src={SYMBOL013.src} alt="" />
       </div>
     </div>
   </section>
+
+  <CaseCardGrid id="cases" columns={3} cases={cases} />
 </Layout>

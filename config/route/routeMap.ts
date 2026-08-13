@@ -137,7 +137,12 @@ export const route: Route[] = [
     label: 'Project',
     href: '/project/reference',
     children: [
-      {id: 'MAP-PROJECT-ID-1', koLabel: 'Refernce', label: 'Reference', href: '/project/reference'},
+      {
+        id: 'MAP-PROJECT-ID-1',
+        koLabel: 'Reference',
+        label: 'Reference',
+        href: '/project/reference'
+      },
       {
         id: 'MAP-PROJECT-ID-2',
         koLabel: 'Specialized Outcomes',

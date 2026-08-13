@@ -9,16 +9,38 @@ import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import TitleMiddle from '~/components/common/TitleMiddle.astro'
+import TitleThird from '~/components/common/TitleThird.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
+import Icon from '~/components/common/Icon.astro'
+import CaseStudySection from '~/components/common/CaseStudySection.astro'
+import {ICON_KEY_NAME} from '~/constants/Icon'
+import RobCompImage001 from '~/assets/images/common/rl_int-asset001.png'
+import RobCompImage002 from '~/assets/images/common/rl_int-asset002.png'
+import RobCompImage003 from '~/assets/images/common/rl_int-asset003.png'
+import RobCompImage004 from '~/assets/images/common/rl_int-asset004.png'
+import RobCompImage005 from '~/assets/images/common/rl_int-asset005.png'
+import RobCompImage006 from '~/assets/images/common/rl_int-asset006.png'
+import RobotGeekplus001 from '~/assets/images/common/robot-geekplus-001.png'
+import RobotGeekplus002 from '~/assets/images/common/robot-geekplus-002.png'
+import RobotGeekplus003 from '~/assets/images/common/robot-geekplus-003.png'
+import RobotGeekplus004 from '~/assets/images/common/robot-geekplus-004.png'
+import Rl_image001 from '~/assets/images/common/rl_image001.png'
+import Rl_image002 from '~/assets/images/common/rl_image002.png'
+import Rl_image003 from '~/assets/images/common/rl_image003.png'
+import Rl_image004 from '~/assets/images/common/rl_image004.png'
+import Rl_image005 from '~/assets/images/common/rl_image005.png'
 
 const localNavigation = route.find((item) => item.href === '/robot-logistics/overview')
 
+// Figma 실측 다이어그램 이미지 자리(실제 이미지는 담당자 작업 예정) — px 값을 rem으로 변환해서 인라인 style에 사용
+const toRem = (px: number) => `${px / 10}rem`
+
 const sectionTabs = [
   {id: 'overview', label: 'M2M-RLCK 개요'},
+  {id: 'control-tech', label: '로봇물류제어기술'},
   {id: 'robots', label: 'RLCK 구현 로봇'},
   {id: 'system', label: '시스템구성'},
-  {id: 'control-tech', label: '로봇물류제어기술'},
   {id: 'infra', label: '인프라구성'},
   {id: 'software', label: '소프트웨어 구성'},
   {id: 'simulation', label: '시뮬레이션'},
@@ -26,28 +48,15 @@ const sectionTabs = [
   {id: 'cases', label: '구축사례'}
 ]
 
-// --- M2M-RLCK 개요 ---
-const rcsChips = [
-  {label: 'Interface', active: false},
-  {label: '장비제어', active: false},
-  {label: '라우팅', active: false},
-  {label: '관제', active: false, useBr: true},
-  {label: '입출고', active: true},
-  {label: '장비제어', active: true},
-  {label: '라우팅', active: true},
-  {label: '관제', active: true},
-  {label: '관제', active: true}
-]
-const wesChips = [
-  {label: '파킹', active: false},
-  {label: '운반', active: false},
-  {label: '소팅', active: false},
-  {label: '최적화', active: false, useBr: true},
-  {label: '데이터', active: true},
-  {label: '알고리즘', active: true},
-  {label: '시뮬레이션', active: true},
-  {label: '가시화', active: true}
-]
+// --- M2M-RLCK 개요 --- (Figma 실측: 87x87 원형 칩 2줄 — 비활성/활성 그룹)
+const rcsChips = {
+  inactive: ['Interface', '장비제어', '라우팅', '관제'],
+  active: ['입출고', '장비제어', '라우팅', '관제', '관제']
+}
+const wesChips = {
+  inactive: ['파킹', '운반', '소팅', '최적화'],
+  active: ['데이터', '알고리즘', '시뮬레이션', '가시화']
+}
 const processStages = [
   {title: 'Planning', chips: ['운영 계획', '주문 계획', '최적화', '시뮬레이션']},
   {
@@ -63,6 +72,7 @@ const robotGroups = [
     title: 'AGV (Automated Guided Vehicle)',
     robots: [
       {
+        imgSrc: RobotGeekplus001.src,
         name: 'HIKEROBOT : Q3-600D',
         specs: [
           ['Lifting Height', '60 mm'],
@@ -80,6 +90,7 @@ const robotGroups = [
         ]
       },
       {
+        imgSrc: RobotGeekplus002.src,
         name: 'GEEKPLUS : P500R',
         specs: [
           ['Dimensions', 'L950*W702*H275 mm'],
@@ -102,6 +113,7 @@ const robotGroups = [
     title: 'AMR (Autonomous robot)',
     robots: [
       {
+        imgSrc: RobotGeekplus003.src,
         name: 'HIKEROBOT : Q3-600D',
         specs: [
           ['Rated Load', '250 kg'],
@@ -119,7 +131,10 @@ const robotGroups = [
         ]
       },
       {
+        imgSrc: RobotGeekplus004.src,
         name: 'Forward Robotics : Flex 300-SCB',
+        // Figma 실측: 2단 스펙 분할이 7/4로 비대칭 (기본 반반split과 다름)
+        specSplit: 7,
         specs: [
           ['Length', 'L950*W702*H275 mm'],
           ['Width', '144 kg'],
@@ -141,6 +156,7 @@ const robotGroups = [
 // --- 로봇물류제어기술 ---
 const controlTechCards = [
   {
+    imgSrc: RobCompImage001.src,
     title: '자동화 창고(AS/RS)',
     steps: ['입고지시(WMS)', '자동 적치', '재고관리', '출고지시', '자동 출고', '출하'],
     features: [
@@ -151,6 +167,7 @@ const controlTechCards = [
     ]
   },
   {
+    imgSrc: RobCompImage002.src,
     title: 'AMR',
     steps: ['작업지시', 'AMR 배차', '자율주행', '작업 수행', '목적지 이송', '작업 완료'],
     features: [
@@ -161,6 +178,7 @@ const controlTechCards = [
     ]
   },
   {
+    imgSrc: RobCompImage003.src,
     title: 'AGV',
     steps: ['작업지시', '랙 하부 진입', '랙 리프팅', '목적지 이동', '랙 하차', '작업 완료'],
     features: [
@@ -171,11 +189,13 @@ const controlTechCards = [
     ]
   },
   {
+    imgSrc: RobCompImage004.src,
     title: 'Stacker Crane',
     steps: ['입고 요청', '팔레트 인수', '지정 위치 적치', '재고 관리', '출고 요청', '자동 반출'],
     features: ['고층 입체창고 운영', '대용량 팔레트 처리', '고속 입·출고 지원', '무인 자동화 운영']
   },
   {
+    imgSrc: RobCompImage005.src,
     title: 'Shuttle AGV',
     steps: ['입고', 'Bin 적재', '자동 보관', '피킹 요청', 'Bin 이송', '작업 완료'],
     features: [
@@ -186,6 +206,7 @@ const controlTechCards = [
     ]
   },
   {
+    imgSrc: RobCompImage006.src,
     title: 'Shuttle Car',
     steps: ['입고 요청', '셔틀 적재', '자동 이송', '지정 위치 저장', '출고 요청', '자동 반출'],
     features: [
@@ -217,61 +238,9 @@ const schedulingInsights = [
 ]
 
 // --- 구축사례 ---
-const caseFunctions = [
-  {number: '01', title: 'AGV 제어', desc: 'Root-Planning'},
-  {number: '02', title: '해당 기종', desc: '로봇 트래픽 제어'},
-  {number: '03', title: '작업자 배치 ·', desc: '주문 배치/할당 알고리즘'},
-  {number: '04', title: '비동기', desc: '메시지 제어'},
-  {number: '05', title: '3D Map', desc: '구현/제어'},
-  {number: '06', title: 'MSA', desc: '(Micro Service Architecture)'},
-  {number: '07', title: '하드웨어 제어 ·', desc: '빅데이터 수집/가공'}
-]
-const vendorTables = [
-  [
-    ['LG', 'Cloi', 'AMR', '피킹'],
-    ['ForwardX', 'Flex Series', 'AMR', '피킹'],
-    ['Omron', 'LD/MD/HD', 'AMR', '피킹']
-  ],
-  [
-    ['Geek+', 'P500R', 'AGV', '보충/피킹'],
-    ['Hik', 'Q7-1000E', 'AMR', '보충/피킹'],
-    ['Hik', 'F0-50DCH', 'AGV', '보충/피킹']
-  ]
-]
-const systemFunctions = [
-  {
-    title: '정보 조회',
-    items: ['로봇 모니터링', '로봇 모니터링', '보충 작업 내역', '피킹 작업 내역']
-  },
-  {
-    title: '센터 관리',
-    items: [
-      '센터 정보 관리',
-      '구역 정보 관리',
-      '렉 관리',
-      '스테이션 관리',
-      '설비관리',
-      '맵 관리',
-      '화주 관리'
-    ]
-  },
-  {title: 'SKU 정보관리', items: []},
-  {title: '주문관리', items: ['보충 주문', '피킹 주문']},
-  {
-    title: '재고관리',
-    items: ['재고 조회', '재고 조사', '이상 재고 관리', '상품 점유 내역', '과잉/부족 관리']
-  },
-  {
-    title: '시스템관리',
-    items: ['권한그룹 관리', '사용자 관리', '메뉴 관리', '공통 코드 관리', '로그 관리']
-  },
-  {title: '통계', items: ['주문통계', '보관량 통계', '로봇 가동 통계', '작업 통계']},
-  {title: '작업자', items: ['보충 작업', '피킹 작업', '반출 피킹', '재고 조사']}
-]
-const devicePanels = [
-  {title: 'PC', items: ['보충주문', '일반 피킹', '반출 피킹', '재고조사']},
-  {title: 'Tablet', items: ['대시보드', '오더피킹', '맵 조회', '실시간 위치']}
-]
+// CJ 대한통운 APRIL 로봇통합플랫폼 구축사례 전체는 ~/components/common/CaseStudySection.astro에
+// 기본값으로 내장되어 있다 — "프로젝트 전체" 등 다른 페이지에서도 완전히 같은 내용을 그대로 쓰므로
+// 이 페이지에서는 데이터를 따로 선언하지 않고 <CaseStudySection /> 하나만 호출한다.
 ---
 
 <Layout>
@@ -308,21 +277,23 @@ const devicePanels = [
       <div class="rl__overview-grid">
         <div class="rl__overview-card">
           <div class="rl__overview-head">
-            <!-- TODO: 아이콘 이미지 삽입 -->
-            <span class="rl__icon-ph" aria-hidden="true"></span>
+            <span class="rl__icon-circle" aria-hidden="true">
+              {/* TODO: 아이콘 이미지 삽입 */}
+              <Icon name={ICON_KEY_NAME['Business3-1']} />
+            </span>
             <p class="rl__overview-title">RCS(Robot Control System)</p>
           </div>
-          <div class="rl__chip-row">
-            {
-              rcsChips.map((chip) => (
-                <>
-                  <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
-                    {chip.label}
-                  </span>
-                  {chip.useBr && <br />}
-                </>
-              ))
-            }
+          <div class="rl__chip-block">
+            <div class="rl__chip-row">
+              {rcsChips.inactive.map((label) => <span class="rl__chip">{label}</span>)}
+            </div>
+            <div class="rl__chip-row">
+              {
+                rcsChips.active.map((label) => (
+                  <span class="rl__chip rl__chip--active">{label}</span>
+                ))
+              }
+            </div>
           </div>
         </div>
 
@@ -334,36 +305,96 @@ const devicePanels = [
 
         <div class="rl__overview-card">
           <div class="rl__overview-head">
-            <!-- TODO: 아이콘 이미지 삽입 -->
-            <span class="rl__icon-ph" aria-hidden="true"></span>
+            <span class="rl__icon-circle" aria-hidden="true">
+              {/* TODO: 아이콘 이미지 삽입 */}
+              <Icon name={ICON_KEY_NAME['Business3-2']} />
+            </span>
             <p class="rl__overview-title">WES(Warehouse Execution System)</p>
           </div>
-          <div class="rl__chip-row">
-            {
-              wesChips.map((chip) => (
-                <>
-                  <span class={`rl__chip ${chip.active ? 'rl__chip--active' : ''}`}>
-                    {chip.label}
-                  </span>
-                  {chip.useBr && <br />}
-                </>
-              ))
-            }
+          <div class="rl__chip-block">
+            <div class="rl__chip-row">
+              {wesChips.inactive.map((label) => <span class="rl__chip">{label}</span>)}
+            </div>
+            <div class="rl__chip-row">
+              {
+                wesChips.active.map((label) => (
+                  <span class="rl__chip rl__chip--active">{label}</span>
+                ))
+              }
+            </div>
           </div>
         </div>
-        <span class="rl__overview-arrow" aria-hidden="true"> ↓ </span>
       </div>
-
-      <TitleMiddle>Seamless 물류 프로세스</TitleMiddle>
-      <div class="rl__process-flow">
+      <div class="rl__seamless-ban">
+        <TitleMiddle>Seamless 물류 프로세스</TitleMiddle>
+      </div>
+      <div class="rl__seamless-flow">
         {
-          processStages.map((stage) => (
-            <div class="rl__process-stage">
-              <p class="rl__process-stage-title">{stage.title}</p>
-              <div class="rl__process-chip-grid">
-                {stage.chips.map((chip) => (
-                  <span class="rl__chip">{chip}</span>
-                ))}
+          processStages.map((stage, i) => (
+            <>
+              <div class="rl__seamless-stage" class:list={{'rl__seamless-stage--fluid': i === 1}}>
+                <p class="rl__seamless-stage-title">{stage.title}</p>
+                <div class="rl__seamless-chip-grid">
+                  {stage.chips.map((chip) => (
+                    <span class="rl__chip rl__chip--white">{chip}</span>
+                  ))}
+                </div>
+              </div>
+              {i < processStages.length - 1 && (
+                <span class="rl__chevron rl__chevron--flow" aria-hidden="true" />
+              )}
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  <section id="control-tech" class="g-section">
+    <div class="innerWrap">
+      <TitleSub
+        title={`로봇물류 <span class="mark">제어기술</span>`}
+        description="M2M-RLCK는 다양한 물류 로봇과 자동화 설비를 하나의 플랫폼으로 통합 제어하여 스마트 창고의 운영 효율을 극대화합니다.<br/>AS/RS, AMR, 셔틀카 등 이기종 로봇을 유기적으로 연계해 안정적인 물류 운영과 최적의 작업 환경을 제공합니다."
+      />
+      <div class="rl__tech-banne">
+        <div class="innerWrap">
+          <div class="inner">
+            <div class="tit">M2M-RLCK 로봇물류제어기술</div>
+          </div>
+        </div>
+      </div>
+      <div class="rl__tech-grid">
+        {
+          controlTechCards.map((card) => (
+            <div class="rl__tech-card">
+              <div class="rl__tech-head">
+                {/* TODO: 아이콘 이미지 삽입 */}
+                <div class="rl__tech-thumb rl__thumb-ph" aria-hidden="true">
+                  <img src={card.imgSrc} alt="" />
+                </div>
+                <p class="rl__tech-title">{card.title}</p>
+              </div>
+              <div class="rl__tech-body">
+                <div class="rl__tech-row">
+                  <p class="rl__tech-row-label">업무과정</p>
+                  <div class="rl__tech-steps">
+                    {card.steps.map((step, i) => (
+                      <>
+                        <span class="rl__tech-step">{step}</span>
+                        {i < card.steps.length - 1 && (
+                          <span class="rl__chevron" aria-hidden="true" />
+                        )}
+                      </>
+                    ))}
+                  </div>
+                </div>
+                <div class="rl__tech-row">
+                  <p class="rl__tech-row-label">특징</p>
+                  <div class="rl__tech-features">
+                    {card.features.map((feature) => (
+                      <TextList>{feature}</TextList>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           ))
@@ -371,7 +402,6 @@ const devicePanels = [
       </div>
     </div>
   </section>
-
   <section id="robots" class="g-section">
     <div class="innerWrap">
       <TitleSub
@@ -381,24 +411,34 @@ const devicePanels = [
       {
         robotGroups.map((group) => (
           <div class="rl__robot-group">
-            <p class="rl__spec-pill">{group.title}</p>
-            {group.robots.map((robot) => (
-              <div class="rl__robot-card">
-                <p class="rl__robot-name">{robot.name}</p>
-                <div class="rl__robot-body">
-                  {/* <!-- TODO: 로봇 이미지 삽입 --> */}
-                  <div class="rl__robot-thumb rl__thumb-ph" aria-hidden="true" />
-                  <div class="rl__spec-columns">
-                    {robot.specs.map(([label, value]) => (
-                      <div class="rl__spec-row">
-                        <span class="rl__spec-label">{label}</span>
-                        <span class="rl__spec-value">{value}</span>
-                      </div>
-                    ))}
+            <TitleThird>{group.title}</TitleThird>
+            {group.robots.map((robot) => {
+              const splitAt = robot.specSplit ?? Math.ceil(robot.specs.length / 2)
+              const specCols = [robot.specs.slice(0, splitAt), robot.specs.slice(splitAt)]
+              return (
+                <div class="rl__robot-card">
+                  <p class="rl__robot-name">{robot.name}</p>
+                  <div class="rl__robot-body">
+                    {/* TODO: 로봇 이미지 삽입 */}
+                    <div class="rl__robot-thumb " aria-hidden="true">
+                      <img src={robot.imgSrc} alt="" />
+                    </div>
+                    <div class="rl__spec-columns">
+                      {specCols.map((col) => (
+                        <div class="rl__spec-col">
+                          {col.map(([label, value]) => (
+                            <div class="rl__spec-row">
+                              <span class="rl__spec-label">{label}</span>
+                              <span class="rl__spec-value">{value}</span>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         ))
       }
@@ -407,53 +447,13 @@ const devicePanels = [
 
   <section id="system" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`시스템 <span class="mark">구성</span>`} />
-      <!-- TODO: 시스템구성도 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
-    </div>
-  </section>
-
-  <section id="control-tech" class="g-section">
-    <div class="innerWrap">
       <TitleSub
-        title={`로봇물류 <span class="mark">제어기술</span>`}
-        description="M2M-RLCK는 다양한 물류 로봇과 자동화 설비를 하나의 플랫폼으로 통합 제어하여 스마트 창고의 운영 효율을 극대화합니다.<br/>AS/RS, AMR, 셔틀카 등 이기종 로봇을 유기적으로 연계해 안정적인 물류 운영과 최적의 작업 환경을 제공합니다."
+        title={`시스템 <span class="mark">구성</span>`}
+        description="플랫폼 통합관제, 통합정보관리, 작업관리, 사용자 시스템을 통합 구현하여 로봇 운영과 물류 업무를 하나의 플랫폼에서 효율적으로 관리할 수 있는 환경을 제공합니다."
       />
-      <div class="rl__tech-grid">
-        {
-          controlTechCards.map((card) => (
-            <div class="rl__tech-card">
-              <div class="rl__tech-head">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="rl__icon-ph" aria-hidden="true" />
-                <p class="rl__tech-title">{card.title}</p>
-              </div>
-              <div class="rl__tech-row">
-                <p class="rl__tech-row-label">업무과정</p>
-                <div class="rl__tech-steps">
-                  {card.steps.map((step, i) => (
-                    <>
-                      <span class="rl__tech-step">{step}</span>
-                      {i < card.steps.length - 1 && (
-                        <span class="rl__tech-step-arrow" aria-hidden="true">
-                          ›
-                        </span>
-                      )}
-                    </>
-                  ))}
-                </div>
-              </div>
-              <div class="rl__tech-row">
-                <p class="rl__tech-row-label">특징</p>
-                <div class="rl__tech-features">
-                  {card.features.map((feature) => (
-                    <TextList>{feature}</TextList>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))
-        }
+      <!-- TODO: 시스템구성도 이미지 삽입 -->
+      <div class="rl__diagram-placeholder" aria-hidden="true">
+        <img src={Rl_image001.src} alt="" />
       </div>
     </div>
   </section>
@@ -464,8 +464,12 @@ const devicePanels = [
         title={`인프라 <span class="mark">구성</span>`}
         description="Middleware는 WES·WCS와 RCS 간의 안정적인 데이터 연계 및 제어를 지원하며, 태블릿, 스마트워치, PDA 등 다양한 작업자 디바이스와 연동하여 실시간 작업 수행과 운영 가시성을 제공합니다."
       />
-      <!-- TODO: 인프라구성도 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
+      {/* TODO: 인프라구성도 이미지 삽입 (Figma 실측 1168x579) */}
+      <div class="rl__diagram-box">
+        <div class="rl__diagram-img" style={`max-width:${toRem(1168)}; aspect-ratio:1168/579;`}>
+          <img src={Rl_image002.src} alt="" />
+        </div>
+      </div>
     </div>
   </section>
 
@@ -475,19 +479,24 @@ const devicePanels = [
         title={`소프트웨어 <span class="mark">구성</span>`}
         description="플랫폼을 기능별·구역별로 설계하여, 시스템의 안정성과 확장성을 확보하고 균일한 목표 성능을 유지할 수 있는 시스템의 기본 구조를 설계합니다."
       />
-      <div class="rl__insight-grid">
+      <div class="rl__divider-row">
         {
-          softwareInsights.map((desc) => (
-            <div class="rl__insight-card">
-              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="rl__icon-ph" aria-hidden="true" />
-              <p class="rl__insight-desc">{desc}</p>
+          softwareInsights.map((desc, i) => (
+            <div class="rl__divider-item">
+              <span class="rl__icon-circle" aria-hidden="true">
+                <Icon name={ICON_KEY_NAME[`Business4-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
+              </span>
+              <p class="rl__divider-desc">{desc}</p>
             </div>
           ))
         }
       </div>
-      <!-- TODO: 소프트웨어구성도 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
+      {/* TODO: 소프트웨어구성도 이미지 삽입 (Figma 실측 1170x623) */}
+      <div class="rl__diagram-box">
+        <div class="rl__diagram-img" style={`max-width:${toRem(1170)}; aspect-ratio:1170/623;`}>
+          <img src={Rl_image003.src} alt="" />
+        </div>
+      </div>
     </div>
   </section>
 
@@ -497,19 +506,25 @@ const devicePanels = [
         title={`<span class="mark">시뮬레이션</span>`}
         description="실제 물류센터 환경을 기반으로 한 시뮬레이션을 통해 구축 전 잠재적인 문제를 사전에 검증하고, 시스템 안정성과 운영 리스크를 최소화합니다."
       />
-      <div class="rl__insight-grid">
+      <div class="rl__divider-row">
         {
-          simulationInsights.map((desc) => (
-            <div class="rl__insight-card">
-              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="rl__icon-ph" aria-hidden="true" />
-              <p class="rl__insight-desc">{desc}</p>
+          simulationInsights.map((desc, i) => (
+            <div class="rl__divider-item">
+              {/* TODO: 아이콘 이미지 삽입 */}
+              <span class="rl__icon-circle" aria-hidden="true">
+                <Icon name={ICON_KEY_NAME[`Business5-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
+              </span>
+              <p class="rl__divider-desc">{desc}</p>
             </div>
           ))
         }
       </div>
-      <!-- TODO: 시뮬레이션 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
+      {/* TODO: 시뮬레이션 이미지 삽입 (Figma 실측 1325x573) */}
+      <div class="rl__diagram-box">
+        <div class="rl__diagram-img" style={`max-width:${toRem(1325)}; aspect-ratio:1325/573;`}>
+          <img src={Rl_image004.src} alt="" />
+        </div>
+      </div>
     </div>
   </section>
 
@@ -521,142 +536,28 @@ const devicePanels = [
       />
       <div class="rl__insight-grid">
         {
-          schedulingInsights.map((desc) => (
+          schedulingInsights.map((desc, i) => (
             <div class="rl__insight-card">
-              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="rl__icon-ph" aria-hidden="true" />
+              {/* TODO: 아이콘 이미지 삽입 */}
+              <span class="rl__icon-circle" aria-hidden="true">
+                <Icon name={ICON_KEY_NAME[`Business6-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
+              </span>
               <p class="rl__insight-desc">{desc}</p>
             </div>
           ))
         }
       </div>
-      <!-- TODO: 스케줄링 다이어그램 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
+      {/* TODO: 스케줄링 다이어그램 이미지 삽입 (Figma 실측 1333x291) */}
+      <div class="rl__diagram-box">
+        <div
+          class="rl__diagram-img rl__thumb-ph"
+          style={`max-width:${toRem(1333)}; aspect-ratio:1333/291;`}
+        >
+          <img src={Rl_image005.src} alt="" />
+        </div>
+      </div>
     </div>
   </section>
 
-  <section id="cases" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`로봇기반 통합관제시스템 <span class="mark">구축 사례</span>`} />
-
-      <div class="rl__timeline">
-        <div class="rl__timeline-heading">
-          <span>로봇물류플랫폼 기술확보</span>
-          <span>현장 센터 시범적용 &amp; 운용 (국내 1위 물류 업체 협업)</span>
-        </div>
-        <div class="rl__timeline-track">
-          <div class="rl__timeline-phase">
-            <p class="rl__timeline-date">2022.07 - 2024.12</p>
-            <p class="rl__timeline-name">1단계(2022.07-2023.03)</p>
-            <p class="rl__timeline-desc">이기종무인운반차(AGV) 로봇통합관제플랫폼 개발</p>
-          </div>
-          <div class="rl__timeline-phase">
-            <p class="rl__timeline-date">&nbsp;</p>
-            <p class="rl__timeline-name">2단계(2023.05-2024.03)</p>
-            <p class="rl__timeline-desc">이기종자율이동로봇(AMR) 로봇통합관제플랫폼개발</p>
-          </div>
-          <div class="rl__timeline-phase">
-            <p class="rl__timeline-date">&nbsp;</p>
-            <p class="rl__timeline-name">3단계(2024.07-2024.12)</p>
-            <p class="rl__timeline-desc">
-              로봇(셔틀및소형AGV), 기타IT 디바이스를 통해 이커머스 택배에서 활용가능 한 로봇
-              운영(피킹,보관) 플랫폼 개발
-            </p>
-          </div>
-          <div class="rl__timeline-phase">
-            <p class="rl__timeline-date">2024.12 - 2025.12</p>
-            <p class="rl__timeline-name">1차(2024.12-2025.03)</p>
-            <p class="rl__timeline-desc">AMR 25대적용(이천물류센터)</p>
-          </div>
-        </div>
-      </div>
-
-      <TitleSub title={`구현 <span class="mark">기능</span>`} />
-      <div class="rl__number-grid">
-        {
-          caseFunctions.map((fn) => (
-            <div class="ec__step-card">
-              <span class="rl__spec-pill">{fn.number}</span>
-              <p class="ec__step-title">{fn.title}</p>
-              <p class="ec__step-desc">{fn.desc}</p>
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub title={`연동 제조사 <span class="mark">AMR / AGV</span>`} />
-      <div class="rl__vendor-tables">
-        {
-          vendorTables.map((rows) => (
-            <div class="rl__vendor-table">
-              <div class="rl__vendor-row rl__vendor-row--head">
-                <span class="rl__vendor-cell">제조사</span>
-                <span class="rl__vendor-cell">모델</span>
-                <span class="rl__vendor-cell">유형</span>
-                <span class="rl__vendor-cell">용도</span>
-              </div>
-              {rows.map((row) => (
-                <div class="rl__vendor-row">
-                  {row.map((cell) => (
-                    <span class="rl__vendor-cell">{cell}</span>
-                  ))}
-                </div>
-              ))}
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub
-        title={`CJ 대한통운 APRIL 로봇통합플랫폼 : <span class="mark">동작 구현 화면</span>`}
-      />
-      <!-- TODO: 동작 구현 화면 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true"></div>
-
-      <TitleSub title={`시스템 <span class="mark">업무 구성</span>`} />
-      <div class="rl__function-grid">
-        {
-          systemFunctions.map((fn) => (
-            <div class="ec__feature-card">
-              <div class="ec__feature-head">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="ec__feature-icon" aria-hidden="true" />
-                <p class="ec__feature-title">{fn.title}</p>
-              </div>
-              {fn.items.length > 0 && (
-                <div>
-                  {fn.items.map((item) => (
-                    <TextList>{item}</TextList>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub
-        title={`주요 <span class="mark">기능 소개</span>`}
-        description="PC는 보충주문, 일반 피킹, 반출 피킹, 재고조사 등 운영 관리 기능을 제공하고, 태블릿은 대시보드,<br/>오더 피킹, 맵 조회, 실시간 위치 확인 등 현장 중심의 작업 지원 기능을 제공합니다."
-      />
-      <div class="rl__device-panel">
-        {
-          devicePanels.map((panel) => (
-            <div class="rl__device-card">
-              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="rl__device-icon" aria-hidden="true" />
-              <p class="rl__device-title">{panel.title}</p>
-              <div class="rl__device-list">
-                {panel.items.map((item) => (
-                  <TextList type="type_2">{item}</TextList>
-                ))}
-              </div>
-              {/* <!-- TODO: 화면 이미지 삽입 --> */}
-              <div class="rl__device-image" aria-hidden="true" />
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <CaseStudySection />
 </Layout>

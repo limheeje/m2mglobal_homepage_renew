@@ -1,0 +1,35 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// ClientLogoGrid.astro 전용 스타일 (cl__ 접두사) — 페이지 전용 scss에 의존하지 않는 독립 컴포넌트.
+// (Figma 실측: 카드 277x133, radius 12, border Black 10)
+// ==========================================================================
+
+.cl__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cl-cols, 6), 1fr);
+  gap: rem(20px);
+}
+.cl__card {
+  aspect-ratio: 277 / 133;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: rem(16px);
+  border: rem(1px) solid color('Color/Black 10');
+  border-radius: rem(12px);
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .cl__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

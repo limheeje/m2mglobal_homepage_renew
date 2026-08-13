@@ -1,17 +1,104 @@
 ---
 // Project > Reference (/project/reference)
-// 참고: Figma "About us > Header"(node 1210:78058, Project 카테고리 공용 배너) +
-// "프로젝트 &gt; Reference" 1차 타이틀(node 1210:78060).
-//
-// TODO: 본문(레퍼런스 목록/사례 카드)은 아직 Figma 콘텐츠 조사 전 — 지금은 다른 페이지들과
-// 동일한 SubBanner/Navigation/TitleMain 헤더 구성만 채워 "네비게이션 없음" 문제를 해결한다.
+// Figma "프로젝트"(node 1210:78024) — 12개 프로젝트 레퍼런스 리스트.
+// 마크업 패턴은 /company/news의 리스트(company__news-row: 상단 2px 포인트 보더 + 행별 구분선 +
+// "바로가기" Button)를 참고했다 — 이 페이지는 로고 썸네일(128x68) + 2줄 타이틀/설명이 추가된 변형.
+// 로고는 이미 다운로드되어 있는 src/assets/images/clients/ico_client_*.png(ClientLogoGrid와 동일 자산)를
+// 재사용한다 — 일치하는 로고가 없는 항목(서린상사)만 TODO 플레이스홀더로 남긴다.
 import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
 import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import Navigation from '~/components/common/Navigation.astro'
+import Button from '~/components/common/Button.astro'
+import Label from '~/components/common/Label.astro'
 
 const localNavigation = route.find((item) => item.href === '/project/reference')
+
+const logoFiles = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
+  eager: true
+})
+const logoSrc = (key?: string) => {
+  if (!key) return undefined
+  const entry = Object.entries(logoFiles).find(([path]) => path.includes(`ico_client_${key}`))
+  return entry?.[1].default.src
+}
+
+// --- Figma "프로젝트" 리스트(node 1210:78024) 실측 그대로 — 최신순 ---
+const references = [
+  {
+    logoKey: '05-suhyupshopping',
+    title: '수협중앙회 쇼핑몰 재구축',
+    desc: '수협다움을 제시하는 새로운 이커머스 몰 개편',
+    period: `25' 05 ~ 26' 03`
+  },
+  {
+    logoKey: '39-jejuair',
+    title: '제주항공 기내판매 시스템 구축',
+    desc: '하늘에서 즐기는 에어카페 기내판매 서비스 플랫폼 고도화',
+    period: `25' 09 ~ 26' 07`
+  },
+  {
+    logoKey: '04-kcar',
+    title: 'KCar C2C 온라인 플랫폼 구축',
+    desc: '개인간 안전거래 중고차 직거래 플랫폼 구축',
+    period: `25' 09 ~ 26' 07`
+  },
+  {
+    logoKey: '38-parataair',
+    title: '파라타 항공 예약시스템 UI/UX 고도화 구축',
+    desc: '고객 중심의 합리적인 서비스 제공하는 새로운 항공사',
+    period: `25' 03 ~ 25' 08`
+  },
+  {
+    logoKey: '11-surplusglobal',
+    title: '반도체 장비 글로벌 마켓 플레이스 구축',
+    desc: 'B2B 중고 반도체 장비 플랫폼 PC, PO, MO 플랫폼 구축',
+    period: `24' 05 ~ 26' 04`
+  },
+  {
+    logoKey: '26-nhinfo',
+    title: '농협 빅데이터 N-HUB 구독 서비스 구축',
+    desc: '고객 중심의 합리적인 서비스 제공 플랫폼',
+    period: `23' 12 ~ 24' 12`
+  },
+  {
+    logoKey: '37-nhbank',
+    title: '농협은행 용도품 관리 시스템 사업자 선정',
+    desc: '용도품관리시스템을 사용자중심으로 고도화',
+    period: `24' 08 ~ 24' 12`
+  },
+  {
+    logoKey: '02-daiso',
+    title: '다이소 차세대 커머스플랫폼구축',
+    desc: '다이소 쇼핑몰 차세대 플랫폼으로 전면 고도화',
+    period: `22' 12 ~ 23' 12`
+  },
+  {
+    logoKey: '12-cjlogistics',
+    title: 'CJ 대한통운 로봇 물류 표준 관제 시스템 구축',
+    desc: 'AGV, AMR 기반 로봇통합관제 및 모니터링 물류센터 자동화 관리플랫폼',
+    period: `22' 07 ~ 25' 03`
+  },
+  {
+    logoKey: undefined,
+    title: '서린상사 B2B 온라인플랫폼 구축(2차 사업)(서린닷컴)',
+    desc: '서린상사의 비철금속 B2B 판매 플랫폼',
+    period: `21' 04 ~ 23' 12`
+  },
+  {
+    logoKey: '04-kcar',
+    title: 'KCar B2C 온라인 플랫폼 구축',
+    desc: '중고차 직영거래 플랫폼 구축',
+    period: `21' 10 ~ 22' 07`
+  },
+  {
+    logoKey: '01-nonghyupmall',
+    title: '농협 온라인 쇼핑몰 (농협몰) 구축 및 고도화',
+    desc: '농협몰 산지택배, 장보기, 식자재, 새벽배송',
+    period: `17' 01 ~ 26' 06`
+  }
+]
 ---
 
 <Layout>
@@ -25,5 +112,44 @@ const localNavigation = route.find((item) => item.href === '/project/reference')
     description="엠투엠글로벌의 전문 기술력과 성공적인 수행력을 입증하였습니다.<br/>명확한 목적과 체계적인 실행력을 바탕으로, 경험과 전문성을 겸비한 프로젝트 수행 인력이 한 팀이 되어, 고객사의 비즈니스 성공을 위해 끊임없이 노력하고 성장 중입니다."
   />
 
-  <!-- TODO: 레퍼런스 목록/사례 카드 본문 — Figma 콘텐츠 조사 후 작성 -->
+  <section class="g-section">
+    <div class="innerWrap">
+      <div class="ref__list">
+        {
+          references.map((item) => {
+            const logo = logoSrc(item.logoKey)
+            return (
+              <div class="ref__row">
+                <div class="ref__row-main">
+                  <div class="ref__row-left">
+                    <div class="ref__logo">
+                      {logo ? (
+                        <img src={logo} alt={item.title} />
+                      ) : (
+                        <>
+                          {/* TODO: 로고 이미지 삽입 */}
+                          <span class="ref__logo-ph" aria-hidden="true" />
+                        </>
+                      )}
+                    </div>
+                    <div class="ref__row-text">
+                      <p class="ref__row-title">{item.title}</p>
+                      <p class="ref__row-desc">{item.desc}</p>
+                    </div>
+                  </div>
+                  <div class="ref__row-period">
+                    <Label type="type_2">투입기간</Label>
+                    <span class="ref__period-value">{item.period}</span>
+                  </div>
+                </div>
+                <Button variant="white" size="sm" useSuffixIcon="blank" class="ref__link">
+                  바로가기
+                </Button>
+              </div>
+            )
+          })
+        }
+      </div>
+    </div>
+  </section>
 </Layout>

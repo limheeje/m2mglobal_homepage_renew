@@ -13,6 +13,12 @@ import TitleSub from '~/components/common/TitleSub.astro'
 import TitleThird from '~/components/common/TitleThird.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
+import SYMBOL015 from '~/assets/images/common/symbol015.png'
+import Icon from '~/components/common/Icon.astro'
+import SYMBOL016 from '~/assets/images/common/symbol016.png'
+import SYMBOL017 from '~/assets/images/common/symbol017.png'
+import SYMBOL018 from '~/assets/images/common/symbol018.png'
+import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/solutions/commerce-platform')
 
@@ -25,6 +31,7 @@ const sectionTabs = [
 // --- 솔루션 이해: M2M-eMall / M2M-B2Bi / M2M-eCCP ---
 const understandCards = [
   {
+    icon: ICON_KEY_NAME['Solution1-1'],
     title: 'M2M-eMall',
     items: [
       '회원, 상품, 주문/결제, 배송/물류, 전시/메인, 이벤트, 정산/통계, 글로벌, CS/알림/기타 핵심 기능 보유',
@@ -35,6 +42,7 @@ const understandCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Solution1-2'],
     title: 'M2M-B2Bi',
     items: [
       '내부, 외부, 관련 타 솔루션 등 쉽게 연결할 수 있도록 지원하는 핵심 기능 탑재',
@@ -44,6 +52,7 @@ const understandCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Solution1-3'],
     title: 'M2M-eCCP',
     items: [
       '최신 웹 개발 표준 프레임워크 기반의 최적화 된 기능을 탑재한 솔루션',
@@ -56,42 +65,63 @@ const understandCards = [
 ]
 
 // --- 기술 구성 안내: 컴포넌트 별 아키텍처 다이어그램 (이미지) ---
-const techGroups = ['M2M-eMall', 'M2M-B2Bi', 'M2M-eCCP']
+const techGroups = [
+  {imgSrc: SYMBOL016.src, title: 'M2M-eMall'},
+  {imgSrc: SYMBOL017.src, title: 'M2M-B2Bi'},
+  {imgSrc: SYMBOL018.src, title: 'M2M-eCCP'}
+]
 
 // --- 주요 특장점 (11개) ---
 const featureCards = [
   {
+    icon: ICON_KEY_NAME['Solution2-1'],
     title: '표준 프레임워크',
     desc: '24년간의 다수의 커머스 플랫폼<br/>수행 노하우 기반의<br/>최적의 검증된 프레임워크'
   },
   {
+    icon: ICON_KEY_NAME['Solution2-2'],
     title: 'JPA기반 객체지향적 구조',
     desc: '객체지향적 프로그래밍을 통해<br/>확장성 및 유지보수 용이하며<br/>작업 생산성-효율성이 향상됨'
   },
   {
+    icon: ICON_KEY_NAME['Solution2-3'],
     title: '3rd Party 기능 모듈화',
     desc: '부가 기능을 모듈화 함으로써<br/>Core Process을 활용하되<br/>빠르고 쉽게 맞춤 커스터마이징 가능'
   },
   {
+    icon: ICON_KEY_NAME['Solution2-4'],
     title: 'Front/BackOffice 컴포넌트화',
     desc: '고객측면, 관리자측면의 기능을<br/>컴포넌트화하여 개발 효율성, 확장성,<br/>유지보수 용이성, 재사용성을 확보함'
   },
   {
+    icon: ICON_KEY_NAME['Solution2-5'],
     title: '검색 엔진',
     desc: 'Elastic Search 탑재<br/>자동완성, 초성검색, 추천 제공<br/>상품 리스팅 속도 개선'
   },
-  {title: '결제 (PG)', desc: '운영 지표 모니터링 및 성능 분석'},
+
+  {icon: ICON_KEY_NAME['Solution2-6'], title: '결제 (PG)', desc: '운영 지표 모니터링 및 성능 분석'},
   {
+    icon: ICON_KEY_NAME['Solution2-7'],
     title: '본인 인증',
     desc: 'KG이니시스 통합인증 연동<br/>네이버, 토스, 패스, 카카오<br/>페이코, 금융인증서 등 지원'
   },
   {
+    icon: ICON_KEY_NAME['Solution2-8'],
     title: '주소찾기/메일, 메시지',
     desc: '주소 찾기 연동, 알림톡 등 연동<br/>STMP서버를 통한 고객 대상<br/>자동 발송 이메일 기능 제공'
   },
-  {title: '배송/물류', desc: '택배사 연동을 통해 배송 추적,<br/>Goodsflow 서비스 연동'},
-  {title: '개인정보 보안', desc: 'ISMS 요구사항에 준하는<br/>보안 지침 반영'},
   {
+    icon: ICON_KEY_NAME['Solution2-9'],
+    title: '배송/물류',
+    desc: '택배사 연동을 통해 배송 추적,<br/>Goodsflow 서비스 연동'
+  },
+  {
+    icon: ICON_KEY_NAME['Solution2-10'],
+    title: '개인정보 보안',
+    desc: 'ISMS 요구사항에 준하는<br/>보안 지침 반영'
+  },
+  {
+    icon: ICON_KEY_NAME['Solution2-11'],
     title: '웹로그, GA, 마케팅',
     desc: '웹로그 분석, GA 데이터를 통해<br/>효과적인 기업 마케팅 활용 지표 활용'
   }
@@ -125,17 +155,24 @@ const featureCards = [
 
   <section id="understand" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">솔루션 이해</span>`} />
+      <TitleSub
+        title={`솔루션<span class="mark"> 이해</span>`}
+        description={`<span class="mark">Front ↔ BackOffice ↔ Interface" 상호간의 최적화 된 e-Commerce 프레임 워크</span> 기반 특화된 기능 추가(Custom) 및 외부 I/F를 연동(Binding)하여 고객이 원하는 최적의 맞춤형 커머스 시스템을 제공함.`}
+      />
 
       <!-- TODO: 솔루션 구성도(삼각형 다이어그램) 이미지 삽입 -->
-      <div class="sol__diagram-placeholder" aria-hidden="true"></div>
+      <div class="sol__diagram-placeholder max-width-1760" aria-hidden="true">
+        <img src={SYMBOL015.src} alt="" />
+      </div>
 
       <div class="sol__understand-grid">
         {
           understandCards.map((card) => (
             <div class="sol__understand-card">
               {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="sol__understand-icon" aria-hidden="true" />
+              <span class="sol__understand-icon" aria-hidden="true">
+                <Icon name={card.icon} />
+              </span>
               <p class="sol__understand-title">{card.title}</p>
               <div class="sol__understand-list">
                 {card.items.map((item) => (
@@ -151,13 +188,21 @@ const featureCards = [
 
   <section id="tech" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">기술 구성 안내</span>`} />
+      <TitleSub
+        title={`기술<span class="mark"> 구성 안내</span>`}
+        description="다수의 커머스 플랫폼 수행 경험을 바탕으로 개발 된 안정성 기반, '구현 확장성/작업 효율성/운영 지속성'을 고려한 최적의 커머스 솔루션을 제공합니다."
+      />
+
       {
         techGroups.map((name) => (
           <div class="sol__tech-group">
-            <TitleThird>{name}</TitleThird>
-            {/* <!-- TODO: 아키텍처 구성도 이미지 삽입 --> */}
-            <div class="sol__tech-diagram sol__diagram-placeholder" aria-hidden="true" />
+            <TitleThird>{name.title}</TitleThird>
+            <div class="sol__tech-diagram">
+              {/* TODO: 아키텍처 구성도 이미지 삽입 */}
+              <div class="sol__diagram-placeholder" aria-hidden="true">
+                <img src={name.imgSrc} alt="" />
+              </div>
+            </div>
           </div>
         ))
       }
@@ -166,13 +211,15 @@ const featureCards = [
 
   <section id="features" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">주요 특장점</span>`} />
+      <TitleSub title={`주요<span class="mark"> 특장점</span>`} />
       <div class="sol__stat-grid">
         {
           featureCards.map((card) => (
             <div class="sol__stat-card">
               {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="sol__stat-icon" aria-hidden="true" />
+              <span class="sol__stat-icon" aria-hidden="true">
+                <Icon name={card.icon} />
+              </span>
               <p class="sol__stat-title">{card.title}</p>
               <p class="sol__stat-desc" set:html={card.desc} />
             </div>

@@ -13,6 +13,12 @@ import TitleSub from '~/components/common/TitleSub.astro'
 import TitleThird from '~/components/common/TitleThird.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
+import SYMBOL023 from '~/assets/images/common/symbol023.png'
+import SYMBOL024 from '~/assets/images/common/symbol024.png'
+import SYMBOL025 from '~/assets/images/common/symbol025.png'
+import SYMBOL026 from '~/assets/images/common/symbol026.png'
+import Icon from '~/components/common/Icon.astro'
+import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/solutions/commerce-platform')
 
@@ -25,6 +31,7 @@ const sectionTabs = [
 // --- 솔루션 이해: M2M-eTrade / M2M-FTA / M2M-eDrawback ---
 const understandCards = [
   {
+    icon: ICON_KEY_NAME['Solution5-1'],
     title: 'M2M-eTrade',
     items: [
       '전자 문서 : 인보이스, 패킹리스트, 선적서류, 통관서류를 전자화 하며 EDI 기반으로 기업 간 편리하게 처리',
@@ -35,6 +42,7 @@ const understandCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Solution5-2'],
     title: 'M2M-FTA',
     items: [
       'FTA를 효과적으로 준비해야 하는 국내 기업들이 실제 얻을 수 있는 관세 환급의 혜택을 확인할 수 있도록 지원함',
@@ -45,6 +53,7 @@ const understandCards = [
     ]
   },
   {
+    icon: ICON_KEY_NAME['Solution5-3'],
     title: 'M2M-eDrawback',
     items: [
       '수출입 기업의 Drawback 환급 신청과 관리 업무 프로세스를<br/>플랫폼을 통해 자동화한 시스템 (무역 비용을 최소화)',
@@ -56,77 +65,129 @@ const understandCards = [
 ]
 
 // --- 기술 구성 안내: 컴포넌트 별 아키텍처 다이어그램 (이미지) ---
-const techGroups = ['M2M-eTrade', 'M2M-FTA', 'M2M-eDrawback']
+const techGroups = [
+  {imgSrc: SYMBOL024.src, title: 'M2M-eTrade (수출입)'},
+  {imgSrc: SYMBOL025.src, title: 'M2M-FTA (원산지증명)'},
+  {imgSrc: SYMBOL026.src, title: 'M2M-eDrawback (전자문서연계)'}
+]
 
-// --- 주요 특장점 (20개) ---
-const featureCards = [
-  {title: '무역 프로세스 효율화', desc: '수출입 거래 전 과정을 전자화 하여<br/>시간, 비용 절감'},
-  {title: '투명성 강화', desc: '문서 위 변조 방지<br/>실시간 정보 공유'},
+// --- 주요 특장점: Figma 실측대로 3개 그룹(M2M-eTrade 5 / M2M-FTA 8 / M2M-eDrawback 7)으로 나뉜다 ---
+const featureGroups = [
   {
-    title: '거래 매칭',
-    desc: '플랫폼을 통한 거래 매칭에 따라<br/>해외 바이어, 셀러 발굴 용이<br/>글로벌 접근성 확대'
+    title: 'M2M-eTrade (수출입)',
+    cards: [
+      {
+        icon: ICON_KEY_NAME['Solution6-1'],
+        title: '무역 프로세스 효율화',
+        desc: '수출입 거래 전 과정을 전자화 하여<br/>시간, 비용 절감'
+      },
+
+      {
+        icon: ICON_KEY_NAME['Solution6-2'],
+        title: '투명성 강화',
+        desc: '문서 위 변조 방지<br/>실시간 정보 공유'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-3'],
+        title: '거래 매칭',
+        desc: '플랫폼을 통한 거래 매칭에 따라<br/>해외 바이어, 셀러 발굴 용이<br/>글로벌 접근성 확대'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-4'],
+        title: '리스크 관리',
+        desc: '통관, 운송 데이터 실시간 확인<br/>주문관리, 해외결제, 수출신고, 클레임 관리'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-5'],
+        title: '정부-기업 간 연계',
+        desc: '국가 간 전자무역 협정 및 시스템 연동<br/>(신용장 개설, 로컬L/C개설, 구매확인서,<br/>수출입통관, 관세환급, FTA원산지증명)'
+      }
+    ]
   },
   {
-    title: '리스크 관리',
-    desc: '통관, 운송 데이터 실시간 확인<br/>주문관리, 해외결제, 수출신고, 클레임 관리'
+    title: 'M2M-FTA (원산지증명)',
+    cards: [
+      {
+        icon: ICON_KEY_NAME['Solution6-6'],
+        title: '원산지 관리 자동화',
+        desc: '로케이션 단위로 재고 위치 파악<br/>입출고이력, 유효기간, LOT관리'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-7'],
+        title: '우수한 판정',
+        desc: '실시간 데이터 갱신<br/>재고 오류 최소화<br/>실사 부담 감소'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-8'],
+        title: '관세 혜택 극대화',
+        desc: '주문에 맞는 최적의 피킹 경로 제시<br/>출고 지연 방지'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-9'],
+        title: '관세 리스트 최소화',
+        desc: '과잉재고, 품절 방지<br/>안전 재고 자동 알림<br/>작업 동선, 작업시간 단축'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-10'],
+        title: '통합 시스템 연계',
+        desc: 'ERP, WMS, SCM 등과<br/>연계하여 데이터 일원화<br/>원산지 관리 체계 구축'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-12'],
+        title: '업무 효율성',
+        desc: '전산 자동화에 따른 수작업 제로<br/>증명서 발급, 협력사 원산지 확인서 관리<br/>등 즉시 처리 가능'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-13'],
+        title: '투명한 이력관리',
+        desc: '협력사 원산지 확인서 수치, 판정근거,<br/>발급 내역 등 이력 추적 기능<br/>감사-사후 검증 시 증빙 제출 용이'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-14'],
+        title: '다국어, 다협정 지원',
+        desc: '한•미, 한•EU, RCEP 등<br/>다양한 FTA 협정룰 지원<br/>글로벌 공급만 관리에 적합'
+      }
+    ]
   },
   {
-    title: '정부-기업 간 연계',
-    desc: '국가 간 전자무역 협정 및 시스템 연동<br/>(신용장 개설, 로컬L/C개설, 구매확인서,<br/>수출입통관, 관세환급, FTA원산지증명)'
-  },
-  {
-    title: '원산지 관리 자동화',
-    desc: '로케이션 단위로 재고 위치 파악<br/>입출고이력, 유효기간, LOT관리'
-  },
-  {title: '우수한 판정', desc: '실시간 데이터 갱신<br/>재고 오류 최소화<br/>실사 부담 감소'},
-  {title: '관세 혜택 극대화', desc: '주문에 맞는 최적의 피킹 경로 제시<br/>출고 지연 방지'},
-  {
-    title: '관세 리스트 최소화',
-    desc: '과잉재고, 품절 방지<br/>안전 재고 자동 알림<br/>작업 동선, 작업시간 단축'
-  },
-  {
-    title: '통합 시스템 연계',
-    desc: 'ERP, WMS, SCM 등과<br/>연계하여 데이터 일원화<br/>원산지 관리 체계 구축'
-  },
-  {
-    title: '업무 효율성',
-    desc: '전산 자동화에 따른 수작업 제로<br/>증명서 발급, 협력사 원산지 확인서 관리<br/>등 즉시 처리 가능'
-  },
-  {
-    title: '투명한 이력관리',
-    desc: '협력사 원산지 확인서 수치, 판정근거,<br/>발급 내역 등 이력 추적 기능<br/>감사-사후 검증 시 증빙 제출 용이'
-  },
-  {
-    title: '다국어, 다협정 지원',
-    desc: '한•미, 한•EU, RCEP 등<br/>다양한 FTA 협정룰 지원<br/>글로벌 공급만 관리에 적합'
-  },
-  {
-    title: '자동화 된 환급절차',
-    desc: '수입신고서, 수출신고서, 환급신청서<br/>자동 연계, 처리 제공<br/>수기 작업 최소화에 따른 업무 향상'
-  },
-  {
-    title: '정확한 환급관리',
-    desc: '관세환급 가능금액 자동 계산<br/>누락, 중복 환급 방지<br/>(기업손실최소화)'
-  },
-  {
-    title: '관세청 시스템 연동',
-    desc: '관세청 전자환급 시스템 연계<br/>서류 제출 간소화 & 신속한 환급 진행'
-  },
-  {
-    title: '투명한 데이터 관리',
-    desc: '모든 환급 이력을 전산화<br/>감사와 내부 통제 용이<br/>ERP, WMS, TMS 등 타 시스템과 통합 가능'
-  },
-  {
-    title: '비용 절감/수출 경쟁력강화',
-    desc: '인력 투입 감소에 따른 운영비용 절감<br/>환급 누락 방식에 따른 추가이익 창출'
-  },
-  {
-    title: '자동 업데이트·리스크 관리',
-    desc: '법령 변경, 환급 기준 변화에<br/>자동 업데이트 지원함으써<br/>관리의 효율성 강화'
-  },
-  {
-    title: '경영 의사결정 지원',
-    desc: '환급내역, 예상액 등 데이터 제공<br/>재무/회계 관리와 연계하여<br/>최적의 전략 수립 도움'
+    title: 'M2M-eDrawback (전자문서연계)',
+    cards: [
+      {
+        icon: ICON_KEY_NAME['Solution6-15'],
+        title: '자동화 된 환급절차',
+        desc: '수입신고서, 수출신고서, 환급신청서<br/>자동 연계, 처리 제공<br/>수기 작업 최소화에 따른 업무 향상'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-16'],
+        title: '정확한 환급관리',
+        desc: '관세환급 가능금액 자동 계산<br/>누락, 중복 환급 방지<br/>(기업손실최소화)'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-17'],
+        title: '관세청 시스템 연동',
+        desc: '관세청 전자환급 시스템 연계<br/>서류 제출 간소화 & 신속한 환급 진행'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-18'],
+        title: '투명한 데이터 관리',
+        desc: '모든 환급 이력을 전산화<br/>감사와 내부 통제 용이<br/>ERP, WMS, TMS 등 타 시스템과 통합 가능'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-19'],
+        title: '비용 절감/수출 경쟁력강화',
+        desc: '인력 투입 감소에 따른 운영비용 절감<br/>환급 누락 방식에 따른 추가이익 창출'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-20'],
+        title: '자동 업데이트·리스크 관리',
+        desc: '법령 변경, 환급 기준 변화에<br/>자동 업데이트 지원함으써<br/>관리의 효율성 강화'
+      },
+      {
+        icon: ICON_KEY_NAME['Solution6-21'],
+        title: '경영 의사결정 지원',
+        desc: '환급내역, 예상액 등 데이터 제공<br/>재무/회계 관리와 연계하여<br/>최적의 전략 수립 도움'
+      }
+    ]
   }
 ]
 ---
@@ -158,17 +219,24 @@ const featureCards = [
 
   <section id="understand" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">솔루션 이해</span>`} />
+      <TitleSub
+        title={`솔루션<span class="mark"> 이해</span>`}
+        description="<span class='mark'>'수출입 계약, 운송, 통관 결제, 수입관계 환급제도, 문서 전자거래 등 바이어와 셀러 간의 무역 거래 전 과정을 전자문서, 전자결제, 온라인 플랫폼 기반으로 디지털화'</span> 하여 투명하고, 빠르고, 효율적으로 통합 무역 업무를 처리할 수 있음."
+      />
 
       <!-- TODO: 솔루션 구성도(삼각형 다이어그램) 이미지 삽입 -->
-      <div class="sol__diagram-placeholder" aria-hidden="true"></div>
+      <div class="sol__diagram-placeholder max-width-1760" aria-hidden="true">
+        <img src={SYMBOL023.src} alt="" />
+      </div>
 
       <div class="sol__understand-grid">
         {
           understandCards.map((card) => (
             <div class="sol__understand-card">
               {/* TODO: 아이콘 이미지 삽입 */}
-              <span class="sol__understand-icon" aria-hidden="true" />
+              <span class="sol__understand-icon" aria-hidden="true">
+                <Icon name={card.icon} alt="" />
+              </span>
               <p class="sol__understand-title">{card.title}</p>
               <div class="sol__understand-list">
                 {card.items.map((item) => (
@@ -184,13 +252,18 @@ const featureCards = [
 
   <section id="tech" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">기술 구성 안내</span>`} />
+      <TitleSub
+        title={`기술<span class="mark"> 구성 안내</span>`}
+        description="무역 전 과정을 플랫폼화 하여 바이어-셀러 무역 간의 효율성을 제공하며, FTA 관세 혜택 자동 적용 지원함. 또한수입관계 환급 제도, 수출입 기록 연계 제공 등 쉽고 편리한 통합 무역 업무가 가능한 솔루션을 제공합니다."
+      />
       {
         techGroups.map((name) => (
           <div class="sol__tech-group">
-            <TitleThird>{name}</TitleThird>
+            <TitleThird>{name.title}</TitleThird>
             {/* <!-- TODO: 아키텍처 구성도 이미지 삽입 --> */}
-            <div class="sol__tech-diagram sol__diagram-placeholder" aria-hidden="true" />
+            <div class="sol__tech-diagram sol__diagram-placeholder" aria-hidden="true">
+              <img src={name.imgSrc} alt="" />
+            </div>
           </div>
         ))
       }
@@ -199,19 +272,26 @@ const featureCards = [
 
   <section id="features" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`<span class="mark">주요 특장점</span>`} />
-      <div class="sol__stat-grid">
-        {
-          featureCards.map((card) => (
-            <div class="sol__stat-card">
-              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="sol__stat-icon" aria-hidden="true" />
-              <p class="sol__stat-title">{card.title}</p>
-              <p class="sol__stat-desc" set:html={card.desc} />
+      <TitleSub title={`주요<span class="mark"> 특장점</span>`} />
+      {
+        featureGroups.map((group) => (
+          <div class="sol__feature-group">
+            <TitleThird>{group.title}</TitleThird>
+            <div class="sol__stat-grid">
+              {group.cards.map((card) => (
+                <div class="sol__stat-card">
+                  {/* TODO: 아이콘 이미지 삽입 */}
+                  <span class="sol__stat-icon" aria-hidden="true">
+                    <Icon name={card.icon} />
+                  </span>
+                  <p class="sol__stat-title">{card.title}</p>
+                  <p class="sol__stat-desc" set:html={card.desc} />
+                </div>
+              ))}
             </div>
-          ))
-        }
-      </div>
+          </div>
+        ))
+      }
     </div>
   </section>
 </Layout>

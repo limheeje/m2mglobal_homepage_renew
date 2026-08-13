@@ -1,0 +1,56 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// CaseCardGrid.astro 전용 스타일 (cc__ 접두사) — 페이지 전용 scss에 의존하지 않는 독립 컴포넌트.
+// ==========================================================================
+
+.cc__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cc-cols, 3), 1fr);
+  gap: rem(20px);
+}
+.cc__card {
+  padding: rem(36px);
+  background-color: color('Color/Box/Box BG');
+  border-radius: rem(24px);
+}
+.cc__thumb {
+  aspect-ratio: 501 / 285;
+  margin-bottom: rem(20px);
+  background-color: color('Black/5');
+  border-radius: rem(24px);
+  overflow: hidden;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.cc__title {
+  text-align: center;
+  @include font('Body 24 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(10px);
+}
+.cc__date {
+  text-align: center;
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+  display: block;
+  margin-bottom: rem(20px);
+}
+.cc__desc {
+  text-align: center;
+  @include font('Body 18 R');
+  color: color('Color/Black 100');
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .cc__grid {
+    grid-template-columns: 1fr;
+  }
+}

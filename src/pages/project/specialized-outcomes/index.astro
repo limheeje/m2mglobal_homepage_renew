@@ -4,17 +4,34 @@
 // CJ대한통운 로봇물류)을 한 페이지 앵커탭으로 통합 — 사용자가 AskUserQuestion에서
 // "한 페이지 안 앵커탭" 구조를 선택했고, 다른 멀티탭 페이지들과 동일한 패턴이다.
 //
-// 참고: 개요 탭 상단의 원형/네트워크 그래픽, Semimarket/SORIN의 화면 스크린샷 갤러리,
-// CJ대한통운의 "동작 구현 화면" 대형 이미지·PC/Tablet 화면 스크린샷은 전부 이미지라
-// 사용자 지시에 따라 빈 자리만 남기고 코딩하지 않았다.
+// 참고: 개요 탭 상단의 원형/네트워크 그래픽, Semimarket/SORIN의 "특별한 성과" 화면 스크린샷은
+// 이미지라 자리만 남기고, 그 아래 TitleThird 캡션(Figma 실측: 이미지+캡션 상하 조합)만 구현했다.
+// "CJ대한통운 로봇물류" 탭은 /robot-logistics/overview#cases와 완전히 동일한 내용이라
+// 컴포넌트화된 <CaseStudySection/>을 그대로 재사용한다(id만 이 페이지의 탭 앵커에 맞게 덮어씀).
 import {route} from '@config/route/routeMap.ts'
 import Layout from '~/layouts/Layout.astro'
 import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
+import TitleThird from '~/components/common/TitleThird.astro'
 import TitleMiddle from '~/components/common/TitleMiddle.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
+import EL_SOLUT_MR007 from '~/assets/images/common/el_solut_mr007.png'
+import EL_SOLUT_MR008 from '~/assets/images/common/el_solut_mr008.png'
+import EL_SOLUT_MR009 from '~/assets/images/common/el_solut_mr009.png'
+import EL_SOLUT_MR010 from '~/assets/images/common/el_solut_mr010.png'
+import EL_SOLUT_MR011 from '~/assets/images/common/el_solut_mr011.png'
+import EL_SOLUT_MR012 from '~/assets/images/common/el_solut_mr012.png'
+import EL_SOLUT_MR013 from '~/assets/images/common/el_solut_mr013.png'
+import EL_SOLUT_MR014 from '~/assets/images/common/el_solut_mr014.png'
+import EL_SOLUT_MR015 from '~/assets/images/common/el_solut_mr015.png'
+import EL_SOLUT_MR016 from '~/assets/images/common/el_solut_mr016.png'
+import EL_SOLUT_MR017 from '~/assets/images/common/el_solut_mr017.png'
+import EL_SOLUT_MR018 from '~/assets/images/common/el_solut_mr018.png'
+import CaseStudySection from '~/components/common/CaseStudySection.astro'
+import stepArrowUrl from '~/assets/images/step-arrow.svg'
+import SYMBOL029 from '~/assets/images/common/symbol029.png'
 
 const localNavigation = route.find((item) => item.href === '/project/reference')
 
@@ -177,84 +194,22 @@ const sorinRows = [
   }
 ]
 
-// --- CJ대한통운: 로봇기반 통합관제시스템 구축 사례 (타임라인) ---
-const cjTimelinePhases = [
-  {
-    label: '로봇물류플랫폼 기술확보',
-    dateRange: '2022.07 - 2024.12',
-    stages: [
-      {step: '1단계(2022.07-2023.03)', desc: '이기종무인운반차(AGV) 로봇통합관제플랫폼 개발'},
-      {step: '2단계(2023.05-2024.03)', desc: '이기종자율이동로봇(AMR) 로봇통합관제플랫폼개발'},
-      {
-        step: '3단계(2024.07-2024.12)',
-        desc: '로봇(셔틀및소형AGV), 기타IT 디바이스를 통해 이커머스 택배에서 활용가능 한 로봇 운영(피킹,보관) 플랫폼 개발'
-      }
-    ]
-  },
-  {
-    label: '현장 센터 시범적용 & 운용 (국내 1위 물류 업체 협업)',
-    dateRange: '2024.12 - 2025.12',
-    stages: [{step: '1차(2024.12-2025.03)', desc: 'AMR 25대적용(이천물류센터)'}]
-  }
+// --- Semimarket / SORIN 공용: 특별한 성과(화면 스크린샷 6종 + 캡션) ---
+const semimarketGalleryCaptions = [
+  {imgSrc: EL_SOLUT_MR007.src, title: '메인 화면'},
+  {imgSrc: EL_SOLUT_MR008.src, title: '상품리스트'},
+  {imgSrc: EL_SOLUT_MR009.src, title: '상품 상세'},
+  {imgSrc: EL_SOLUT_MR010.src, title: '장바구니'},
+  {imgSrc: EL_SOLUT_MR011.src, title: 'PO 대쉬보드'},
+  {imgSrc: EL_SOLUT_MR012.src, title: '모바일'}
 ]
-
-// --- CJ대한통운: 구현 기능 (7개) ---
-const cjFeatures = [
-  'AGV 제어\nRoot-Planning',
-  '해당 기종\n로봇 트래픽\n제어',
-  '작업자 배치 ·\n주문 배치/할당\n알고리즘',
-  '비동기\n메시지 제어',
-  '3D Map\n구현/제어',
-  'MSA\n(Micro Service Architecture)',
-  '하드웨어 제어 · 빅데이터\n수집/가공'
-]
-
-// --- CJ대한통운: 연동 제조사 AMR / AGV ---
-const cjEquipment = [
-  {maker: 'LG', model: 'Cloi', type: 'AMR', usage: '피킹'},
-  {maker: 'ForwardX', model: 'Flex Series', type: 'AMR', usage: '피킹'},
-  {maker: 'Omron', model: 'LD/MD/HD', type: 'AMR', usage: '피킹'},
-  {maker: 'Geek+', model: 'P500R', type: 'AGV', usage: '보충/피킹'},
-  {maker: 'Hik', model: 'Q7-1000E', type: 'AMR', usage: '보충/피킹'},
-  {maker: 'Hik', model: 'F0-50DCH', type: 'AGV', usage: '보충/피킹'}
-]
-
-// --- CJ대한통운: 시스템 업무 구성 (8개 카드) ---
-const cjSystemCards = [
-  {
-    title: '정보 조회',
-    items: ['로봇 모니터링', '로봇 모니터링', '보충 작업 내역', '피킹 작업 내역']
-  },
-  {
-    title: '센터 관리',
-    items: [
-      '센터 정보 관리',
-      '구역 정보 관리',
-      '렉 관리',
-      '스테이션 관리',
-      '설비관리',
-      '맵 관리',
-      '화주 관리'
-    ]
-  },
-  {title: 'SKU 정보관리', items: []},
-  {title: '주문관리', items: ['보충 주문', '피킹 주문']},
-  {
-    title: '재고관리',
-    items: ['재고 조회', '재고 조사', '이상 재고 관리', '상품 점유 내역', '과잉/부족 관리']
-  },
-  {
-    title: '시스템관리',
-    items: ['권한그룹 관리', '사용자 관리', '메뉴 관리', '공통 코드 관리', '로그 관리']
-  },
-  {title: '통계', items: ['주문통계', '보관량 통계', '로봇 가동 통계', '작업 통계']},
-  {title: '작업자', items: ['보충 작업', '피킹 작업', '반출 피킹', '재고 조사']}
-]
-
-// --- CJ대한통운: 주요 기능 소개 (PC / Tablet) ---
-const cjCompareCols = [
-  {device: 'PC', items: ['보충주문', '일반 피킹', '반출 피킹', '재고조사']},
-  {device: 'Tablet', items: ['대시보드', '오더피킹', '맵 조회', '실시간 위치']}
+const sorinGalleryCaptions = [
+  {imgSrc: EL_SOLUT_MR013.src, title: '메인 화면'},
+  {imgSrc: EL_SOLUT_MR014.src, title: '구매 입찰'},
+  {imgSrc: EL_SOLUT_MR015.src, title: '알루미늄 바로 구매'},
+  {imgSrc: EL_SOLUT_MR016.src, title: '견적문의'},
+  {imgSrc: EL_SOLUT_MR017.src, title: '계약 관리'},
+  {imgSrc: EL_SOLUT_MR018.src, title: '지정가 주문'}
 ]
 ---
 
@@ -289,7 +244,9 @@ const cjCompareCols = [
   <section id="overview" class="g-section">
     <div class="innerWrap">
       <!-- TODO: 원형/네트워크 그래픽 이미지 삽입 -->
-      <div class="spec__banner-diagram" aria-hidden="true"></div>
+      <div class="spec__banner-diagram" aria-hidden="true">
+        <img src={SYMBOL029.src} alt="" />
+      </div>
 
       <TitleMiddle>Why M2M GLOBAL? 특별한 성과가 차이를 만듭니다.</TitleMiddle>
 
@@ -322,21 +279,24 @@ const cjCompareCols = [
         {
           semimarketRows.map((row) => (
             <div class="spec__row">
-              <div class="spec__row-label">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="spec__row-icon-ph" aria-hidden="true" />
-                <p set:html={row.label.replace('\n', '<br/>')} />
+              <div class="spec__row-box">
+                <div class="spec__row-label">
+                  {/* TODO: 아이콘 이미지 삽입 */}
+                  <span class="spec__row-icon-ph" aria-hidden="true" />
+                  <p set:html={row.label.replace('\n', '<br/>')} />
+                </div>
+                <div class="spec__row-summary">
+                  {row.summary.map((text) => (
+                    <TextList type="type_1">{text}</TextList>
+                  ))}
+                </div>
               </div>
-              <div class="spec__row-summary">
-                {row.summary.map((text) => (
-                  <TextList type="type_1">{text}</TextList>
-                ))}
-              </div>
-              {/* <!-- TODO: 화살표 이미지 삽입 --> */}
-              <span class="spec__row-arrow-ph" aria-hidden="true" />
+              <span class="spec__row-arrow" aria-hidden="true">
+                <img src={stepArrowUrl.src} alt="" />
+              </span>
               <div class="spec__row-list">
                 {row.items.map((text) => (
-                  <TextList type="type_2">{text}</TextList>
+                  <TextList type="type_1">{text}</TextList>
                 ))}
               </div>
             </div>
@@ -346,7 +306,17 @@ const cjCompareCols = [
 
       <TitleSub title={`특별한 <span class="mark">성과</span>`} />
       <div class="spec__gallery-grid">
-        {Array.from({length: 6}).map(() => <div class="spec__gallery-ph" aria-hidden="true" />)}
+        {
+          semimarketGalleryCaptions.map((caption) => (
+            <div class="spec__gallery-card">
+              {/* TODO: 앱 화면 스크린샷 이미지 삽입 */}
+              <div class="spec__gallery-ph" aria-hidden="true">
+                <img src={caption.imgSrc} alt="" />
+              </div>
+              <TitleThird>{caption.title}</TitleThird>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -358,21 +328,24 @@ const cjCompareCols = [
         {
           sorinRows.map((row) => (
             <div class="spec__row">
-              <div class="spec__row-label">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="spec__row-icon-ph" aria-hidden="true" />
-                <p set:html={row.label.replace('\n', '<br/>')} />
+              <div class="spec__row-box">
+                <div class="spec__row-label">
+                  {/* TODO: 아이콘 이미지 삽입 */}
+                  <span class="spec__row-icon-ph" aria-hidden="true" />
+                  <p set:html={row.label.replace('\n', '<br/>')} />
+                </div>
+                <div class="spec__row-summary">
+                  {row.summary.map((text) => (
+                    <TextList type="type_1">{text}</TextList>
+                  ))}
+                </div>
               </div>
-              <div class="spec__row-summary">
-                {row.summary.map((text) => (
-                  <TextList type="type_1">{text}</TextList>
-                ))}
-              </div>
-              {/* <!-- TODO: 화살표 이미지 삽입 --> */}
-              <span class="spec__row-arrow-ph" aria-hidden="true" />
+              <span class="spec__row-arrow" aria-hidden="true">
+                <img src={stepArrowUrl.src} alt="" />
+              </span>
               <div class="spec__row-list">
                 {row.items.map((text) => (
-                  <TextList type="type_2">{text}</TextList>
+                  <TextList type="type_1">{text}</TextList>
                 ))}
               </div>
             </div>
@@ -382,123 +355,20 @@ const cjCompareCols = [
 
       <TitleSub title={`특별한 <span class="mark">성과</span>`} />
       <div class="spec__gallery-grid">
-        {Array.from({length: 6}).map(() => <div class="spec__gallery-ph" aria-hidden="true" />)}
-      </div>
-    </div>
-  </section>
-
-  <section id="cj" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`로봇기반 통합관제시스템 <span class="mark">구축 사례</span>`} />
-      <div class="spec__timeline">
         {
-          cjTimelinePhases.map((phase) => (
-            <div class="spec__timeline-phase">
-              <p class="spec__timeline-phase-label">{phase.label}</p>
-              <p class="spec__timeline-phase-date">{phase.dateRange}</p>
-              <div class="spec__timeline-stages">
-                {phase.stages.map((stage) => (
-                  <div class="spec__timeline-stage">
-                    <p class="spec__timeline-step">{stage.step}</p>
-                    <p class="spec__timeline-desc">{stage.desc}</p>
-                  </div>
-                ))}
+          sorinGalleryCaptions.map((caption) => (
+            <div class="spec__gallery-card">
+              {/* TODO: 앱 화면 스크린샷 이미지 삽입 */}
+              <div class="spec__gallery-ph" aria-hidden="true">
+                <img src={caption.imgSrc} alt="" />
               </div>
+              <TitleThird>{caption.title}</TitleThird>
             </div>
-          ))
-        }
-      </div>
-
-      <TitleSub title={`구현 <span class="mark">기능</span>`} />
-      <div class="spec__num-grid">
-        {
-          cjFeatures.map((text, i) => (
-            <div class="spec__num-card">
-              <p class="spec__num-index">{String(i + 1).padStart(2, '0')}</p>
-              <p class="spec__num-label" set:html={text.replace(/\n/g, '<br/>')} />
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub title={`연동 제조사 <span class="mark">AMR / AGV</span>`} />
-      <div class="spec__equip-table">
-        <div class="spec__equip-row spec__equip-row--head">
-          <span>제조사</span><span>모델</span><span>유형</span><span>용도</span>
-        </div>
-        {
-          cjEquipment.map((row) => (
-            <div class="spec__equip-row">
-              <>
-                <span>{row.maker}</span>
-                <span>{row.model}</span>
-                <span>{row.type}</span>
-                <span>{row.usage}</span>
-              </>
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub
-        title={`CJ 대한통운 APRIL 로봇통합플랫폼 : <span class="mark">동작 구현 화면</span>`}
-      />
-      <!-- TODO: 동작 구현 화면 이미지 삽입 -->
-      <div class="spec__image-ph spec__image-ph--wide" aria-hidden="true"></div>
-
-      <TitleSub title={`시스템 <span class="mark">업무 구성</span>`} />
-      <p class="spec__intro-text">
-        플랫폼 통합관제, 통합정보관리, 작업관리, 사용자 시스템을 통합 구현하여 로봇 운영과 물류
-        업무를 하나의 플랫폼에서 효율적으로 관리할 수 있는 환경을 제공합니다.
-      </p>
-      <div class="spec__sysmap-grid">
-        {
-          cjSystemCards.map((card) => (
-            <div class="spec__sysmap-card">
-              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span class="spec__sysmap-icon-ph" aria-hidden="true" />
-              <p class="spec__sysmap-title">{card.title}</p>
-              {card.items.length > 0 && (
-                <ul class="spec__sysmap-list">
-                  {card.items.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub title={`주요 <span class="mark">기능 소개</span>`} />
-      <p class="spec__intro-text">
-        PC는 보충주문, 일반 피킹, 반출 피킹, 재고조사 등 운영 관리 기능을 제공하고, 태블릿은
-        대시보드, 오더 피킹, 맵 조회, 실시간 위치 확인 등 현장 중심의 작업 지원 기능을 제공합니다.
-      </p>
-      <div class="spec__compare">
-        {
-          cjCompareCols.map((col, i) => (
-            <>
-              {
-                /* TODO: 화살표 이미지 삽입 */
-                i === 1 && <span class="spec__compare-arrow-ph" aria-hidden="true" />
-              }
-              <div class="spec__compare-col">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="spec__compare-icon-ph" aria-hidden="true" />
-                <p class="spec__compare-device">{col.device}</p>
-                <div class="spec__compare-list">
-                  {col.items.map((text) => (
-                    <TextList type="type_2">{text}</TextList>
-                  ))}
-                </div>
-                {/* <!-- TODO: 화면 스크린샷 이미지 삽입 --> */}
-                <div class="spec__image-ph" aria-hidden="true" />
-              </div>
-            </>
           ))
         }
       </div>
     </div>
   </section>
+
+  <CaseStudySection id="cj" />
 </Layout>

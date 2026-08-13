@@ -1,0 +1,28 @@
+---
+// 주요 고객사 로고 그리드 (재사용 컴포넌트) — /company/news, /ai-engine/ai-commerce,
+// /e-commerce/commerce-technology에서 각자 구현하던 동일 패턴을 통합.
+// 로고 자산은 /company/news 작업 시 원본 다운로드해 보관 중인 src/assets/images/clients/*.png를
+// 그대로 재사용한다(신규 다운로드 아님) — 파일명 규칙 ico_client_{key}.png.
+export interface Props {
+  clients: {key: string; name: string}[]
+  columns?: number
+}
+
+const {clients, columns = 6} = Astro.props
+
+const clientLogos = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
+  eager: true
+})
+const logoSrc = (key: string) =>
+  clientLogos[`/src/assets/images/clients/ico_client_${key}.png`].default.src
+---
+
+<div class="cl__grid" style={`--cl-cols: ${columns};`}>
+  {
+    clients.map((client) => (
+      <div class="cl__card">
+        <img src={logoSrc(client.key)} alt={client.name} loading="lazy" />
+      </div>
+    ))
+  }
+</div>

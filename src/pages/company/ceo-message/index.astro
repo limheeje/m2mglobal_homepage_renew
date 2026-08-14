@@ -41,63 +41,65 @@ const values = [
 ---
 
 <Layout>
-  <SubBanner
-    title="Company"
-    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-2'} />
-  <TitleMain title="CEO 인사말" />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Company"
+      description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-2'} />
+    <TitleMain title="CEO 인사말" />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <p class="company__ceo-intro">
-        엠투엠글로벌은 프로젝트 수행에 있어 세 가지 본질적인 흐름을 최우선 가치로 삼고 있습니다.
-      </p>
-      <div class="company__ceo-steps">
-        {
-          steps.map((step, i) => (
-            <>
-              <div class="company__ceo-step">
-                <Label>{step.label}</Label>
-                <p class="company__ceo-step-title">{step.title}</p>
-              </div>
-              {i < steps.length - 1 && (
-                <span class="company__ceo-step-arrow" aria-hidden="true">
-                  <img src={stepArrowUrl.src} alt="" />
+    <section class="g-section">
+      <div class="innerWrap">
+        <p class="company__ceo-intro">
+          엠투엠글로벌은 프로젝트 수행에 있어 세 가지 본질적인 흐름을 최우선 가치로 삼고 있습니다.
+        </p>
+        <div class="company__ceo-steps">
+          {
+            steps.map((step, i) => (
+              <>
+                <div class="company__ceo-step">
+                  <Label>{step.label}</Label>
+                  <p class="company__ceo-step-title">{step.title}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <span class="company__ceo-step-arrow" aria-hidden="true">
+                    <img src={stepArrowUrl.src} alt="" />
+                  </span>
+                )}
+              </>
+            ))
+          }
+        </div>
+
+        <div class="company__ceo-quote">
+          <p class="company__ceo-quote-text">
+            AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br />
+            다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이
+            실행하고 성장합니다.
+          </p>
+          <p class="company__ceo-quote-sign">
+            대표이사 <strong>김 승 원</strong>
+          </p>
+        </div>
+
+        <div class="company__ceo-values">
+          {
+            values.map((item) => (
+              <div class="company__ceo-value">
+                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                <span
+                  class="company__icon-ph company__icon-ph--lg company__ceo-value-icon"
+                  aria-hidden="true"
+                >
+                  <Icon name={item.codeIcon} />
                 </span>
-              )}
-            </>
-          ))
-        }
+                <p class="company__ceo-value-text">{item.codeContent}</p>
+              </div>
+            ))
+          }
+        </div>
       </div>
-
-      <div class="company__ceo-quote">
-        <p class="company__ceo-quote-text">
-          AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br />
-          다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이
-          실행하고 성장합니다.
-        </p>
-        <p class="company__ceo-quote-sign">
-          대표이사 <strong>김 승 원</strong>
-        </p>
-      </div>
-
-      <div class="company__ceo-values">
-        {
-          values.map((item) => (
-            <div class="company__ceo-value">
-              {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-              <span
-                class="company__icon-ph company__icon-ph--lg company__ceo-value-icon"
-                aria-hidden="true"
-              >
-                <Icon name={item.codeIcon} />
-              </span>
-              <p class="company__ceo-value-text">{item.codeContent}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

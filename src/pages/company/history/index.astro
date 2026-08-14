@@ -200,90 +200,92 @@ function pairUp<T>(list: T[]): [T, T | null][] {
 ---
 
 <Layout>
-  <SubBanner
-    title="Company"
-    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-3'} />
-  <TitleMain
-    title="회사 연혁"
-    description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다. (고용노동부 지정 청년친화 강소기업)"
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Company"
+      description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-3'} />
+    <TitleMain
+      title="회사 연혁"
+      description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다. (고용노동부 지정 청년친화 강소기업)"
+    />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`History`} />
+    <section class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`History`} />
 
-      <div class="company__history-year-tabs" id="historyYearTabs">
-        {
-          yearTabs.map((tab, i) => (
-            <a
-              class="company__history-tab"
-              class:list={{'is-active': i === 0}}
-              data-target={tab.id}
-              href={`#${tab.id}`}
-            >
-              {tab.label}
-            </a>
-          ))
-        }
-      </div>
+        <div class="company__history-year-tabs" id="historyYearTabs">
+          {
+            yearTabs.map((tab, i) => (
+              <a
+                class="company__history-tab"
+                class:list={{'is-active': i === 0}}
+                data-target={tab.id}
+                href={`#${tab.id}`}
+              >
+                {tab.label}
+              </a>
+            ))
+          }
+        </div>
 
-      <div id="recent" class="company__history-panel is-active">
-        {
-          pairUp(recentYears).map(([left, right], i, arr) => (
-            <div class="company__history-row" class:list={{'is-last': i === arr.length - 1}}>
-              <div class="company__history-cell">
-                <span class="company__history-year">{left.year}</span>
-                <ul class="company__history-list">
-                  {left.items.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              {right && (
+        <div id="recent" class="company__history-panel is-active">
+          {
+            pairUp(recentYears).map(([left, right], i, arr) => (
+              <div class="company__history-row" class:list={{'is-last': i === arr.length - 1}}>
                 <div class="company__history-cell">
-                  <span class="company__history-year">{right.year}</span>
+                  <span class="company__history-year">{left.year}</span>
                   <ul class="company__history-list">
-                    {right.items.map((item) => (
+                    {left.items.map((item) => (
                       <li>{item}</li>
                     ))}
                   </ul>
                 </div>
-              )}
-            </div>
-          ))
-        }
-      </div>
-
-      <div id="archive" class="company__history-panel">
-        {
-          pairUp(archiveYears).map(([left, right], i, arr) => (
-            <div class="company__history-row" class:list={{'is-last': i === arr.length - 1}}>
-              <div class="company__history-cell">
-                <span class="company__history-year">{left.year}</span>
-                <ul class="company__history-list">
-                  {left.items.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
+                {right && (
+                  <div class="company__history-cell">
+                    <span class="company__history-year">{right.year}</span>
+                    <ul class="company__history-list">
+                      {right.items.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-              {right && (
+            ))
+          }
+        </div>
+
+        <div id="archive" class="company__history-panel">
+          {
+            pairUp(archiveYears).map(([left, right], i, arr) => (
+              <div class="company__history-row" class:list={{'is-last': i === arr.length - 1}}>
                 <div class="company__history-cell">
-                  <span class="company__history-year">{right.year}</span>
+                  <span class="company__history-year">{left.year}</span>
                   <ul class="company__history-list">
-                    {right.items.map((item) => (
+                    {left.items.map((item) => (
                       <li>{item}</li>
                     ))}
                   </ul>
                 </div>
-              )}
-            </div>
-          ))
-        }
+                {right && (
+                  <div class="company__history-cell">
+                    <span class="company__history-year">{right.year}</span>
+                    <ul class="company__history-list">
+                      {right.items.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>
 
 <script>

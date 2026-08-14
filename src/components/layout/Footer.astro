@@ -6,6 +6,7 @@
 // Button/TextButton 공용 컴포넌트가 아직 없어서(신규 구조 미구현) Gnb.astro와 동일하게
 // 순수 마크업 + footer.scss 직접 스타일링 방식으로 맞췄다.
 const year = new Date().getFullYear()
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 ---
 
 <footer class="footer-wrap">
@@ -32,7 +33,9 @@ const year = new Date().getFullYear()
 
       <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href -->
       <div class="downloads">
-        <a href="#" class="download-btn">회사소개서<span class="download-btn-icon"></span></a>
+        <a href={`${PUBLIC_BUILD_URL}/etc/m2m_company_info.pdf`} class="download-btn"
+          >회사소개서<span class="download-btn-icon"></span></a
+        >
         <a href="#" class="download-btn">로봇물류 소개서<span class="download-btn-icon"></span></a>
       </div>
     </div>

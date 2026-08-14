@@ -7,33 +7,40 @@ import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import Button from '~/components/common/Button.astro'
 
-const PRIVACY_DOC_URL = 'http://www.m2mglobal.co.kr/etc/privacy.html'
-
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 const policies = [
-  {title: '개인정보 처리방침 (26.02.01)'},
-  {title: '개인정보 처리방침 (24.12.24)'},
-  {title: '개인정보 처리방침 (21.11.12)'}
+  {title: '개인정보 처리방침 (26.02.01)', href: '/etc/[보안관리] 개인정보 처리방침_260201.pdf'},
+  {title: '개인정보 처리방침 (24.12.24)', href: '/etc/[보안관리] 개인정보 처리방침(24.12.24).pdf'},
+  {title: '개인정보 처리방침 (21.11.12)', href: '/etc/[보안관리] 개인정보 처리방침(21.11.12).pdf'}
 ]
 ---
 
 <Layout>
-  <SubBanner title="개인정보처리방침" />
-  <TitleMain title="개인정보 처리방침" />
+  <div class="sub-wrap">
+    <SubBanner title="개인정보처리방침" />
+    <TitleMain title="개인정보 처리방침" />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <div class="privacy__list">
-        {
-          policies.map((item) => (
-            <div class="privacy__row">
-              <p class="privacy__title">{item.title}</p>
-              <Button href={PRIVACY_DOC_URL} variant="white" size="sm" useSuffixIcon="blank">
-                자세히보기
-              </Button>
-            </div>
-          ))
-        }
+    <section class="g-section">
+      <div class="innerWrap">
+        <div class="privacy__list">
+          {
+            policies.map((item) => (
+              <div class="privacy__row">
+                <p class="privacy__title">{item.title}</p>
+                <Button
+                  href={PUBLIC_BUILD_URL + item.href}
+                  variant="white"
+                  size="sm"
+                  useSuffixIcon="blank"
+                  target="_blank"
+                >
+                  자세히보기
+                </Button>
+              </div>
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

@@ -202,126 +202,128 @@ const clients = [
 ---
 
 <Layout>
-  <SubBanner
-    title="e-Commerce"
-    description={`Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.`}
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-E-COMMERCE-ID-1'} />
-  <TitleMain
-    title="Commerce Technology"
-    description={`&quot;일반 커머스를 비롯 ~ 실시간 시세, 환율, 재고 연동형 거래 및 기업간의 자재, 원자재 거래를 플랫폼으로 구현한 B2B 특화된 커머스 기술력을 보유하고 있습니다.&quot;<br/>「Front ↔ BackOffice ↔ Interface」 상호 간의 최적화 된 e-Commerce 프레임워크 기반 커머스 시스템 제공`}
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="e-Commerce"
+      description={`Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.`}
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-E-COMMERCE-ID-1'} />
+    <TitleMain
+      title="Commerce Technology"
+      description={`&quot;일반 커머스를 비롯 ~ 실시간 시세, 환율, 재고 연동형 거래 및 기업간의 자재, 원자재 거래를 플랫폼으로 구현한 B2B 특화된 커머스 기술력을 보유하고 있습니다.&quot;<br/>「Front ↔ BackOffice ↔ Interface」 상호 간의 최적화 된 e-Commerce 프레임워크 기반 커머스 시스템 제공`}
+    />
 
-  <div class="innerWrap">
-    <div class="bs-tab-group">
-      {
-        sectionTabs.map((tab, i) => (
-          <a
-            class="bs-tab tab__item"
-            class:list={{'is-active': i === 0}}
-            data-type="box"
-            href={`#${tab.id}`}
-          >
-            {tab.label}
-          </a>
-        ))
-      }
-    </div>
-  </div>
-
-  <section id="features" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
-      <div class="ec__feature-grid">
+      <div class="bs-tab-group">
         {
-          featureCards.map((card) => (
-            <div class="ec__feature-card">
-              <div class="ec__feature-head">
-                {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="ec__feature-icon" aria-hidden="true">
-                  <Icon name={card.icon} />
-                </span>
-                <p class="ec__feature-title">{card.title}</p>
-              </div>
-              <div>
-                {card.items.map((item) => (
-                  <TextList>{item}</TextList>
-                ))}
-              </div>
-            </div>
+          sectionTabs.map((tab, i) => (
+            <a
+              class="bs-tab tab__item"
+              class:list={{'is-active': i === 0}}
+              data-type="box"
+              href={`#${tab.id}`}
+            >
+              {tab.label}
+            </a>
           ))
         }
       </div>
     </div>
-  </section>
 
-  <section id="usage" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`활용 <span class="mark">분야</span>`} />
-      <div class="ec__tag-row">
-        {mallTypes.map((type) => <span class="ec__tag">{type}</span>)}
-      </div>
-      <div class="ec__banne_pl">
-        <TitleMiddle>e-Commerce 프레임워크</TitleMiddle>
-      </div>
-
-      <!-- TODO: "e-Commerce 프레임워크"(프론트(사용자)/핵심기능/백오피스(관리자)) 다이어그램 이미지 삽입 —
-           사용자 요청에 따라 세부 구현은 하지 않고 이미지로 대체 -->
-      <div class="ec__diagram-placeholder" aria-hidden="true">
-        <img src={SYMBOL007.src} alt="" />
-      </div>
-    </div>
-  </section>
-
-  <section id="references" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`주요 <span class="mark">레퍼런스</span>`}
-        description="다양한 커머스 플랫폼 프로젝트를 성공적으로 수행하며 실행력을 입증했으며, 신뢰할 수 있는 상생 파트너로 자리매김을 했습니다."
-      />
-      <div class="ec__ref-list-wrap">
-        {
-          references.map((item) => (
-            <div class="ec__ref-row">
-              <div class="ec__ref-media">
-                {/* TODO: 구축 사례 화면 이미지 삽입 (담당자 작업 예정) */}
-                <div class="ec__ref-media-main ec__thumb-ph" aria-hidden="true">
-                  <img src={item.imgPc} alt="" />
+    <section id="features" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
+        <div class="ec__feature-grid">
+          {
+            featureCards.map((card) => (
+              <div class="ec__feature-card">
+                <div class="ec__feature-head">
+                  {/* TODO: 아이콘 이미지 삽입 */}
+                  <span class="ec__feature-icon" aria-hidden="true">
+                    <Icon name={card.icon} />
+                  </span>
+                  <p class="ec__feature-title">{card.title}</p>
                 </div>
-                <div class="ec__ref-media-sub ec__thumb-ph" aria-hidden="true">
-                  <img src={item.imgMobile} alt="" />
-                </div>
-              </div>
-              <div class="ec__ref-content">
-                <div class="ec__ref-head">
-                  <div class="ec__ref-head-row">
-                    <p class="ec__ref-title">{item.title}</p>
-                    <Button variant="white" size="sm" useSuffixIcon="blank">
-                      바로가기
-                    </Button>
-                  </div>
-                  <p class="ec__ref-desc">{item.desc}</p>
-                </div>
-                <div class="ec__ref-features">
-                  {item.list.map((text) => (
-                    <TextList>{text}</TextList>
+                <div>
+                  {card.items.map((item) => (
+                    <TextList>{item}</TextList>
                   ))}
                 </div>
               </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="clients" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`주요 <span class="mark">고객사</span>`}
-        description="다양한 커머스 플랫폼 프로젝트를 성공적으로 수행하며 실행력을 입증했으며, 신뢰할 수 있는 상생 파트너로 자리매김을 했습니다."
-      />
-      <ClientLogoGrid clients={clients} />
-    </div>
-  </section>
+    <section id="usage" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`활용 <span class="mark">분야</span>`} />
+        <div class="ec__tag-row">
+          {mallTypes.map((type) => <span class="ec__tag">{type}</span>)}
+        </div>
+        <div class="ec__banne_pl">
+          <TitleMiddle>e-Commerce 프레임워크</TitleMiddle>
+        </div>
+
+        <!-- TODO: "e-Commerce 프레임워크"(프론트(사용자)/핵심기능/백오피스(관리자)) 다이어그램 이미지 삽입 —
+             사용자 요청에 따라 세부 구현은 하지 않고 이미지로 대체 -->
+        <div class="ec__diagram-placeholder" aria-hidden="true">
+          <img src={SYMBOL007.src} alt="" />
+        </div>
+      </div>
+    </section>
+
+    <section id="references" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`주요 <span class="mark">레퍼런스</span>`}
+          description="다양한 커머스 플랫폼 프로젝트를 성공적으로 수행하며 실행력을 입증했으며, 신뢰할 수 있는 상생 파트너로 자리매김을 했습니다."
+        />
+        <div class="ec__ref-list-wrap">
+          {
+            references.map((item) => (
+              <div class="ec__ref-row">
+                <div class="ec__ref-media">
+                  {/* TODO: 구축 사례 화면 이미지 삽입 (담당자 작업 예정) */}
+                  <div class="ec__ref-media-main ec__thumb-ph" aria-hidden="true">
+                    <img src={item.imgPc} alt="" />
+                  </div>
+                  <div class="ec__ref-media-sub ec__thumb-ph" aria-hidden="true">
+                    <img src={item.imgMobile} alt="" />
+                  </div>
+                </div>
+                <div class="ec__ref-content">
+                  <div class="ec__ref-head">
+                    <div class="ec__ref-head-row">
+                      <p class="ec__ref-title">{item.title}</p>
+                      <Button variant="white" size="sm" useSuffixIcon="blank">
+                        바로가기
+                      </Button>
+                    </div>
+                    <p class="ec__ref-desc">{item.desc}</p>
+                  </div>
+                  <div class="ec__ref-features">
+                    {item.list.map((text) => (
+                      <TextList>{text}</TextList>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="clients" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`주요 <span class="mark">고객사</span>`}
+          description="다양한 커머스 플랫폼 프로젝트를 성공적으로 수행하며 실행력을 입증했으며, 신뢰할 수 있는 상생 파트너로 자리매김을 했습니다."
+        />
+        <ClientLogoGrid clients={clients} />
+      </div>
+    </section>
+  </div>
 </Layout>

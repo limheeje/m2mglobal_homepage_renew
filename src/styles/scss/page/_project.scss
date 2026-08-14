@@ -125,8 +125,22 @@
   display: inline-block;
   width: rem(24px);
   height: rem(24px);
-  background-color: color('Color/Black 10');
   border-radius: rem(6px);
+  &.ico-001{
+    @include get-background-svg(icon_prj_box, color('Color/Primary Color'));
+  }
+  &.ico-002{
+    @include get-background-svg(icon_prj_bank, color('Color/Primary Color'));
+  }
+  &.ico-003{
+    @include get-background-svg(icon_prj_card, color('Color/Primary Color'));
+  }
+  &.ico-004{
+    @include get-background-svg(icon_prj_check, color('Color/Primary Color'));
+  }
+  &.ico-005{
+    @include get-background-svg(icon_prj_inbox, color('Color/Primary Color'));
+  }
 }
 .spec__row-summary {
   flex: 1 1 0%;

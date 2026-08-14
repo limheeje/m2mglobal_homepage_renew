@@ -106,109 +106,111 @@ const featureCards = [
 ---
 
 <Layout>
-  <SubBanner
-    title="e-Commerce"
-    description={`Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.`}
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-E-COMMERCE-ID-2'} />
-  <TitleMain
-    title="B2B Commerce"
-    description={`"기업 전용몰 구축부터 계약단가 · 승인결재 · 정산까지" 기업 구매 전 과정을 하나의 흐름으로 연결합니다.<br/>ERP · SCM · WMS와 실시간 연계되는 엔터프라이즈 커머스 플랫폼을 제공합니다.`}
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="e-Commerce"
+      description={`Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.`}
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-E-COMMERCE-ID-2'} />
+    <TitleMain
+      title="B2B Commerce"
+      description={`"기업 전용몰 구축부터 계약단가 · 승인결재 · 정산까지" 기업 구매 전 과정을 하나의 흐름으로 연결합니다.<br/>ERP · SCM · WMS와 실시간 연계되는 엔터프라이즈 커머스 플랫폼을 제공합니다.`}
+    />
 
-  <div class="innerWrap">
-    <div class="bs-tab-group">
-      {
-        sectionTabs.map((tab, i) => (
-          <a
-            class="bs-tab tab__item"
-            class:list={{'is-active': i === 0}}
-            data-type="box"
-            href={`#${tab.id}`}
-          >
-            {tab.label}
-          </a>
-        ))
-      }
-    </div>
-  </div>
-  <section id="features" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
-      <div class="ec__feature-grid">
+      <div class="bs-tab-group">
         {
-          featureCards.map((card) => (
-            <div class="ec__feature-card">
-              <div class="ec__feature-head">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="ec__feature-icon" aria-hidden="true">
-                  <Icon name={card.icon} />
+          sectionTabs.map((tab, i) => (
+            <a
+              class="bs-tab tab__item"
+              class:list={{'is-active': i === 0}}
+              data-type="box"
+              href={`#${tab.id}`}
+            >
+              {tab.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    <section id="features" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
+        <div class="ec__feature-grid">
+          {
+            featureCards.map((card) => (
+              <div class="ec__feature-card">
+                <div class="ec__feature-head">
+                  {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                  <span class="ec__feature-icon" aria-hidden="true">
+                    <Icon name={card.icon} />
+                  </span>
+                  <p class="ec__feature-title">{card.title}</p>
+                </div>
+                <div>
+                  {card.items.map((lines) => (
+                    <TextList>
+                      {lines[0]}
+                      <br />
+                      {lines[1]}
+                    </TextList>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+    <section id="process" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`기업 구매 <span class="mark">프로세스</span>`}
+          description="구매 요청부터 정산까지 전 단계를 단일 플랫폼에서 처리합니다."
+        />
+        <div class="ec__box-grid ec__box-grid--6">
+          {
+            processSteps.map((item) => (
+              <div class="ec__step-card">
+                <Label type="type_1">{item.step}</Label>
+                <p class="ec__step-title">{item.title}</p>
+                <p class="ec__step-desc">{item.desc.join(' · ')}</p>
+              </div>
+            ))
+          }
+        </div>
+        <div class="ec__stat-bann">
+          <TitleMiddle>M2M Global B2B Commerce Platform — 전 단계 단일 플랫폼 처리</TitleMiddle>
+        </div>
+
+        <div class="ec__stat-grid">
+          {
+            processFeatures.map((f) => (
+              <div class="ec__stat-card">
+                {/* TODO: 아이콘 이미지 삽입 */}
+                <span class="ec__stat-icon" aria-hidden="true">
+                  <Icon name={f.icon} />
                 </span>
-                <p class="ec__feature-title">{card.title}</p>
+                <p class="ec__stat-title">{f.title}</p>
+                <p class="ec__stat-desc" set:html={f.desc} />
               </div>
-              <div>
-                {card.items.map((lines) => (
-                  <TextList>
-                    {lines[0]}
-                    <br />
-                    {lines[1]}
-                  </TextList>
-                ))}
-              </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
-  <section id="process" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`기업 구매 <span class="mark">프로세스</span>`}
-        description="구매 요청부터 정산까지 전 단계를 단일 플랫폼에서 처리합니다."
-      />
-      <div class="ec__box-grid ec__box-grid--6">
-        {
-          processSteps.map((item) => (
-            <div class="ec__step-card">
-              <Label type="type_1">{item.step}</Label>
-              <p class="ec__step-title">{item.title}</p>
-              <p class="ec__step-desc">{item.desc.join(' · ')}</p>
-            </div>
-          ))
-        }
-      </div>
-      <div class="ec__stat-bann">
-        <TitleMiddle>M2M Global B2B Commerce Platform — 전 단계 단일 플랫폼 처리</TitleMiddle>
-      </div>
+    </section>
 
-      <div class="ec__stat-grid">
-        {
-          processFeatures.map((f) => (
-            <div class="ec__stat-card">
-              {/* TODO: 아이콘 이미지 삽입 */}
-              <span class="ec__stat-icon" aria-hidden="true">
-                <Icon name={f.icon} />
-              </span>
-              <p class="ec__stat-title">{f.title}</p>
-              <p class="ec__stat-desc" set:html={f.desc} />
-            </div>
-          ))
-        }
+    <section id="system" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`시스템 <span class="mark">연계 구조</span>`}
+          description="Front ↔ BackOffice ↔ Interface 3계층 프레임워크 위에서 기간계 시스템과 연동됩니다."
+        />
+        <div class="sw-x-image">
+          <img src={SYMBOL009.src} alt="" />
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section id="system" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`시스템 <span class="mark">연계 구조</span>`}
-        description="Front ↔ BackOffice ↔ Interface 3계층 프레임워크 위에서 기간계 시스템과 연동됩니다."
-      />
-      <div class="sw-x-image">
-        <img src={SYMBOL009.src} alt="" />
-      </div>
-    </div>
-  </section>
-  <CaseCardGrid id="cases" columns={3} cases={cases} />
+    </section>
+    <CaseCardGrid id="cases" columns={3} cases={cases} />
+  </div>
 </Layout>

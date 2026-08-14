@@ -12,10 +12,18 @@
   inset: 0;
   z-index: 200;
   overflow-y: auto;
-  background-color: color('Color/Secondary Color');
+  background: color('Color/Secondary Color') no-repeat center bottom url(~/assets/images/common/allmenu_bg.png);
+  background-size: cover;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s;
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(22, 37, 63, 0.7) 30%, rgba(22, 37, 63, 0));
+    pointer-events: none;
+  }
 }
 
 body.is-allmenu-open .all-menu {
@@ -68,6 +76,11 @@ body.is-allmenu-open .all-menu {
   display: flex;
   flex-direction: column;
   gap: rem(12px);
+  @media only screen and (min-width: $breakpoint-md){
+    &{
+      padding-bottom: rem(62px);
+    }
+  }
 }
 .all-menu__eyebrow {
   @include font('H1');
@@ -81,6 +94,11 @@ body.is-allmenu-open .all-menu {
 .all-menu__nav {
   display: flex;
   flex-direction: column;
+  @media only screen and (min-width: $breakpoint-md){
+    &{
+      padding-top: rem(43px);
+    }
+  }
 }
 // 1Depth 컬럼 하나(타이틀 + 언더라인 + 그 밑에 자기 소속 2Depth 리스트)가 세로로 쌓이는 단위 —
 // 2Depth를 1Depth의 자식으로 두는 DOM 구조라야 "몇 번째 1Depth의 하위 메뉴인지"가 마크업만 보고도 맞다.

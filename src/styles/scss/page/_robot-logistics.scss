@@ -23,13 +23,14 @@
 .rl__diagram-placeholder {
   width: 100%;
   aspect-ratio: 16 / 7;
+  padding: rem(36px) rem(24px);
   border-radius: rem(24px);
-  background-color: color('Color/Black 3');
+  border: rem(1px) solid color('Color/Box/Border color');
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  img{
+  img {
     max-width: rem(1190px);
   }
 }
@@ -184,6 +185,30 @@
   border-radius: 0 rem(24px) rem(24px) 0;
   padding: rem(60px) rem(24px);
   flex-wrap: wrap;
+  position: relative;
+  @media only screen and (min-width: $breakpoint-md) {
+    &:before,
+    &:after {
+      content: '';
+      width: rem(2px);
+      height: rem(20px);
+      position: absolute;
+      background: color('Color/Primary Color');
+      left: 0;
+      bottom: 0;
+      transform-origin: left top;
+    }
+    &:before {
+      left: rem(11px);
+      bottom: rem(-5px);
+      transform: rotate(45deg);
+    }
+    &:after {
+      left: rem(-3px);
+      bottom: rem(-21px);
+      transform: rotate(-45deg);
+    }
+  }
 }
 .rl__seamless-stage {
   flex: 0 0 auto;
@@ -245,11 +270,26 @@
 .rl__robot-group + .rl__robot-group {
   margin-top: rem(40px);
 }
-// Figma에는 카드 테두리가 없다 — 타이틀 하단 구분선(black-100) + 스펙 행별 구분선만 존재
-// 그룹 타이틀 → 첫 로봇 20px, 로봇 간 40px (Figma 실측)
-.rl__robot-card {
-  margin-top: rem(20px);
+// Figma 실측(node 2528:39319): 타이틀(425px 고정 폭 열)과 로봇 카드(오른쪽 나머지 폭 열)가 좌우 배치.
+// 로봇 카드 열은 타이틀과 같은 줄(row 1)에서 시작하지 않고, 타이틀 아래로 한 칸 내려온 자리(row 2)에서
+// 시작한다 — grid 2행 구조로 만들면 row 1 높이가 타이틀의 실제 렌더 높이를 그대로 따라가서, 별도
+// 하드코딩 없이도 "컨텐츠 상단 여백 = 타이틀 높이(+행간 20px)"가 자동으로 성립한다.
+.rl__robot-group {
+  display: grid;
+  grid-template-columns: rem(425px) 1fr;
+  column-gap: rem(20px);
+  row-gap: rem(20px);
+  .bs-title-third {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+  }
 }
+.rl__robot-group-content {
+  grid-column: 2;
+  grid-row: 2;
+}
+// Figma에는 카드 테두리가 없다 — 타이틀 하단 구분선(black-100) + 스펙 행별 구분선만 존재. 로봇 간 40px.
 .rl__robot-card + .rl__robot-card {
   margin-top: rem(40px);
 }
@@ -549,6 +589,13 @@
     align-self: flex-start;
     margin-top: rem(0);
     transform: rotate(90deg);
+  }
+  .rl__robot-group {
+    grid-template-columns: 1fr;
+  }
+  .rl__robot-group-content {
+    grid-column: 1;
+    grid-row: 2;
   }
   .rl__robot-body {
     flex-direction: column;

@@ -4,6 +4,10 @@
 @use '../abstracts/_mixins' as *;
 
 .bs-navigation{
+    // position: sticky;
+    // top: rem(80px);
+    // background: color('Color/White');
+    z-index: 1;
     .inner{
         display: flex;
         align-items: center;

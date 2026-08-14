@@ -4,11 +4,20 @@
 @use '../abstracts/_mixins' as *;
 
 // 전 페이지 공통 "맨 위로 가기" FAB — Layout.astro <body> 끝에 전역 렌더링,
-// scroll-to-top.ts가 .layout__top-btn 클래스를 훅으로 클릭 시 스크롤한다.
+// scroll-to-top.ts가 .layout__top-btn 클래스를 훅으로 클릭 시 스크롤하고, 스크롤 위치에 따라
+// is-visible 클래스와 bottom 인라인 스타일을 갱신한다.
+//   - scrollY가 0이면 숨김, 뷰포트 높이의 절반을 넘게 스크롤하면 노출되고 화면 하단에서 30px
+//     위에 붙는다.
+//   - 문서 맨 아래에 가까워지면 계속 30px로 두면 푸터에 겹치므로, JS가 남은 스크롤 거리에 맞춰
+//     bottom을 30→178px로 끌어올려 문서 기준 178px 지점에서 멈춘 것처럼 보이게 한다(더 스크롤해도
+//     178px에서 고정, 다시 위로 스크롤하면 다시 30px까지 따라 내려옴).
+//   - position은 항상 fixed로 고정한다 — Layout.astro의 html,body{height:100%} 때문에 absolute로
+//     전환하면 containing block이 뷰포트 1장 높이로 잡혀서 버튼이 화면 밖으로 사라져버리는 버그가
+//     있었다(실측으로 확인됨) — bottom 값만 JS로 계산해서 옮기는 방식으로 우회.
 .layout__top-btn {
   position: fixed;
-  right: rem(24px);
-  bottom: rem(24px);
+  right: rem(14px);
+  bottom: rem(30px);
   z-index: 50;
   width: rem(48px);
   height: rem(48px);
@@ -17,16 +26,30 @@
   justify-content: center;
   border: none;
   border-radius: 50%;
-  background-color: color('Color/Secondary Color');
+  box-shadow: 0px rem(4px) rem(20px) 0px #00000026;
+  background-color: color('Color/White');
   cursor: pointer;
-  &:hover {
-    background-color: color('Color/Primary Color');
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
   }
-}
-.layout__top-btn-icon {
-  display: block;
-  width: rem(20px);
-  height: rem(20px);
-  transform: rotate(-90deg);
-  @include get-background-svg(icon_arrow_right, color('Color/White'));
+  .layout__top-btn-icon {
+    display: block;
+    width: rem(24px);
+    height: rem(24px);
+    @include get-background-svg(icon_top_btn, color('Color/Black 100'));
+  }
+  &:hover {
+    background-color: color('Color/Secondary Color');
+    .layout__top-btn-icon {
+      @include get-background-svg(icon_top_btn, color('Color/White'));
+    }
+  }
 }

@@ -27,57 +27,59 @@ const totalPages = groups.reduce((sum, g) => sum + g.children.length, 0)
 ---
 
 <Layout>
-  <section class="g-section">
-    <div class="innerWrap">
-      <TitleMain
-        title="전체 페이지 목록"
-        description="실 서비스 라우트가 아닌 개발/검수용 페이지입니다. 1Depth/2Depth 구조는 routeMap.ts를 그대로 반영하며, 링크는 모두 새 탭으로 열립니다."
-      />
+  <div class="sub-wrap">
+    <section class="g-section">
+      <div class="innerWrap">
+        <TitleMain
+          title="전체 페이지 목록"
+          description="실 서비스 라우트가 아닌 개발/검수용 페이지입니다. 1Depth/2Depth 구조는 routeMap.ts를 그대로 반영하며, 링크는 모두 새 탭으로 열립니다."
+        />
 
-      <p class="page-list__summary">
-        <strong>{groups.length}</strong>개 메뉴 · <strong>{totalPages}</strong>개 페이지
-      </p>
+        <p class="page-list__summary">
+          <strong>{groups.length}</strong>개 메뉴 · <strong>{totalPages}</strong>개 페이지
+        </p>
 
-      <div class="page-list">
-        {
-          groups.map((group) => (
-            <div class="page-list__group">
-              <div class="page-list__group-head">
-                <span class="page-list__depth">1Depth</span>
-                <p class="page-list__group-title">
-                  {group.href ? (
-                    <a href={group.href} target="_blank" rel="noopener noreferrer">
-                      {group.label}
-                    </a>
-                  ) : (
-                    group.label
-                  )}
-                </p>
-                <span class="page-list__count">{group.children.length}</span>
+        <div class="page-list">
+          {
+            groups.map((group) => (
+              <div class="page-list__group">
+                <div class="page-list__group-head">
+                  <span class="page-list__depth">1Depth</span>
+                  <p class="page-list__group-title">
+                    {group.href ? (
+                      <a href={group.href} target="_blank" rel="noopener noreferrer">
+                        {group.label}
+                      </a>
+                    ) : (
+                      group.label
+                    )}
+                  </p>
+                  <span class="page-list__count">{group.children.length}</span>
+                </div>
+                <ul class="page-list__children">
+                  {group.children.map((child) => (
+                    <li>
+                      <a
+                        class="page-list__link"
+                        href={child.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span class="page-list__depth page-list__depth--sm">2Depth</span>
+                        <span class="page-list__link-label">{child.koLabel}</span>
+                        <span class="page-list__link-path">{child.href}</span>
+                        <span class="page-list__link-go" aria-hidden="true">
+                          ↗
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul class="page-list__children">
-                {group.children.map((child) => (
-                  <li>
-                    <a
-                      class="page-list__link"
-                      href={child.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <span class="page-list__depth page-list__depth--sm">2Depth</span>
-                      <span class="page-list__link-label">{child.koLabel}</span>
-                      <span class="page-list__link-path">{child.href}</span>
-                      <span class="page-list__link-go" aria-hidden="true">
-                        ↗
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

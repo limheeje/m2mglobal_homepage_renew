@@ -20,6 +20,7 @@ import SYMBOL003 from '~/assets/images/common/symbol003.png'
 import SYMBOL004 from '~/assets/images/common/symbol004.png'
 import SYMBOL005 from '~/assets/images/common/symbol005.png'
 import ClientLogoGrid from '~/components/common/ClientLogoGrid.astro'
+import UiNoti from '~/components/ui/box/UiNoti.astro'
 const localNavigation = route.find((item) => item.href === '/ai-engine/machine-learning')
 
 const sectionTabs = [
@@ -211,316 +212,309 @@ const caseClients = [
 ---
 
 <Layout>
-  <SubBanner
-    title="AI Engine"
-    description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다."
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-AI-ENGINE-ID-2'} />
-  <TitleMain
-    title="AI Commerce"
-    description="Hybrid Multi-Layer Scoring Framework를 통해 거래·추천·분석까지<br/>AI Commerce 비즈니스를 실현 중인 M2M GLOBAL만의 지능형 프레임워크"
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="AI Engine"
+      description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다."
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-AI-ENGINE-ID-2'} />
+    <TitleMain
+      title="AI Commerce"
+      description="Hybrid Multi-Layer Scoring Framework를 통해 거래·추천·분석까지<br/>AI Commerce 비즈니스를 실현 중인 M2M GLOBAL만의 지능형 프레임워크"
+    />
 
-  <div class="ai-com-sub-banner">
-    <div class="innerWrap">
-      <div class="inner">
-        <!--  -->
-        <div class="item">
-          <div class="txt">
-            <span class="tit">후보군 생성</span>
-            <span class="dec">(Candidate Generation)</span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="txt">
-            <span class="tit">AI 스코어링</span>
-            <span class="dec">(AI Scoring)</span>
-          </div>
-        </div>
-        <div class="item point">
-          <div class="txt">
-            <span class="tit">AI Commerce</span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="txt">
-            <span class="tit">최종 랭킹</span>
-            <span class="dec">(Ranking & Optimization)</span>
-          </div>
-        </div>
-        <div class="item">
-          <div class="txt">
-            <span class="tit">비즈니스 룰 적용</span>
-            <span class="dec">(Business Rules)</span>
-          </div>
-        </div>
-        <!--  -->
-      </div>
-    </div>
-  </div>
-
-  <div class="innerWrap">
-    <div class="bs-tab-group">
-      {
-        sectionTabs.map((tab, i) => (
-          <a
-            class="bs-tab tab__item"
-            class:list={{'is-active': i === 0}}
-            data-type="box"
-            href={`#${tab.id}`}
-          >
-            {tab.label}
-          </a>
-        ))
-      }
-    </div>
-  </div>
-
-  <section id="design" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`추천 <span class="mark">설계</span>`}
-        description="추천 시스템은 데이터·모델·운영 통제를 결합한 전략 자산으로 개인화 → 분석 기반 최적화 → 확장 가능한 아키텍처로 단계적으로 진화합니다."
-      />
-      <div class="ai__feature-grid">
-        {
-          designCards.map((card) => (
-            <div class="ai__feature-card">
-              <div class="ai__feature-head">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="ai__feature-icon" aria-hidden="true">
-                  <Icon name={card.icon} />
-                </span>
-                <p class="ai__feature-title">{card.title}</p>
-              </div>
-              <div>
-                {card.items.map((item) => (
-                  <TextList>{item}</TextList>
-                ))}
-              </div>
+    <div class="ai-com-sub-banner">
+      <div class="innerWrap">
+        <div class="inner">
+          <!--  -->
+          <div class="item">
+            <div class="txt">
+              <span class="tit">후보군 생성</span>
+              <span class="dec">(Candidate Generation)</span>
             </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section id="architecture" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`추천 <span class="mark">아키텍처 전환</span>`}
-        description="데이터 기반 개인화 및 실시간 보정 체계로 전환 함으로써, 고객 여정 전반에서 실질적인 매출 기여가 가능한 추천 체계로 진화합니다."
-      />
-      <div class="ai__level-grid">
-        {
-          levels.map((lv) => (
-            <div class="ai__level-card">
-              <Label type="type_2">{lv.level}</Label>
-              <p class="ai__level-title">{lv.title}</p>
-              <div>
-                {lv.items.map((item) => (
-                  <TextList>{item}</TextList>
-                ))}
-              </div>
-              <div class="ai__level-meta">
-                <div class="ai__meta-row">
-                  <span class="ai__meta-label">데이터 활용 수준</span>
-                  <span class="ai__meta-value">{lv.dataLevel}</span>
-                </div>
-                <div class="ai__meta-row">
-                  <span class="ai__meta-label">성과 지표</span>
-                  <span class="ai__meta-value">{lv.metric}</span>
-                </div>
-              </div>
+          </div>
+          <div class="item">
+            <div class="txt">
+              <span class="tit">AI 스코어링</span>
+              <span class="dec">(AI Scoring)</span>
             </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section id="context" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`상황별 <span class="mark">추천 전략</span>`}
-        description="고객 여정 단계에 따라 목적이 달라져야 하며, 홈 · 상품상세· 장바구니 · 주문완료 단계별로 강력한 추천 데이터를 적용합니다."
-      />
-      <div class="ai__flow">
-        {
-          journeyStages.map((stage, i) => (
-            <>
-              <div class="ai__flow-box">
-                <p class="ai__flow-title">{stage.title}</p>
-                {stage.items.map((item) => (
-                  <TextList>{item}</TextList>
-                ))}
-              </div>
-              {i < journeyStages.length - 1 && (
-                <span class="ai__flow-arrow" aria-hidden="true">
-                  <img src={stepArrowUrl.src} alt="" />
-                </span>
-              )}
-            </>
-          ))
-        }
-      </div>
-
-      <TitleSub title={`커머스 특성을 반영한 <span class="mark">추천 설계 적용</span>`} />
-      <div class="ai__strategy-row">
-        {
-          strategyCards.map((card) => (
-            <div class="ai__strategy-card">
-              <p class="ai__strategy-title">{card.title}</p>
-              <div>
-                {card.items.map((item) => (
-                  <TextList>{item}</TextList>
-                ))}
-              </div>
+          </div>
+          <div class="item point">
+            <div class="txt">
+              <span class="tit">AI Commerce</span>
             </div>
-          ))
-        }
-        <span class="ai__strategy-arrow" aria-hidden="true">
-          <img src={stepArrowUrl.src} alt="" />
-        </span>
-        <div class="ai__strategy-banner">
-          <p class="ai__strategy-banner-title">Context-Aware Semantic Scoring Engine</p>
-          <p class="ai__strategy-banner-desc">
-            Score = Member Type + Logistics Condition + Inventory Sensitivity + Behavior Signal
-          </p>
+          </div>
+          <div class="item">
+            <div class="txt">
+              <span class="tit">최종 랭킹</span>
+              <span class="dec">(Ranking & Optimization)</span>
+            </div>
+          </div>
+          <div class="item">
+            <div class="txt">
+              <span class="tit">비즈니스 룰 적용</span>
+              <span class="dec">(Business Rules)</span>
+            </div>
+          </div>
+          <!--  -->
         </div>
       </div>
     </div>
-  </section>
 
-  <section id="scoring" class="g-section">
     <div class="innerWrap">
-      <TitleSub
-        title={`Hybrid Multi-Layer <span class="mark">Scoring Framework</span>`}
-        description="다층 구조 기반의 통합 가중치 설계를 통해 최종 점수를 산정하는 지능형 의사결정 엔진으로 상품 구조·회원 정책·재고 조건·행동 신호를 동시에 반영하여 전략적으로 제어 가능한 추천 체계를 구현합니다."
-      />
-      <div class="ai__scoring-grid">
-        <div>
-          <p class="ai__scoring-col-title">Core Architecture Layers</p>
+      <div class="bs-tab-group">
+        {
+          sectionTabs.map((tab, i) => (
+            <a
+              class="bs-tab tab__item"
+              class:list={{'is-active': i === 0}}
+              data-type="box"
+              href={`#${tab.id}`}
+            >
+              {tab.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <section id="design" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`추천 <span class="mark">설계</span>`}
+          description="추천 시스템은 데이터·모델·운영 통제를 결합한 전략 자산으로 개인화 → 분석 기반 최적화 → 확장 가능한 아키텍처로 단계적으로 진화합니다."
+        />
+        <div class="ai__feature-grid">
           {
-            scoringLayers.map((layer) => (
-              <div class="ai__scoring-layer">
-                <p class="ai__scoring-layer-head">{layer.title}</p>
-                {layer.items.map((item) => (
-                  <TextList>{item}</TextList>
-                ))}
-              </div>
-            ))
-          }
-        </div>
-
-        <!-- TODO: 이미지 삽입 -->
-        <div class="ai__scoring-image ai__thumb-ph" aria-hidden="true">
-          <img src={SYMBOL001.src} alt="" />
-        </div>
-
-        <div>
-          <p class="ai__scoring-col-title">Applied Recommendation Functions</p>
-          {
-            scoringFunctions.map((layer) => (
-              <div class="ai__scoring-layer">
-                <p class="ai__scoring-layer-head">{layer.title}</p>
-                {layer.items.map((item) => (
-                  <TextList>{item}</TextList>
-                ))}
+            designCards.map((card) => (
+              <div class="ai__feature-card">
+                <div class="ai__feature-head">
+                  {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                  <span class="ai__feature-icon" aria-hidden="true">
+                    <Icon name={card.icon} />
+                  </span>
+                  <p class="ai__feature-title">{card.title}</p>
+                </div>
+                <div>
+                  {card.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
               </div>
             ))
           }
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="personalize" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`Vector 기반 <span class="mark">개인화 프로파일링</span>`}
-        description="사용자 행동과 상품 속성을 벡터 공간으로 구조화하여, 유사도 기반 개인화 추천을 구현합니다. 동일 상품이라도 사용자 맥락에 따라 노출 우선순위가 동적으로 재정렬됩니다."
-      />
-      <p class="ai__diagram-pill">Layer 1 &amp; 2 : 광범위한 탐색과 정교한 취향 매칭</p>
-      <div class="ai__personalize-grid">
-        <div class="ai__personalize-card">
-          <!-- TODO: 아이콘 이미지 삽입 -->
-          <span class="ai__icon-ph" aria-hidden="true">
-            <Icon name={ICON_KEY_NAME['AI & Machine Learning4-1']} />
+    <section id="architecture" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`추천 <span class="mark">아키텍처 전환</span>`}
+          description="데이터 기반 개인화 및 실시간 보정 체계로 전환 함으로써, 고객 여정 전반에서 실질적인 매출 기여가 가능한 추천 체계로 진화합니다."
+        />
+        <div class="ai__level-grid">
+          {
+            levels.map((lv) => (
+              <div class="ai__level-card">
+                <Label type="type_2">{lv.level}</Label>
+                <p class="ai__level-title">{lv.title}</p>
+                <div>
+                  {lv.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
+                <UiNoti dataLevel={lv.dataLevel} metric={lv.metric} />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="context" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`상황별 <span class="mark">추천 전략</span>`}
+          description="고객 여정 단계에 따라 목적이 달라져야 하며, 홈 · 상품상세· 장바구니 · 주문완료 단계별로 강력한 추천 데이터를 적용합니다."
+        />
+        <div class="ai__flow">
+          {
+            journeyStages.map((stage, i) => (
+              <>
+                <div class="ai__flow-box">
+                  <p class="ai__flow-title">{stage.title}</p>
+                  {stage.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
+                {i < journeyStages.length - 1 && (
+                  <span class="ai__flow-arrow" aria-hidden="true">
+                    <img src={stepArrowUrl.src} alt="" />
+                  </span>
+                )}
+              </>
+            ))
+          }
+        </div>
+
+        <TitleSub title={`커머스 특성을 반영한 <span class="mark">추천 설계 적용</span>`} />
+        <div class="ai__strategy-row">
+          {
+            strategyCards.map((card) => (
+              <div class="ai__strategy-card">
+                <p class="ai__strategy-title">{card.title}</p>
+                <div>
+                  {card.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+          <span class="ai__strategy-arrow" aria-hidden="true">
+            <img src={stepArrowUrl.src} alt="" />
           </span>
-          <p class="ai__personalize-title">{personalizeCards[0].title}</p>
-          <p class="ai__personalize-subtitle">{personalizeCards[0].subtitle}</p>
-          <p class="ai__personalize-desc" set:html={personalizeCards[0].desc} />
-          <div>
-            {personalizeCards[0].items.map((item) => <TextList type="type_2">{item}</TextList>)}
+          <div class="ai__strategy-banner">
+            <p class="ai__strategy-banner-title">Context-Aware Semantic Scoring Engine</p>
+            <p class="ai__strategy-banner-desc">
+              Score = Member Type + Logistics Condition + Inventory Sensitivity + Behavior Signal
+            </p>
           </div>
         </div>
-        <!-- TODO: 이미지 삽입 -->
-        <div class="ai__personalize-image ai__thumb-ph" aria-hidden="true">
-          <img src={SYMBOL005.src} alt="" />
-        </div>
-        <div class="ai__personalize-card">
-          <!-- TODO: 아이콘 이미지 삽입 -->
-          <span class="ai__icon-ph" aria-hidden="true">
-            <Icon name={ICON_KEY_NAME['AI & Machine Learning4-2']} />
-          </span>
-          <p class="ai__personalize-title">{personalizeCards[1].title}</p>
-          <p class="ai__personalize-subtitle">{personalizeCards[1].subtitle}</p>
-          <p class="ai__personalize-desc" set:html={personalizeCards[1].desc} />
+      </div>
+    </section>
+
+    <section id="scoring" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`Hybrid Multi-Layer <span class="mark">Scoring Framework</span>`}
+          description="다층 구조 기반의 통합 가중치 설계를 통해 최종 점수를 산정하는 지능형 의사결정 엔진으로 상품 구조·회원 정책·재고 조건·행동 신호를 동시에 반영하여 전략적으로 제어 가능한 추천 체계를 구현합니다."
+        />
+        <div class="ai__scoring-grid">
           <div>
-            {personalizeCards[1].items.map((item) => <TextList type="type_2">{item}</TextList>)}
+            <p class="ai__scoring-col-title">Core Architecture Layers</p>
+            {
+              scoringLayers.map((layer) => (
+                <div class="ai__scoring-layer">
+                  <p class="ai__scoring-layer-head">{layer.title}</p>
+                  {layer.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
+              ))
+            }
+          </div>
+
+          <!-- TODO: 이미지 삽입 -->
+          <div class="ai__scoring-image ai__thumb-ph" aria-hidden="true">
+            <img src={SYMBOL001.src} alt="" />
+          </div>
+
+          <div>
+            <p class="ai__scoring-col-title">Applied Recommendation Functions</p>
+            {
+              scoringFunctions.map((layer) => (
+                <div class="ai__scoring-layer">
+                  <p class="ai__scoring-layer-head">{layer.title}</p>
+                  {layer.items.map((item) => (
+                    <TextList>{item}</TextList>
+                  ))}
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="repurchase" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`재구매 예측 <span class="mark">모델 전략</span>`}
-        description="사용자의 구매 주기를 예측하여, 선제적 추천을 가능하게 합니다. 예상 필요 시점에 스코어를 가중 개인화 추천을 지능적으로 제공함으로써 재구매 전환율을 증대시킵니다."
-      />
-      <p class="ai__diagram-pill">Layer 3 : 커머스의 핵심, "재구매 타이밍" 예측</p>
-      <!-- TODO: 다이어그램 이미지 삽입 -->
-      <div class="ai__diagram-placeholder" aria-hidden="true">
-        <img src={SYMBOL002.src} alt="" />
+    <section id="personalize" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`Vector 기반 <span class="mark">개인화 프로파일링</span>`}
+          description="사용자 행동과 상품 속성을 벡터 공간으로 구조화하여, 유사도 기반 개인화 추천을 구현합니다. 동일 상품이라도 사용자 맥락에 따라 노출 우선순위가 동적으로 재정렬됩니다."
+        />
+        <p class="ai__diagram-pill">Layer 1 &amp; 2 : 광범위한 탐색과 정교한 취향 매칭</p>
+        <div class="ai__personalize-grid">
+          <div class="ai__personalize-card">
+            <!-- TODO: 아이콘 이미지 삽입 -->
+            <span class="ai__icon-ph" aria-hidden="true">
+              <Icon name={ICON_KEY_NAME['AI & Machine Learning4-1']} />
+            </span>
+            <p class="ai__personalize-title">{personalizeCards[0].title}</p>
+            <p class="ai__personalize-subtitle">{personalizeCards[0].subtitle}</p>
+            <p class="ai__personalize-desc" set:html={personalizeCards[0].desc} />
+            <div>
+              {personalizeCards[0].items.map((item) => <TextList type="type_2">{item}</TextList>)}
+            </div>
+          </div>
+          <!-- TODO: 이미지 삽입 -->
+          <div class="ai__personalize-image ai__thumb-ph" aria-hidden="true">
+            <img src={SYMBOL005.src} alt="" />
+          </div>
+          <div class="ai__personalize-card">
+            <!-- TODO: 아이콘 이미지 삽입 -->
+            <span class="ai__icon-ph" aria-hidden="true">
+              <Icon name={ICON_KEY_NAME['AI & Machine Learning4-2']} />
+            </span>
+            <p class="ai__personalize-title">{personalizeCards[1].title}</p>
+            <p class="ai__personalize-subtitle">{personalizeCards[1].subtitle}</p>
+            <p class="ai__personalize-desc" set:html={personalizeCards[1].desc} />
+            <div>
+              {personalizeCards[1].items.map((item) => <TextList type="type_2">{item}</TextList>)}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="reranking" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`비즈니스 반영  <span class="mark">재랭킹 구조</span>`}
-        description="프로모션·재고·회원 정책을 훼손 없이 반영하는 재랭킹 구조를 통해, 알고리즘 품질과 비즈니스 전략을 동시에 만족시키는 통제 가능한 추천을 구현합니다."
-      />
-      <p class="ai__diagram-pill">Layer 5 : AI 제안 위에 비지니스 전략 제시</p>
-      <!-- TODO: 다이어그램 이미지 삽입 -->
-      <div class="ai__diagram-placeholder" aria-hidden="true">
-        <img src={SYMBOL003.src} alt="" />
+    <section id="repurchase" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`재구매 예측 <span class="mark">모델 전략</span>`}
+          description="사용자의 구매 주기를 예측하여, 선제적 추천을 가능하게 합니다. 예상 필요 시점에 스코어를 가중 개인화 추천을 지능적으로 제공함으로써 재구매 전환율을 증대시킵니다."
+        />
+        <p class="ai__diagram-pill">Layer 3 : 커머스의 핵심, "재구매 타이밍" 예측</p>
+        <!-- TODO: 다이어그램 이미지 삽입 -->
+        <div class="ai__diagram-placeholder" aria-hidden="true">
+          <img src={SYMBOL002.src} alt="" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="rebalancing" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`개인화·재구매 예측·자동 최적화 (리밸런싱)`}
-        description="단계적 확장을 통해 성과와 안정성을 동시에 확보합니다. Quick Win으로 초기 성과를 창출하고, 개인화·재구매 예측·자동 최적화로 점진적 고도화를 추진합니다."
-      />
-      <p class="ai__diagram-pill">리스크를 최소화한 단계적 도입 로드맵으로 Phase2 목표</p>
-      <!-- TODO: 다이어그램 이미지 삽입 -->
-      <div class="ai__diagram-placeholder" aria-hidden="true">
-        <img src={SYMBOL004.src} alt="" />
+    <section id="reranking" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`비즈니스 반영  <span class="mark">재랭킹 구조</span>`}
+          description="프로모션·재고·회원 정책을 훼손 없이 반영하는 재랭킹 구조를 통해, 알고리즘 품질과 비즈니스 전략을 동시에 만족시키는 통제 가능한 추천을 구현합니다."
+        />
+        <p class="ai__diagram-pill">Layer 5 : AI 제안 위에 비지니스 전략 제시</p>
+        <!-- TODO: 다이어그램 이미지 삽입 -->
+        <div class="ai__diagram-placeholder" aria-hidden="true">
+          <img src={SYMBOL003.src} alt="" />
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="cases" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`실행 <span class="mark">사례</span>`} />
-      <ClientLogoGrid clients={caseClients} />
-    </div>
-  </section>
+    <section id="rebalancing" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`개인화·재구매 예측·자동 최적화 (리밸런싱)`}
+          description="단계적 확장을 통해 성과와 안정성을 동시에 확보합니다. Quick Win으로 초기 성과를 창출하고, 개인화·재구매 예측·자동 최적화로 점진적 고도화를 추진합니다."
+        />
+        <p class="ai__diagram-pill">리스크를 최소화한 단계적 도입 로드맵으로 Phase2 목표</p>
+        <!-- TODO: 다이어그램 이미지 삽입 -->
+        <div class="ai__diagram-placeholder" aria-hidden="true">
+          <img src={SYMBOL004.src} alt="" />
+        </div>
+      </div>
+    </section>
+
+    <section id="cases" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`실행 <span class="mark">사례</span>`} />
+        <ClientLogoGrid clients={caseClients} />
+      </div>
+    </section>
+  </div>
 </Layout>

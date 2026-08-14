@@ -14,6 +14,16 @@
   width: rem(100px);
   height: rem(100px);
   flex-shrink: 0;
+  &.ico-mail{
+    width: rem(24px);
+    height: rem(24px);
+    @include get-background-svg(icon_mail, color('Color/Black 20'));
+  }
+  &.ico-crow{
+    width: rem(36px);
+    height: rem(48px);
+    background: no-repeat left center url(~/assets/images/common/icon_asset002.svg);
+  }
   &--sm {
     width: rem(24px);
     height: rem(24px);
@@ -85,7 +95,7 @@
 }
 .company__stats-label {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: rem(20px);
   flex-shrink: 0;
   width: rem(277px);
@@ -108,7 +118,7 @@
 }
 .company__stats-num {
   @include font('H1');
-  color: color('Color/Primary Color');
+  color: color('Color/Black 100');
   margin-bottom: rem(20px);
   .unit {
     @include font('Body 20 R');
@@ -158,7 +168,7 @@
   flex: 1 1 0%;
   min-width: rem(280px);
   padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
+  border: rem(1px) solid color('Color/Black 10');
   border-radius: rem(24px);
   text-align: center;
 }
@@ -196,6 +206,11 @@
   flex: 1 1 0%;
   min-width: rem(280px);
   display: flex;
+  @media only screen and (min-width: $breakpoint-md){
+    .bt-tags-group{
+      max-width: 70%;
+    }
+  }
 }
 .company__case-item .bs-box {
   width: 100%;
@@ -216,8 +231,7 @@
   margin-bottom: rem(80px);
 }
 .company__ceo-step {
-  flex: 1 1 0%;
-  max-width: rem(400px);
+  flex: 1;
   padding: rem(36px);
   text-align: center;
   border: rem(1px) solid color('Color/Box/Border color');
@@ -234,6 +248,7 @@
 }
 .company__ceo-step-arrow {
   flex-shrink: 0;
+  width: rem(90px);
   img {
     display: block;
   }
@@ -272,8 +287,24 @@
   gap: rem(20px);
   padding: rem(36px);
   text-align: center;
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
+  position: relative;
+  @media only screen and (max-width: $breakpoint-md){
+    &{
+      border: rem(1px) solid color('Color/Box/Border color');
+      border-radius: rem(24px);
+    }
+  }
+  @media only screen and (min-width: $breakpoint-md){
+    &+&:after{
+      content: '';
+      width: rem(1px);
+      height: 100%;
+      position: absolute;
+      left: rem(-10px);
+      top: 0;
+      background: color('Color/Black 20');
+    }
+  }
 }
 .company__ceo-value-icon {
   border-radius: 50%;
@@ -394,7 +425,7 @@
 }
 .company__careers-fields {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: rem(20px);
   margin-bottom: rem(80px);
 }

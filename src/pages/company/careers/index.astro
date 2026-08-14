@@ -34,7 +34,7 @@ const benefits = [
   {
     icon: ICON_KEY_NAME['인재채용4'],
     title: '인재 추천',
-    desc: '정 직원 추천 및 채용 후 특정 기간 근속 시<br/>추천 직원에게 포상금액 지급'
+    desc: '정 직원 추천 및 채용 후 특정 기간 근속 시 추천 직원에게 포상금액 지급'
   },
   {
     icon: ICON_KEY_NAME['인재채용5'],
@@ -69,67 +69,69 @@ const fields = [
 ---
 
 <Layout>
-  <SubBanner
-    title="Company"
-    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-4'} />
-  <TitleMain
-    title="인재 채용"
-    description="미래를 함께 만들어가며, 성장과 성취를 함께할 창의적이고 도전적인 인재를 기다립니다.<br/>엠투엠글로벌은 함께 나누고 성장하기 위해 다양한 복지제도를 운영하고 있습니다."
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Company"
+      description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-4'} />
+    <TitleMain
+      title="인재 채용"
+      description="미래를 함께 만들어가며, 성장과 성취를 함께할 창의적이고 도전적인 인재를 기다립니다.<br/>엠투엠글로벌은 함께 나누고 성장하기 위해 다양한 복지제도를 운영하고 있습니다."
+    />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <div class="company__careers-benefits">
-        <TitleSub title={`M2M GLOBAL <br/><span class="mark">복지 제도</span>`} />
-        <div class="company__careers-grid">
+    <section class="g-section">
+      <div class="innerWrap">
+        <div class="company__careers-benefits">
+          <TitleSub title={`M2M GLOBAL <br/><span class="mark">복지 제도</span>`} />
+          <div class="company__careers-grid">
+            {
+              benefits.map((benefit) => (
+                <div class="company__careers-card">
+                  {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
+                  <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true">
+                    <Icon name={benefit.icon} />
+                  </span>
+                  <p class="company__careers-card-title">{benefit.title}</p>
+                  <p class="company__careers-card-desc" set:html={benefit.desc} />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <TitleSub title={`인재 채용 <span class="mark">분야 / 안내</span>`} />
+        <div class="company__careers-fields">
           {
-            benefits.map((benefit) => (
-              <div class="company__careers-card">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true">
-                  <Icon name={benefit.icon} />
-                </span>
-                <p class="company__careers-card-title">{benefit.title}</p>
-                <p class="company__careers-card-desc" set:html={benefit.desc} />
+            fields.map((field) => (
+              <div class="company__careers-field">
+                <p class="company__careers-field-title" set:html={field.title} />
+                <p class="company__careers-field-desc" set:html={field.desc} />
               </div>
             ))
           }
         </div>
-      </div>
 
-      <TitleSub title={`인재 채용 <span class="mark">분야 / 안내</span>`} />
-      <div class="company__careers-fields">
-        {
-          fields.map((field) => (
-            <div class="company__careers-field">
-              <p class="company__careers-field-title" set:html={field.title} />
-              <p class="company__careers-field-desc" set:html={field.desc} />
+        <div class="company__careers-process">
+          <!-- TODO: 아이콘 이미지 삽입 -->
+          <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true">
+            <Icon name={ICON_KEY_NAME['인재채용8']} />
+          </span>
+          <div class="company__careers-process-body">
+            <TitleSub title={`채용 절차 <span class="mark">(상시)</span>`} />
+            <div class="company__careers-process-list">
+              <TextList type="type_1" circleType="type_2">
+                1차 서류 전형 : 지원자는 이력서와 자기소개(경력자는 경력기술서 포함)를 인사지원팀
+                이메일(<a href="mailto:recruit@m2mglobal.co.kr">recruit@m2mglobal.co.kr</a>) 로
+                보내주세요
+              </TextList>
+              <TextList type="type_1" circleType="type_2">
+                제출한 입사지원 서류는 반환하지 않으며, 입사지원 검토용으로만 사용됩니다
+              </TextList>
             </div>
-          ))
-        }
-      </div>
-
-      <div class="company__careers-process">
-        <!-- TODO: 아이콘 이미지 삽입 -->
-        <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true">
-          <Icon name={ICON_KEY_NAME['인재채용8']} />
-        </span>
-        <div class="company__careers-process-body">
-          <TitleSub title={`채용 절차 <span class="mark">(상시)</span>`} />
-          <div class="company__careers-process-list">
-            <TextList type="type_1" circleType="type_2">
-              1차 서류 전형 : 지원자는 이력서와 자기소개(경력자는 경력기술서 포함)를 인사지원팀
-              이메일(<a href="mailto:recruit@m2mglobal.co.kr">recruit@m2mglobal.co.kr</a>) 로
-              보내주세요
-            </TextList>
-            <TextList type="type_1" circleType="type_2">
-              제출한 입사지원 서류는 반환하지 않으며, 입사지원 검토용으로만 사용됩니다
-            </TextList>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

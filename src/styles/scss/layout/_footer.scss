@@ -89,6 +89,7 @@
         justify-content: space-between;
         flex-wrap: wrap;
         gap: rem(12px);
+        padding-bottom: rem(25px);
     }
     .copyright{
         @include font('Body 16 R');

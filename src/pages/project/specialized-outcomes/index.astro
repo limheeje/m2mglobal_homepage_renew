@@ -76,6 +76,7 @@ const overviewCases = [
 // --- Semimarket / SORIN 공용: PRODUCT&MEMBER / PRICING / PAYMENT / WAREHOUSE&LOGISTICS / Service ---
 const semimarketRows = [
   {
+    icon: '001',
     label: 'PRODUCT &\nMEMBER',
     summary: [
       '상품 : Equipment, Parts, Extras / AI 추천을 통한 최적의 상품 매칭 및 매출 향상',
@@ -89,6 +90,7 @@ const semimarketRows = [
     ]
   },
   {
+    icon: '002',
     label: 'PRICING',
     summary: [
       'PRICING : 고정가, 오퍼, 멀티오퍼, 견적구매, 입찰구매',
@@ -101,6 +103,7 @@ const semimarketRows = [
     ]
   },
   {
+    icon: '003',
     label: 'PAYMENT',
     summary: [
       '통화(CURRENCY) : USD, KRW',
@@ -113,6 +116,7 @@ const semimarketRows = [
     ]
   },
   {
+    icon: '004',
     label: 'WAREHOSE &\nLOGISTICS',
     summary: [
       '인도조건(INCOTERMS) : FOB/CIF/FOT/DAP',
@@ -125,6 +129,7 @@ const semimarketRows = [
     ]
   },
   {
+    icon: '005',
     label: 'Service',
     summary: [
       '서류자동화 및 주문관리에 대한 편의성 제공',
@@ -140,6 +145,7 @@ const semimarketRows = [
 
 const sorinRows = [
   {
+    icon: '001',
     label: 'PRODUCT &\nMEMBER',
     summary: [
       '금속 : 알루미늄 / 아연 / 연 / 구리 / 니켈 / 주석',
@@ -152,6 +158,7 @@ const sorinRows = [
     ]
   },
   {
+    icon: '002',
     label: 'PRICING',
     summary: [
       'PRICING : LIVE(시장가), 가단가, CSP, AVERAGE, FORWARD, LIMIT(지정가)',
@@ -164,6 +171,7 @@ const sorinRows = [
     ]
   },
   {
+    icon: '003',
     label: 'PAYMENT',
     summary: [
       '통화(CURRENCY) : USD, RMB 등',
@@ -176,6 +184,7 @@ const sorinRows = [
     ]
   },
   {
+    icon: '004',
     label: 'WAREHOSE &\nLOGISTICS',
     summary: [
       '인도조건(INCOTERMS) : FOB/CIF/FOT/DAP',
@@ -184,6 +193,7 @@ const sorinRows = [
     items: ['창고에 입고된 재고에 한정하여 FOT(트럭상차도)와 DAP(고객사도착도) 로 판매']
   },
   {
+    icon: '005',
     label: 'Service',
     summary: ['서류자동화 및 주문 관리에 대한 편의성 제공'],
     items: [
@@ -214,161 +224,171 @@ const sorinGalleryCaptions = [
 ---
 
 <Layout>
-  <SubBanner
-    title="Project"
-    description={`"전문 구축 경험 · 산업별 커스터마이징 · B2B 특화 솔루션 · 검증된 성과 · 높은 재계약률"<br/>24년간 꾸준히 수행해온 프로젝트가 엠투엠글로벌의 경쟁력을 입증합니다.`}
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-PROJECT-ID-2'} />
-  <TitleMain
-    title="Specialized Outcomes"
-    description={`“일반 커머스(B2C쇼핑몰)를 비롯~실시간 시세, 환율, 재고 연동형 거래 및 기업간의 대규모 자재, 원자재 거래” 실거래 수준으로 구현 및 AI Commerce 통해 거래·추천·분석까지 AI Commerce로 확장 적용 가능한 유일한 B2B 특화 Commerce 경험을 보유한 플랫폼 전문 기업.`}
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Project"
+      description={`"전문 구축 경험 · 산업별 커스터마이징 · B2B 특화 솔루션 · 검증된 성과 · 높은 재계약률"<br/>24년간 꾸준히 수행해온 프로젝트가 엠투엠글로벌의 경쟁력을 입증합니다.`}
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-PROJECT-ID-2'} />
+    <TitleMain
+      title="Specialized Outcomes"
+      description={`“일반 커머스(B2C쇼핑몰)를 비롯~실시간 시세, 환율, 재고 연동형 거래 및 기업간의 대규모 자재, 원자재 거래” 실거래 수준으로 구현 및 AI Commerce 통해 거래·추천·분석까지 AI Commerce로 확장 적용 가능한 유일한 B2B 특화 Commerce 경험을 보유한 플랫폼 전문 기업.`}
+    />
 
-  <div class="innerWrap">
-    <div class="bs-tab-group">
-      {
-        sectionTabs.map((tab, i) => (
-          <a
-            class="bs-tab tab__item"
-            class:list={{'is-active': i === 0}}
-            data-type="box"
-            href={`#${tab.id}`}
-          >
-            {tab.label}
-          </a>
-        ))
-      }
+    <div class="innerWrap">
+      <div class="bs-tab-group">
+        {
+          sectionTabs.map((tab, i) => (
+            <a
+              class="bs-tab tab__item"
+              class:list={{'is-active': i === 0}}
+              data-type="box"
+              href={`#${tab.id}`}
+            >
+              {tab.label}
+            </a>
+          ))
+        }
+      </div>
     </div>
+
+    <section id="overview" class="g-section">
+      <div class="innerWrap">
+        <!-- TODO: 원형/네트워크 그래픽 이미지 삽입 -->
+        <div class="spec__banner-diagram" aria-hidden="true">
+          <img src={SYMBOL029.src} alt="" />
+        </div>
+
+        <TitleMiddle>Why M2M GLOBAL? 특별한 성과가 차이를 만듭니다.</TitleMiddle>
+
+        <div class="spec__case-grid">
+          {
+            overviewCases.map((item) => (
+              <div class="spec__case-card">
+                <div class="spec__case-head">
+                  {/* <!-- TODO: 로고 이미지 삽입 --> */}
+                  <span class="spec__case-logo-ph" aria-hidden="true" />
+                  <p class="spec__case-name">{item.name}</p>
+                </div>
+                <div class="spec__case-list">
+                  {item.items.map((text) => (
+                    <TextList type="type_1">{text}</TextList>
+                  ))}
+                </div>
+                <p class="spec__case-footer">{item.footer}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="semimarket" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`<span class="mark">Semimarket</span>`} />
+        <div class="spec__row-grid">
+          {
+            semimarketRows.map((row) => (
+              <div class="spec__row">
+                <div class="spec__row-box">
+                  <div class="spec__row-label">
+                    {/* TODO: 아이콘 이미지 삽입 */}
+                    <span
+                      class="spec__row-icon-ph"
+                      class:list={`ico-${row.icon}`}
+                      aria-hidden="true"
+                    />
+                    <p set:html={row.label.replace('\n', '<br/>')} />
+                  </div>
+                  <div class="spec__row-summary">
+                    {row.summary.map((text) => (
+                      <TextList type="type_1">{text}</TextList>
+                    ))}
+                  </div>
+                </div>
+                <span class="spec__row-arrow" aria-hidden="true">
+                  <img src={stepArrowUrl.src} alt="" />
+                </span>
+                <div class="spec__row-list">
+                  {row.items.map((text) => (
+                    <TextList type="type_1">{text}</TextList>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <TitleSub title={`특별한 <span class="mark">성과</span>`} />
+        <div class="spec__gallery-grid">
+          {
+            semimarketGalleryCaptions.map((caption) => (
+              <div class="spec__gallery-card">
+                {/* TODO: 앱 화면 스크린샷 이미지 삽입 */}
+                <div class="spec__gallery-ph" aria-hidden="true">
+                  <img src={caption.imgSrc} alt="" />
+                </div>
+                <TitleThird>{caption.title}</TitleThird>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="sorin" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`<span class="mark">SORIN</span>`} />
+        <div class="spec__row-grid">
+          {
+            sorinRows.map((row) => (
+              <div class="spec__row">
+                <div class="spec__row-box">
+                  <div class="spec__row-label">
+                    {/* TODO: 아이콘 이미지 삽입 */}
+                    <span
+                      class="spec__row-icon-ph"
+                      class:list={`ico-${row.icon}`}
+                      aria-hidden="true"
+                    />
+                    <p set:html={row.label.replace('\n', '<br/>')} />
+                  </div>
+                  <div class="spec__row-summary">
+                    {row.summary.map((text) => (
+                      <TextList type="type_1">{text}</TextList>
+                    ))}
+                  </div>
+                </div>
+                <span class="spec__row-arrow" aria-hidden="true">
+                  <img src={stepArrowUrl.src} alt="" />
+                </span>
+                <div class="spec__row-list">
+                  {row.items.map((text) => (
+                    <TextList type="type_1">{text}</TextList>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <TitleSub title={`특별한 <span class="mark">성과</span>`} />
+        <div class="spec__gallery-grid">
+          {
+            sorinGalleryCaptions.map((caption) => (
+              <div class="spec__gallery-card">
+                {/* TODO: 앱 화면 스크린샷 이미지 삽입 */}
+                <div class="spec__gallery-ph" aria-hidden="true">
+                  <img src={caption.imgSrc} alt="" />
+                </div>
+                <TitleThird>{caption.title}</TitleThird>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <CaseStudySection id="cj" />
   </div>
-
-  <section id="overview" class="g-section">
-    <div class="innerWrap">
-      <!-- TODO: 원형/네트워크 그래픽 이미지 삽입 -->
-      <div class="spec__banner-diagram" aria-hidden="true">
-        <img src={SYMBOL029.src} alt="" />
-      </div>
-
-      <TitleMiddle>Why M2M GLOBAL? 특별한 성과가 차이를 만듭니다.</TitleMiddle>
-
-      <div class="spec__case-grid">
-        {
-          overviewCases.map((item) => (
-            <div class="spec__case-card">
-              <div class="spec__case-head">
-                {/* <!-- TODO: 로고 이미지 삽입 --> */}
-                <span class="spec__case-logo-ph" aria-hidden="true" />
-                <p class="spec__case-name">{item.name}</p>
-              </div>
-              <div class="spec__case-list">
-                {item.items.map((text) => (
-                  <TextList type="type_1">{text}</TextList>
-                ))}
-              </div>
-              <p class="spec__case-footer">{item.footer}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section id="semimarket" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`<span class="mark">Semimarket</span>`} />
-      <div class="spec__row-grid">
-        {
-          semimarketRows.map((row) => (
-            <div class="spec__row">
-              <div class="spec__row-box">
-                <div class="spec__row-label">
-                  {/* TODO: 아이콘 이미지 삽입 */}
-                  <span class="spec__row-icon-ph" aria-hidden="true" />
-                  <p set:html={row.label.replace('\n', '<br/>')} />
-                </div>
-                <div class="spec__row-summary">
-                  {row.summary.map((text) => (
-                    <TextList type="type_1">{text}</TextList>
-                  ))}
-                </div>
-              </div>
-              <span class="spec__row-arrow" aria-hidden="true">
-                <img src={stepArrowUrl.src} alt="" />
-              </span>
-              <div class="spec__row-list">
-                {row.items.map((text) => (
-                  <TextList type="type_1">{text}</TextList>
-                ))}
-              </div>
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub title={`특별한 <span class="mark">성과</span>`} />
-      <div class="spec__gallery-grid">
-        {
-          semimarketGalleryCaptions.map((caption) => (
-            <div class="spec__gallery-card">
-              {/* TODO: 앱 화면 스크린샷 이미지 삽입 */}
-              <div class="spec__gallery-ph" aria-hidden="true">
-                <img src={caption.imgSrc} alt="" />
-              </div>
-              <TitleThird>{caption.title}</TitleThird>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section id="sorin" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`<span class="mark">SORIN</span>`} />
-      <div class="spec__row-grid">
-        {
-          sorinRows.map((row) => (
-            <div class="spec__row">
-              <div class="spec__row-box">
-                <div class="spec__row-label">
-                  {/* TODO: 아이콘 이미지 삽입 */}
-                  <span class="spec__row-icon-ph" aria-hidden="true" />
-                  <p set:html={row.label.replace('\n', '<br/>')} />
-                </div>
-                <div class="spec__row-summary">
-                  {row.summary.map((text) => (
-                    <TextList type="type_1">{text}</TextList>
-                  ))}
-                </div>
-              </div>
-              <span class="spec__row-arrow" aria-hidden="true">
-                <img src={stepArrowUrl.src} alt="" />
-              </span>
-              <div class="spec__row-list">
-                {row.items.map((text) => (
-                  <TextList type="type_1">{text}</TextList>
-                ))}
-              </div>
-            </div>
-          ))
-        }
-      </div>
-
-      <TitleSub title={`특별한 <span class="mark">성과</span>`} />
-      <div class="spec__gallery-grid">
-        {
-          sorinGalleryCaptions.map((caption) => (
-            <div class="spec__gallery-card">
-              {/* TODO: 앱 화면 스크린샷 이미지 삽입 */}
-              <div class="spec__gallery-ph" aria-hidden="true">
-                <img src={caption.imgSrc} alt="" />
-              </div>
-              <TitleThird>{caption.title}</TitleThird>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <CaseStudySection id="cj" />
 </Layout>

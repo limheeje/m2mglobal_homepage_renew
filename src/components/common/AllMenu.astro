@@ -48,7 +48,11 @@ const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 
     <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href (Footer.astro와 동일) -->
     <div class="all-menu__downloads">
-      <a href="#" class="all-menu__download-btn">
+      <a
+        href={`${PUBLIC_BUILD_URL}/etc/m2m_company_info.pdf`}
+        class="all-menu__download-btn"
+        target="_blank"
+      >
         회사소개서
         <!-- TODO: 다운로드 아이콘 이미지 삽입 -->
         <span class="all-menu__download-icon" aria-hidden="true"></span>

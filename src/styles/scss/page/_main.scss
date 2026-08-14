@@ -3,19 +3,122 @@
 @use '../abstracts/_functions' as *;
 @use '../abstracts/_mixins' as *;
 
-
-
-// 각 슬라이드 섹션의 높이는 "뷰포트 - 고정 GNB(80px)" — 슬라이드 JS(순환/컨트롤)는 나중에 붙인다.
-// 지금은 섹션당 슬라이드 아이템들을 세로로 그냥 이어 붙여둔 상태(스크롤하면 순서대로 보임).
-$slide-height: inherit;//calc(100vh - #{rem(80px)});
+// 각 슬라이드 섹션의 높이는 "뷰포트 - 고정 GNB(80px)" — Swiper로 섹션 내부 아이템끼리 가로 슬라이드된다
+// (섹션 자체는 세로로 순서대로 이어져 스크롤됨).
+$slide-height: 100vh;//calc(100vh - #{rem(80px)});
 
 .main-wrap {
   .section1-slide,
   .section2-slide,
   .section3-slide,
   .section4-slide,
-  .section5-slide {
+  .section5-slide,
+  .section6-slide,
+  .section7-slide {
     width: 100%;
+    height: $slide-height;
+    position: relative;
+    overflow: hidden;
+  }
+
+  // --- Swiper 1~4(Main slogan/사업정보/AI/Business): 세로 닷 페이지네이션(오른쪽, Figma 실측 right:37px) ---
+  // 화살표 버튼은 없다 — Figma 실측(각 인스턴스 메타데이터)에 dots(Carousel Set)만 있고
+  // chevron-left/right는 없었다. 드래그/스와이프 또는 닷 클릭으로만 이동.
+  .swiper-pagination {
+    // swiper-bundle 기본 CSS가 .swiper-pagination에 left:0/width:100%를 깔아놔서 right만 주면
+    // 박스가 풀폭으로 늘어나 닷이 왼쪽 끝에 붙어버린다 — left/width를 명시적으로 되돌린다.
+    left: auto;
+    width: auto;
+    position: absolute;
+    right: rem(37px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: rem(8px);
+    height: fit-content;
+    .swiper-pagination-bullet {
+      width: rem(10px);
+      height: rem(10px);
+      border-radius: 50%;
+      background-color: transparent;
+      border: rem(1px) solid color('Color/Black 20');
+      opacity: 1;
+      cursor: pointer;
+    }
+    .swiper-pagination-bullet-active {
+      background-color: color('Color/White');
+      border-color: color('Color/White');
+    }
+  }
+
+  // --- Swiper 5~7(Solution/Why,M2MGLOBAL?/Project): 페이지네이션 없이 우측 상단 prev/next 버튼만 ---
+  // (기존 .sp-nav 안의 .sp-nav-btn을 그대로 Swiper navigation 버튼으로 사용 — Figma 실측 chevron-left/right)
+  .sp-nav-btn {
+    width: rem(36px);
+    height: rem(36px);
+    border-radius: 50%;
+    border: rem(1px) solid color('Color/Black 10');
+    background-color: color('Color/White');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:after {
+      content: '';
+      display: block;
+      width: rem(16px);
+      height: rem(16px);
+      @include get-background-svg(icon_arrow, color('Color/Black 100'));
+    }
+    // Swiper가 초기화되면서 접근성을 위해 aria-label을 자기 걸로(Previous/Next slide) 덮어써버려서
+    // aria-label 선택자 대신 별도 modifier 클래스로 화살표 방향을 구분한다.
+    &--prev:after {
+      transform: rotate(180deg);
+    }
+    &.swiper-button-disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+  // --- 스크롤 유도 마우스 아이콘 (Section 1 전용, 하단 가운데) ---
+  // Figma 실측: 폭 20px 세로 30.8px pill(휠 마우스) 아웃라인 + 안쪽 휠 표시 짧은 세로선.
+  // 휠이 위→아래로 흐르며 사라지는 애니메이션을 CSS keyframe으로 반복시켜 "아래에 더 콘텐츠가
+  // 있다"는 걸 알린다.
+  .scroll-mouse {
+    position: absolute;
+    left: 50%;
+    bottom: rem(40px);
+    transform: translateX(-50%);
+    z-index: 5;
+    width: rem(21px);
+    height: rem(31px);
+    border: rem(2px) solid color('Color/White');
+    border-radius: rem(21px);
+    &:before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: rem(6px);
+      width: rem(1px);
+      height: rem(5px);
+      background-color: color('Color/White');
+      animation: scroll-mouse-wheel 1.6s ease-in-out infinite;
+    }
+  }
+  @keyframes scroll-mouse-wheel {
+    0% {
+      top: rem(6px);
+      opacity: 1;
+    }
+    50% {
+      top: rem(16px);
+    }
+    100% {
+      top: rem(6px);
+    }
   }
 
   // --- Section 1: Main slogan (히어로 배경 이미지 + 카피 + 체크리스트 + CTA) ---
@@ -41,8 +144,8 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding-top: rem(200px);
+        justify-content: center;
+        gap: rem(60px);
       }
       .b-title {
         @include font('H1');
@@ -80,9 +183,12 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
           }
         }
       }
+      // Figma 실측: .content-inner의 자식으로 들어가 좌측 하단에 절대 위치(left:0; bottom:0)한다.
       .ad-more {
+        position: absolute;
+        left: 0;
+        bottom: 0;
         display: inline-flex;
-        align-self: flex-start;
         background: color('Color/Primary Color');
         color: color('Color/White');
         @include font('Body 16 R');
@@ -131,11 +237,11 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
         }
         &--tl {
           left: rem(42px);
-          top: 0;
+          top: rem(50px);
         }
         &--tr {
           left: rem(272px);
-          top: 0;
+          top: rem(50px);
         }
         &--bl {
           left: rem(42px);
@@ -169,8 +275,11 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      // Figma 실측: 솔리드 #111e72 위에 네트워크 패턴 사진이 opacity 20%로 얹힌다 — 사진에 직접
+      // opacity를 주는 대신, 아래 :before의 솔리드 오버레이(opacity .8)가 이 배경사진을 80% 덮어
+      // 결과적으로 사진이 20% 강도로만 비치게 한다(두 슬라이드 모두 동일 이미지 재사용).
+      background-image: url(~/assets/images/main/biz-bg-pattern.png);
       background-size: cover;
-      background-position: center;
       &:before {
         content: '';
         position: absolute;
@@ -188,7 +297,6 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       align-items: center;
       justify-content: center;
       gap: rem(60px);
-      padding: rem(80px) 0 rem(120px);
     }
     .biz-eyebrow {
       position: relative;
@@ -198,6 +306,7 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
     }
     .biz-core {
       position: relative;
+      z-index: 1;
       width: rem(276px);
       height: rem(276px);
       border-radius: 50%;
@@ -205,16 +314,37 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       display: flex;
       align-items: center;
       justify-content: center;
+      background-color: #111e72;
+    }
+    // Figma 실측: "M2M GLOBAL" / "Biz Area"(또는 "Solution")가 좌우가 아니라 상하 두 줄 — 별도 텍스트
+    // 블록으로 감싸야 flex 컨테이너(.biz-core) 안에서 텍스트노드+br+span이 flex item으로 흩어져
+    // 옆으로 나열되는 걸 막을 수 있다.
+    .biz-core-text {
       text-align: center;
       color: color('Color/White');
       @include font('Body 30 R');
-      span {
-        display: block;
+      p {
+        line-height: 1.4;
+      }
+      .accent {
         color: color('Color/Accent Color');
       }
     }
+    // Figma 실측(node 1757:30593): 중앙 원 ↔ 4개 카드를 잇는 점선 트리형 연결선(Group32),
+    // 1920px 기준 left: calc(16.67% + 90px), top: 293px, w:1101 h:173 — .section-item(position:relative,
+    // padding 80px 포함 1920 전체 기준) 기준으로 절대 배치.
+    .biz-connector {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: rem(1101px);
+      margin-left: rem(-550px);
+      margin-top: rem(-112px);
+      pointer-events: none;
+    }
     .biz-grid {
       position: relative;
+      z-index: 1;
       display: flex;
       gap: rem(20px);
       justify-content: center;
@@ -241,10 +371,39 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       text-align: center;
       color: color('Color/White');
       @include font('Body 16 R');
+      min-height: rem(200px);
     }
+    // 슬라이드2(Solution) 카드: 텍스트에 "•"를 직접 박아넣는 대신 CSS ::before로 작은 점을 그린다.
+    .biz-card-list {
+      margin-top: rem(4px);
+      padding: rem(30px) rem(36px);
+      color: color('Color/White');
+      @include font('Body 16 R');
+      min-height: rem(200px);
+    }
+    .biz-card-item {
+      position: relative;
+      padding-left: rem(12px);
+      text-align: left;
+      white-space: nowrap;
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: rem(2px);
+        height: rem(2px);
+        border-radius: 50%;
+        background-color: currentColor;
+      }
+    }
+    // Figma 실측: .content-inner의 자식으로 들어가 좌측 하단에 절대 위치(left:0; bottom:0)한다.
     .ad-more {
+      position: absolute;
+      left: 0;
+      bottom: 0;
       display: inline-flex;
-      align-self: center;
       background: color('Color/Primary Color');
       color: color('Color/White');
       @include font('Body 16 R');
@@ -285,30 +444,92 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       text-align: center;
       @include font('H3');
       color: color('Color/Primary Color');
+      padding-right: rem(44px);
+      position: relative;
+      display: inline-block;
+      margin-left: auto;
+      margin-right: auto;
+      &:after {
+        content: '';
+        width: rem(24px);
+        height: rem(24px);
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: rem(-12px);
+        @include get-background-svg(icon_forward_arrow, color('Color/Primary Color'));
+      }
     }
     .ai-banner {
+      position: relative;
       margin-top: rem(20px);
       border-radius: rem(24px);
-      background: linear-gradient(to top, rgba(22, 37, 63, 0.7) 30%, rgba(22, 37, 63, 0)),
-        color('Color/Third Color');
+      overflow: hidden;
+      background-color: color('Color/Third Color');
       padding: rem(40px) rem(127px);
       text-align: center;
+      // Figma 실측: Third Color 솔리드 위에 사진이 opacity 70%로 얹히고, 다시 그 위에 상단→하단
+      // 다크 그라디언트가 덮인다 — 사진 레이어를 :before로 분리해 opacity를 독립적으로 준다
+      // (background shorthand 한 레이어에는 opacity를 개별 적용할 수 없어서).
+      &:before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url(~/assets/images/main/slide4-bg.png);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.7;
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(22, 37, 63, 0.7) 30%, rgba(22, 37, 63, 0));
+      }
+      > * {
+        position: relative;
+      }
     }
     .ai-banner-title {
       @include font('H3');
       color: color('Color/White');
+      position: relative;
+      z-index: 1;
     }
     .ai-banner-desc {
       margin-top: rem(10px);
       @include font('Body 20 R');
       color: color('Color/Blue 10');
+      position: relative;
+      z-index: 1;
     }
     .ai-flow {
+      position: relative;
       margin-top: rem(40px);
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: rem(20px);
+    }
+    // AI Commerce 슬라이드 전용(flowLine): 5개 원을 가로로 잇는 연결선 그래픽 — 원들 뒤(z-index 낮음)에
+    // 깔린다. Figma 원본은 세로로 긴 지그재그(69x1302)를 -rotate-90 해서 가로로 눕힌 형태라 그대로
+    // 재현한다(자연 크기로 두고 회전만 시켜야 비율이 안 깨짐 — width/height를 직접 눕혀서 주면
+    // 그래픽이 옆으로 눌려 찌그러진다).
+    .ai-flow-connector {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: rem(69px);
+      height: rem(1302px);
+      max-height: none;
+      transform: translate(-50%, -50%) rotate(-90deg);
+      z-index: 0;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .ai-flow-node {
+      position: relative;
+      z-index: 1;
     }
     .ai-flow-node {
       width: rem(278px);
@@ -328,7 +549,8 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
         font-weight: inherit;
       }
       &--accent {
-        border: rem(1px) dashed color('Color/Primary Color');
+        @include font('Body 20 R');
+        color: color('Color/Primary Color');
         strong {
           color: color('Color/Primary Color');
         }
@@ -342,6 +564,7 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
     .ai-col {
       flex: 1 1 0%;
       padding-top: rem(24px);
+      padding-left: rem(24px);
       border-top: rem(1px) solid color('Color/Box/Border color');
     }
     .ai-col-title {
@@ -367,20 +590,44 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
         background-color: #0c295a;
       }
     }
+    // Figma 실측: 솔리드 배경 위에 사진이 opacity 30~40%로 얹히고, 다시 그 위에 좌→우 방향
+    // linear-gradient(왼쪽 텍스트 쪽은 솔리드로 완전히 덮고 오른쪽으로 갈수록 사진이 드러남)가
+    // 얹힌다 — 세 variant가 opacity/gradient stop %이 조금씩 다름.
     .biz-bg-ph {
       position: absolute;
       inset: 0;
-      background-color: rgba(255, 255, 255, 0.04);
+      background-size: cover;
+      background-position: center;
+      opacity: 0.4;
       pointer-events: none;
+      &:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to left, transparent 35.625%, #133269 50.625%);
+      }
     }
+    .biz-item--robot .biz-bg-ph:after {
+      background-image: linear-gradient(to left, transparent 30.391%, #0c295a 53.281%);
+    }
+    .biz-item--factory .biz-bg-ph {
+      opacity: 0.3;
+      &:after {
+        background-image: linear-gradient(to left, transparent 43.854%, #133269 58.333%);
+      }
+    }
+    // Figma 실측: "Business" 라벨과 타이틀 사이는 별도 gap 없이 붙어있다(둘 다 바깥 flex-col의
+    // 직계 자식이고 그 flex-col엔 gap이 없음).
     .biz-eyebrow {
       position: relative;
+      z-index: 1;
       @include font('Body 20 R');
       color: color('Color/Third Color');
-      margin-bottom: rem(60px);
+      margin-bottom: 0;
     }
     .biz-body {
       position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       gap: rem(60px);
@@ -394,34 +641,45 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
     .biz-title-row {
       display: flex;
       align-items: center;
-      gap: rem(20px);
     }
+    // 화살표는 <img> 대신 :after로 그린다(사용자 지정 스니펫) — 타이틀 텍스트 바로 오른쪽에 붙는다.
     .biz-title {
+      position: relative;
+      padding-right: rem(40px);
       @include font('H1');
       color: color('Color/White');
-    }
-    .biz-arrow-ph {
-      display: inline-block;
-      width: rem(24px);
-      height: rem(24px);
-      flex-shrink: 0;
+      &:after {
+        content: '';
+        width: rem(24px);
+        height: rem(24px);
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: rem(-12px);
+        @include get-background-svg(icon_forward_arrow, color('Color/White'));
+      }
     }
     .biz-desc {
       @include font('Body 20 R');
       color: color('Color/White');
     }
 
-    // 공통: 좌우 정렬 3단 구성(그리드/센터그래픽/사이드리스트)
+    // 공통: 좌우 정렬 3단 구성(그리드/센터그래픽/사이드리스트) — Figma 실측: stretch(space-between)가
+    // 아니라 왼쪽부터 고정 간격으로 뭉쳐있는 배치.
     .biz-cols {
       flex: 1 1 auto;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: rem(60px);
+    }
+    .biz-cols--robot {
+      justify-content: flex-start;
       gap: rem(20px);
     }
-    .biz-cols--robot,
     .biz-cols--factory {
-      justify-content: center;
+      justify-content: flex-start;
+      gap: rem(60px);
     }
 
     // e-Commerce: 3x3 원형 그리드
@@ -445,25 +703,98 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       }
     }
 
-    // 센터 흐름 그래픽(이미지) 자리
+    // 센터 흐름 그래픽(이미지) 자리 — e-Commerce/Smart Factory 공용. Figma 원본 그래픽은
+    // -scaleY(-1) rotate(180deg)가 적용돼있는데(합성하면 순수 가로반전), 우리는 img 자체를
+    // 가로반전(scaleX(-1))해서 오른쪽을 향하게 맞춘다.
     .biz-center-ph {
       flex-shrink: 0;
       width: rem(150px);
       height: rem(179px);
-      background-color: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transform: scaleX(-1);
+      }
     }
     .biz-center-ph--robot {
+      position: relative;
       width: rem(574px);
       height: rem(520px);
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: rem(24px);
+      background-color: transparent;
+    }
+    // Figma 실측: 574x520 영역에 로봇/창고 사진 6컷이 절대좌표로 배치되고, 그 중앙에 원형
+    // 배지("M2M-RLCK 로봇물류제어기술")가 겹쳐 얹힌다. 쌓임 순서(뒤→앞): 사진 < 연결선 그래픽 < 배지.
+    .biz-robot-connector {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .biz-robot-photos {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    // Figma 실측(node 1935:10496, 574x520 컨테이너 기준): 위/아래 줄은 좌91·우357, 가운데 줄만
+    // 링 둘레에 걸치도록 더 바깥쪽(좌19·우429)으로 벌어져 있다.
+    .biz-robot-photo {
+      position: absolute;
+      display: block;
+      width: rem(127px);
+      height: rem(127px);
+      top: rem(20px);
+      border-radius: 50%;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      &:nth-child(1) {
+        left: rem(91px);
+        top: rem(20px);
+      }
+      &:nth-child(2) {
+        left: rem(357px);
+        top: rem(20px);
+      }
+      &:nth-child(3) {
+        left: rem(19px);
+        top: rem(196px);
+      }
+      &:nth-child(4) {
+        left: rem(429px);
+        top: rem(196px);
+      }
+      &:nth-child(5) {
+        left: rem(91px);
+        top: rem(372px);
+      }
+      &:nth-child(6) {
+        left: rem(357px);
+        top: rem(372px);
+      }
     }
     .biz-center-badge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       width: rem(438px);
       height: rem(438px);
       border-radius: 50%;
+      background-color: transparent;
       border: rem(1px) dashed color('Color/Black 20');
       display: flex;
       align-items: center;
@@ -529,7 +860,8 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       text-align: center;
     }
 
-    // Smart Factory: 데이터 흐름(3원) + 공정 태그 + 디바이스 그리드
+    // Smart Factory: 데이터 흐름(3원) + 공정 태그 + 디바이스 그리드(4원) — 셋 다 같은 722px
+    // 왼쪽 컬럼 안에 세로로 쌓인다(디바이스 그리드가 별도 컬럼이 아님).
     .biz-dataflow-col {
       flex: 1 1 0%;
       max-width: rem(722px);
@@ -559,9 +891,19 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       }
     }
     .biz-datacircle-icon-ph {
-      display: inline-block;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: rem(43px);
       height: rem(43px);
+      img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
     .biz-flow-row {
       display: flex;
@@ -591,13 +933,15 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       background-color: color('Color/White');
     }
     .biz-device-grid {
-      flex-shrink: 0;
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: rem(20px);
-      width: rem(275px);
+      padding-top: rem(12px);
+      width: 100%;
     }
     .biz-device-pill {
       flex: 1 1 0%;
+      max-width: rem(160px);
       aspect-ratio: 1/1;
       border-radius: 50%;
       border: rem(1px) dashed color('Color/White');
@@ -612,15 +956,62 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
     }
   }
 
-  // --- Section 5: Solution_Project (케이스 스터디 9카드) ---
-  .section5-slide {
+  // --- Section 5~7: Solution / Why,M2MGLOBAL? / Project — Figma는 Solution_Project 컴포넌트를
+  // 3번 배치한 것이라 3개의 독립된 풀뷰포트 섹션이다(예전엔 하나로 합쳐서 잘못 구현했었음).
+  // 셋 다 공용 .sp-* 스타일을 쓰고, prev/next 버튼만 있고 세로 닷 페이지네이션은 없다.
+  .section5-slide,
+  .section6-slide,
+  .section7-slide {
     background-color: color('Color/White');
     .section-item {
+      position: relative;
       height: $slide-height;
       padding: rem(80px);
       overflow-y: auto;
+      // .js-swiper의 100vw 풀블리드(음수 margin-left)가 이 컨테이너 기준으로 가로 스크롤을
+      // 만들어내지 않도록 가로는 명시적으로 잘라낸다.
+      overflow-x: hidden;
+      background-size: cover;
+      background-position: center;
+    }
+    // Figma 실측: Solution(5)는 배경색 #edf3fb(Bluegray/300), Why(6)/Project(7)는 흰색 유지.
+    // Why는 위에서 인라인 style로 넣은 사진(opacity 40%)이 그 위에 얹힌다.
+    &.section5-slide .section-item {
+      background-color: #edf3fb;
+      .sp-solution-card {
+        background: color('Color/White');
+      }
+    }
+    &.section6-slide .section-item:before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+    }
+    // Project(7): Figma 실측 배경 #171d48(Secondary Color) 솔리드 + 타이틀/설명 흰색, nav 버튼도
+    // 흰 테두리+흰 화살표로 반전.
+    &.section7-slide {
+      background-color: color('Color/Secondary Color');
+      // .sp-head .sp-title/.sp-desc(아래서 정의)와 명시도(specificity)를 맞춰야 이긴다 —
+      // .sp-title만 쓰면 나중에 정의되는 .sp-head .sp-title 규칙에 밀려서 검정으로 남는다.
+      .sp-head {
+        .sp-title,
+        .sp-desc {
+          color: color('Color/White');
+        }
+      }
+      .sp-nav-btn {
+        border-color: color('Color/White');
+        background: transparent;
+        &:after {
+          @include get-background-svg(icon_arrow, color('Color/White'));
+        }
+      }
     }
     .sp-eyebrow {
+      position: relative;
       @include font('Body 20 R');
       color: color('Color/Third Color');
       margin-bottom: rem(20px);
@@ -649,6 +1040,7 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       width: rem(24px);
       height: rem(24px);
       flex-shrink: 0;
+      object-fit: contain;
     }
     .sp-nav {
       flex-shrink: 0;
@@ -656,71 +1048,91 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       align-items: center;
       gap: rem(10px);
     }
-    .sp-nav-btn {
-      width: rem(36px);
-      height: rem(36px);
-      border-radius: 50%;
-      border: rem(1px) solid color('Color/Black 10');
-      background-color: color('Color/White');
-    }
+    // (주의) .sp-nav-btn 외형은 파일 상단 "Swiper 5~7" 공용 블록에서 정의한다.
 
-    // --- 5-1. Solution 소개 카드 (6종) ---
+    // --- 5-1. Solution 소개 카드 (6종) --- Figma 실측: 4장 온전히 보이고 5·6번째가 오른쪽에 살짝
+    // 걸쳐 보이는 가로 스와이프(peek) — 카드 폭 고정(425px) + Swiper slidesPerView:'auto'로 구현.
+    // .sp-solution-grid는 .swiper-wrapper와 같은 엘리먼트에 함께 붙는다(마크업 참고).
+    // 카드마다 리스트 항목 수가 달라(6개~3개) 내용대로 두면 카드 높이가 들쭉날쭉해진다 — stretch로
+    // 한 줄(swiper-wrapper) 안의 모든 카드를 가장 높은 카드 기준으로 동일하게 맞춘다.
+    // (주의) 마지막 카드 뒤 80px 여백은 여기 CSS가 아니라 스크립트의 slidesOffsetAfter로 준다 —
+    // Swiper의 가로 스크롤 한계(virtualSize/maxTranslate) 계산은 슬라이드 폭만 더해서 구하고
+    // wrapper의 CSS padding은 안 보기 때문에, padding으로만 주면 시각적으로만 여백이 생기고
+    // 실제 스크롤은 그만큼 안 늘어나서 마지막 카드가 화면 밖에서 잘린다(실측 확인).
     .sp-solution-grid {
-      display: flex;
-      flex-wrap: wrap;
       gap: rem(20px);
+      align-items: stretch;
     }
+    // /company/info의 .company__business-card 패턴을 그대로 따른다(카드 테두리색만 여기 Figma
+    // 실측대로 Black/10).
     .sp-solution-card {
-      flex: 1 1 0%;
-      min-width: rem(280px);
+      flex: 0 0 rem(425px);
+      width: rem(425px);
+      height: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: rem(20px);
       padding: rem(36px);
-      border: rem(1px) solid color('Color/Black 20');
+      border: rem(1px) solid color('Color/Black 10');
       border-radius: rem(24px);
+      text-align: center;
     }
     .sp-solution-icon-ph {
+      position: relative;
       display: inline-block;
       width: rem(100px);
       height: rem(100px);
       border-radius: 50%;
       background-color: color('Color/Blue 10');
+      // 카드에 따라 아이콘 레이어가 1~2장(Figma의 layered group 아이콘)이라 항상 중앙에 겹쳐 놓는다.
+      img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 55%;
+        max-height: 55%;
+        object-fit: contain;
+      }
     }
     .sp-solution-title {
       @include font('Body 30 R');
       color: color('Color/Black 100');
     }
+    // TextList(type_2)가 각 항목 사이 간격(margin-top:8px)을 자체적으로 처리하므로 여기서
+    // 별도 gap을 또 주지 않는다(중복되면 간격이 2배가 됨).
     .sp-solution-list {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: rem(8px);
     }
-    .sp-solution-item {
-      display: flex;
-      align-items: center;
-      gap: rem(12px);
-      padding: rem(12px);
-      background-color: color('Color/Black 3');
-      border-radius: rem(12px);
-      p {
-        @include font('Body 18 R');
-        color: color('Color/Black 100');
-      }
-    }
+    // (주의) .sp-solution-item-icon-ph는 아래 Why 섹션의 .sp-why-card-item에서도 재사용된다.
     .sp-solution-item-icon-ph {
+      position: relative;
       display: inline-block;
       width: rem(18px);
       height: rem(18px);
       flex-shrink: 0;
+      img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
     }
 
     // --- 5-2. Why, M2MGLOBAL? 케이스 하이라이트 ---
+    // slidesPerView:'auto'라 슬라이드 "폭"(peek 여부를 결정)과 내부 콘텐츠의 "우측 여백"(Figma
+    // 시각적 인셋)은 서로 다른 값이어야 한다 — 둘 다 160px씩 빼버리면(콘텐츠 폭만큼만 슬라이드
+    // 박스를 잡으면) 슬라이드가 실제 보이는 영역보다 80px 짧게 끝나서 그 틈으로 다음 슬라이드가
+    // 삐져나와 보인다. 슬라이드 박스 자체는 보이는 영역 끝(뷰포트-좌측 offset 80px)까지 꽉 채우고,
+    // 콘텐츠 우측 인셋은 padding-right로 별도 처리(border-box라 padding이 폭에 포함돼 계산이 깔끔).
     .sp-why-body {
       display: flex;
-      gap: rem(20px);
+      align-items: flex-end;
+      gap: rem(168px);
+      width: calc(100% - #{rem(80px)});
+      padding-right: rem(80px);
+      box-sizing: border-box;
     }
     .sp-why-main {
       flex: 1 1 0%;
@@ -739,6 +1151,17 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       height: rem(45px);
       background-color: color('Color/Black 3');
       border-radius: rem(6px);
+    }
+    // 실제 고객사 로고 이미지가 있는 케이스(농협/수협/세미마켓) — 빈 박스 대신 로고를 contain으로 표시.
+    .sp-why-logo-ph--img {
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
     }
     .sp-why-subtitle {
       @include font('H4');
@@ -789,6 +1212,9 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       display: flex;
       flex-direction: column;
       gap: rem(8px);
+      .bs-text-list[data-type='type_2'] .bst-inner {
+        background: color('Color/White');
+      }
     }
     .sp-why-card-item {
       display: flex;
@@ -803,38 +1229,210 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       }
     }
 
+    // --- 5-3. Project 구축사례 (9종) --- Figma 실측: 6장 온전히 보이고 나머지가 오른쪽에 걸쳐 보이는
+    // 가로 스와이프(peek) — 카드 폭 고정(277px) + Swiper slidesPerView:'auto'. .sp-grid도 .swiper-wrapper.
+    // (주의) 마지막 카드 뒤 여백은 .sp-solution-grid와 같은 이유로 여기 CSS가 아니라 스크립트의
+    // slidesOffsetAfter로 준다.
+    // Figma 실측(node 1798:9815): 흰 배경 카드(radius 24, padding 20px/24px, gap 20px), 카드
+    // 높이는 리스트 항목 수(3~6개)에 따라 들쭉날쭉해지지 않게 한 줄 안에서 stretch로 맞춘다
+    // (Solution 카드와 동일한 이유/패턴).
     .sp-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
       gap: rem(20px);
+      align-items: stretch;
     }
     .sp-card {
+      flex: 0 0 rem(277px);
+      width: rem(277px);
       display: flex;
       flex-direction: column;
+      align-items: center;
+      gap: rem(20px);
+      padding: rem(24px) rem(20px);
+      background-color: color('Color/White');
+      border-radius: rem(24px);
+    }
+    // B2C/C2C/B2B 라벨 필.
+    .sp-card-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: rem(4px) rem(20px);
+      border-radius: rem(30px);
+      background-color: color('Color/Blue 10');
+      @include font('Body 14 R');
+      color: color('Color/Primary Color');
+      white-space: nowrap;
     }
     .sp-thumb {
       width: 100%;
       aspect-ratio: 237 / 69;
       background-color: color('Color/Black 3');
-      border-radius: rem(12px);
-      margin-bottom: rem(20px);
+      border-radius: rem(24px);
+    }
+    // 실제 고객사 로고가 있는 케이스 — 빈 박스 대신 로고를 contain으로 표시.
+    .sp-thumb--img {
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: rem(12px) rem(20px);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
     }
     .sp-title-text {
-      @include font('Body 18 R');
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      @include font('Body 24 R');
       color: color('Color/Black 100');
-      margin-bottom: rem(20px);
+      text-align: center;
     }
     .sp-list {
+      width: 100%;
       display: flex;
       flex-direction: column;
       p {
         padding: rem(8px) rem(4px);
-        border-top: rem(1px) solid color('Color/Black 10');
-        @include font('Body 14 R');
-        color: color('Color/Black 100');
+        border-bottom: rem(1px) solid color('Color/Black 10');
+        @include font('Body 16 R');
+        color: color('Black/60');
+      }
+      .sp-list-last {
+        border-bottom: none;
       }
     }
   }
+
+  // --- Partner: 배경 사진 + 그라디언트 오버레이 + 주요 고객사 로고 12종, 4x3 ---
+  // Figma 실측: 이 섹션만 슬라이드가 아니라 고정 1장(내부 Swiper 없음) — 그래서 1~7 번호를 안 쓴다.
+  .section-partner-slide {
+    width: 100%;
+    height: $slide-height;
+    position: relative;
+    overflow: hidden;
+    .section-item {
+      position: relative;
+      height: 100%;
+      padding: rem(80px);
+      display: flex;
+      flex-direction: column;
+      gap: rem(60px);
+    }
+    // Figma 실측: 사진 위에 그라디언트가 2겹 — ① 하단에서 살짝 올라오는 블루 틴트, ② 상단에서
+    // 내려오는 흰색 soft-light 블렌드(사진을 은은하게 밝게 세탁). background-image 한 레이어로는
+    // mix-blend-mode를 줄 수 없어 ②는 별도 pseudo로 분리한다.
+    .partner-bg-ph {
+      position: absolute;
+      inset: 0;
+      background-image: url(~/assets/images/main/partner-bg.png);
+      background-size: cover;
+      background-position: center;
+      pointer-events: none;
+      &:before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+          to top,
+          rgba(0, 140, 214, 0.2) 1.111%,
+          rgba(0, 140, 214, 0) 70.5%
+        );
+      }
+      &:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+          to top,
+          rgba(255, 255, 255, 0) 18.778%,
+          color('Color/White') 73.889%
+        );
+        mix-blend-mode: soft-light;
+      }
+    }
+    .content-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: rem(60px);
+      height: 100%;
+    }
+    .partner-head {
+      display: flex;
+      flex-direction: column;
+      gap: rem(5px);
+    }
+    .partner-title {
+      @include font('H1');
+      color: color('Color/Black 100');
+    }
+    .partner-desc {
+      @include font('Body 24 R');
+      color: color('Color/Black 100');
+    }
+    .partner-grid {
+      margin-left: auto;
+      width: 100%;
+      max-width: rem(1167px);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: rem(20px);
+    }
+    .partner-card {
+      align-self: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: rem(12px) rem(20px);
+      background-color: color('Color/White');
+      border-radius: rem(24px);
+      img {
+        width: 100%;
+        max-width: rem(150px);
+        height: rem(45px);
+        object-fit: contain;
+      }
+    }
+  }
+}
+.main-wrap .section5-slide .js-swiper {
+  // width: calc(100% + #{rem(160px)});
+  margin-left: rem(-80px);
+  margin-right: rem(-80px);
+  padding-right: rem(100px);
+}
+.main-wrap .section6-slide .js-swiper {
+  width: calc(100% + #{rem(160px)});
+  margin-left: rem(-80px);
+}
+.main-wrap .section7-slide .js-swiper {
+  margin-left: rem(-80px);
+  margin-right: rem(-80px);
+}
+.main-wrap .section7-slide .sp-grid{
+  gap: 0;
+}
+.main-wrap .section7-slide .sp-card{
+  height: auto;
+}
+// 상하 중앙정렬: display:flex(기본 row) + align-items:center로 하면 메인축(가로)이 기본
+// row라 유일한 자식(.center-inner)이 콘텐츠 크기만큼만 shrink-to-fit되면서 폭 기준을 잃어버려,
+// 그 안의 풀블리드 swiper(width:calc(100% + 160px) 같은 %기반 값)가 부모 폭을 기준으로 못 잡고
+// 계속 부풀어버린다(실측 버그) — flex-direction:column + justify-content:center로 바꾸면
+// 메인축이 세로가 되어 그걸로 중앙정렬하고, 가로(cross축)는 기본 align-items:stretch라
+// .center-inner가 그대로 100% 폭을 유지한다.
+.main-wrap .section7-slide .section-item,
+.main-wrap .section6-slide .section-item,
+.main-wrap .section5-slide .section-item,
+.main-wrap .section4-slide .section-item,
+.main-wrap .section3-slide .section-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @media only screen and (max-width: $breakpoint-md) {
@@ -843,9 +1441,6 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
     .section2-slide .section-item,
     .section3-slide .section-item {
       padding: rem(30px) rem($spacing-left);
-    }
-    .section1-slide .section-item .content-inner {
-      padding-top: rem(80px);
     }
     .section1-slide .section-item .b-diagram {
       display: none;
@@ -911,6 +1506,27 @@ $slide-height: inherit;//calc(100vh - #{rem(80px)});
       .biz-flow-row {
         flex-wrap: wrap;
       }
+    }
+
+    .section-partner-slide {
+      height: auto;
+      .section-item {
+        height: auto;
+        padding: rem(40px) rem($spacing-left);
+        gap: rem(40px);
+      }
+      .content-inner {
+        height: auto;
+        gap: rem(40px);
+      }
+      .partner-grid {
+        max-width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .swiper-nav {
+      display: none;
     }
   }
 }

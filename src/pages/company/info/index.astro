@@ -139,167 +139,169 @@ const caseStudies = [
 ---
 
 <Layout>
-  <SubBanner
-    title="Company"
-    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-1'} />
-  <TitleMain title="회사 개요" />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Company"
+      description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-1'} />
+    <TitleMain title="회사 개요" />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`M2MGLOBAL<span class="mark">회사 개요</span>`} />
-      <div class="g-container">
-        <div class="g-row g-row-cols-1 g-row-cols-md-5">
+    <section class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`M2MGLOBAL<span class="mark"> 회사 개요</span>`} />
+        <div class="g-container">
+          <div class="g-row g-row-cols-1 g-row-cols-md-5">
+            {
+              localDataCompany.map((item) => (
+                <div class="g-col">
+                  <UiBoxCase2 label={item.label} title={item.title} set:html={item.content} />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`General <span class="mark">Overview</span>`} />
+        <div class="company__info">
+          <div class="company__info-row">
+            <div class="company__info-cell">
+              <span class="company__info-label">회사명</span>
+              <span class="company__info-value">엠투엠글로벌㈜</span>
+            </div>
+            <div class="company__info-cell">
+              <span class="company__info-label">대표이사</span>
+              <span class="company__info-value">김승원 대표</span>
+            </div>
+          </div>
+          <div class="company__info-row">
+            <div class="company__info-cell">
+              <span class="company__info-label">설립일</span>
+              <span class="company__info-value">
+                엠투엠글로벌㈜ 설립 : 2002년 1월<br />
+                샵피온㈜ 사업 분사 : 2004년 1월
+              </span>
+            </div>
+            <div class="company__info-cell">
+              <span class="company__info-label">인원</span>
+              <span class="company__info-value">73명</span>
+            </div>
+          </div>
+          <div class="company__info-row">
+            <div class="company__info-cell">
+              <span class="company__info-label">주소</span>
+              <span class="company__info-value"
+                >서울특별시 영등포구 영등포로 150, B동 1509호 생각공장 당산</span
+              >
+            </div>
+            <div class="company__info-cell">
+              <span class="company__info-label">연락처</span>
+              <span class="company__info-value company__info-value--inline">
+                Tel : 02) 6956-3955 / Email : help@m2mglobal.co.kr
+                <!-- TODO: 메일 아이콘 이미지 삽입 -->
+                <span class="company__icon-ph ico-mail" aria-hidden="true"></span>
+              </span>
+            </div>
+          </div>
+          <div class="company__info-row">
+            <div class="company__info-cell company__info-cell--full">
+              <span class="company__info-label">주요사업</span>
+              <span class="company__info-value"
+                >이커머스 플랫폼 구축 / 로봇 물류 플랫폼 구축 / 무역 물류 플랫폼 구축 / 축산 경매
+                플랫폼 구축 / 클라우드, AI 솔루션 공급</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="company__stats">
+      <div class="company__stats-inner">
+        <div class="company__stats-label">
+          <!-- TODO: 트로피 아이콘 이미지 삽입 -->
+          <span class="company__icon-ph ico-crow company__icon-ph--lg" aria-hidden="true"></span>
+          <p>숫자로 보는<br />M2M GLOBAL</p>
+        </div>
+        <div class="company__stats-grid">
           {
-            localDataCompany.map((item) => (
-              <div class="g-col">
-                <UiBoxCase2 label={item.label} title={item.title} set:html={item.content} />
+            statsData.map((item) => (
+              <div class="company__stats-card">
+                <p class="company__stats-num">
+                  <span>{item.value}</span>
+                  <span class="unit">{item.unit}</span>
+                </p>
+                <p class="company__stats-desc">{item.label}</p>
               </div>
             ))
           }
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`General <span class="mark">Overview</span>`} />
-      <div class="company__info">
-        <div class="company__info-row">
-          <div class="company__info-cell">
-            <span class="company__info-label">회사명</span>
-            <span class="company__info-value">엠투엠글로벌㈜</span>
-          </div>
-          <div class="company__info-cell">
-            <span class="company__info-label">대표이사</span>
-            <span class="company__info-value">김승원 대표</span>
-          </div>
+    <section class="g-section">
+      <div class="innerWrap">
+        <TitleMain
+          title="Specialized Outcomes"
+          description={`AI 기반 비즈니스 혁신을 현실로 만드는 엠투엠글로벌입니다.<br/>AI & Machine Learning / AI Commerce Platform / AI Robot & Logistics Knowledge`}
+        />
+        <div class="company__business-divider">
+          <span>M2M <b>GLOBAL</b></span>
         </div>
-        <div class="company__info-row">
-          <div class="company__info-cell">
-            <span class="company__info-label">설립일</span>
-            <span class="company__info-value">
-              엠투엠글로벌㈜ 설립 : 2002년 1월<br />
-              샵피온㈜ 사업 분사 : 2004년 1월
-            </span>
-          </div>
-          <div class="company__info-cell">
-            <span class="company__info-label">인원</span>
-            <span class="company__info-value">73명</span>
-          </div>
-        </div>
-        <div class="company__info-row">
-          <div class="company__info-cell">
-            <span class="company__info-label">주소</span>
-            <span class="company__info-value"
-              >서울특별시 영등포구 영등포로 150, B동 1509호 생각공장 당산</span
-            >
-          </div>
-          <div class="company__info-cell">
-            <span class="company__info-label">연락처</span>
-            <span class="company__info-value company__info-value--inline">
-              Tel : 02) 6956-3955 / Email : help@m2mglobal.co.kr
-              <!-- TODO: 메일 아이콘 이미지 삽입 -->
-              <span class="company__icon-ph" aria-hidden="true"></span>
-            </span>
-          </div>
-        </div>
-        <div class="company__info-row">
-          <div class="company__info-cell company__info-cell--full">
-            <span class="company__info-label">주요사업</span>
-            <span class="company__info-value"
-              >이커머스 플랫폼 구축 / 로봇 물류 플랫폼 구축 / 무역 물류 플랫폼 구축 / 축산 경매
-              플랫폼 구축 / 클라우드, AI 솔루션 공급</span
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="company__stats">
-    <div class="company__stats-inner">
-      <div class="company__stats-label">
-        <!-- TODO: 트로피 아이콘 이미지 삽입 -->
-        <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true"></span>
-        <p>숫자로 보는<br />M2M GLOBAL</p>
-      </div>
-      <div class="company__stats-grid">
-        {
-          statsData.map((item) => (
-            <div class="company__stats-card">
-              <p class="company__stats-num">
-                <span>{item.value}</span>
-                <span class="unit">{item.unit}</span>
-              </p>
-              <p class="company__stats-desc">{item.label}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="g-section">
-    <div class="innerWrap">
-      <TitleMain
-        title="Specialized Outcomes"
-        description={`AI 기반 비즈니스 혁신을 현실로 만드는 엠투엠글로벌입니다.<br/>AI & Machine Learning / AI Commerce Platform / AI Robot & Logistics Knowledge`}
-      />
-      <div class="company__business-divider">
-        <span>M2M <b>GLOBAL</b></span>
-      </div>
-      <div class="company__business-grid">
-        {
-          businessAreas.map((area) => (
-            <div class="company__business-card">
-              <span class="company__business-icon">
-                <Icon name={ICON_KEY_NAME[area.icon as keyof typeof ICON_KEY_NAME]} />
-              </span>
-              <p class="company__business-title">{area.title}</p>
-              <p class="company__business-desc">{area.desc}</p>
-              <div class="company__business-list">
-                {area.items.map((text) => (
-                  <TextList type="type_2">{text}</TextList>
-                ))}
+        <div class="company__business-grid">
+          {
+            businessAreas.map((area) => (
+              <div class="company__business-card">
+                <span class="company__business-icon">
+                  <Icon name={ICON_KEY_NAME[area.icon as keyof typeof ICON_KEY_NAME]} />
+                </span>
+                <p class="company__business-title">{area.title}</p>
+                <p class="company__business-desc">{area.desc}</p>
+                <div class="company__business-list">
+                  {area.items.map((text) => (
+                    <TextList type="type_2">{text}</TextList>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <TitleMain
-        title={`Specialized <span class="mark">Outcomes</span>`}
-        description={`B2B 현장을 잘 아는, 24년 경험의 e-Commerce 전문기업, M2MGlobal의 유일한 B2B 특화 커머스 플랫폼 수행 입증력이 기업의 차별을 만듭니다.<br/>또한 AI Commerce를 통해 거래·추천·분석까지 AI Commerce로 변화를 실현 중입니다.`}
-      />
-      <div class="company__case-grid">
-        {
-          caseStudies.map((item) => (
-            <div class="company__case-item">
-              <UiBoxCase3>
-                <Fragment slot="slotHead">
-                  <BoxTitleCase4 label={item.label} title={item.title} prefix={item.prefix} />
-                </Fragment>
-                {item.list.map((text) => (
-                  <TextList>{text}</TextList>
-                ))}
-                <UiTags items={item.tags.map((tag, i) => ({codeId: i, codeName: `#${tag}`}))} />
-                <Fragment slot="slotFoot">
-                  <Button useBlock={true} useSuffixIcon="copy">
-                    자세히 보기
-                  </Button>
-                </Fragment>
-              </UiBoxCase3>
-            </div>
-          ))
-        }
+    <section class="g-section">
+      <div class="innerWrap">
+        <TitleMain
+          title={`Specialized <span class="mark">Outcomes</span>`}
+          description={`B2B 현장을 잘 아는, 24년 경험의 e-Commerce 전문기업, M2MGlobal의 유일한 B2B 특화 커머스 플랫폼 수행 입증력이 기업의 차별을 만듭니다.<br/>또한 AI Commerce를 통해 거래·추천·분석까지 AI Commerce로 변화를 실현 중입니다.`}
+        />
+        <div class="company__case-grid">
+          {
+            caseStudies.map((item) => (
+              <div class="company__case-item">
+                <UiBoxCase3>
+                  <Fragment slot="slotHead">
+                    <BoxTitleCase4 label={item.label} title={item.title} prefix={item.prefix} />
+                  </Fragment>
+                  {item.list.map((text) => (
+                    <TextList>{text}</TextList>
+                  ))}
+                  <UiTags items={item.tags.map((tag, i) => ({codeId: i, codeName: `#${tag}`}))} />
+                  <Fragment slot="slotFoot">
+                    <Button useBlock={true} useSuffixIcon="copy">
+                      자세히 보기
+                    </Button>
+                  </Fragment>
+                </UiBoxCase3>
+              </div>
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

@@ -1,13 +1,55 @@
 ---
-// 메인 페이지 (/) — Figma "Main slogan / 사업정보 / AI / Business / Solution_Project" 5개 슬라이드 섹션.
-// 참고: 슬라이드 전환 JS(자동재생·화살표·닷 네비게이션)는 나중에 붙인다 — 지금은 섹션별 슬라이드
-// 아이템 마크업/스타일만 순서대로 쌓아둔 상태. 각 슬라이드 높이는 "뷰포트 - 고정 GNB(80px)".
-// Business 섹션은 사용자 요청에 따라 슬라이드 전체를 이미지로 대체할 자리만 두고 코딩하지 않았다.
+// 메인 페이지 (/) — Figma "Main"은 Main slogan(1) / 사업정보(2) / AI(3) / Business(4) /
+// Solution_Project 인스턴스 3개(5,6,7: Solution/Why,M2MGLOBAL?/Project) / Partner 순서로 8개
+// 섹션이다. 각 섹션(헤더 제외 높이는 뷰포트에 딱 맞춤, 100vh - GNB 80px)은 세로로 순서대로 쌓여
+// 스크롤된다. 컨트롤은 Figma 실측대로 두 가지로 나뉜다 —
+//   1~4: 우측 세로 닷 페이지네이션만(화살표 버튼 없음), 섹션 내부 아이템끼리 loop 가로 슬라이드
+//   5~7: 페이지네이션 없이 섹션 헤더의 우측 상단 prev/next 버튼만. 5·7은 카드 폭 고정 +
+//        slidesPerView:'auto'라 다음 카드가 오른쪽에 살짝 걸쳐 보이는(peek) 스와이프,
+//        6은 케이스 1장씩 통째로 전환.
+//   Partner: 슬라이드 아님, 고정 1장.
+// Section 1 하단 가운데 스크롤 유도 마우스 아이콘도 Figma 실측(CSS로 구현, 휠이 흐르는 애니메이션).
+// Swiper는 npm 설치 대신 CDN <script src>로 불러온다(사용자 지정) — Layout의 "head" 슬롯으로 CSS를
+// <head>에, 본문 끝에서 JS 스크립트 태그 + 초기화 스크립트를 로드한다.
 import Layout from '~/layouts/Layout.astro'
+import TextList from '~/components/common/TextList.astro'
+
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+// Partner 섹션 로고: 이미 다운로드되어 있는 src/assets/images/clients/ico_client_*.png 재사용
+// (ClientLogoGrid 공용 컴포넌트는 카드가 테두리+고정 비율(277x133) 고정이라 Figma의 이 섹션
+// 카드(테두리 없음, radius 24, 내용 높이에 맞춰 자연스러운 높이)와 맞지 않아 여기서는 직접 구현)
+const partnerLogoFiles = import.meta.glob<{default: ImageMetadata}>(
+  '/src/assets/images/clients/*.png',
+  {eager: true}
+)
+const partnerLogoSrc = (key: string) => {
+  const entry = Object.entries(partnerLogoFiles).find(([path]) =>
+    path.includes(`ico_client_${key}`)
+  )
+  return entry?.[1].default.src
+}
+
+// 메인 전용 배경/사진(Figma export, src/assets/images/main/*.png) + 아이콘(src/assets/icons/main/*.svg)
+// — Figma "Main" 전체 선택 조회 후 export한 자산. 파일명은 다운로드 시 의미 기준으로 재명명했다.
+const mainImgFiles = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/main/*.png', {
+  eager: true
+})
+const mainImgSrc = (key: string) => {
+  const entry = Object.entries(mainImgFiles).find(([path]) => path.endsWith(`/${key}.png`))
+  return entry?.[1].default.src
+}
+const mainIconFiles = import.meta.glob<{default: ImageMetadata}>('/src/assets/icons/main/*.svg', {
+  eager: true
+})
+const mainIconSrc = (key: string) => {
+  const entry = Object.entries(mainIconFiles).find(([path]) => path.endsWith(`/${key}.svg`))
+  return entry?.[1].default.src
+}
 
 // --- Section 1: Main slogan (4개) ---
 const mainSlides = [
   {
+    bg: 'slide1-bg',
     title: 'Where AI Transformation Begins<br/>Accelerating Business with AI',
     list: [
       'AI Commerce 기반의 이커머스 시스템을 통해 구축 실행력을 이미 입증하였습니다.',
@@ -16,16 +58,19 @@ const mainSlides = [
     ]
   },
   {
+    bg: 'slide2-bg',
     title:
       'AI Engineering for Real Business<br/>AI 기반 비즈니스 혁신을 현실로 만드는<br/>엠투엠글로벌입니다.',
     list: ['AI & Machine Learning', 'AI Commerce Platform', 'AI Robot & Logistics Knowledge']
   },
   {
+    bg: 'slide3-bg',
     title: 'B2B 원자재·산업재 거래 플랫폼을<br/>실거래 수준으로 구현한 유일한 기업',
     desc: 'AI 기반 거래·추천·분석까지 확장 가능한<br/>커머스 구축 역량을 보유한 엠투엠글로벌입니다.',
     caption: '(반도체 장비 거래 - 세미마켓 & 비철금속거래 – 서린닷컴 & 농협몰 등)'
   },
   {
+    bg: 'slide4-bg',
     title: 'AI Transformation의 시작점<br/>이제, 속도와 방향을 다시 설계합니다.',
     desc: 'Hybrid Multi-Layer Scoring Framework로<br/>AI Commerce의 완성도를 높입니다.<br/>거래·추천·분석 전 과정을 아우르는<br/>엠투엠글로벌만의 지능형 AI 프레임워크',
     diagram: true
@@ -62,19 +107,24 @@ const bizSlides = [
     cards: [
       {
         title: 'e-Commerce',
-        desc: '•AI Commerce (AI 추천)<br/>•M2M-eMall (쇼핑몰)<br/>•M2M-B2Bi (연계)<br/>•M2M-eCCP (개발플랫폼)'
+        list: [
+          'AI Commerce (AI 추천)',
+          'M2M-eMall (쇼핑몰)',
+          'M2M-B2Bi (연계)',
+          'M2M-eCCP (개발플랫폼)'
+        ]
       },
       {
         title: 'Logistics Platform',
-        desc: '•M2M-SCM (공급망 관리)<br/>•M2M-WMS (창고관리)<br/>•M2M-TMS (운송관리)'
+        list: ['M2M-SCM (공급망 관리)', 'M2M-WMS (창고관리)', 'M2M-TMS (운송관리)']
       },
       {
         title: 'Trade Platform',
-        desc: '•M2M-FTA (원산지증명)<br/>•M2M-eTrade (수출입)<br/>•M2M-EDI (전자문서연계)'
+        list: ['M2M-FTA (원산지증명)', 'M2M-eTrade (수출입)', 'M2M-EDI (전자문서연계)']
       },
       {
         title: 'Cloud / AI',
-        desc: '•AWS 공급 파트너<br/>•Microsoft 공급 파트너<br/>•넥스다임 공급 파트너'
+        list: ['AWS 공급 파트너', 'Microsoft 공급 파트너', '넥스다임 공급 파트너']
       }
     ]
   }
@@ -84,6 +134,7 @@ const bizSlides = [
 const aiSlides = [
   {
     eyebrow: 'AI Commerce',
+    flowLine: true,
     head: 'AI Transformation의 시작점! AI로 비즈니스 성장을 가속화합니다.',
     bannerTitle: 'AI Commerce',
     bannerDesc:
@@ -131,8 +182,10 @@ const aiSlides = [
 ]
 
 // --- Section 4: Business (3개) — Figma "Business" 프레임(node 151:830) 3개 심볼 그대로 ---
-// 배경/그래픽 이미지는 사용자가 직접 삽입 예정이라 빈 자리(TODO)만 잡아둔다.
+// 배경/그래픽 이미지는 Figma "Main" 전체 선택 조회 후 export해 적용했다(사용자 명시 요청 —
+// 원래는 이미지 다운로드 금지가 기본값이지만 이번 건은 명시적 예외).
 const ecommerceSlide = {
+  bg: 'ecommerce-bg',
   title: 'Modular Commerce Platform',
   desc: 'Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 유연한 확장성 제공.',
   circles: [
@@ -158,6 +211,15 @@ const ecommerceSlide = {
 }
 
 const robotLogisticsSlide = {
+  bg: 'robot-bg',
+  photos: [
+    'robot-photo-08-1',
+    'robot-photo-08-2',
+    'robot-photo-04-1',
+    'robot-photo-08-1',
+    'robot-photo-07-1',
+    'robot-photo-07-2'
+  ],
   title: 'ROBOT Logistics',
   desc: '다양한 물류 로봇과 자동화 설비를 하나의 플랫폼으로 통합 제어하여 스마트 창고의 운영 효율 UP!<br/>AS/RS, AMR, 셔틀카 등 이기종 로봇을 유기적으로 연계해 안정적인 물류 운영 및 최적의 작업 환경 제공',
   centerBadge: 'M2M-RLCK<br/>로봇물류제어기술',
@@ -192,9 +254,14 @@ const robotLogisticsSlide = {
 }
 
 const smartFactorySlide = {
+  bg: 'factory-bg',
   title: 'Smart Factory MES',
   desc: '사람, 산업 공간, 업무 정보를 스마트하게 연결하다!<br/>생산 현장 데이터 실시간 수집/가공/분석"을 통한 자율 공장 실현 가능, 지능화 된 스마트 팩토리 시스템 보유',
-  dataFlow: ['데이터 수집', '데이터 정제 · 관리', '데이터 활용'],
+  dataFlow: [
+    {text: '데이터 수집', icons: ['factory-icon-collect-a', 'factory-icon-collect-b']},
+    {text: '데이터 정제 · 관리', icons: ['factory-icon-refine']},
+    {text: '데이터 활용', icons: ['factory-icon-use-a', 'factory-icon-use-b']}
+  ],
   processTags: [
     '제조 실행',
     '품질/수율관리',
@@ -212,17 +279,18 @@ const smartFactorySlide = {
   ]
 }
 
-// --- Section 5: Solution_Project — 실제로는 슬라이드 3종(Solution 소개 / Why,M2MGLOBAL? 케이스 하이라이트
-// / Project 구축사례 9건)이 이어지는 구성이다(Figma "Main"의 Solution_Project 인스턴스 3개: node
-// 1795:10005, 1913:17810, 1798:9729 — 각각 아래 solutionOverview / whyM2mCases / projectCases에 대응). ---
+// --- Section 5·6·7: Figma "Main"의 Solution_Project 컴포넌트가 3번 배치된 것이라(node 1795:10005,
+// 1913:17810, 1798:9729) 독립된 풀뷰포트 섹션 3개(section5/6/7-slide)로 나눈다 — 합쳐서 하나의
+// 섹션으로 만들면 안 된다. 각각 아래 solutionOverview / whyM2mCases / projectCases에 대응. ---
 
-// --- Section 5-1: Solution (자체 플랫폼 소개 6종) ---
+// --- Section 5: Solution (자체 플랫폼 소개 6종, 카드 4장+peek) ---
 const solutionOverview = {
   title:
     '24년 안정적 수행 경험 위에 시장의 변화를 담았습니다. 실제 비즈니스를 움직이는 AI를 구축합니다.',
   desc: '"이커머스, 물류(로봇, 무역), 클라우드" 영역에서 AI융합을 통해 지능형 솔루션으로 발전해나갑니다.',
   cards: [
     {
+      icons: ['solution-ai-ml'],
       title: 'AI/ML Solution',
       list: [
         'AI추천 플랫폼',
@@ -234,26 +302,34 @@ const solutionOverview = {
       ]
     },
     {
+      icons: ['solution-commerce'],
       title: 'Commerce Platform',
       list: ['M2M-eMall (쇼핑몰)', 'M2M-B2Bi (연계)', 'M2M-eCCP (개발플랫폼)']
     },
     {
+      icons: ['solution-logistics'],
       title: 'Logistics Platform',
       list: ['M2M-CVO (차량관제)', 'M2M-WMS (창고관리)', 'M2M-TMS (운송관리)']
     },
     {
+      icons: ['solution-trade-a', 'solution-trade-b'],
       title: 'Trade Platform',
       list: ['M2M-FTA (원산지증명)', 'M2M-eTrade(수출입)', 'M2M-EDI (전자문서연계)']
     },
-    {title: 'eLivestock Platform', list: ['M2M-eLivestock Auction', 'M2M-B2Bi', 'M2M-eCCP']},
     {
+      icons: ['solution-elivestock'],
+      title: 'eLivestock Platform',
+      list: ['M2M-eLivestock Auction', 'M2M-B2Bi', 'M2M-eCCP']
+    },
+    {
+      icons: ['solution-cloud-ai'],
       title: '클라우드, AI',
       list: ['AWS 클라우드 서비스', 'MS-Azure 클라우드 서비스', 'AI 마케팅 솔루션']
     }
   ]
 }
 
-// --- Section 5-2: Why, M2MGLOBAL? — B2B 케이스 하이라이트 4건(농협/수협/세미마켓/서린닷컴) ---
+// --- Section 6: Why, M2MGLOBAL? — B2B 케이스 하이라이트 4건(농협/수협/세미마켓/서린닷컴) ---
 // 4건 모두 공통으로 쓰는 타이틀/설명/3특징 컬럼(featureCols)은 Figma 원본에도 동일 텍스트가 재사용된다.
 const whyM2mIntro = {
   title: 'B2B 현장을 잘 아는, 24년 경험의 e-Commerce 전문 기업',
@@ -270,8 +346,12 @@ const whyM2mFeatureCols = [
   },
   {title: '다양한 Device 기반 최적의 커머스 시스템<br/>구축 가능', desc: ''}
 ]
+// logoKey: 이미 다운로드된 src/assets/images/clients/ico_client_*.png 재사용(파트너/회사 로고는
+// Figma export 대신 기존 자산 대체 — 사용자 지정). 서린닷컴/서린상사는 39개 기존 자산 중 매칭되는
+// 게 없어(기존 /project/reference와 동일한 케이스) null로 두고 플레이스홀더 유지.
 const whyM2mCases = [
   {
+    logoKey: '01-nonghyupmall_left',
     name: '농협',
     desc: '상품·주문·물류를 통합한 이커머스 플랫폼 : 농협몰.<br/>농협의 온라인 쇼핑 플랫폼을 구축·고도화하여 상품 판매부터 주문·정산·물류까지 전 과정을 통합 운영하는 이커머스 시스템!',
     cardTitle: '농협 온라인 쇼핑몰<br/>구축/고도화',
@@ -284,6 +364,7 @@ const whyM2mCases = [
     ]
   },
   {
+    logoKey: '05-suhyupshopping_left',
     name: '수협',
     desc: 'AI Commerce 기술력을 접목한 AI 기반 수산물 전문 커머스 시스템 구축.<br/>AI 추천 적용된 공공 커머스 / 산지 기반 B2B → B2C 확장 구조 / 전문관 중심 카테고리 설계 모델 / O2O까지 확장 가능한 구조 구축!',
     cardTitle: 'AI 기반 수산물 전문<br/>커머스몰',
@@ -296,6 +377,7 @@ const whyM2mCases = [
     ]
   },
   {
+    logoKey: '03-semimarket_left',
     name: '세미마켓',
     desc: 'AI Commerce 기술력으로 셀러-바이어 간의 반도체 장비 거래 시스템 구축.<br/>강력한 개인화 추천, 셀러 입점, 상품등록, 가격-재고 설정 판매 및 실시간 시세, 환율, 재고와 연동된 거래형 B2B플랫폼 성공 구축!',
     cardTitle: '반도체 장비 거래<br/>글로벌 마켓 구축',
@@ -308,6 +390,7 @@ const whyM2mCases = [
     ]
   },
   {
+    logoKey: '41-img_custom_shoppingmall_02_left',
     name: '서린닷컴',
     desc: '셀러 - 바이어 간의 비철 금속 거래 : 비철금속거래 서린닷컴.<br/>셀러 입점, 상품등록, 가격-재고 설정 판매 및 실시간 시세, 환율, 재고와 연동된 거래형 B2B플랫폼 성공 구축 경험!',
     cardTitle: '서린상사 비철금속<br/>B2B 판매 플랫폼',
@@ -321,10 +404,17 @@ const whyM2mCases = [
   }
 ]
 
-// --- Section 5-3: Project (구축 사례 9건) ---
+// --- Section 7: Project (구축 사례 9건) --- Figma 실측(node 1798:9815): 카드는 흰 배경 +
+// radius 24 + padding(20px 24px) + gap 20px — 상단에 B2C/C2C/B2B 라벨 필(Blue 10 배경,
+// Primary Color 텍스트), 타이틀은 2줄(카드 7만 3줄) 고정 줄바꿈.
+// logoKey: Figma 원본의 img_custom_shoppingmall_NN 썸네일은 임시 자산명이라 실제 브랜드와 무관하게
+// 재사용된 placeholder라(예: C2C/K Car가 같은 이미지 공유) 신뢰할 수 없다 — 대신 카드 제목의 실제
+// 회사명으로 기존 39개 고객사 로고 중 매칭되는 걸 재사용한다(사용자 지정). 매칭 없는 곳은 null.
 const projectCases = [
   {
-    title: '수협중앙회 쇼핑몰 재구축',
+    label: 'B2C',
+    logoKey: '05-suhyupshopping',
+    titleLines: ['수협중앙회', '쇼핑몰 재구축'],
     list: [
       'AI 기반 개인화 쇼핑 경험',
       '지능형 상품 추천 및 전환율 향상',
@@ -334,7 +424,9 @@ const projectCases = [
     ]
   },
   {
-    title: '농협 온라인 쇼핑몰 구축/고도화',
+    label: 'B2C',
+    logoKey: '01-nonghyupmall',
+    titleLines: ['농협 온라인 쇼핑몰', '구축/고도화'],
     list: [
       '산지직송, 하나로마트 배송, 식자재 몰, MRO, 제휴 연계',
       'B2C몰,B2B몰, B2E몰, 콕푸드',
@@ -344,7 +436,9 @@ const projectCases = [
     ]
   },
   {
-    title: '다이소 차세대 커머스 플랫폼 구축',
+    label: 'B2C',
+    logoKey: '02-daiso',
+    titleLines: ['다이소 차세대', '커머스 플랫폼 구축'],
     list: [
       '오프라인 매장의 온라인 옴니 채널 구축',
       '통합 백오피스 구축',
@@ -353,7 +447,9 @@ const projectCases = [
     ]
   },
   {
-    title: 'C2C 직거래 온라인 플랫폼 재구축',
+    label: 'C2C',
+    logoKey: '04-kcar',
+    titleLines: ['C2C 직거래', '온라인 플랫폼 재구축'],
     list: [
       '실차주 인증 기반, 매물직거래',
       '보험 정비 / 사고 이력 공개',
@@ -363,7 +459,9 @@ const projectCases = [
     ]
   },
   {
-    title: '제주항공 기내판매시스템',
+    label: 'B2C',
+    logoKey: '39-jejuair',
+    titleLines: ['제주항공', '기내판매시스템'],
     list: [
       '제주항공 기내판매시스템 개편',
       '케이터링 시스템 구축',
@@ -371,7 +469,9 @@ const projectCases = [
     ]
   },
   {
-    title: 'K Car 직영 온라인 플랫폼 재구축',
+    label: 'B2C',
+    logoKey: '04-kcar',
+    titleLines: ['K Car 직영', '온라인 플랫폼 재구축'],
     list: [
       '온라인 결제 간소화',
       'AI추천 기반, 모바일 플랫폼 구축',
@@ -381,7 +481,9 @@ const projectCases = [
     ]
   },
   {
-    title: '롯데ON구축 롯데그룹 6개 이커머스 통합 플랫폼 구축',
+    label: 'B2C',
+    logoKey: '06-lotteon',
+    titleLines: ['롯데ON구축', '롯데그룹 6개 이커머스', '통합 플랫폼 구축'],
     list: [
       '롯데닷컴, 롯데백화점, 롯데마트, 롯데슈퍼, 하이마트, 롯데롭스',
       '총 21개의 이커머스 업무영역에 대한 기능 구현 (FO/BO통합)',
@@ -390,7 +492,9 @@ const projectCases = [
     ]
   },
   {
-    title: '반도체 장비 거래 글로벌 마켓 구축',
+    label: 'B2B',
+    logoKey: '03-semimarket',
+    titleLines: ['반도체 장비 거래', '글로벌 마켓 구축'],
     list: [
       'AI 초개인화 추천을 통한 셀러-바이어 간의 반도체 장비 거래',
       'Equipment, Parts, Extras 구매',
@@ -399,7 +503,9 @@ const projectCases = [
     ]
   },
   {
-    title: '서린상사 비철금속 B2B 판매 플랫폼',
+    label: 'B2B',
+    logoKey: '40-img_custom_distribution_02',
+    titleLines: ['서린상사 비철금속', 'B2B 판매 플랫폼'],
     list: [
       '알루미늄, 아연… B2B 구매 기능',
       '실시간 Live 가격 기반 구매',
@@ -410,272 +516,403 @@ const projectCases = [
     ]
   }
 ]
+
+// --- Section 6: Partner (주요 고객사 로고 12종) ---
+// 참고: Figma 원본 이미지 파일명이 "img_custom_shoppingmall_NN" 형태의 임시 자산명이라 실제 브랜드와
+// 1:1 대응이 확인되지 않는다 — 대신 이미 다운로드되어 있는 39개 고객사 로고 중 대표 브랜드 12개를
+// 선정해 채웠다(농협/수협/다이소는 위 Why,M2MGLOBAL? 케이스와도 겹치는 실제 파트너사).
+const partnerLogoKeys = [
+  '01-nonghyupmall',
+  '02-daiso',
+  '04-kcar',
+  '05-suhyupshopping',
+  '06-lotteon',
+  '12-cjlogistics',
+  '20-lgelectronics',
+  '21-hyundaimobis',
+  '14-kyobo',
+  '15-lottehimart',
+  '28-samsungsds',
+  '32-microsoft'
+]
 ---
 
 <Layout>
-  <div class="main-wrap">
+  <Fragment slot="head">
+    <link rel="stylesheet" href={`${PUBLIC_BUILD_URL}/css/jquery.fullpage.min.css`} />
+    <link rel="stylesheet" href={`${PUBLIC_BUILD_URL}/css/swiper.min.css`} />
+  </Fragment>
+  <div id="fullpage" class="main-wrap">
     <!-- Section 1: Main slogan -->
-    <div class="section1-slide">
-      {
-        mainSlides.map((slide) => (
-          <div class="section-item">
-            {/* <!-- TODO: 슬라이드 배경 이미지 삽입 (인라인 style="background-image:url(...)") --> */}
-            <div class="content-inner">
-              <div class="b-texts">
-                <div class="b-title" set:html={slide.title} />
-                {slide.desc && <div class="b-desc" set:html={slide.desc} />}
-                {slide.caption && <div class="b-caption" set:html={slide.caption} />}
-                {slide.list && (
-                  <div class="b-list">
-                    {slide.list.map((li) => (
-                      <div class="b-li">{li}</div>
-                    ))}
+    <div class="section1-slide js-swiper swiper section">
+      <div class="swiper-wrapper">
+        {
+          mainSlides.map((slide) => (
+            <div
+              class="section-item swiper-slide"
+              style={`background-image:url(${mainImgSrc(slide.bg)})`}
+            >
+              <div class="content-inner">
+                <div class="b-texts">
+                  <div class="b-title" set:html={slide.title} />
+                  {slide.desc && <div class="b-desc" set:html={slide.desc} />}
+                  {slide.caption && <div class="b-caption" set:html={slide.caption} />}
+                  {slide.list && (
+                    <div class="b-list">
+                      {slide.list.map((li) => (
+                        <div class="b-li">{li}</div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <a href="#" class="ad-more">
+                  Read More
+                </a>
+
+                {slide.diagram && (
+                  <div class="b-diagram">
+                    <div class="b-diagram-node b-diagram-node--tl">
+                      <span>
+                        <strong>후보군 생성</strong>(Candidate Generation)
+                      </span>
+                    </div>
+                    <div class="b-diagram-node b-diagram-node--tr">
+                      <span>
+                        <strong>AI 스코어링</strong>(AI Scoring)
+                      </span>
+                    </div>
+                    <div class="b-diagram-node b-diagram-node--bl">
+                      <span>
+                        <strong>비즈니스 룰 적용</strong>(Business Rules)
+                      </span>
+                    </div>
+                    <div class="b-diagram-node b-diagram-node--br">
+                      <span>
+                        <strong>최종 랭킹</strong>(Ranking & Optimization)
+                      </span>
+                    </div>
+                    <div class="b-diagram-node b-diagram-node--center">AI Commerce</div>
                   </div>
                 )}
               </div>
-              <a href="#" class="ad-more">
-                Read More
-              </a>
-
-              {slide.diagram && (
-                <div class="b-diagram">
-                  <div class="b-diagram-node b-diagram-node--tl">
-                    <span>
-                      <strong>후보군 생성</strong>(Candidate Generation)
-                    </span>
-                  </div>
-                  <div class="b-diagram-node b-diagram-node--tr">
-                    <span>
-                      <strong>AI 스코어링</strong>(AI Scoring)
-                    </span>
-                  </div>
-                  <div class="b-diagram-node b-diagram-node--bl">
-                    <span>
-                      <strong>비즈니스 룰 적용</strong>(Business Rules)
-                    </span>
-                  </div>
-                  <div class="b-diagram-node b-diagram-node--br">
-                    <span>
-                      <strong>최종 랭킹</strong>(Ranking & Optimization)
-                    </span>
-                  </div>
-                  <div class="b-diagram-node b-diagram-node--center">AI Commerce</div>
-                </div>
-              )}
             </div>
-          </div>
-        ))
+          ))
+        }
+      </div>
+      <div class="swiper-pagination"></div>
+      {
+        /* Figma 실측: 첫 섹션 하단 가운데 스크롤 유도 마우스 아이콘 — CSS 애니메이션(휠이 흐르는 효과) */
       }
+      <div class="scroll-mouse" aria-hidden="true"></div>
     </div>
 
     <!-- Section 2: 사업정보 -->
-    <div class="section2-slide">
-      {
-        bizSlides.map((slide) => (
-          <div class="section-item">
-            {/* <!-- TODO: 슬라이드 배경 이미지 삽입 --> */}
-            <div class="content-inner">
-              <p class="biz-eyebrow">M2MGLOBAL Biz</p>
-              <div class="biz-core">
-                {slide.coreTitle}
-                <br />
-                <span>{slide.coreSub}</span>
-              </div>
-              <div class="biz-grid">
-                {slide.cards.map((card) => (
-                  <div class="biz-card">
-                    <p class="biz-card-title">{card.title}</p>
-                    <p class="biz-card-desc" set:html={card.desc} />
+    <div class="section2-slide js-swiper swiper section">
+      <div class="swiper-wrapper">
+        {
+          bizSlides.map((slide) => (
+            <div class="section-item swiper-slide">
+              <div class="content-inner">
+                <p class="biz-eyebrow">M2MGLOBAL Biz</p>
+                <div class="biz-core">
+                  <div class="biz-core-text">
+                    <p>{slide.coreTitle}</p>
+                    <p class="accent">{slide.coreSub}</p>
                   </div>
-                ))}
+                </div>
+                <img class="biz-connector" src={mainIconSrc('biz-connector-lines')} alt="" />
+                <div class="biz-grid">
+                  {slide.cards.map((card) => (
+                    <div class="biz-card">
+                      <p class="biz-card-title">{card.title}</p>
+                      {card.list ? (
+                        <div class="biz-card-list">
+                          {card.list.map((text) => (
+                            <p class="biz-card-item">{text}</p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p class="biz-card-desc" set:html={card.desc} />
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <a href="#" class="ad-more">
+                  Read More
+                </a>
               </div>
             </div>
-            <a href="#" class="ad-more">
-              Read More
-            </a>
-          </div>
-        ))
-      }
+          ))
+        }
+      </div>
+      <div class="swiper-pagination"></div>
     </div>
 
     <!-- Section 3: AI -->
-    <div class="section3-slide">
-      {
-        aiSlides.map((slide) => (
-          <div class="section-item">
-            <p class="ai-eyebrow">{slide.eyebrow}</p>
-            <p class="ai-head">{slide.head}</p>
-            <div class="ai-banner">
-              <p class="ai-banner-title">{slide.bannerTitle}</p>
-              <p class="ai-banner-desc" set:html={slide.bannerDesc} />
-            </div>
-            <div class="ai-flow">
-              {slide.flow.map((node) => (
-                <div class:list={['ai-flow-node', {'ai-flow-node--accent': node.accent}]}>
-                  {node.sub ? (
-                    <span>
-                      <strong>{node.title}</strong>
-                      <span set:html={node.sub} />
-                    </span>
-                  ) : (
-                    node.title
+    <div class="section3-slide js-swiper swiper section">
+      <div class="swiper-wrapper">
+        {
+          aiSlides.map((slide) => (
+            <div class="section-item swiper-slide">
+              <div class="center-inner">
+                <p class="ai-eyebrow">{slide.eyebrow}</p>
+                <p class="ai-head">{slide.head}</p>
+                <div class="ai-banner">
+                  <p class="ai-banner-title">{slide.bannerTitle}</p>
+                  <p class="ai-banner-desc" set:html={slide.bannerDesc} />
+                </div>
+                <div class="ai-flow">
+                  {slide.flowLine && (
+                    <img class="ai-flow-connector" src={mainIconSrc('ai-flow-connector')} alt="" />
                   )}
+                  {slide.flow.map((node) => (
+                    <div class:list={['ai-flow-node', {'ai-flow-node--accent': node.accent}]}>
+                      {node.sub ? (
+                        <span>
+                          <strong>{node.title}</strong>
+                          <span set:html={node.sub} />
+                        </span>
+                      ) : (
+                        node.title
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            {slide.cols && (
-              <div class="ai-cols">
-                {slide.cols.map((col) => (
-                  <div class="ai-col">
-                    <p class="ai-col-title">{col.title}</p>
-                    <p class="ai-col-desc" set:html={col.desc} />
+                {slide.cols && (
+                  <div class="ai-cols">
+                    {slide.cols.map((col) => (
+                      <div class="ai-col">
+                        <p class="ai-col-title">{col.title}</p>
+                        <p class="ai-col-desc" set:html={col.desc} />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
+                {slide.footer && (
+                  <div class="ai-cols">
+                    <div class="ai-col">
+                      <p class="ai-col-title">{slide.footer}</p>
+                      <p class="ai-col-desc">{slide.footerCaption}</p>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            {slide.footer && (
-              <div class="ai-cols">
-                <div class="ai-col">
-                  <p class="ai-col-title">{slide.footer}</p>
-                  <p class="ai-col-desc">{slide.footerCaption}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        ))
-      }
+            </div>
+          ))
+        }
+      </div>
+      <div class="swiper-pagination"></div>
     </div>
 
     <!-- Section 4: Business (3개) -->
-    <div class="section4-slide">
-      <div class="section-item biz-item biz-item--ecommerce">
-        <!-- TODO: 배경 이미지 삽입 -->
-        <div class="biz-bg-ph" aria-hidden="true"></div>
-        <p class="biz-eyebrow">Business</p>
-        <div class="biz-body">
-          <div class="biz-head">
-            <div class="biz-title-row">
-              <p class="biz-title">{ecommerceSlide.title}</p>
-              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
-              <span class="biz-arrow-ph" aria-hidden="true"></span>
+    <div class="section4-slide js-swiper swiper section">
+      <div class="swiper-wrapper">
+        <div class="section-item swiper-slide biz-item biz-item--ecommerce">
+          <div class="center-inner">
+            <div
+              class="biz-bg-ph"
+              aria-hidden="true"
+              style={`background-image:url(${mainImgSrc(ecommerceSlide.bg)}); background-position: calc(100% + 800px);`}
+            >
             </div>
-            <p class="biz-desc" set:html={ecommerceSlide.desc} />
+            <p class="biz-eyebrow">Business</p>
+            <div class="biz-body">
+              <div class="biz-head">
+                <div class="biz-title-row">
+                  <p class="biz-title">{ecommerceSlide.title}</p>
+                </div>
+                <p class="biz-desc" set:html={ecommerceSlide.desc} />
+              </div>
+              <div class="biz-cols">
+                <div class="biz-circle-grid">
+                  {
+                    ecommerceSlide.circles.map((text) => (
+                      <div class="biz-circle">
+                        <p set:html={text} />
+                      </div>
+                    ))
+                  }
+                </div>
+                <div class="biz-center-ph" aria-hidden="true">
+                  <img src={mainIconSrc('ecommerce-flow-arrow')} alt="" />
+                </div>
+                <div class="biz-side-list">
+                  {ecommerceSlide.rightList.map((text) => <p class="biz-side-item">{text}</p>)}
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="biz-cols">
-            <div class="biz-circle-grid">
-              {
-                ecommerceSlide.circles.map((text) => (
-                  <div class="biz-circle">
-                    <p set:html={text} />
-                  </div>
-                ))
-              }
+        </div>
+
+        <div class="section-item swiper-slide biz-item biz-item--robot">
+          <div class="center-inner">
+            <div
+              class="biz-bg-ph"
+              aria-hidden="true"
+              style={`background-image:url(${mainImgSrc(robotLogisticsSlide.bg)}); background-position: calc(100% + 800px);`}
+            >
             </div>
-            <!-- TODO: 흐름 화살표 그래픽 이미지 삽입 -->
-            <div class="biz-center-ph" aria-hidden="true"></div>
-            <div class="biz-side-list">
-              {ecommerceSlide.rightList.map((text) => <p class="biz-side-item">{text}</p>)}
+            <p class="biz-eyebrow">Business</p>
+            <div class="biz-body">
+              <div class="biz-head">
+                <div class="biz-title-row">
+                  <p class="biz-title">{robotLogisticsSlide.title}</p>
+                </div>
+                <p class="biz-desc" set:html={robotLogisticsSlide.desc} />
+              </div>
+              <div class="biz-cols biz-cols--robot">
+                <div class="biz-pill-col">
+                  {
+                    robotLogisticsSlide.leftPills.map((pill) => (
+                      <div class="biz-pill-group">
+                        <p class="biz-pill">{pill.name}</p>
+                        <p class="biz-pill-desc" set:html={pill.desc} />
+                      </div>
+                    ))
+                  }
+                </div>
+                <div class="biz-center-ph biz-center-ph--robot" aria-hidden="true">
+                  <img class="biz-robot-connector" src={mainIconSrc('robot-connector')} alt="" />
+                  <div class="biz-robot-photos">
+                    {
+                      robotLogisticsSlide.photos.map((photo) => (
+                        <span class="biz-robot-photo">
+                          <img src={mainImgSrc(photo)} alt="" loading="lazy" />
+                        </span>
+                      ))
+                    }
+                  </div>
+                  <div class="biz-center-badge">
+                    <p set:html={robotLogisticsSlide.centerBadge} />
+                  </div>
+                </div>
+                <div class="biz-pill-col">
+                  {
+                    robotLogisticsSlide.rightPills.map((pill) => (
+                      <div class="biz-pill-group">
+                        <p class="biz-pill">{pill.name}</p>
+                        <p class="biz-pill-desc" set:html={pill.desc} />
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-item swiper-slide biz-item biz-item--factory">
+          <div class="center-inner">
+            <div
+              class="biz-bg-ph"
+              aria-hidden="true"
+              style={`background-image:url(${mainImgSrc(smartFactorySlide.bg)})`}
+            >
+            </div>
+            <p class="biz-eyebrow">Business</p>
+            <div class="biz-body">
+              <div class="biz-head">
+                <div class="biz-title-row">
+                  <p class="biz-title">{smartFactorySlide.title}</p>
+                </div>
+                <p class="biz-desc" set:html={smartFactorySlide.desc} />
+              </div>
+              <div class="biz-cols biz-cols--factory">
+                <div class="biz-dataflow-col">
+                  <div class="biz-dataflow-row">
+                    {
+                      smartFactorySlide.dataFlow.map((flow) => (
+                        <div class="biz-datacircle">
+                          <span class="biz-datacircle-icon-ph" aria-hidden="true">
+                            {flow.icons.map((icon) => (
+                              <img src={mainIconSrc(icon)} alt="" />
+                            ))}
+                          </span>
+                          <p>{flow.text}</p>
+                        </div>
+                      ))
+                    }
+                  </div>
+                  <div class="biz-flow-row">
+                    {
+                      smartFactorySlide.processTags.map((text) => (
+                        <div class="biz-flow-tag">
+                          <span class="biz-flow-line" aria-hidden="true" />
+                          <p>{text}</p>
+                        </div>
+                      ))
+                    }
+                  </div>
+                  <div class="biz-device-grid">
+                    {
+                      smartFactorySlide.devices.map((text) => (
+                        <div class="biz-device-pill">
+                          <p>{text}</p>
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+                <div class="biz-center-ph" aria-hidden="true">
+                  <img src={mainIconSrc('factory-flow-arrow')} alt="" />
+                </div>
+                <div class="biz-side-list biz-side-list--plain">
+                  {
+                    smartFactorySlide.rightList.map((text) => (
+                      <p class="biz-side-item" set:html={text} />
+                    ))
+                  }
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="swiper-pagination"></div>
+    </div>
 
-      <div class="section-item biz-item biz-item--robot">
-        <!-- TODO: 배경 이미지 삽입 -->
-        <div class="biz-bg-ph" aria-hidden="true"></div>
-        <p class="biz-eyebrow">Business</p>
-        <div class="biz-body">
-          <div class="biz-head">
-            <div class="biz-title-row">
-              <p class="biz-title">{robotLogisticsSlide.title}</p>
-              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
-              <span class="biz-arrow-ph" aria-hidden="true"></span>
+    <!-- Section 5: Solution 소개 (6종 카드, 페이지네이션 없이 우측 상단 prev/next만 — Figma 실측:
+         카드 4장은 온전히, 5·6번째는 오른쪽에 살짝 걸쳐 보이는 가로 스와이프peek) -->
+    <div class="section5-slide section">
+      <div class="section-item">
+        <div class="center-inner">
+          <p class="sp-eyebrow">Solution</p>
+          <div class="sp-head">
+            <div>
+              <p class="sp-title">
+                {solutionOverview.title}
+                <img class="sp-arrow-ph" src={mainIconSrc('icon_arrow_forward')} alt="" />
+              </p>
+              <p class="sp-desc">{solutionOverview.desc}</p>
             </div>
-            <p class="biz-desc" set:html={robotLogisticsSlide.desc} />
+            <div class="sp-nav">
+              <button
+                id="solution-swiper-nav-prev"
+                class="sp-nav-btn sp-nav-btn--prev"
+                aria-label="이전"></button>
+              <button
+                id="solution-swiper-nav-next"
+                class="sp-nav-btn sp-nav-btn--next"
+                aria-label="다음"></button>
+            </div>
           </div>
-          <div class="biz-cols biz-cols--robot">
-            <div class="biz-pill-col">
+          <div id="solution-swiper" class="js-swiper swiper">
+            <div class="swiper-wrapper sp-solution-grid">
               {
-                robotLogisticsSlide.leftPills.map((pill) => (
-                  <div class="biz-pill-group">
-                    <p class="biz-pill">{pill.name}</p>
-                    <p class="biz-pill-desc" set:html={pill.desc} />
-                  </div>
-                ))
-              }
-            </div>
-            <div class="biz-center-ph biz-center-ph--robot" aria-hidden="true">
-              <!-- TODO: 로봇/창고 사진 6컷 이미지 삽입 -->
-              <div class="biz-center-badge">
-                <p set:html={robotLogisticsSlide.centerBadge} />
-              </div>
-            </div>
-            <div class="biz-pill-col">
-              {
-                robotLogisticsSlide.rightPills.map((pill) => (
-                  <div class="biz-pill-group">
-                    <p class="biz-pill">{pill.name}</p>
-                    <p class="biz-pill-desc" set:html={pill.desc} />
-                  </div>
-                ))
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-item biz-item biz-item--factory">
-        <!-- TODO: 배경 이미지 삽입 -->
-        <div class="biz-bg-ph" aria-hidden="true"></div>
-        <p class="biz-eyebrow">Business</p>
-        <div class="biz-body">
-          <div class="biz-head">
-            <div class="biz-title-row">
-              <p class="biz-title">{smartFactorySlide.title}</p>
-              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
-              <span class="biz-arrow-ph" aria-hidden="true"></span>
-            </div>
-            <p class="biz-desc" set:html={smartFactorySlide.desc} />
-          </div>
-          <div class="biz-cols biz-cols--factory">
-            <div class="biz-dataflow-col">
-              <div class="biz-dataflow-row">
-                {
-                  smartFactorySlide.dataFlow.map((text) => (
-                    <div class="biz-datacircle">
-                      {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                      <span class="biz-datacircle-icon-ph" aria-hidden="true" />
-                      <p>{text}</p>
+                solutionOverview.cards.map((card) => (
+                  <div class="swiper-slide sp-solution-card">
+                    <span class="sp-solution-icon-ph" aria-hidden="true">
+                      {card.icons.map((icon) => (
+                        <img src={mainIconSrc(icon)} alt="" />
+                      ))}
+                    </span>
+                    <p class="sp-solution-title">{card.title}</p>
+                    <div class="sp-solution-list">
+                      {card.list.map((text) => (
+                        <TextList type="type_2">{text}</TextList>
+                      ))}
                     </div>
-                  ))
-                }
-              </div>
-              <div class="biz-flow-row">
-                {
-                  smartFactorySlide.processTags.map((text) => (
-                    <div class="biz-flow-tag">
-                      <span class="biz-flow-line" aria-hidden="true" />
-                      <p>{text}</p>
-                    </div>
-                  ))
-                }
-              </div>
-            </div>
-            <div class="biz-device-grid">
-              {
-                smartFactorySlide.devices.map((text) => (
-                  <div class="biz-device-pill">
-                    <p>{text}</p>
                   </div>
-                ))
-              }
-            </div>
-            <!-- TODO: 흐름 화살표 그래픽 이미지 삽입 -->
-            <div class="biz-center-ph" aria-hidden="true"></div>
-            <div class="biz-side-list biz-side-list--plain">
-              {
-                smartFactorySlide.rightList.map((text) => (
-                  <p class="biz-side-item" set:html={text} />
                 ))
               }
             </div>
@@ -684,142 +921,309 @@ const projectCases = [
       </div>
     </div>
 
-    <!-- Section 5: Solution_Project — Solution 소개 / Why,M2MGLOBAL? 케이스 하이라이트 / Project 구축사례 -->
-    <div class="section5-slide">
-      <!-- 5-1. Solution -->
-      <div class="section-item">
-        <p class="sp-eyebrow">Solution</p>
-        <div class="sp-head">
-          <div>
-            <p class="sp-title">
-              {solutionOverview.title}
-              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
-              <span class="sp-arrow-ph" aria-hidden="true"></span>
-            </p>
-            <p class="sp-desc">{solutionOverview.desc}</p>
+    <!-- Section 6: Why, M2MGLOBAL? (농협/수협/세미마켓/서린닷컴 케이스 4건 — 페이지네이션 없이 우측
+         상단 prev/next만, 슬라이드 1개씩 전환. 상단 타이틀/설명은 케이스와 무관하게 고정이라
+         swiper-wrapper 바깥(섹션 헤더)에 한 번만 둔다 — Section 5/7과 동일 패턴) -->
+    <div class="section6-slide section">
+      <div class="section-item" style={`background-image:url(${mainImgSrc('why-bg')})`}>
+        <div class="center-inner">
+          <p class="sp-eyebrow">Why, M2MGLOBAL?</p>
+          <div class="sp-head">
+            <div>
+              <p class="sp-title">
+                {whyM2mIntro.title}
+                <img class="sp-arrow-ph" src={mainIconSrc('icon_arrow_forward')} alt="" />
+              </p>
+              <p class="sp-desc">{whyM2mIntro.desc}</p>
+            </div>
+            <div class="sp-nav">
+              <button id="why-swiper-nav-prev" class="sp-nav-btn sp-nav-btn--prev" aria-label="이전"
+              ></button>
+              <button id="why-swiper-nav-next" class="sp-nav-btn sp-nav-btn--next" aria-label="다음"
+              ></button>
+            </div>
           </div>
-          <div class="sp-nav">
-            <!-- TODO: 이전/다음 화살표 아이콘 이미지 삽입 -->
-            <button class="sp-nav-btn" aria-label="이전"></button>
-            <button class="sp-nav-btn" aria-label="다음"></button>
-          </div>
-        </div>
-        <div class="sp-solution-grid">
-          {
-            solutionOverview.cards.map((card) => (
-              <div class="sp-solution-card">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="sp-solution-icon-ph" aria-hidden="true" />
-                <p class="sp-solution-title">{card.title}</p>
-                <div class="sp-solution-list">
-                  {card.list.map((text) => (
-                    <div class="sp-solution-item">
-                      {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                      <span class="sp-solution-item-icon-ph" aria-hidden="true" />
-                      <p>{text}</p>
+          <div id="why-swiper" class="js-swiper swiper">
+            <div class="swiper-wrapper">
+              {
+                whyM2mCases.map((item) => (
+                  <div class="swiper-slide sp-why-body">
+                    <div class="sp-why-main">
+                      <div class="sp-why-head">
+                        {item.logoKey ? (
+                          <span class="sp-why-logo-ph sp-why-logo-ph--img">
+                            <img src={partnerLogoSrc(item.logoKey)} alt={item.name} />
+                          </span>
+                        ) : (
+                          <span class="sp-why-logo-ph" aria-hidden="true" />
+                        )}
+                        <p class="sp-why-subtitle">Why, M2MGlobal?</p>
+                        <p class="sp-why-case-desc" set:html={item.desc} />
+                      </div>
+                      <div class="sp-why-features">
+                        {whyM2mFeatureCols.map((col) => (
+                          <div class="sp-why-feature">
+                            <p class="sp-why-feature-title" set:html={col.title} />
+                            {col.desc && <p class="sp-why-feature-desc" set:html={col.desc} />}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            ))
-          }
+                    <div class="sp-why-card">
+                      {item.logoKey ? (
+                        <span class="sp-why-logo-ph sp-why-logo-ph--img">
+                          <img src={partnerLogoSrc(item.logoKey)} alt={item.name} />
+                        </span>
+                      ) : (
+                        <span class="sp-why-logo-ph" aria-hidden="true" />
+                      )}
+                      <p class="sp-why-card-title" set:html={item.cardTitle} />
+                      <div class="sp-why-card-list">
+                        {item.cardList.map((text) => (
+                          <TextList type="type_2">{text}</TextList>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- 5-2. Why, M2MGLOBAL? (농협/수협/세미마켓/서린닷컴 케이스 4건) -->
-      {
-        whyM2mCases.map((item) => (
-          <div class="section-item">
-            <p class="sp-eyebrow">Why, M2MGLOBAL?</p>
-            <div class="sp-head">
-              <div>
-                <p class="sp-title">
-                  {whyM2mIntro.title}
-                  {/* <!-- TODO: 화살표 아이콘 이미지 삽입 --> */}
-                  <span class="sp-arrow-ph" aria-hidden="true" />
-                </p>
-                <p class="sp-desc">{whyM2mIntro.desc}</p>
-              </div>
-              <div class="sp-nav">
-                {/* <!-- TODO: 이전/다음 화살표 아이콘 이미지 삽입 --> */}
-                <button class="sp-nav-btn" aria-label="이전" />
-                <button class="sp-nav-btn" aria-label="다음" />
-              </div>
-            </div>
-            <div class="sp-why-body">
-              <div class="sp-why-main">
-                <div class="sp-why-head">
-                  {/* <!-- TODO: 로고 이미지 삽입 --> */}
-                  <span class="sp-why-logo-ph" aria-hidden="true" />
-                  <p class="sp-why-subtitle">Why, M2MGlobal?</p>
-                  <p class="sp-why-case-desc" set:html={item.desc} />
-                </div>
-                <div class="sp-why-features">
-                  {whyM2mFeatureCols.map((col) => (
-                    <div class="sp-why-feature">
-                      <p class="sp-why-feature-title" set:html={col.title} />
-                      {col.desc && <p class="sp-why-feature-desc" set:html={col.desc} />}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div class="sp-why-card">
-                {/* <!-- TODO: 로고 이미지 삽입 --> */}
-                <span class="sp-why-logo-ph" aria-hidden="true" />
-                <p class="sp-why-card-title" set:html={item.cardTitle} />
-                <div class="sp-why-card-list">
-                  {item.cardList.map((text) => (
-                    <div class="sp-why-card-item">
-                      {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                      <span class="sp-solution-item-icon-ph" aria-hidden="true" />
-                      <p>{text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))
-      }
-
-      <!-- 5-3. Project (구축 사례 9건) -->
+    <!-- Section 7: Project 구축사례 (9종 카드, 페이지네이션 없이 우측 상단 prev/next만 — Figma 실측:
+         카드 6장은 온전히, 나머지는 오른쪽에 살짝 걸쳐 보이는 가로 스와이프peek) -->
+    <div class="section7-slide section">
       <div class="section-item">
-        <p class="sp-eyebrow">Project</p>
-        <div class="sp-head">
-          <div>
-            <p class="sp-title">
-              Proving Our Capabilities Through Successful Projects
-              <!-- TODO: 화살표 아이콘 이미지 삽입 -->
-              <span class="sp-arrow-ph" aria-hidden="true"></span>
-            </p>
-            <p class="sp-desc">
-              실제 비즈니스를 움직이는 AI를 구축합니다. 다년 간의 경험과 전문성을 겸비한 인력과 AI가
-              한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.
-            </p>
+        <div class="center-inner">
+          <p class="sp-eyebrow">Project</p>
+          <div class="sp-head">
+            <div>
+              <p class="sp-title">
+                Proving Our Capabilities Through Successful Projects
+                <img class="sp-arrow-ph" src={mainIconSrc('icon_arrow_forward')} alt="" />
+              </p>
+              <p class="sp-desc">
+                실제 비즈니스를 움직이는 AI를 구축합니다. 다년 간의 경험과 전문성을 겸비한 인력과
+                AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.
+              </p>
+            </div>
+            <div class="sp-nav">
+              <button
+                id="project-swiper-nav-prev"
+                class="sp-nav-btn sp-nav-btn--prev"
+                aria-label="이전"></button>
+              <button
+                id="project-swiper-nav-next"
+                class="sp-nav-btn sp-nav-btn--next"
+                aria-label="다음"></button>
+            </div>
           </div>
-          <div class="sp-nav">
-            <!-- TODO: 이전/다음 화살표 아이콘 이미지 삽입 -->
-            <button class="sp-nav-btn" aria-label="이전"></button>
-            <button class="sp-nav-btn" aria-label="다음"></button>
+          <div id="project-swiper" class="js-swiper swiper">
+            <div class="swiper-wrapper sp-grid">
+              {
+                projectCases.map((item) => (
+                  <div class="swiper-slide sp-card">
+                    <span class="sp-card-label">{item.label}</span>
+                    {item.logoKey ? (
+                      <div class="sp-thumb sp-thumb--img">
+                        <img src={partnerLogoSrc(item.logoKey)} alt="" loading="lazy" />
+                      </div>
+                    ) : (
+                      <div class="sp-thumb" aria-hidden="true" />
+                    )}
+                    <p class="sp-title-text">
+                      {item.titleLines.map((line) => (
+                        <span>{line}</span>
+                      ))}
+                    </p>
+                    <div class="sp-list">
+                      {item.list.map((text, i) => (
+                        <p class:list={{'sp-list-last': i === item.list.length - 1}}>{text}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
-        <div class="sp-grid">
-          {
-            projectCases.map((item) => (
-              <div class="sp-card">
-                {/* <!-- TODO: 프로젝트 썸네일 이미지 삽입 --> */}
-                <div class="sp-thumb" aria-hidden="true" />
-                <p class="sp-title-text">{item.title}</p>
-                <div class="sp-list">
-                  {item.list.map((text) => (
-                    <p>{text}</p>
-                  ))}
+      </div>
+    </div>
+
+    <!-- Section 8: Partner (주요 고객사 로고) -->
+    <div class="section-partner-slide section">
+      <div class="section-item">
+        <div
+          class="partner-bg-ph"
+          aria-hidden="true"
+          style={`background-image:url(${mainImgSrc('partner-bg')})`}
+        >
+        </div>
+        <div class="content-inner">
+          <div class="partner-head">
+            <p class="partner-title">Partner</p>
+            <p class="partner-desc">
+              엠투엠글로벌의 전문 기술력과 성공적인 수행력을 입증하였습니다.
+            </p>
+          </div>
+          <div class="partner-grid">
+            {
+              partnerLogoKeys.map((key) => (
+                <div class="partner-card">
+                  <img src={partnerLogoSrc(key)} alt="" loading="lazy" />
                 </div>
-              </div>
-            ))
-          }
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <script src={`${PUBLIC_BUILD_URL}/js/jquery-3.1.1.min.js`} is:inline></script>
+  <script src={`${PUBLIC_BUILD_URL}/js/jquery.fullpage.min.js`} is:inline></script>
+  <script src={`${PUBLIC_BUILD_URL}/js/swiper.min.js.js`} is:inline></script>
+  <script is:inline>
+    // 공통 타입 분기 없이 슬라이드별로 각자 따로 선언한다 — 서로 옵션이 달라지기 시작하면(peek
+    // 폭, offset 등) 분기 하나 고칠 때 다른 슬라이드까지 건드릴 위험이 있어서 유지보수상 분리한다.
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Section 1: Main slogan — 세로 닷 페이지네이션만, loop ---
+      new Swiper('.section1-slide.js-swiper', {
+        slidesPerView: 1,
+        loop: true,
+        pagination: {
+          el: '.section1-slide .swiper-pagination',
+          clickable: true
+        }
+      })
+
+      // --- Section 2: 사업정보 — 세로 닷 페이지네이션만, loop ---
+      new Swiper('.section2-slide.js-swiper', {
+        slidesPerView: 1,
+        loop: true,
+        pagination: {
+          el: '.section2-slide .swiper-pagination',
+          clickable: true
+        }
+      })
+
+      // --- Section 3: AI — 세로 닷 페이지네이션만, loop ---
+      new Swiper('.section3-slide.js-swiper', {
+        slidesPerView: 1,
+        loop: true,
+        pagination: {
+          el: '.section3-slide .swiper-pagination',
+          clickable: true
+        }
+      })
+
+      // --- Section 4: Business — 세로 닷 페이지네이션만, loop ---
+      new Swiper('.section4-slide.js-swiper', {
+        slidesPerView: 1,
+        loop: true,
+        pagination: {
+          el: '.section4-slide .swiper-pagination',
+          clickable: true
+        }
+      })
+
+      // --- Section 5: Solution 소개 카드(6종) — 화살표 버튼만, 카드 폭 고정(425px) +
+      // slidesPerView:'auto'로 다음 카드가 오른쪽에 살짝 걸쳐 보이는 peek 스와이프.
+      // .js-swiper가 CSS로 뷰포트 풀블리드돼있어서, 첫 카드가 섹션 헤더(80px 인셋)와 같은
+      // x축에서 시작하도록 slidesOffsetBefore/After로 앞뒤 여백을 되돌려준다. (주의: Swiper의
+      // virtualSize/maxTranslate 계산은 슬라이드 각각의 실제 폭만 더해서 구하고 wrapper의 CSS
+      // padding은 안 본다 — 그래서 뒤쪽 여백은 반드시 slidesOffsetAfter로 줘야 마지막 카드까지
+      // 스크롤이 닿는다. CSS padding-right만으로는 시각적으로만 여백이 생기고 Swiper의
+      // 내부 스크롤 한계 계산에는 반영이 안 돼 마지막 카드가 화면 밖에서 잘렸었다.)
+      new Swiper('#solution-swiper', {
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        slidesOffsetBefore: 80,
+        slidesOffsetAfter: 80,
+        navigation: {
+          prevEl: '#solution-swiper-nav-prev',
+          nextEl: '#solution-swiper-nav-next'
+        }
+      })
+
+      // --- Section 6: Why, M2MGLOBAL? — 화살표 버튼만, 케이스 1장씩 통째로 전환(peek 없음).
+      // slidesPerView가 숫자(1)면 Swiper가 슬라이드 폭을 "스와이퍼 컨테이너 전체 폭"으로 계산해서
+      // slidesOffsetBefore(스크롤 위치만 밀어줄 뿐 폭은 안 줄여줌)와 안 맞아 슬라이드가 풀블리드
+      // 폭 그대로 넘쳐버렸다 — 'auto' + 슬라이드 자체 CSS width(.sp-why-body)로 폭을 직접
+      // 지정해야 offset과 맞물려 정확히 들어맞는다(뒤쪽 여백도 .sp-why-body의 padding-right).
+      new Swiper('#why-swiper', {
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        slidesOffsetBefore: 80,
+        navigation: {
+          prevEl: '#why-swiper-nav-prev',
+          nextEl: '#why-swiper-nav-next'
+        }
+      })
+
+      // --- Section 7: Project 구축사례(9종) — Solution과 동일 패턴(카드 폭 277px) ---
+      new Swiper('#project-swiper', {
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        slidesOffsetBefore: 80,
+        slidesOffsetAfter: 80,
+        navigation: {
+          prevEl: '#project-swiper-nav-prev',
+          nextEl: '#project-swiper-nav-next'
+        }
+      })
+    })
+
+    $(function () {
+      // Footer는 #fullpage 바깥(Layout.astro가 그 다음 형제로 렌더링)에 있는데, fullPage가
+      // html/body에 overflow:hidden을 걸어 문서 스크롤 자체를 잠가버리기 때문에 마지막 섹션
+      // 이후로는 원래 Footer까지 내려갈 방법이 없다 — 마지막 섹션(Partner)에 도달하면
+      // setAutoScrolling(false)로 잠금을 풀어서 그 아래 Footer까지 자연스럽게 이어서
+      // 스크롤되게 하고, 다시 위로 스크롤해 마지막 섹션 상단으로 돌아오면 스냅을 복구한다.
+      // isAutoScrolling은 우리가 fullPage에 마지막으로 지시한 상태를 그대로 미러링하는 값 —
+      // fullPage 2.9.7엔 현재 상태를 물어보는 getter가 없어서 직접 들고 있는다.
+      let isAutoScrolling = true
+      const $lastSection = $('.section-partner-slide')
+      function setAutoScrolling(on) {
+        $.fn.fullpage.setAutoScrolling(on)
+        isAutoScrolling = on
+      }
+
+      $('#fullpage').fullpage({
+        responsive: true,
+        anchors: [
+          'main',
+          'business-info',
+          'ai',
+          'business',
+          'solution',
+          'why',
+          'project',
+          'partner'
+        ],
+        //scrollingSpeed: 1000, //스크롤 이동 속도를 0.001초 단위로 설정
+        //fitToSectionDelay: 1200, //설정된 1000분의 1초 단위로 맞춤을 지연
+        //touchSensitivity: 20, // 슬라이드로 이동하는 데 필요한 스와이프 거리를 정의
+        //scrollHorizontally: true, //슬라이더 안에서 마우스 휠 또는 트랙패드를 써서 수평으로 미끄러지듯 움직일지를 정의
+        css3: true,
+
+        //접근성
+        keyboardScrolling: true,
+        animateAnchor: true,
+        recordHistory: true
+      })
+
+      window.addEventListener('scroll', function () {
+        if (isAutoScrolling) return
+        // 마지막 섹션(Partner) 상단이 뷰포트 상단에 걸리거나 그 아래로 내려오면(=Footer를 벗어나
+        // 다시 위로 올라옴) fullPage 스냅 스크롤을 복구한다.
+        if ($lastSection.get(0).getBoundingClientRect().top >= 0) {
+          setAutoScrolling(true)
+        }
+      })
+    })
+  </script>
 </Layout>

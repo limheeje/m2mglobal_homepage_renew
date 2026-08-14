@@ -10,37 +10,44 @@ import TitleMain from '~/components/common/TitleMain.astro'
 import Navigation from '~/components/common/Navigation.astro'
 
 const localNavigation = route.find((item) => item.href === '/company/info')
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 ---
 
 <Layout>
-  <SubBanner
-    title="Company"
-    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-7'} />
-  <TitleMain
-    title="사업 문의"
-    description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.<br/>빠른 시일 내에 답변 드리겠습니다."
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Company"
+      description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-7'} />
+    <TitleMain
+      title="사업 문의"
+      description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>다년 간의 경험과 전문성을 겸비한 인력과 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.<br/>빠른 시일 내에 답변 드리겠습니다."
+    />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <div class="company__contact-card">
-        <div class="company__contact-info">
-          <p class="company__contact-label">사업 문의</p>
-          <a href="mailto:help@m2mglobal.co.kr" class="company__contact-email">
-            help@m2mglobal.co.kr
+    <section class="g-section">
+      <div class="innerWrap">
+        <div class="company__contact-card">
+          <div class="company__contact-info">
+            <p class="company__contact-label">사업 문의</p>
+            <a href="mailto:help@m2mglobal.co.kr" class="company__contact-email">
+              help@m2mglobal.co.kr
+              <!-- TODO: 아이콘 이미지 삽입 -->
+              <span class="company__icon-ph company__icon-ph--sm" aria-hidden="true"></span>
+            </a>
+          </div>
+          <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href (Footer.astro와 동일) -->
+          <a
+            href={`${PUBLIC_BUILD_URL}/etc/m2m_company_info.pdf`}
+            class="company__contact-download"
+            target="_blank"
+          >
+            회사소개서 다운로드
             <!-- TODO: 아이콘 이미지 삽입 -->
             <span class="company__icon-ph company__icon-ph--sm" aria-hidden="true"></span>
           </a>
         </div>
-        <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href (Footer.astro와 동일) -->
-        <a href="#" class="company__contact-download">
-          회사소개서 다운로드
-          <!-- TODO: 아이콘 이미지 삽입 -->
-          <span class="company__icon-ph company__icon-ph--sm" aria-hidden="true"></span>
-        </a>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

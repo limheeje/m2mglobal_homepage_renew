@@ -24,52 +24,54 @@ const rows = [
 ---
 
 <Layout>
-  <SubBanner
-    title="Company"
-    description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-6'} />
-  <TitleMain title="위치 및 연락처" />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Company"
+      description="Where AI Transformation Begins—Turning Market Change into Speed and Direction<br/>24 Years of Proven Success, Now Powered by AI. Your AI-Driven e-Commerce Technology Partner"
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-COMPANY-ID-6'} />
+    <TitleMain title="위치 및 연락처" />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <div class="company__address">
-        <div
-          id="daumRoughmapContainer1670476719947"
-          class="root_daum_roughmap root_daum_roughmap_landing g-map map-area"
-          style="width: 100%;"
-          data-aos-delay="500"
-          data-aos="fade-up"
-        >
-        </div>
-        <script
-          charset="UTF-8"
-          class="daum_roughmap_loader_script"
-          src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
-        <script charset="UTF-8">
-          new daum.roughmap.Lander({
-            timestamp: '1670476719947',
-            key: '2cwqk',
-            mapHeight: '500'
-          }).render()
-        </script>
+    <section class="g-section">
+      <div class="innerWrap">
+        <div class="company__address">
+          <div
+            id="daumRoughmapContainer1670476719947"
+            class="root_daum_roughmap root_daum_roughmap_landing g-map map-area"
+            style="width: 100%;"
+            data-aos-delay="500"
+            data-aos="fade-up"
+          >
+          </div>
+          <script
+            charset="UTF-8"
+            class="daum_roughmap_loader_script"
+            src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+          <script charset="UTF-8">
+            new daum.roughmap.Lander({
+              timestamp: '1670476719947',
+              key: '2cwqk',
+              mapHeight: '500'
+            }).render()
+          </script>
 
-        <div class="company__address-info">
-          <a href="/" class="company__address-logo">
-            <img src={logoUrl.src} alt="M2M GLOBAL 엠투엠글로벌(주)" />
-          </a>
-          <div class="company__address-rows">
-            {
-              rows.map((row) => (
-                <div class="company__address-row">
-                  <span class="company__address-row-label">{row.label}</span>
-                  <span class="company__address-row-value">{row.value}</span>
-                </div>
-              ))
-            }
+          <div class="company__address-info">
+            <a href="/" class="company__address-logo">
+              <img src={logoUrl.src} alt="M2M GLOBAL 엠투엠글로벌(주)" />
+            </a>
+            <div class="company__address-rows">
+              {
+                rows.map((row) => (
+                  <div class="company__address-row">
+                    <span class="company__address-row-label">{row.label}</span>
+                    <span class="company__address-row-value">{row.value}</span>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

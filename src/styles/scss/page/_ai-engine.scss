@@ -204,12 +204,12 @@
 }
 .ai__meta-row {
   display: flex;
-  flex-direction: column;
-  gap: rem(4px);
+  gap: rem(10px);
 }
 .ai__meta-label {
   @include font('Body 14 R');
   color: color('Color/Black 40');
+  min-width: rem(142px);
 }
 .ai__meta-value {
   @include font('Body 16 R');
@@ -219,7 +219,6 @@
 // --- 상황기반추천설계: 커머스 특성 3카드 + 화살표 + 결론 배너 ---
 .ai__strategy-row {
   display: flex;
-  align-items: center;
   gap: rem(20px);
   margin-top: rem(40px);
   flex-wrap: wrap;
@@ -255,6 +254,9 @@
   background-color: color('Color/Black 3');
   color: color('Color/White');
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .ai__strategy-banner-title {
   @include font('Body 24 R');
@@ -271,21 +273,25 @@
   display: grid;
   grid-template-columns: 1fr rem(577px) 1fr;
   gap: rem(20px);
+  margin-top: rem(80px);
   align-items: start;
 }
 .ai__scoring-col-title {
   @include font('Body 24 R');
   color: color('Color/Black 100');
   margin-bottom: rem(20px);
+  padding: rem(10px) 0;
+  text-align: center;
 }
 .ai__scoring-layer {
   margin-bottom: rem(20px);
 }
 .ai__scoring-layer-head {
-  @include font('Body 18 R');
+  @include font('Body 20 R');
   color: color('Color/Secondary Color');
-  padding-bottom: rem(12px);
-  margin-bottom: rem(8px);
+  padding: rem(8px) 0;
+  margin-top: rem(24px);
+  margin-bottom: rem(12px);
   border-bottom: rem(1px) solid color('Color/Box/Border color');
 }
 .ai__scoring-image {
@@ -313,14 +319,14 @@
   width: rem(574px);
 }
 .ai__personalize-title {
-  @include font('Body 24 R');
+  @include font('Body 30 R');
   color: color('Color/Black 100');
   margin-top: rem(12px);
 }
 .ai__personalize-subtitle {
-  @include font('Body 16 R');
-  color: color('Color/Black 40');
-  margin-bottom: rem(12px);
+  @include font('Body 20 R');
+  color: color('Color/Black 100');
+  margin-bottom: rem(20px);
 }
 .ai__personalize-desc {
   @include font('Body 18 R');
@@ -337,7 +343,7 @@
   background-color: color('Color/Black 3');
   color: color('Color/Black 100');
   @include font('H5');
-  margin-bottom: rem(40px);
+  margin-bottom: rem(20px);
 }
 .ai__diagram-placeholder {
   width: 100%;

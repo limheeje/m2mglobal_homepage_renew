@@ -82,76 +82,78 @@ const cases = [
 ---
 
 <Layout>
-  <SubBanner
-    title="Robot Logistics"
-    description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다."
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-ROBOT-LOGISTICS-ID-2'} />
-  <TitleMain title="스마트 팩토리" />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Robot Logistics"
+      description="AI Transformation의 시작점. 이제, 속도와 방향을 다시 설계합니다.<br/>모듈화 된 e-Commerce 아키텍처+AI를 결합하여 Commerce Platform에 속도와 생산성을 높입니다."
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-ROBOT-LOGISTICS-ID-2'} />
+    <TitleMain title="스마트 팩토리" />
 
-  <div class="innerWrap">
-    <div class="bs-tab-group">
-      {
-        sectionTabs.map((tab, i) => (
-          <a
-            class="bs-tab tab__item"
-            class:list={{'is-active': i === 0}}
-            data-type="box"
-            href={`#${tab.id}`}
-          >
-            {tab.label}
-          </a>
-        ))
-      }
-    </div>
-  </div>
-
-  <section id="benefits" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
-      <div class="">
-        <img src={SYMBOL014.src} alt="" />
-      </div>
-      <div class="rl__mes-banner">
-        <TitleMiddle>
-          M2M-MES <span class="mark">Manufacturing Execution System</span>
-        </TitleMiddle>
-      </div>
-
-      <div class="rl__benefit-grid">
+      <div class="bs-tab-group">
         {
-          benefitCards.map((card) => (
-            <div class="rl__benefit-card">
-              <div class="rl__benefit-head">
-                <span class="rl__icon-circle" aria-hidden="true">
-                  {/* TODO: 아이콘 이미지 삽입 */}
-                  <Icon name={card.icon} />
-                </span>
-                <p class="rl__benefit-title">{card.title}</p>
-              </div>
-              <div class="rl__benefit-body">
-                <TextList>{card.top}</TextList>
-                <span class="rl__benefit-arrow" aria-hidden="true">
-                  <img src={stepArrowUrl.src} alt="" />
-                </span>
-                <TextList>{card.bottom}</TextList>
-              </div>
-            </div>
+          sectionTabs.map((tab, i) => (
+            <a
+              class="bs-tab tab__item"
+              class:list={{'is-active': i === 0}}
+              data-type="box"
+              href={`#${tab.id}`}
+            >
+              {tab.label}
+            </a>
           ))
         }
       </div>
     </div>
-  </section>
 
-  <section id="system" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`시스템 <span class="mark">구성도</span>`} />
-      <!-- TODO: 시스템구성도 이미지 삽입 -->
-      <div class="rl__diagram-placeholder" aria-hidden="true">
-        <img src={SYMBOL013.src} alt="" />
+    <section id="benefits" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
+        <div class="">
+          <img src={SYMBOL014.src} alt="" />
+        </div>
+        <div class="rl__mes-banner">
+          <TitleMiddle>
+            M2M-MES <span class="mark">Manufacturing Execution System</span>
+          </TitleMiddle>
+        </div>
+
+        <div class="rl__benefit-grid">
+          {
+            benefitCards.map((card) => (
+              <div class="rl__benefit-card">
+                <div class="rl__benefit-head">
+                  <span class="rl__icon-circle" aria-hidden="true">
+                    {/* TODO: 아이콘 이미지 삽입 */}
+                    <Icon name={card.icon} />
+                  </span>
+                  <p class="rl__benefit-title">{card.title}</p>
+                </div>
+                <div class="rl__benefit-body">
+                  <TextList>{card.top}</TextList>
+                  <span class="rl__benefit-arrow" aria-hidden="true">
+                    <img src={stepArrowUrl.src} alt="" />
+                  </span>
+                  <TextList>{card.bottom}</TextList>
+                </div>
+              </div>
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <CaseCardGrid id="cases" columns={3} cases={cases} />
+    <section id="system" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`시스템 <span class="mark">구성도</span>`} />
+        <!-- TODO: 시스템구성도 이미지 삽입 -->
+        <div class="rl__diagram-placeholder" aria-hidden="true">
+          <img src={SYMBOL013.src} alt="" />
+        </div>
+      </div>
+    </section>
+
+    <CaseCardGrid id="cases" columns={3} cases={cases} />
+  </div>
 </Layout>

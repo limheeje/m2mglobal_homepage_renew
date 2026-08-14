@@ -140,188 +140,190 @@ const auctionFlow = [
 ---
 
 <Layout>
-  <SubBanner
-    title="e-Commerce"
-    description={`Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.`}
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-E-COMMERCE-ID-3'} />
-  <TitleMain
-    title="Marketplace"
-    description={`"오픈마켓 · 멀티셀러 · 실시간 경매" 다수의 판매자와 구매자를 연결하는 중개 거래 플랫폼을 제공합니다.<br/>입점 관리부터 수수료 정산 · 주문 · 배송 통합 관리까지 마켓 운영 전 주기를 지원합니다.`}
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="e-Commerce"
+      description={`Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 확장성을 제공합니다.`}
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-E-COMMERCE-ID-3'} />
+    <TitleMain
+      title="Auction"
+      description={`상장업체, 중도메인, 관리자 시스템을 중심으로 상장부터~경매, 낙찰, 정산, 출고까지<br/>축산물 거래 전 과정을 디지털하여, 축산경매 업무를 스마트하게 지원합니다.`}
+    />
 
-  <div class="innerWrap">
-    <div class="bs-tab-group">
-      {
-        sectionTabs.map((tab, i) => (
-          <a
-            class="bs-tab tab__item"
-            class:list={{'is-active': i === 0}}
-            data-type="box"
-            href={`#${tab.id}`}
-          >
-            {tab.label}
-          </a>
-        ))
-      }
-    </div>
-  </div>
-
-  <section id="features" class="g-section">
     <div class="innerWrap">
-      <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
-      <div class="ec__feature-grid">
+      <div class="bs-tab-group">
         {
-          featureCards.map((card) => (
-            <div class="ec__feature-card">
-              <div class="ec__feature-head">
-                {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="ec__feature-icon" aria-hidden="true">
-                  <Icon name={card.icon} />
-                </span>
-                <p class="ec__feature-title">{card.title}</p>
-              </div>
-              <div>
-                {card.items.map((lines) => (
-                  <TextList>
-                    {lines[0]}
-                    <br />
-                    {lines[1]}
-                  </TextList>
-                ))}
-              </div>
-            </div>
+          sectionTabs.map((tab, i) => (
+            <a
+              class="bs-tab tab__item"
+              class:list={{'is-active': i === 0}}
+              data-type="box"
+              href={`#${tab.id}`}
+            >
+              {tab.label}
+            </a>
           ))
         }
       </div>
     </div>
-  </section>
 
-  <section id="structure" class="g-section">
-    <div class="innerWrap">
-      <TitleSub title={`거래 <span class="mark">중개 구조</span>`} />
-      <div class="ec__role-grid">
-        {
-          roles.map((role, i) => (
-            <>
-              <div class:list={['ec__role-card', {'ec__role-card--accent': role.accent}]}>
-                <div class="ec__role-head">
-                  <Label type="type_2">{role.label}</Label>
-                  <p class="ec__role-title">{role.title}</p>
+    <section id="features" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`제공 <span class="mark">기술 및 특징</span>`} />
+        <div class="ec__feature-grid">
+          {
+            featureCards.map((card) => (
+              <div class="ec__feature-card">
+                <div class="ec__feature-head">
+                  {/* TODO: 아이콘 이미지 삽입 */}
+                  <span class="ec__feature-icon" aria-hidden="true">
+                    <Icon name={card.icon} />
+                  </span>
+                  <p class="ec__feature-title">{card.title}</p>
                 </div>
                 <div>
-                  {role.items.map((text) => (
-                    <TextList>{text}</TextList>
+                  {card.items.map((lines) => (
+                    <TextList>
+                      {lines[0]}
+                      <br />
+                      {lines[1]}
+                    </TextList>
                   ))}
                 </div>
               </div>
-              {i < roles.length - 1 && (
-                <span class="ec__role-connector" aria-hidden="true">
-                  <img src={roleConnectorArrow.src} alt="" />
-                </span>
-              )}
-            </>
-          ))
-        }
-      </div>
-
-      <TitleThird>플랫폼 운영</TitleThird>
-      <div class="ec__box-grid ec__box-grid--5">
-        {
-          operationSteps.map((title, i) => (
-            <div class="ec__stat-card">
-              {/* TODO: 아이콘 이미지 삽입 */}
-              <span class="ec__stat-icon" aria-hidden="true">
-                <Icon name={ICON_KEY_NAME[`Business12-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
-              </span>
-              <p class="ec__stat-title">{title}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section id="auction" class="g-section">
-    <div class="innerWrap">
-      <TitleSub
-        title={`Auction Platform <span class="mark">(eLivestock)</span>`}
-        description={`M2M-eLivestock은 "eLiveBid ↔ BackOffice ↔ Interface" 기반으로 축산전문경매플랫폼으로 상장부터 경매, 낙찰, 정산, 출고까지 축산물 거래 전 과정을 디지털화하여 신속하고 투명한 경매 플랫폼입니다.`}
-      />
-
-      <div class="ec__pair-block">
-        <TitleThird>주요 기능</TitleThird>
-        <div class="ec__pair-list">
-          {
-            auctionFeatures.map((item) => (
-              <div class="ec__pair-row">
-                <p class="ec__pair-title">{item.title}</p>
-                <p class="ec__pair-desc">{item.desc}</p>
-              </div>
             ))
           }
         </div>
       </div>
+    </section>
 
-      <div class="ec__pair-block ec__block">
-        <TitleThird>이용 대상</TitleThird>
-        <div class="ec__pair-list">
+    <section id="structure" class="g-section">
+      <div class="innerWrap">
+        <TitleSub title={`거래 <span class="mark">중개 구조</span>`} />
+        <div class="ec__role-grid">
           {
-            auctionUsers.map((item) => (
-              <div class="ec__pair-row">
-                <p class="ec__pair-title">{item.title}</p>
-                <p class="ec__pair-desc">{item.desc}</p>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-
-      <div class="ec__pair-block ec__block">
-        <TitleThird>지원 범위</TitleThird>
-        <div class="ec__pair-list">
-          {
-            auctionScope.map((item) => (
-              <div class="ec__pair-row">
-                <p class="ec__pair-title">{item.title}</p>
-                <p class="ec__pair-desc">{item.desc}</p>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-
-      <div class="ec__block">
-        <TitleSub title={`경매 <span class="mark">절차</span>`} />
-      </div>
-      <div class="ec__flow-wrap">
-        <div class="ec__flow">
-          {
-            auctionFlow.map((stage, i) => (
+            roles.map((role, i) => (
               <>
-                <div class="ec__flow-item">
-                  <p class="ec__flow-title">{stage.title}</p>
-                  <div class="ec__flow-list">
-                    {stage.items.map((item) => (
-                      <TextList>{item}</TextList>
+                <div class:list={['ec__role-card', {'ec__role-card--accent': role.accent}]}>
+                  <div class="ec__role-head">
+                    <Label type="type_2">{role.label}</Label>
+                    <p class="ec__role-title">{role.title}</p>
+                  </div>
+                  <div>
+                    {role.items.map((text) => (
+                      <TextList>{text}</TextList>
                     ))}
                   </div>
-                  {stage.noti && (
-                    <div class="ec__flow-note" aria-hidden="true">
-                      {stage.noti}
-                    </div>
-                  )}
                 </div>
-                {i < auctionFlow.length - 1 && (
-                  <span class="ec__flow-arrow" aria-hidden="true">
-                    <img src={stepArrowUrl.src} alt="" />
+                {i < roles.length - 1 && (
+                  <span class="ec__role-connector" aria-hidden="true">
+                    <img src={roleConnectorArrow.src} alt="" />
                   </span>
                 )}
               </>
             ))
           }
         </div>
+
+        <TitleThird>플랫폼 운영</TitleThird>
+        <div class="ec__box-grid ec__box-grid--5">
+          {
+            operationSteps.map((title, i) => (
+              <div class="ec__stat-card">
+                {/* TODO: 아이콘 이미지 삽입 */}
+                <span class="ec__stat-icon" aria-hidden="true">
+                  <Icon name={ICON_KEY_NAME[`Business12-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
+                </span>
+                <p class="ec__stat-title">{title}</p>
+              </div>
+            ))
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section id="auction" class="g-section">
+      <div class="innerWrap">
+        <TitleSub
+          title={`Auction Platform <span class="mark">(eLivestock)</span>`}
+          description={`M2M-eLivestock은 "eLiveBid ↔ BackOffice ↔ Interface" 기반으로 축산전문경매플랫폼으로 상장부터 경매, 낙찰, 정산, 출고까지 축산물 거래 전 과정을 디지털화하여 신속하고 투명한 경매 플랫폼입니다.`}
+        />
+
+        <div class="ec__pair-block">
+          <TitleThird>주요 기능</TitleThird>
+          <div class="ec__pair-list">
+            {
+              auctionFeatures.map((item) => (
+                <div class="ec__pair-row">
+                  <p class="ec__pair-title">{item.title}</p>
+                  <p class="ec__pair-desc">{item.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="ec__pair-block ec__block">
+          <TitleThird>이용 대상</TitleThird>
+          <div class="ec__pair-list">
+            {
+              auctionUsers.map((item) => (
+                <div class="ec__pair-row">
+                  <p class="ec__pair-title">{item.title}</p>
+                  <p class="ec__pair-desc">{item.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="ec__pair-block ec__block">
+          <TitleThird>지원 범위</TitleThird>
+          <div class="ec__pair-list">
+            {
+              auctionScope.map((item) => (
+                <div class="ec__pair-row">
+                  <p class="ec__pair-title">{item.title}</p>
+                  <p class="ec__pair-desc">{item.desc}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="ec__block">
+          <TitleSub title={`경매 <span class="mark">절차</span>`} />
+        </div>
+        <div class="ec__flow-wrap">
+          <div class="ec__flow">
+            {
+              auctionFlow.map((stage, i) => (
+                <>
+                  <div class="ec__flow-item">
+                    <p class="ec__flow-title">{stage.title}</p>
+                    <div class="ec__flow-list">
+                      {stage.items.map((item) => (
+                        <TextList>{item}</TextList>
+                      ))}
+                    </div>
+                    {stage.noti && (
+                      <div class="ec__flow-note" aria-hidden="true">
+                        {stage.noti}
+                      </div>
+                    )}
+                  </div>
+                  {i < auctionFlow.length - 1 && (
+                    <span class="ec__flow-arrow" aria-hidden="true">
+                      <img src={stepArrowUrl.src} alt="" />
+                    </span>
+                  )}
+                </>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout>

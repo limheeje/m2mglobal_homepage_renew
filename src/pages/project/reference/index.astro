@@ -102,54 +102,56 @@ const references = [
 ---
 
 <Layout>
-  <SubBanner
-    title="Project"
-    description={`"전문 구축 경험 · 산업별 커스터마이징 · B2B 특화 솔루션 · 검증된 성과 · 높은 재계약률"<br/>24년간 꾸준히 수행해온 프로젝트가 엠투엠글로벌의 경쟁력을 입증합니다.`}
-  />
-  <Navigation items={localNavigation?.children} activeMenuId={'MAP-PROJECT-ID-1'} />
-  <TitleMain
-    title="Reference"
-    description="엠투엠글로벌의 전문 기술력과 성공적인 수행력을 입증하였습니다.<br/>명확한 목적과 체계적인 실행력을 바탕으로, 경험과 전문성을 겸비한 프로젝트 수행 인력이 한 팀이 되어, 고객사의 비즈니스 성공을 위해 끊임없이 노력하고 성장 중입니다."
-  />
+  <div class="sub-wrap">
+    <SubBanner
+      title="Project"
+      description={`"전문 구축 경험 · 산업별 커스터마이징 · B2B 특화 솔루션 · 검증된 성과 · 높은 재계약률"<br/>24년간 꾸준히 수행해온 프로젝트가 엠투엠글로벌의 경쟁력을 입증합니다.`}
+    />
+    <Navigation items={localNavigation?.children} activeMenuId={'MAP-PROJECT-ID-1'} />
+    <TitleMain
+      title="Reference"
+      description="엠투엠글로벌의 전문 기술력과 성공적인 수행력을 입증하였습니다.<br/>명확한 목적과 체계적인 실행력을 바탕으로, 경험과 전문성을 겸비한 프로젝트 수행 인력이 한 팀이 되어, 고객사의 비즈니스 성공을 위해 끊임없이 노력하고 성장 중입니다."
+    />
 
-  <section class="g-section">
-    <div class="innerWrap">
-      <div class="ref__list">
-        {
-          references.map((item) => {
-            const logo = logoSrc(item.logoKey)
-            return (
-              <div class="ref__row">
-                <div class="ref__row-main">
-                  <div class="ref__row-left">
-                    <div class="ref__logo">
-                      {logo ? (
-                        <img src={logo} alt={item.title} />
-                      ) : (
-                        <>
-                          {/* TODO: 로고 이미지 삽입 */}
-                          <span class="ref__logo-ph" aria-hidden="true" />
-                        </>
-                      )}
+    <section class="g-section">
+      <div class="innerWrap">
+        <div class="ref__list">
+          {
+            references.map((item) => {
+              const logo = logoSrc(item.logoKey)
+              return (
+                <div class="ref__row">
+                  <div class="ref__row-main">
+                    <div class="ref__row-left">
+                      <div class="ref__logo">
+                        {logo ? (
+                          <img src={logo} alt={item.title} />
+                        ) : (
+                          <>
+                            {/* TODO: 로고 이미지 삽입 */}
+                            <span class="ref__logo-ph" aria-hidden="true" />
+                          </>
+                        )}
+                      </div>
+                      <div class="ref__row-text">
+                        <p class="ref__row-title">{item.title}</p>
+                        <p class="ref__row-desc">{item.desc}</p>
+                      </div>
                     </div>
-                    <div class="ref__row-text">
-                      <p class="ref__row-title">{item.title}</p>
-                      <p class="ref__row-desc">{item.desc}</p>
+                    <div class="ref__row-period">
+                      <Label type="type_2">투입기간</Label>
+                      <span class="ref__period-value">{item.period}</span>
                     </div>
                   </div>
-                  <div class="ref__row-period">
-                    <Label type="type_2">투입기간</Label>
-                    <span class="ref__period-value">{item.period}</span>
-                  </div>
+                  <Button variant="white" size="sm" useSuffixIcon="blank" class="ref__link">
+                    바로가기
+                  </Button>
                 </div>
-                <Button variant="white" size="sm" useSuffixIcon="blank" class="ref__link">
-                  바로가기
-                </Button>
-              </div>
-            )
-          })
-        }
+              )
+            })
+          }
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </Layout>

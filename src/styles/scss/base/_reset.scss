@@ -1,5 +1,6 @@
 @use 'sass:math';
 @use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 @use '../abstracts/functions' as *;
 
 html:root{
@@ -112,7 +113,7 @@ ol {
   }
 }
 // GNB가 position:fixed 라서 그만큼 상단 여백을 확보 — .gnb-wrap 실제 높이(padding 20+20 + 로고 40 = 80px)와 always 일치시킬 것
-.gl-container{
+.sub-wrap{
   padding-top: rem(80px);
   @media (min-width: $breakpoint-md) {
     &{
@@ -222,4 +223,46 @@ $grid-breakpoints: (
 }
 // scroll-margin-top: GNB가 fixed(80px)라 앵커탭(.bs-tab-group) 클릭/스크롤 시 섹션 상단이
 // 고정 헤더 밑에 가려지는 것을 방지 — 헤더 높이만큼 여유를 두고 스크롤 정지시킨다.
-.g-section{margin-bottom: rem(80px); scroll-margin-top: rem(80px);}
+.g-section{margin-top: rem(80px);margin-bottom: rem(80px); scroll-margin-top: rem(120px);}
+
+.bt-noti-group{
+    border-top: rem(1px) solid color('Color/Box/Border color');
+    padding: rem(20px);
+    padding-bottom: 0;
+    .b-lst{
+        display: flex;
+        align-items: flex-start;
+        gap: rem(10px);
+        .dt{
+            min-width: rem(142px);
+            @include font('Body 16 R');
+            color: color('Color/Black 40');
+            display: flex;
+            align-items: center;
+            gap: rem(6px);
+            &:before{
+                width: rem(16px);
+                height: rem(16px);
+                display: flex;
+            }
+            &.ico1:before{
+                content: '';
+                @include get-background-svg(icon_assignment, color('Color/Black 20'));
+            }
+            &.ico2:before{
+                content: '';
+                @include get-background-svg(icon_assessment, color('Color/Black 20'));
+            }
+        }
+        .dd{
+            text-align: left;
+            @include font('Body 16 R');
+            color: color('Color/Font/Font Color');
+            width: calc(100% - rem(142px));
+            word-break: break-all;
+        }
+        &+.b-lst{
+            margin-top: rem(10px);
+        }
+    }
+}

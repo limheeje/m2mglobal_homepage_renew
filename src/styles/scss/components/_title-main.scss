@@ -41,9 +41,10 @@
                 color: color('Color/Black 100');
             }
             .bm-description{
-                @include font('Body 16 R');
+                @include font('Body 20 R');
                 color: color('Color/Black 100');
                 margin-top: rem(20px);
+                br{display: none;}
             }
         }
     }

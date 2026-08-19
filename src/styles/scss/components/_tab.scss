@@ -78,7 +78,9 @@ $IS_ACTIVE:'is-active';
         overflow: hidden;
         overflow-x: auto;
         flex-wrap: nowrap;
-        justify-content: flex-start;
+        // 탭 개수가 적어 화면 폭보다 작으면 가운데로, 많아서 넘치면(가로 스크롤 필요) safe가
+        // 자동으로 시작 지점(flex-start)으로 물러나 첫 탭이 잘려 보이지 않게 한다.
+        justify-content: safe center;
         .bs-tab{
             &#{$TYPE_BOX}{
                 @include font('Body 16 R');

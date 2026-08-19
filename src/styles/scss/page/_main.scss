@@ -3,8 +3,11 @@
 @use '../abstracts/_functions' as *;
 @use '../abstracts/_mixins' as *;
 
-// 각 슬라이드 섹션의 높이는 "뷰포트 - 고정 GNB(80px)" — Swiper로 섹션 내부 아이템끼리 가로 슬라이드된다
-// (섹션 자체는 세로로 순서대로 이어져 스크롤됨).
+// 각 슬라이드 섹션의 높이 — PC($breakpoint-md 이상)는 fullPage.js가 섹션을 정확히 한 화면(100vh)에
+// 스냅시키는 원래 동작 그대로라 height:100vh + overflow:hidden(고정/클리핑)을 쓴다. 모바일은
+// fullPage가 responsiveWidth로 꺼지고 문서가 평범하게 스크롤되므로, 아래 모바일 미디어쿼리에서
+// min-height로 바꿔 컨텐츠가 100vh보다 많은 섹션은 그만큼 더 자라나게(짤림 없이) 한다 — PC는
+// 이 값을 그대로 안 건드림.
 $slide-height: 100vh;//calc(100vh - #{rem(80px)});
 
 .main-wrap {
@@ -133,6 +136,12 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       background-size: cover;
       background-position: center;
       overflow: hidden;
+      // min-height라 퍼센트 높이(height:100%)는 자식에서 더는 안 먹는다(퍼센트 높이는 부모의
+      // height가 "명시적으로" 지정된 경우에만 풀리고, min-height는 그 대상이 아니다) — 대신
+      // .section-item 자체를 flex-column으로 만들고 .content-inner를 flex:1로 늘려서 min-height
+      // 만큼은 채우고, 컨텐츠가 더 많으면 자연히 그만큼 더 자라나게 한다.
+      display: flex;
+      flex-direction: column;
       &:before {
         content: '';
         position: absolute;
@@ -142,7 +151,7 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       }
       .content-inner {
         position: relative;
-        height: 100%;
+        flex: 1 1 auto;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -359,9 +368,16 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       align-items: stretch;
     }
     .biz-card-title {
+      // 부모(.biz-card)가 flex-column + align-items:stretch라 block이면 카드 폭 100%를 그대로
+      // 채워서 알약(pill)이 너무 길어 보였다 — inline-flex + align-self:center로 내용 크기만큼만
+      // 잡고 가운데로 보내고, 안쪽 텍스트도 flex로 중앙 정렬한다. 패딩도 기존 대비 80%로 줄인다.
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
       border: rem(1px) dashed color('Color/Box/Border color');
       border-radius: rem(240px);
-      padding: rem(30px) rem(36px);
+      padding: rem(24px) rem(29px);
       text-align: center;
       color: color('Color/White');
       @include font('Body 24 R');
@@ -429,6 +445,14 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
   // --- Section 3: AI (화이트 배경 + 그라디언트 배너 + 5원 플로우 + 4열 하단 특징) ---
   .section3-slide {
     background-color: color('Color/White');
+    // 활성 닷 기본값(흰색 배경/보더)은 어두운 배경 섹션(1/2/4) 기준 — 유일하게 흰 배경인 이
+    // 섹션에서는 흰 배경 위에 흰 닷이라 안 보였다. 이 섹션만 Primary Color로 바꾼다(비활성
+    // 닷은 Black 20 보더라 흰 배경에서도 원래 잘 보여서 그대로 둠). 화면 크기와 무관한 배경색
+    // 대비 문제라 미디어쿼리 밖에 둔다.
+    .swiper-pagination-bullet-active {
+      background-color: color('Color/Primary Color');
+      border-color: color('Color/Primary Color');
+    }
     .section-item {
       height: $slide-height;
       padding: rem(80px);
@@ -632,7 +656,10 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       display: flex;
       flex-direction: column;
       gap: rem(60px);
-      height: calc(100% - #{rem(80px)});
+      // .biz-item이 이제 min-height라 퍼센트 높이(height:calc(100%-80px))는 더는 안 먹는다(위
+      // Section1 .content-inner와 같은 이유) — .biz-item이 이미 flex-column인 걸 그대로 활용해
+      // flex:1로 남는 공간을 채운다(내용이 많아지면 자연히 더 자라남).
+      flex: 1 1 auto;
     }
     .biz-head {
       display: flex;
@@ -749,12 +776,16 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
     }
     // Figma 실측(node 1935:10496, 574x520 컨테이너 기준): 위/아래 줄은 좌91·우357, 가운데 줄만
     // 링 둘레에 걸치도록 더 바깥쪽(좌19·우429)으로 벌어져 있다.
+    // width/left/top을 rem 고정값이 아니라 원본(574x520) 컨테이너 기준 %로 둔다 — 모바일에서
+    // .biz-center-ph--robot이 width:100%(가변폭)로 바뀌는데(아래 md 미디어쿼리), 고정 px 좌표를
+    // 그대로 두면 4번째 사진(left 429px)처럼 좁은 화면 폭 자체를 넘어가버린다. %면 컨테이너가
+    // 얼마나 좁아지든 항상 비례해서 안쪽에 맞는다.
     .biz-robot-photo {
       position: absolute;
       display: block;
-      width: rem(127px);
-      height: rem(127px);
-      top: rem(20px);
+      width: 22.13%; // 127 / 574
+      aspect-ratio: 1/1; // top/left%는 폭·높이 기준이 서로 달라(574x520, 정사각 아님) height%로
+      // 크기를 맞추면 컨테이너 비율이 바뀔 때(모바일 aspect-ratio:1/1) 타원이 될 수 있어 고정한다.
       border-radius: 50%;
       overflow: hidden;
       img {
@@ -763,28 +794,28 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
         object-fit: cover;
       }
       &:nth-child(1) {
-        left: rem(91px);
-        top: rem(20px);
+        left: 15.86%; // 91 / 574
+        top: 3.85%; // 20 / 520
       }
       &:nth-child(2) {
-        left: rem(357px);
-        top: rem(20px);
+        left: 62.2%; // 357 / 574
+        top: 3.85%;
       }
       &:nth-child(3) {
-        left: rem(19px);
-        top: rem(196px);
+        left: 3.31%; // 19 / 574
+        top: 37.69%; // 196 / 520
       }
       &:nth-child(4) {
-        left: rem(429px);
-        top: rem(196px);
+        left: 74.74%; // 429 / 574
+        top: 37.69%;
       }
       &:nth-child(5) {
-        left: rem(91px);
-        top: rem(372px);
+        left: 15.86%;
+        top: 71.54%; // 372 / 520
       }
       &:nth-child(6) {
-        left: rem(357px);
-        top: rem(372px);
+        left: 62.2%;
+        top: 71.54%;
       }
     }
     .biz-center-badge {
@@ -846,9 +877,15 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       gap: rem(12px);
       padding: rem(12px) 0;
     }
+    // .biz-card-title과 동일한 이유/패턴 — 부모(.biz-pill-group)가 align-items:center라도 block
+    // 요소는 width:100%를 그대로 채워서 알약이 너무 길어 보였다. inline-flex + align-self:center로
+    // 내용 크기만큼만 잡고 가운데로, 패딩도 기존 대비 80%로 줄인다(12px→10px).
     .biz-pill {
-      width: 100%;
-      padding: rem(12px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      padding: rem(10px);
       border-radius: rem(50px);
       border: rem(1px) dashed color('Color/Box/Border color');
       @include font('Body 20 R');
@@ -968,9 +1005,10 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       position: relative;
       height: $slide-height;
       padding: rem(80px);
+      // PC 원래 동작: fullPage가 섹션을 100vh로 스냅하니, 컨텐츠가 넘치면 섹션 내부에서만
+      // 스크롤되게 둔다(섹션 간 스냅은 그대로 유지). .js-swiper의 100vw 풀블리드(음수 margin-left)가
+      // 이 컨테이너 기준으로 가로 스크롤을 만들어내지 않도록 가로는 명시적으로 잘라낸다.
       overflow-y: auto;
-      // .js-swiper의 100vw 풀블리드(음수 margin-left)가 이 컨테이너 기준으로 가로 스크롤을
-      // 만들어내지 않도록 가로는 명시적으로 잘라낸다.
       overflow-x: hidden;
       background-size: cover;
       background-position: center;
@@ -1078,14 +1116,19 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
     // wrapper의 CSS padding은 안 보기 때문에, padding으로만 주면 시각적으로만 여백이 생기고
     // 실제 스크롤은 그만큼 안 늘어나서 마지막 카드가 화면 밖에서 잘린다(실측 확인).
     .sp-solution-grid {
-      gap: rem(20px);
+      // gap을 여기서 또 주면 Swiper의 spaceBetween:20(카드마다 인라인 margin으로 구현)과
+      // 중복으로 겹쳐서 카드 사이가 실제 의도보다 두 배로 벌어진다 — 간격은 JS spaceBetween 하나로만.
       align-items: stretch;
     }
     // /company/info의 .company__business-card 패턴을 그대로 따른다(카드 테두리색만 여기 Figma
     // 실측대로 Black/10).
+    // 카드 폭은 더는 여기서 고정하지 않는다 — Swiper가 #solution-swiper의 slidesPerView(소수점,
+    // "몇 장 + 다음 장 살짝 peek")로 컨테이너 실측 폭을 나눠 각 슬라이드에 인라인 width를 직접
+    // 계산해 넣어준다. flex-basis/width를 여기서 고정하면 그 계산값을 도로 덮어써서 페이지네이션
+    // 수만큼 나뉘지 않고 예전처럼 425px 그대로 고정돼버린다 — flex-shrink만 0으로 둬서 Swiper가
+    // 준 폭이 줄어들지 않게만 한다.
     .sp-solution-card {
-      flex: 0 0 rem(425px);
-      width: rem(425px);
+      flex-shrink: 0;
       height: auto;
       display: flex;
       flex-direction: column;
@@ -1333,7 +1376,12 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
     overflow: hidden;
     .section-item {
       position: relative;
-      height: 100%;
+      // min-height:100%는 부모(.section-partner-slide)가 min-height뿐이라(percentage 기준
+      // "명시적" height 아님) 사실상 무시돼 0 취급된다 — 그래서 컨텐츠가 짧으면 이 박스가
+      // 100vh보다 작게 자기 컨텐츠 크기로만 렌더링되고, 부모는 여전히 min-height:100vh를
+      // 보장하니 그 차이만큼 사진 배경만 있는 빈 여백이 하단에 남았다. 퍼센트 대신 부모와 같은
+      // $slide-height(100vh)를 직접 써서 항상 최소 한 화면을 채우게 한다.
+      min-height: $slide-height;
       padding: rem(80px);
       display: flex;
       flex-direction: column;
@@ -1377,7 +1425,9 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       flex-direction: column;
       justify-content: center;
       gap: rem(60px);
-      height: 100%;
+      // .section-item이 min-height라 height:100%는 더는 안 먹는다 — .section-item이 이미
+      // flex-column이니 flex:1로 남는 공간을 채운다.
+      flex: 1 1 auto;
     }
     .partner-head {
       display: flex;
@@ -1455,36 +1505,250 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
 
 @media only screen and (max-width: $breakpoint-md) {
   .main-wrap {
+    // 모바일은 fullPage.js가 responsiveWidth로 꺼져서 섹션 스냅/락이 없다 — PC용 정확한
+    // height:100vh + overflow:hidden(넘치면 클리핑)을 그대로 두면 컨텐츠 많은 섹션이 잘려 보이니,
+    // min-height로 풀어서 필요한 만큼 자라나게 하고 overflow는 양쪽 다 명시적으로 hidden 고정한다
+    // (overflow-x만 hidden이고 overflow-y가 비어있으면/visible이면 스펙상 강제로 auto 취급돼서
+    // 스크롤이 최상위(html/body)가 아니라 이 박스에서 생길 수 있다 — min-height라 실제로 넘칠
+    // 상황은 없으니 hidden으로 고정해도 컨텐츠 손실 없음).
+    .section1-slide,
+    .section2-slide,
+    .section3-slide,
+    .section4-slide,
+    .section5-slide,
+    .section6-slide,
+    .section7-slide,
+    .section-partner-slide {
+      height: auto;
+      min-height: $slide-height;
+      overflow: hidden;
+    }
     .section1-slide .section-item,
     .section2-slide .section-item,
+    .section3-slide .section-item,
+    .section4-slide .biz-item,
+    .section5-slide .section-item,
+    .section6-slide .section-item,
+    .section7-slide .section-item {
+      height: auto;
+      min-height: $slide-height;
+    }
+    // PC는 fullPage가 섹션을 스냅하니 섹션 내부에서 넘치는 컨텐츠를 그 안에서만 스크롤(overflow-y:
+    // auto)시켰는데, 모바일은 문서 자체가 스크롤되니 섹션 내부 스크롤이 있으면 안 된다 — hidden으로.
+    .section3-slide .section-item,
+    .section5-slide .section-item,
+    .section6-slide .section-item,
+    .section7-slide .section-item {
+      overflow-y: hidden;
+    }
+    // 세로로 화면 오른쪽 중앙에 떠 있던 닷 페이지네이션은 좁은 화면에서 컨텐츠와 겹치기 쉬워서,
+    // 섹션 padding과 같은 inset의 상단 우측에 가로 한 줄로 옮긴다. top은 30px이 아니라 110px —
+    // GNB가 fixed(모바일에서도 대략 56~60px 높이)라 80px 정도로는 GNB 바로 밑에 거의 붙어(특히
+    // 슬라이드1은 페이지 맨 위라 스크롤 없이 바로 GNB와 인접) 답답해 보였다. 다른 섹션(2/3/4)도
+    // 이 규칙을 공유해서 같이 내려가지만, 그쪽은 이미 여유 있어 보이던 값이라 더 내려가도
+    // 어색하지 않다 — 전 섹션에 일관되게 적용해 통일감도 유지.
+    .swiper-pagination {
+      left: auto;
+      right: rem($spacing-left);
+      top: rem(60px);
+      transform: none;
+      flex-direction: row;
+    }
+    .section1-slide .swiper-pagination {
+      top: rem(110px);
+    }
+    // 닷 사이 간격은 이제 이 flex gap 하나로만 관리한다 — Swiper 번들 기본 CSS가
+    // .swiper-pagination-bullet에 자체 margin을 깔아놔서 gap과 중복으로 겹쳐 있었다.
+    .swiper-pagination .swiper-pagination-bullet {
+      margin: 0;
+    }
+    // 섹션1·2는 세로 히어로형이라 컨텐츠 위아래 여백은 PC와 동일하게 80px 유지(가로만 축소) —
+    // 30px로 좁혀두니 답답해 보였다.
+    .section1-slide .section-item,
+    .section2-slide .section-item {
+      padding: rem(80px) rem($spacing-left);
+    }
+    // Section2만: .ad-more가 .content-inner 하단에 절대배치라 텍스트(비즈니스 카드 목록)가
+    // 길어지는 좁은 화면에서 버튼과 겹쳤다 — 이 섹션만 하단 여백을 더 크게 줘서 여유를 둔다.
+    .section2-slide .section-item .content-inner{
+      padding-bottom: rem(70px);
+    }
     .section3-slide .section-item {
-      padding: rem(30px) rem($spacing-left);
+      padding: rem(80px) rem($spacing-left);
     }
     .section1-slide .section-item .b-diagram {
       display: none;
     }
+    // Figma 원본은 원(.biz-core) ↔ 4개 카드를 잇는 점선 연결선 그래픽 — .biz-grid가 세로로
+    // 쌓이는 순간 가로 배치를 전제로 그려진 선이라 의미가 없어져서 숨긴다.
+    .biz-connector {
+      display: none;
+    }
+    // (주의) base가 .section2-slide 안에 중첩돼 있어 명시도가 .main-wrap .section2-slide .biz-card
+    // 3단인데, 여기서 .biz-card만 플랫하게 쓰면 2단이라 명시도에서 져서 max-width가 안 먹는다 —
+    // 아래 sp-why-body/sp-why-card/sp-head도 전부 같은 이유로 소속 섹션까지 붙여서 쓴다.
+    .section2-slide .biz-card {
+      max-width: 100%;
+    }
+    // 카드마다 리스트 항목 수가 달라 PC에서는 한 줄로 나열된 카드 높이를 맞추려고 min-height:200px를
+    // 줬는데, 모바일은 세로로 쌓이니 맞출 필요가 없어졌다 — 그대로 두면 내용은 짧은데 박스만 불필요하게
+    // 커 보인다. auto로 풀고, 타이틀(dashed pill)과 붙어 있던 4px 간격은 좁아서 카드끼리 스택될 때
+    // 답답해 보이니 조금 넉넉하게 늘린다.
+    .section2-slide .biz-card-desc,
+    .section2-slide .biz-card-list {
+      min-height: auto;
+      margin-top: rem(12px);
+    }
+    .section2-slide .biz-card-title {
+      padding: rem(14px) rem(30px);
+    }
+    // 리스트 항목이 white-space:nowrap이라 각 줄이 자기 텍스트 길이만큼만 그려지는데, 부모
+    // (.biz-card)가 align-items:stretch라 .biz-card-list 자체는 카드 폭 100%로 늘어나 있어서
+    // 왼쪽 정렬처럼 보였다 — 리스트를 그 안의 가장 긴 줄 너비만큼만(fit-content) 잡고, 카드 영역
+    // 안에서 그 블록 자체를 가운데로 보낸다(항목끼리는 서로 왼쪽 정렬 유지).
+    .section2-slide .biz-card-list {
+      align-self: center;
+      width: fit-content;
+      max-width: 100%;
+    }
+    // 5개 원이 가로 한 줄을 전제로 이어 그려진 연결선 — .ai-flow가 세로로 쌓이면 같은 이유로 숨긴다.
+    .ai-flow-connector {
+      display: none;
+    }
+    .section3-slide .ai-banner {
+      padding: rem(30px) rem($spacing-left);
+      margin-top: rem(45px);
+    }
+    // 배너 안 텍스트가 좁은 화면엔 쓸데없이 크다 — 기존 대비 80%로.
+    .section3-slide .ai-banner-title {
+      @include font('H4'); // H3(36px) 대비 80%(28.8px)에 가장 가까운 정의된 스텝
+    }
+    .section3-slide .ai-banner-desc {
+      @include font('Body 16 R'); // Body 20 R의 정확히 80%
+    }
     .biz-grid,
-    .ai-flow,
     .ai-cols {
       flex-direction: column;
+    }
+    // .ai-flow는 강제로 세로 1열 대신, 원 크기를 줄이고 flex-wrap(베이스에 이미 있음)이 화면
+    // 폭에 맞춰 자연스럽게 다음 줄로 내려가게 둔다(2개씩 등 자동으로 줄바꿈).
+    .section3-slide .ai-flow {
+      gap: rem(12px);
+    }
+    .section3-slide .ai-flow-node {
+      width: rem(200px);
+      height: rem(200px);
+    }
+    // 화살표(forward-arrow)는 헤딩 옆에 오는 장식인데, 좁은 화면에서 가운데 정렬된 제목과
+    // 어색하게 겹쳐 보여서 뺀다. 가운데 정렬도 좁은 화면에서 텍스트가 여러 줄로 꺾이면 들쭉날쭉해
+    // 읽기 불편해서 왼쪽 정렬로 바꾼다.
+    .section3-slide .ai-head:after {
+      display: none;
+    }
+    .section3-slide .ai-head {
+      padding-right: 0;
+      text-align: left;
+    }
+    .section4-slide{
+      background: #133269;
+    }
+    // Section4 타이틀 옆 forward-arrow도 같은 이유로 뺀다.
+    .section4-slide .biz-title:after {
+      display: none;
+    }
+    .section4-slide .biz-title {
+      padding-right: 0;
+    }
+    // Section1 체크리스트 앞 체크 아이콘도 좁은 화면에서 텍스트와 너무 붙어 보여서 뺀다.
+    // (주의) base가 .section-item .b-list 까지 중첩돼 있어 그 깊이까지 그대로 맞춰써야 명시도가
+    // 이긴다 — .b-li만 쓰면 명시도가 낮아 안 먹는다.
+    .section1-slide .section-item .b-list .b-li:after {
+      display: none;
+    }
+    // Section1 히어로 타이틀의 <br/>은 PC 폭 기준 줄바꿈이라 좁은 화면에서 부자연스럽게 끊겨
+    // 보인다 — 화면 폭에 맞춰 자연스럽게 줄바꿈되도록 렌더링만 지운다(데이터는 그대로 유지).
+    .section1-slide .b-title br {
+      display: none;
     }
     .sp-grid {
       grid-template-columns: 1fr;
     }
-    .sp-head {
+    .section5-slide .sp-head,
+    .section6-slide .sp-head,
+    .section7-slide .sp-head {
       flex-direction: column;
       align-items: flex-start;
     }
-    .sp-why-body {
-      flex-direction: column;
+    // H2(40px)는 모바일엔 여전히 커서 한 단계 더 줄인다. 화살표(forward-arrow)는 Section5는
+    // :after 의사요소, Section6/7은 실제 <img class="sp-arrow-ph">라 구현이 달라 각각 지운다.
+    .section5-slide .sp-head .sp-title,
+    .section6-slide .sp-head .sp-title,
+    .section7-slide .sp-head .sp-title {
+      @include font('H4');
+      padding-right: 0;
     }
-    .sp-why-card {
+    .section5-slide .sp-head .sp-title:after {
+      display: none;
+    }
+    .section6-slide .sp-arrow-ph,
+    .section7-slide .sp-arrow-ph {
+      display: none;
+    }
+    .section5-slide .section-item,
+    .section6-slide .section-item,
+    .section7-slide .section-item {
+      padding: rem(80px) rem($spacing-left);
+    }
+    // Section5~7 카드 캐러셀은 PC에서 Figma 80px 거터에 맞춰 풀블리드(음수 마진 + 초과 width)로
+    // 짜여 있는데, 모바일에서 그대로 두면 스와이퍼 컨테이너 자체가 화면보다 훨씬 넓어져서(80px
+    // 거터 기준 값이라 실제 축소된 mobile padding과 안 맞음) 그 안의 %기반 콘텐츠(.sp-why-card
+    // width:100% 등)가 화면 폭을 넘어 보인다 — 모바일에서는 풀블리드를 걷어내고 섹션 자체
+    // padding 안에 얌전히 담기게 한다.
+    .section6-slide .js-swiper{
+      width: auto;
+      margin-left: rem(-$spacing-left);
+      margin-right: rem(-$spacing-right);;
+      padding-left: rem($spacing-left);
+      padding-right: rem($spacing-right);
+    }
+    .section5-slide .js-swiper,
+    .section7-slide .js-swiper {
+      width: auto;
+      margin-left: rem(-$spacing-left);
+      margin-right: rem(-$spacing-right);;
+      padding-left: rem($spacing-left);
+      padding-right: 0;
+    }
+    .section6-slide .sp-why-body {
+      flex-direction: column;
+      // PC는 가로 배치라 gap(168px)이 카드 사이 좌우 간격이었는데, 세로로 쌓이면 그대로 커다란
+      // 위아래 공백이 돼버려서 줄인다. width/padding-right도 가로폭 기준 인셋 값이라 세로 쌓임에선
+      // 의미가 없어 100%/0으로 되돌린다.
+      gap: rem(24px);
       width: 100%;
+      padding-right: 0;
+    }
+    // 위 .js-swiper 풀블리드 제거로 이제 섹션 padding 안에 자연스럽게 담기니, .sp-card처럼
+    // 카드 자체 패딩도 살짝 더 압축해서 카드답게 보이도록 한다(원래 36px는 이 폭엔 과함).
+    .section6-slide .sp-why-card {
+      width: 100%;
+      padding: rem(24px);
+    }
+    .section6-slide .sp-why-features {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .section6-slide .sp-why-feature {
+      width: 100%;
+    }
+    .section6-slide .sp-why-feature-title {
+      margin-bottom: rem(15px);
     }
 
     .section4-slide {
       .biz-item {
-        padding: rem(30px) rem($spacing-left);
+        padding: rem(80px) rem($spacing-left);
       }
       .biz-cols,
       .biz-cols--robot,
@@ -1496,8 +1760,8 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
         gap: rem(8px);
       }
       .biz-circle {
-        width: rem(88px);
-        height: rem(88px);
+        width: rem(120px);
+        height: rem(120px);
         p {
           @include font('Body 14 R');
         }
@@ -1521,20 +1785,49 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       .biz-dataflow-col {
         width: 100%;
       }
+      // 4열 그대로면 원 하나가 320px 폭 화면에서도 80px 밑으로 눌려 라벨이 너무 빽빽해진다.
+      .biz-device-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      // .biz-device-pill은 grid item이라 flex 속성(flex:1 1 0%)이 애초에 안 먹었고, grid의 기본
+      // stretch 정렬 때문에 셀 너비(justify-self)와 셀 높이(align-self)에 각각 다르게 늘어나
+      // 원이 눌려 보이고, max-width로 셀보다 좁아진 박스는 stretch가 남는 공간을 왼쪽에 남겨서
+      // 왼쪽 정렬처럼 보였다 — 두 축 다 stretch를 끄고 셀 중앙에 두면 aspect-ratio가 정상적으로
+      // 정원을 만든다.
+      .biz-device-pill {
+        justify-self: center;
+        align-self: center;
+        width: 100%;
+      }
+      // .biz-datacircle은 flex(1 1 0%)로 폭은 맞는데, 부모(.biz-dataflow-row)의 기본
+      // align-items:stretch가 세로도 늘려버려서(내용 높이가 제각각이라 가장 큰 원 기준으로
+      // 나머지가 눌림) aspect-ratio와 충돌했다 — center로 바꿔 각자 자기 폭 기준 높이를 쓰게 한다.
+      .biz-dataflow-row {
+        align-items: center;
+      }
+      // 세로 구분선은 태그가 줄바꿈되는 좁은 화면에서 의미가 애매해져서, 숫자(1. 2. 3.)로 대체한다.
       .biz-flow-row {
         flex-wrap: wrap;
+        counter-reset: biz-flow-tag;
+      }
+      .biz-flow-line {
+        display: none;
+      }
+      .biz-flow-tag:before {
+        counter-increment: biz-flow-tag;
+        content: counter(biz-flow-tag) '.';
+        @include font('Body 16 R');
+        color: color('Color/White');
       }
     }
 
+    // height/min-height는 파일 위쪽 공통 모바일 블록에서 이미 처리됨 — 여기선 패딩/gap만 조정.
     .section-partner-slide {
-      height: auto;
       .section-item {
-        height: auto;
         padding: rem(40px) rem($spacing-left);
         gap: rem(40px);
       }
       .content-inner {
-        height: auto;
         gap: rem(40px);
       }
       .partner-grid {
@@ -1543,7 +1836,12 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       }
     }
 
-    .swiper-nav {
+    // (기존 .swiper-nav는 실제 마크업에 없는 클래스라 동작하지 않던 죽은 규칙이었음 — 실제
+    // prev/next 버튼 클래스인 .sp-nav로 정정. 모바일은 터치 스와이프가 기본이라 버튼은 숨긴다.
+    // base가 .section5/6/7-slide 안에 중첩(display:flex)돼 있어 명시도를 맞추려고 소속 섹션까지 붙인다.
+    .section5-slide .sp-nav,
+    .section6-slide .sp-nav,
+    .section7-slide .sp-nav {
       display: none;
     }
   }

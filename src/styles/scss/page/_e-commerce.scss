@@ -399,9 +399,15 @@
 }
 
 @media only screen and (max-width: $breakpoint-md) {
-  .ec__box-grid,
-  .ec__stat-grid {
+  .ec__stat-grid,
+  .ec__feature-grid {
     grid-template-columns: 1fr;
+  }
+  .ec__box-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ec__tag-row {
+    display: none;
   }
   .ec__role-grid {
     flex-direction: column;
@@ -411,6 +417,7 @@
   }
   .ec__flow {
     flex-direction: column;
+    gap: 0;
   }
   .ec__flow-arrow img {
     transform: rotate(90deg);
@@ -418,9 +425,34 @@
   .ec__pair-block {
     flex-direction: column;
   }
+  .ec__pair-list {
+    margin-top: 0;
+    width: 100%;
+  }
+  .ec__pair-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: rem(15px);
+  }
+  .ec__pair-title,
+  .ec__pair-desc {
+    width: 100%;
+  }
   .ec__ref-row {
     flex-direction: column;
     align-items: center;
     padding: rem(40px) rem(20px);
+  }
+  // "바로가기" 버튼(sm, 46px 높이)을 콘텐츠 하단에 absolute + width:100%로 깔기 위해, 버튼이
+  // 차지할 만큼 하단 패딩을 미리 비워둔다(버튼 높이 46px + 여백 20px).
+  .ec__ref-content {
+    position: relative;
+    padding-bottom: rem(66px);
+  }
+  .ec__ref-content .bs-button {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
   }
 }

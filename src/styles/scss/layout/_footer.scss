@@ -28,7 +28,10 @@
         width: rem(152px);
         height: rem(40px);
         font-size: 0;
-        background: no-repeat left center url(~/assets/images/m2m-global-logo-white.svg);
+        // SVG 자체가 width/height="152/40"(고정 px)라 background-size 없이는 박스가 rem()으로
+        // 줄어드는 모바일(html font-size 축소)에서 이미지는 원본 크기 그대로 남아 박스보다
+        // 커져서 잘려 보인다 — contain으로 박스 크기에 맞춰 항상 비율대로 축소되게 한다.
+        background: no-repeat left center / contain url(~/assets/images/m2m-global-logo-white.svg);
     }
     .contact{
         display: flex;
@@ -128,14 +131,11 @@
             flex-wrap: wrap;
             row-gap: rem(4px);
         }
+        // AllMenu의 .all-menu__downloads와 동일한 이유 — align-items:stretch + width:100%가
+        // (inline-flex라 원래 내용 크기만큼만 잡혀야 할) 버튼을 폭 100%로 늘려버리고 있었다.
         .downloads{
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
+            align-items: flex-start;
             gap: rem(12px);
-        }
-        .download-btn{
-            width: 100%;
         }
         .bottom{
             flex-direction: column;

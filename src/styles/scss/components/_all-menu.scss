@@ -17,13 +17,6 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.25s ease, visibility 0.25s;
-  &:before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(22, 37, 63, 0.7) 30%, rgba(22, 37, 63, 0));
-    pointer-events: none;
-  }
 }
 
 body.is-allmenu-open .all-menu {
@@ -64,6 +57,20 @@ body.is-allmenu-open .all-menu {
   justify-content: space-between;
   gap: rem(40px);
   padding: rem(80px);
+  // (기존엔 .all-menu 자체에 :before로 얹혀 있었는데, .all-menu는 position:fixed;inset:0인 뷰포트
+  // 크기 고정 박스라 :before(inset:0)도 그 뷰포트 높이만큼만 깔리고, 스크롤해서 내려간 컨텐츠
+  // 아래쪽엔 그라디언트가 없어 거기서부터 뚝 끊겨 보였다 — 실제 스크롤되는 컨텐츠 박스인
+  // .all-menu__inner(컨텐츠 높이만큼 자라남) 쪽으로 옮겨서 전체 높이를 그라디언트가 따라가게 한다.
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(22, 37, 63, 0.7) 30%, rgba(22, 37, 63, 0));
+    pointer-events: none;
+  }
+  > * {
+    position: relative;
+  }
 }
 
 .all-menu__body {
@@ -189,15 +196,31 @@ body.is-allmenu-open .all-menu {
     top: rem(24px);
     right: rem(15px);
   }
+  .all-menu__depth1-row{
+    gap: rem(40px);
+  }
+  .all-menu__eyebrow{
+    padding-right: rem(48px);
+  }
   .all-menu__eyebrow,
   .all-menu__brand {
     @include font('H4');
   }
+  // 데스크탑은 .all-menu__head 자체에 min-width 미디어쿼리로 padding-bottom(62px)이 이미 있는데
+  // 모바일엔 아래(.all-menu__nav)와의 간격이 하나도 없었다.
+  .all-menu__head {
+    margin-bottom: rem(30px);
+  }
+  .all-menu__nav {
+    margin-bottom: rem(30px);
+  }
   .all-menu__depth1 {
     flex: 1 1 50%;
+    gap: rem(20px);
   }
+  // align-items:stretch가 (inline-flex라 원래 내용 크기만큼만 잡혀야 할) 버튼을 세로 스택에서
+  // 폭 100%로 늘려버리고 있었다 — flex-start로 바꿔서 텍스트 너비 + 좌우 패딩만큼만 쓰게 한다.
   .all-menu__downloads {
-    flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
   }
 }

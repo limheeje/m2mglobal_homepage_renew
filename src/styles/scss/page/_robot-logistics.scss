@@ -558,6 +558,28 @@
 }
 
 @media only screen and (max-width: $breakpoint-md) {
+  .rl__tech-body{
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .rl__overview-card{
+    max-width: 100%;
+    padding: rem(36px) rem(20px);
+    .rl__chip-row{
+      flex-wrap: wrap;
+    }
+  }
+  .rl__tech-banne .inner .tit{@include font('Body 24 R')}
+  .rl__tech-banne .inner .tit:after{margin-left: rem(-40px); bottom: rem(30px)}
+  // 라벨(71px 고정)+태그 목록이 좌우 배치라 좁은 화면에서 태그 목록이 너무 좁아졌다 — 상하 배치로.
+  .rl__tech-row {
+    flex-direction: column;
+    gap: rem(8px);
+  }
+  .rl__tech-row-label {
+    width: 100%;
+  }
+  .rl__overview-grid:after{content: none;}
   .rl__overview-grid,
   .rl__tech-grid,
   .rl__insight-grid,
@@ -577,8 +599,8 @@
   }
   .rl__seamless-flow {
     flex-direction: column;
-    border-width: 0 rem(2px) rem(2px) rem(2px);
-    border-radius: 0 0 rem(24px) rem(24px);
+    border-width: rem(2px);
+    border-radius: rem(24px);
   }
   .rl__seamless-stage,
   .rl__seamless-stage--fluid {
@@ -586,8 +608,8 @@
     min-width: 0;
   }
   .rl__chevron--flow {
-    align-self: flex-start;
-    margin-top: rem(0);
+    align-self: center;
+    margin-bottom: rem(27px);
     transform: rotate(90deg);
   }
   .rl__robot-group {
@@ -607,5 +629,11 @@
   }
   .rl__spec-columns {
     flex-direction: column;
+  }
+  // 박스 비율(16:7)과 실제 다이어그램 이미지 비율이 안 맞으면 세로로 넘쳐 보인다 — 패딩을
+  // 좁은 화면에 맞게 줄이고(기존 36/24는 이 폭엔 과함), overflow:hidden은 이미 있어 그대로 유지.
+  .rl__diagram-placeholder,
+  .rl__diagram-box {
+    padding: rem(20px) rem(15px);
   }
 }

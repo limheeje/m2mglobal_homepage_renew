@@ -31,7 +31,10 @@
         width: rem(152px);
         height: rem(40px);
         font-size: 0;
-        background: no-repeat left center url(~/assets/images/m2m-global-logo.svg);
+        // SVG 자체가 width/height="152/40"(고정 px)라 background-size 없이는 박스가 rem()으로
+        // 줄어드는 모바일(html font-size 축소)에서 이미지는 원본 크기 그대로 남아 박스보다
+        // 커져서 잘려 보인다(Footer .logo와 동일 원인) — contain으로 항상 박스 비율에 맞춘다.
+        background: no-repeat left center / contain url(~/assets/images/m2m-global-logo.svg);
     }
     .gnb{
         height: 100%;

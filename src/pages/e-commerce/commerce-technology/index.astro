@@ -120,6 +120,7 @@ const mallTypes = [
 // --- 주요 레퍼런스 (7건) ---
 const references = [
   {
+    href: 'https://www.shshopping.co.kr/shypMall/display',
     imgPc: IMG1.src,
     imgMobile: IMG1_1.src,
     title: '수협중앙회 쇼핑몰 재구축',
@@ -133,6 +134,7 @@ const references = [
     ]
   },
   {
+    href: 'https://www.nonghyupmall.com/BC31010R/main.nh?emdvEndYn=Y&basketCnt=0&cdnAplYn=N&nhVuchYn=N',
     imgPc: IMG2.src,
     imgMobile: IMG2_1.src,
     title: '농협몰 구축 / 고도화 / 운영',
@@ -146,6 +148,7 @@ const references = [
     ]
   },
   {
+    href: 'https://www.daisomall.co.kr/ds?srsltid=AfmBOoraTyr9X8obbfMnE4hEEeUE85U5UhUiEktgWdEs8mEcuX02Xweo',
     imgPc: IMG3.src,
     imgMobile: IMG3_1.src,
     title: '다이소 커머스 플랫폼 구축',
@@ -159,6 +162,7 @@ const references = [
     ]
   },
   {
+    href: 'https://www.kcar.com/?srsltid=AfmBOooNieYeAf26-he2iQENizKLvjv7jd2f8Ya8Yl6AvNN0-YUTqonM',
     imgPc: IMG4.src,
     imgMobile: IMG4_1.src,
     title: 'C2C 직거래플랫폼 구축',
@@ -173,6 +177,7 @@ const references = [
     ]
   },
   {
+    href: 'https://www.lotteon.com/p/display/main/lotteon?mall_no=1&ch_no=100172&ch_dtl_no=1000547&airbridge_referrer=airbridge%3Dtrue%26client_id%3D2618aef6-6aeb-4771-8d2d-29a0557910bb%26event_uuid%3D087c0c95-ff72-454b-addb-ae32a4ff2f6a%26referrer_timestamp%3D1787118874705%26channel%3Dgoogle_searchad%26campaign%3D1-1_%25EC%259E%2590%25EC%2582%25AC%25EB%25AA%2585_%25EC%2583%2581%25EB%258B%25A8_PC%26tracking_template_id%3D09072d75a9c244f50e5d20db9e52ef6a%26ad_group%3D%25EC%259E%2590%25EC%2582%25AC%25EB%25AA%2585%26term%3D%25EB%25A1%25AF%25EB%258D%25B0%25EC%2598%25A8%26og_tag_id%3D41620949%26routing_short_id%3Drixifq%26ad_type%3Dclick%26gad_source%3D1%26gad_campaignid%3D22401787806%26gbraid%3D0AAAAAD-QNvvqTiSOCAsleFY5BijqxKzWP%26gclid%3DCjwKCAjwhZDUBhBGEiwAbi5bjvto3MTS-qbCjcdtlpHlWlJ_pQyei7lzP5Roo0xP6wJWqnC5ThqH5xoCB28QAvD_BwE&utm_source=google_searchad&utm_campaign=1-1_%EC%9E%90%EC%82%AC%EB%AA%85_%EC%83%81%EB%8B%A8_PC&utm_term=%EB%A1%AF%EB%8D%B0%EC%98%A8&ad_group=%EC%9E%90%EC%82%AC%EB%AA%85&campaign=1-1_%EC%9E%90%EC%82%AC%EB%AA%85_%EC%83%81%EB%8B%A8_PC&og_tag_id=41620949&routing_short_id=rixifq&term=%EB%A1%AF%EB%8D%B0%EC%98%A8&tracking_template_id=09072d75a9c244f50e5d20db9e52ef6a&ad_type=click&gad_source=1&gad_campaignid=22401787806&gbraid=0AAAAAD-QNvvqTiSOCAsleFY5BijqxKzWP&gclid=CjwKCAjwhZDUBhBGEiwAbi5bjvto3MTS-qbCjcdtlpHlWlJ_pQyei7lzP5Roo0xP6wJWqnC5ThqH5xoCB28QAvD_BwE',
     imgPc: IMG5.src,
     imgMobile: IMG5_1.src,
     title: '롯데ON 통합 EC구축',
@@ -297,7 +302,13 @@ const clients = [
                   <div class="ec__ref-head">
                     <div class="ec__ref-head-row">
                       <p class="ec__ref-title">{item.title}</p>
-                      <Button variant="white" size="sm" useSuffixIcon="blank">
+                      <Button
+                        href={item.href}
+                        target="_blank"
+                        variant="white"
+                        size="sm"
+                        useSuffixIcon="blank"
+                      >
                         바로가기
                       </Button>
                     </div>

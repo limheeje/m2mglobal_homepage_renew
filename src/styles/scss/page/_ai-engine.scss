@@ -368,6 +368,7 @@
   }
   .ai__flow {
     flex-direction: column;
+    gap: 0;
   }
   .ai__flow-box {
     width: 100%;
@@ -381,8 +382,20 @@
   .ai__spec-label {
     width: 100%;
   }
+  // .ai__spec-group가 align-items:flex-start(stretch 아님)라 column이 돼도 폭이 내용 크기만큼만
+  // 잡혀 좁아 보였다 — 65px 상단 여백도 좁은 화면엔 과해서 줄인다.
+  .ai__spec-rows {
+    width: 100%;
+    margin-top: rem(25px);
+  }
   .ai__strategy-row {
     flex-direction: column;
+  }
+  // .ai__strategy-card의 flex:0 0 326px는 가로 배치를 전제로 한 "너비" 고정값인데, row가
+  // column이 되면 flex-basis가 메인축(세로)으로 바뀌어 카드가 컨텐츠와 무관하게 326px 높이로
+  // 고정돼버린다 — auto로 풀어서 내용 높이만큼만 차지하게 한다.
+  .ai__strategy-card {
+    flex: 0 0 auto;
   }
   .ai__strategy-arrow {
     transform: rotate(90deg);
@@ -395,7 +408,18 @@
     max-width: rem(200px);
     margin-inline: auto;
   }
+  // 574px 고정폭이라 좁은 화면에서 잘리거나 넘쳐 보였다 — 컨테이너 폭에 맞춘다.
+  .ai__personalize-image {
+    width: 100%;
+  }
+  // 16:7 비율 박스에 원본 다이어그램 이미지의 실제 비율이 안 맞으면 세로로 넘쳐 보인다 — 패딩으로
+  // 이미지를 살짝 안쪽으로 줄이고, overflow:hidden으로 그래도 넘치는 부분은 잘라낸다.
+  .ai__diagram-placeholder {
+    padding: rem(20px) rem(15px);
+    overflow: hidden;
+  }
 }
+
 .ai-com-sub-banner {
   margin-bottom: rem(80px);
   .inner {
@@ -433,6 +457,31 @@
       .txt {
         .tit {
           color: color('Color/Third Color');
+        }
+      }
+    }
+  }
+}
+// (주의) 이 미디어쿼리는 위 .ai-com-sub-banner 베이스 규칙보다 반드시 뒤에 와야 한다 — 명시도가
+// 같은 선택자라 소스 순서로 우선순위가 갈리는데, 앞에 두면 media 조건이 참이어도 뒤에 나오는
+// 베이스 규칙에 밀려서 실제로는 하나도 안 먹는다.
+@media only screen and (max-width: $breakpoint-md) {
+  .ai-com-sub-banner {
+    .inner {
+      height: auto;
+      flex-wrap: wrap;
+      padding: rem(20px) rem(15px);
+    }
+    .item {
+      width: rem(180px);
+      height: rem(180px);
+      .txt {
+        .tit {
+          // 원본 24px 대비 폭이 240px→180px(75%)로 줄어든 비율 그대로 텍스트도 축소.
+          @include font('Body 18 R');
+        }
+        .dec {
+          @include font('Body 14 R');
         }
       }
     }

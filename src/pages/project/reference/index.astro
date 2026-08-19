@@ -30,7 +30,8 @@ const references = [
     logoKey: '05-suhyupshopping',
     title: '수협중앙회 쇼핑몰 재구축',
     desc: '수협다움을 제시하는 새로운 이커머스 몰 개편',
-    period: `25' 05 ~ 26' 03`
+    period: `25' 05 ~ 26' 03`,
+    href: 'https://www.shshopping.co.kr/shypMall/display'
   },
   {
     logoKey: '39-jejuair',
@@ -42,19 +43,22 @@ const references = [
     logoKey: '04-kcar',
     title: 'KCar C2C 온라인 플랫폼 구축',
     desc: '개인간 안전거래 중고차 직거래 플랫폼 구축',
-    period: `25' 09 ~ 26' 07`
+    period: `25' 09 ~ 26' 07`,
+    href: 'https://www.kcar.com/?srsltid=AfmBOooNieYeAf26-he2iQENizKLvjv7jd2f8Ya8Yl6AvNN0-YUTqonM'
   },
   {
     logoKey: '38-parataair',
     title: '파라타 항공 예약시스템 UI/UX 고도화 구축',
     desc: '고객 중심의 합리적인 서비스 제공하는 새로운 항공사',
-    period: `25' 03 ~ 25' 08`
+    period: `25' 03 ~ 25' 08`,
+    href: 'https://www.parataair.com/ko/main/main.do'
   },
   {
     logoKey: '11-surplusglobal',
     title: '반도체 장비 글로벌 마켓 플레이스 구축',
     desc: 'B2B 중고 반도체 장비 플랫폼 PC, PO, MO 플랫폼 구축',
-    period: `24' 05 ~ 26' 04`
+    period: `24' 05 ~ 26' 04`,
+    href: 'https://www.semimarket.com/?gad_source=1&gad_campaignid=6496173795&gbraid=0AAAAADtrz3LlH0R2CK-KMWkiM3qXrYqQO&gclid=CjwKCAjwhZDUBhBGEiwAbi5bjr6E-o9bhyyyAgKJilUIw1NiuSjsbvhBrl7EHjU8fd9zi2vw6NmsFBoC4kIQAvD_BwE'
   },
   {
     logoKey: '26-nhinfo',
@@ -72,7 +76,8 @@ const references = [
     logoKey: '02-daiso',
     title: '다이소 차세대 커머스플랫폼구축',
     desc: '다이소 쇼핑몰 차세대 플랫폼으로 전면 고도화',
-    period: `22' 12 ~ 23' 12`
+    period: `22' 12 ~ 23' 12`,
+    href: 'https://www.daisomall.co.kr/ds?srsltid=AfmBOoraTyr9X8obbfMnE4hEEeUE85U5UhUiEktgWdEs8mEcuX02Xweo'
   },
   {
     logoKey: '12-cjlogistics',
@@ -90,13 +95,15 @@ const references = [
     logoKey: '04-kcar',
     title: 'KCar B2C 온라인 플랫폼 구축',
     desc: '중고차 직영거래 플랫폼 구축',
-    period: `21' 10 ~ 22' 07`
+    period: `21' 10 ~ 22' 07`,
+    href: 'https://www.kcar.com/?srsltid=AfmBOooNieYeAf26-he2iQENizKLvjv7jd2f8Ya8Yl6AvNN0-YUTqonM'
   },
   {
     logoKey: '01-nonghyupmall',
     title: '농협 온라인 쇼핑몰 (농협몰) 구축 및 고도화',
     desc: '농협몰 산지택배, 장보기, 식자재, 새벽배송',
-    period: `17' 01 ~ 26' 06`
+    period: `17' 01 ~ 26' 06`,
+    href: 'https://www.nonghyupmall.com/BC31010R/main.nh?emdvEndYn=Y&basketCnt=0&cdnAplYn=N&nhVuchYn=N'
   }
 ]
 ---
@@ -120,7 +127,12 @@ const references = [
             references.map((item) => {
               const logo = logoSrc(item.logoKey)
               return (
-                <div class="ref__row">
+                <div
+                  class="ref__row"
+                  class:list={{
+                    'use-href': item.href
+                  }}
+                >
                   <div class="ref__row-main">
                     <div class="ref__row-left">
                       <div class="ref__logo">
@@ -143,9 +155,18 @@ const references = [
                       <span class="ref__period-value">{item.period}</span>
                     </div>
                   </div>
-                  <Button variant="white" size="sm" useSuffixIcon="blank" class="ref__link">
-                    바로가기
-                  </Button>
+                  <div class="ref__btn-warp">
+                    <Button
+                      href={item.href}
+                      target="_blank"
+                      variant="white"
+                      size="sm"
+                      useSuffixIcon="blank"
+                      class="ref__link"
+                    >
+                      바로가기
+                    </Button>
+                  </div>
                 </div>
               )
             })

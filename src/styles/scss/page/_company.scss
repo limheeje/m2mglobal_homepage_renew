@@ -650,13 +650,16 @@
   }
   .company__stats-inner {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: rem(24px);
   }
   .company__stats-label {
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     p {
       @include font('Body 18 R');
+      text-align: center;
     }
   }
   .company__stats-grid {
@@ -673,11 +676,22 @@
     min-width: 0;
   }
 
+  .company__ceo-intro {
+    font-size: rem(20px);
+  }
   .company__ceo-steps {
     flex-direction: column;
   }
+  // 부모가 column이 되면 flex:1은 세로(메인축) 성장만 관여하고, 가로(cross축)는
+  // align-items:center 때문에 내용 크기만큼만 좁게 잡혀 있었다 — 폭 100%로 넓힌다.
+  .company__ceo-step {
+    width: 100%;
+  }
   .company__ceo-step-arrow {
     transform: rotate(90deg);
+  }
+  .company__ceo-quote-text {
+    font-size: rem(20px);
   }
   .company__ceo-values {
     flex-direction: column;
@@ -686,6 +700,17 @@
   .company__history-row {
     flex-direction: column;
     gap: rem(20px);
+  }
+  // 연도(.company__history-year)와 목록(.company__history-list)이 좁은 화면에서 가로로 나란히면
+  // 목록 폭이 너무 좁아져 답답하다 — 세로로 쌓고 그 사이 여백을 적당히 준다.
+  .company__history-cell {
+    flex-direction: column;
+    gap: rem(12px);
+  }
+  // 30px는 옆에 있던 연도 폭만큼 밀어주던 값이라, 세로로 쌓이면 그 offset이 필요 없다(항목 자체
+  // 불릿 들여쓰기는 li의 padding-left 18px가 따로 있음).
+  .company__history-list {
+    padding-left: 0;
   }
 
   .company__careers-benefits {
@@ -705,6 +730,29 @@
   .company__news-row {
     flex-direction: column;
     align-items: flex-start;
+    gap: rem(12px);
+    .bs-button{
+      width: 100%;
+    }
+  }
+  // 태그 → 타이틀 → 날짜 순서로 세로 쌓기(DOM 순서 그대로라 order 조작 불필요) — 태그가 맨 위,
+  // 타이틀이 이 영역 폭을 100% 쓰고, 날짜는 타이틀 바로 아래 왼쪽. 바로가기 버튼은 위
+  // .company__news-row가 이미 column이라 .company__news-row-main 다음 형제로 자동으로 맨 아래.
+  .company__news-row-main {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: rem(15px);
+  }
+  .company__news-tag{
+
+  }
+  .company__news-title {
+    width: 100%;
+  }
+  .company__news-date {
+    width: auto;
+    text-align: left;
   }
   .company__address-info {
     flex-direction: column;
@@ -713,7 +761,23 @@
 
   .company__contact-card {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: rem(24px);
+  }
+  // "사업 문의" 라벨이 박스 안 가장 상단에, 이메일이 그 아래로 — DOM 순서(라벨 먼저) 그대로
+  // 세로로 쌓아 가운데 정렬한다.
+  .company__contact-info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: rem(8px);
+  }
+  .company__contact-label {
+    width: auto;
+    text-align: center;
+  }
+  .company__contact-download {
+    width: 100%;
   }
 }
 

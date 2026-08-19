@@ -279,15 +279,51 @@
 }
 
 @media only screen and (max-width: $breakpoint-md) {
+  .cs__diagram-img{
+    img{
+      max-width: 100%;
+    }
+  }
   .cs__timeline-header,
   .cs__timeline-track,
-  .cs__number-grid,
   .cs__feature-grid {
     grid-template-columns: 1fr;
+  }
+  // 넘버 카드(7열)는 1열 대신 2열로 — 좁은 화면에서도 좀 더 촘촘하게.
+  .cs__number-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cs__timeline-range {
+    width: 100%;
+  }
+  // period.span(1~4)에 따라 인라인으로 다른 grid-column: span N이 붙는데, 그리드 자체는 위에서
+  // 1열(1fr)로 줄었어도 explicit 트랙(1개)보다 큰 span은 CSS Grid가 implicit 트랙을 새로 만들어
+  // 채우려 들어서 항목마다 폭이 제각각이 됐다 — 전부 같은 span(3)으로 통일하고 width도 100%로
+  // 명시해 항상 꽉 차게 만든다.
+  .cs__timeline-period-group {
+    grid-column: span 3 !important;
+    width: 100%;
+  }
+  .cs__timeline-label {
+    width: 100% !important;
   }
   .cs__head {
     flex-direction: column;
     align-items: flex-start;
+  }
+  // 타이틀(고정 425px)/콘텐츠 좌우 배치를 세로로 쌓고, 타이틀 폭도 100%로 되돌린다.
+  .cs__split {
+    flex-direction: column;
+  }
+  .cs__split-title,
+  .cs__split-content {
+    width: 100%;
+  }
+  // 박스 비율과 실제 이미지 비율이 안 맞으면 세로로 넘쳐 보인다 — 패딩으로 이미지를 살짝
+  // 안쪽으로 줄이고, overflow:hidden으로 그래도 넘치는 부분은 잘라낸다.
+  .cs__diagram-box {
+    padding: rem(20px) rem(15px);
+    overflow: hidden;
   }
   .cs__vendor-tables {
     flex-direction: column;
@@ -299,6 +335,6 @@
     flex: 1 1 rem(120px);
   }
   .cs__device-connector {
-    transform: rotate(45deg);
+    display: none;
   }
 }

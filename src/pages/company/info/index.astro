@@ -15,7 +15,7 @@ import BoxTitleCase4 from '~/components/ui/box/boxTitleCase/BoxTitleCase4.astro'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/company/info')
-
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 // --- General Overview: POINT 1~5 (플랫폼 구축 역량 강점) ---
 const localDataCompany = [
   {
@@ -110,6 +110,7 @@ const businessAreas = [
 // --- Specialized Outcomes ②: B2B 특화 커머스 레퍼런스 3건 ---
 const caseStudies = [
   {
+    href: '/project/specialized-outcomes/#cj',
     label: '재계약율 100%',
     title: 'CJ 대한통운 로봇물류',
     prefix: '1차 / 2차 / 3차',
@@ -117,6 +118,7 @@ const caseStudies = [
     tags: ['로봇', '통합관제', '모니터링', '위치 정보', '정보 관리', '작업관리']
   },
   {
+    href: '/project/specialized-outcomes/#semimarket',
     label: '재계약율 100%',
     title: '중고 반도체 거래 플랫폼',
     prefix: '1차 / 2차',
@@ -124,6 +126,7 @@ const caseStudies = [
     tags: ['셀러,바이어', 'Seller 입점몰', '입찰 구매', '오퍼 구매', '견적 구매']
   },
   {
+    href: '/project/specialized-outcomes/#sorin',
     label: '재계약율 100%',
     title: '비철 / 금속 거래 플랫폼',
     prefix: '1차 / 2차 / 3차',
@@ -292,7 +295,11 @@ const caseStudies = [
                   ))}
                   <UiTags items={item.tags.map((tag, i) => ({codeId: i, codeName: `#${tag}`}))} />
                   <Fragment slot="slotFoot">
-                    <Button useBlock={true} useSuffixIcon="copy">
+                    <Button
+                      href={PUBLIC_BUILD_URL + item.href}
+                      useBlock={true}
+                      useSuffixIcon="copy"
+                    >
                       자세히 보기
                     </Button>
                   </Fragment>

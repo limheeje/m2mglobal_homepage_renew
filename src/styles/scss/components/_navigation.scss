@@ -16,12 +16,18 @@
         width: 100%;
     }
     .navi-group{
+        margin-bottom: -1px;
         overflow: hidden;
         overflow-x: auto;
         padding-top: rem(20px);
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        -ms-overflow-style: none;
+        scrollbar-width: none;   
+        &::-webkit-scrollbar {
+            display: none;         
+        }
     }
     .nvi-item{
         .nvi-txt{
@@ -36,10 +42,10 @@
                 &:after{
                     content: '';
                     width: 100%;
-                    height: rem(2px);
+                    height: 2px;
                     position: absolute;
                     left: 0;
-                    bottom: rem(-1px);
+                    bottom: 0;
                     background: color('Color/Primary Color');
                 }
             }

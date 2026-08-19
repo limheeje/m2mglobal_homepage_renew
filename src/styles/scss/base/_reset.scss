@@ -80,6 +80,12 @@ body {
   // 모바일 반응형 작업 중 개별 요소가 뷰포트보다 넓어지는 걸 놓치더라도 페이지 자체가 가로로
   // 스크롤되는 사고만은 항상 막는 안전장치 — 각 페이지에서 실제 원인(고정폭 요소 등)은 별도로 고친다.
   overflow-x: hidden;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif, Helvetica, Arial;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  text-size-adjust: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 img{
@@ -140,6 +146,11 @@ ol {
     &{
       margin-bottom: rem(170px);
     }
+  }
+}
+@media (min-width: $breakpoint-md) {
+  .fp-tableCell{
+    height: initial !important;
   }
 }
 .mark{color: color('Color/Primary Color') !important}

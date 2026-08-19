@@ -102,8 +102,9 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       position: absolute;
       left: 50%;
       top: rem(6px);
-      width: rem(1px);
+      width: rem(2px);
       height: rem(5px);
+      margin-left: rem(-1px);
       background-color: color('Color/White');
       animation: scroll-mouse-wheel 1.6s ease-in-out infinite;
     }
@@ -114,7 +115,7 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       opacity: 1;
     }
     50% {
-      top: rem(16px);
+      top: rem(10px);
     }
     100% {
       top: rem(6px);
@@ -976,10 +977,27 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
     }
     // Figma 실측: Solution(5)는 배경색 #edf3fb(Bluegray/300), Why(6)/Project(7)는 흰색 유지.
     // Why는 위에서 인라인 style로 넣은 사진(opacity 40%)이 그 위에 얹힌다.
-    &.section5-slide .section-item {
-      background-color: #edf3fb;
-      .sp-solution-card {
-        background: color('Color/White');
+    &.section5-slide {
+      .section-item {
+        background-color: #edf3fb;
+        .sp-solution-card {
+          background: color('Color/White');
+        }
+      }
+      // 화살표는 <img>(.sp-arrow-ph) 대신 :after로 그린다 — Section 4 .biz-title:after와 동일 패턴.
+      .sp-head .sp-title {
+        position: relative;
+        padding-right: rem(40px);
+        &:after {
+          content: '';
+          width: rem(24px);
+          height: rem(24px);
+          position: absolute;
+          right: 0;
+          top: 50%;
+          margin-top: rem(-12px);
+          @include get-background-svg(icon_forward_arrow, color('Color/Black 100'));
+        }
       }
     }
     &.section6-slide .section-item:before {

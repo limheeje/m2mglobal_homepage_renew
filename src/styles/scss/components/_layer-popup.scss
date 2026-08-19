@@ -1,0 +1,61 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// @old/index.html .popup-wrap 포팅 (@old/css/main.css 실측) — 페이지 로드 시 화면 좌측 상단에
+// 붙는 공지/이벤트 레이어 팝업. 오버레이/딤 없이 여러 개가 나란히(inline-block) 뜨는 원본 구조 그대로.
+// LayerPopup.astro + layer-popup.ts(쿠키 기반 "오늘 하루 안 보기") 참고.
+.layer-popup-wrap{
+    position: absolute;
+    top: 0;
+    left: rem(10px);
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+    z-index: 10001;
+}
+.layer-popup{
+    overflow: visible;
+    width: auto;
+    height: auto;
+    vertical-align: top;
+    margin: rem(20px) rem(10px);
+    display: inline-block;
+    img{
+        // 원본은 img가 inline이라 하단에 baseline 간격이 생겼음 — block으로 바로 밑 바(bottom bar)와
+        // 이음매 없이 붙인다(시각 결과는 원본과 동일, 여백 버그만 제거).
+        display: block;
+        width: 100%;
+    }
+    &__bottom{
+        display: flex;
+        align-items: center;
+        position: relative;
+        height: rem(30px);
+        background-color: color('Color/Indigo 172');
+        color: color('Color/White');
+        text-align: left;
+    }
+    &__hide-today{
+        display: flex;
+        align-items: center;
+        gap: rem(6px);
+        padding: 0 rem(10px);
+        line-height: rem(30px);
+        font-size: rem(14px);
+        color: color('Color/White');
+        cursor: pointer;
+    }
+    &__close{
+        margin-left: auto;
+        padding: 0 rem(15px);
+        font-weight: bold;
+        font-size: rem(14px);
+        line-height: rem(30px);
+        color: color('Color/White');
+        background: none;
+        border: 0;
+        cursor: pointer;
+    }
+}

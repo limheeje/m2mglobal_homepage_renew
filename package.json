@@ -32,7 +32,7 @@
     "typescript-eslint": "^8.65.0"
   },
   "lint-staged": {
-    "!(public/**/*)*.{js,ts,mjs}": [
+    "!(public/**/*|@old/**/*)*.{js,ts,mjs}": [
       "eslint --fix",
       "prettier --write"
     ],

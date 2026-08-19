@@ -43,10 +43,13 @@
             position: relative;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-width: rem(180px);
             .g-link{
                 @include font('Body 22 R');
+                &.is-active{
+                    color: color('Color/Primary Color');
+                }
             }
         }
     }
@@ -64,7 +67,7 @@
         // .gnb-wrap의 padding-bottom 20px = 40px)은 margin이 아니라 padding으로 준다 — margin이면
         // 링크와 서브메뉴 사이에 호버가 끊기는 빈 공간이 생겨서 마우스가 그 구간을 지나가는 순간
         // 메뉴가 닫혀버린다. padding-top이면 그 구간도 서브메뉴 히트 영역에 포함돼 끊기지 않는다.
-        padding-top: rem(40px);
+        padding-top: rem(44px);
         width: rem(180px);
         display: flex;
         flex-direction: column;
@@ -90,6 +93,9 @@
             &:hover{
                 color: color('Color/Primary Color');
             }
+            &.is-active{
+                color: color('Color/Primary Color');
+            }
         }
     }
     // Figma 실측: 전체 폭 흰 배경 + 연한 box-shadow(0px 4px 7.5px rgba(0,0,0,0.06)), 컬럼 뒤에 깔리는 패널
@@ -107,14 +113,19 @@
         transition: opacity .15s ease;
         z-index: 1;
     }
-    .gnb:hover,
-    .gnb:focus-within{
+    // 트리거를 .gnb가 아니라 .gnb와 .gnb-mega-bg의 공통 부모인 .content에 건다 — .gnb-mega-bg는
+    // .gnb의 형제(sibling)라 순수 CSS 형제 결합자로는 "mega-bg에 마우스가 머무는 동안 .gnb의 서브메뉴를
+    // 계속 노출"을 표현할 수 없다(형제 결합자는 앞쪽 요소 기준 뒤쪽 요소만 선택 가능, 역방향 불가).
+    // .content는 :hover 매칭 시 DOM 조상 관계만 보므로(렌더 박스 겹침과 무관) 컬럼 사이 간격이나
+    // mega-bg 배경 위로 마우스가 지나가도 항상 .content 조상 :hover가 유지되어 깜빡임 없이 이어진다.
+    .content:hover,
+    .content:focus-within{
         .gb-submenu{
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
         }
-        ~ .gnb-mega-bg{
+        .gnb-mega-bg{
             opacity: 1;
             visibility: visible;
             pointer-events: auto;

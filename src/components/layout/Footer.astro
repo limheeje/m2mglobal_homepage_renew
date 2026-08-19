@@ -33,8 +33,10 @@ const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 
       <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href -->
       <div class="downloads">
-        <a href={`${PUBLIC_BUILD_URL}/etc/m2m_company_info.pdf`} class="download-btn"
-          >회사소개서<span class="download-btn-icon"></span></a
+        <a
+          href={`${PUBLIC_BUILD_URL}/etc/m2m_company_info.pdf`}
+          class="download-btn"
+          target="_blank">회사소개서<span class="download-btn-icon"></span></a
         >
         <a href="#" class="download-btn">로봇물류 소개서<span class="download-btn-icon"></span></a>
       </div>
@@ -42,7 +44,7 @@ const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 
     <div class="bottom">
       <p class="copyright">Copyright ⓒ {year} M2M GLOBAL. All rights reserved.</p>
-      <a href="/privacy" class="privacy">개인정보처리방침</a>
+      <a href={`${PUBLIC_BUILD_URL}/privacy`} class="privacy">개인정보처리방침</a>
     </div>
   </div>
 </footer>

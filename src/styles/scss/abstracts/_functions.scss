@@ -137,6 +137,8 @@
     @return $alert-color-1; //#D6D000 (기존 $alert-color-4 참조는 미정의 변수였음)
   } @else if $s == 'Alert/2' {
     @return $alert-color-2; //#D6000F
+  } @else if $s == 'Color/Indigo 172' {
+    @return $color-indigo-172; //#17273E (@old 레이어팝업 하단 바 배경 — 기존 팔레트에 없던 레거시 값)
   } @else {
     // 선언되지 않은 토큰 이름이 들어오면 컴파일 전체가 죽는 대신 경고만 남기고 null 반환
     // (null이면 해당 속성 자체가 출력에서 생략됨 — 최소한 다른 페이지 스타일은 살아있음)

@@ -1,0 +1,65 @@
+---
+// 공통 레이어 팝업 — @old/index.html의 .popup-wrap(레거시 공지/이벤트 팝업)을 포팅한 컴포넌트.
+// 오버레이/딤 없이 화면 좌측 상단에 여러 개가 나란히 뜨는 원본 구조 그대로이며, 체크박스로
+// "오늘 하루 이 창을 열지 않음"을 선택한 뒤 닫으면 쿠키(기본 1일)로 재노출을 막는다.
+// 동작은 layer-popup.ts가 담당(Layout.astro에 전역 등록되어 있어 별도 연결 코드 불필요) —
+// data-layer-popup / data-cookie-key 마크업 컨벤션만 지키면 어느 페이지에서 써도 동작한다.
+//
+// 이미지 에셋은 다운로드 대상이 아니라 사용 페이지에서 직접 준비해 image/alt로 넘겨준다.
+//
+// 사용 예:
+// <LayerPopup
+//   items={[
+//     { id: 'notice-01', image: '/images/popup/notice-01.png', alt: '공지 제목', href: 'https://...', target: '_blank' },
+//     { id: 'notice-02', image: '/images/popup/notice-02.png', alt: '공지 제목 2' },
+//   ]}
+// />
+export interface LayerPopupItem {
+  id: string
+  image: string
+  alt: string
+  href?: string
+  target?: '_blank' | '_self'
+  // 닫기 시 "오늘 하루 안 보기"를 체크했을 때 재노출을 막는 기간(일). 기본 1일(@old 원본과 동일).
+  cookieDays?: number
+}
+
+export interface Props {
+  items: LayerPopupItem[]
+}
+
+const {items} = Astro.props
+---
+
+{
+  items.length > 0 && (
+    <div class="layer-popup-wrap">
+      {items.map((item) => (
+        <div
+          class="layer-popup"
+          id={`layerPopup-${item.id}`}
+          data-layer-popup
+          data-cookie-key={`layerPopupClosed-${item.id}`}
+          data-cookie-days={item.cookieDays ?? 1}
+          style="display:none"
+        >
+          {item.href ? (
+            <a href={item.href} target={item.target ?? '_self'}>
+              <img src={item.image} alt={item.alt} />
+            </a>
+          ) : (
+            <img src={item.image} alt={item.alt} />
+          )}
+          <p class="layer-popup__bottom">
+            <label class="layer-popup__hide-today">
+              <input type="checkbox" /> 오늘 하루 이 창을 열지 않음
+            </label>
+            <button type="button" class="layer-popup__close">
+              닫기 X
+            </button>
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}

@@ -34,7 +34,14 @@ import stepArrowUrl from '~/assets/images/step-arrow.svg'
 import SYMBOL029 from '~/assets/images/common/symbol029.png'
 
 const localNavigation = route.find((item) => item.href === '/project/reference')
-
+const logoFiles = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
+  eager: true
+})
+const logoSrc = (key?: string) => {
+  if (!key) return undefined
+  const entry = Object.entries(logoFiles).find(([path]) => path.includes(`ico_client_${key}`))
+  return entry?.[1].default.src
+}
 const sectionTabs = [
   {id: 'overview', label: 'Specialized Outcomes'},
   {id: 'semimarket', label: 'Semimarket'},
@@ -45,11 +52,13 @@ const sectionTabs = [
 // --- 개요: Why M2M GLOBAL? 특별한 성과가 차이를 만듭니다 (3개 대표 사례 카드) ---
 const overviewCases = [
   {
+    logoKey: '12-cjx-d',
     name: 'CJ April 로봇 물류',
     items: ['통합관제 및 모니터링', '통합정보 관리시스템', '작업 관리 시스템'],
     footer: '웹 / 태블릿 / 갤럭시워치 / PDA (1/2/3차 구축)'
   },
   {
+    logoKey: '03-semimarket',
     name: '중고반도체거래(글로벌)',
     items: [
       'Equipment / Parts / Extras',
@@ -61,6 +70,7 @@ const overviewCases = [
     footer: '웹 / 어드민 / 모바일 (1/2/3차 구축, 운영)'
   },
   {
+    logoKey: '41-img_custom_shoppingmall_02',
     name: '비철금속거래 서린닷컴',
     items: [
       '실시간 시세, 환율, 재고 연동',
@@ -263,21 +273,26 @@ const sorinGalleryCaptions = [
 
         <div class="spec__case-grid">
           {
-            overviewCases.map((item) => (
-              <div class="spec__case-card">
-                <div class="spec__case-head">
-                  {/* <!-- TODO: 로고 이미지 삽입 --> */}
-                  <span class="spec__case-logo-ph" aria-hidden="true" />
-                  <p class="spec__case-name">{item.name}</p>
+            overviewCases.map((item) => {
+              const logo = logoSrc(item.logoKey)
+              return (
+                <div class="spec__case-card">
+                  <div class="spec__case-head">
+                    {/* <!-- TODO: 로고 이미지 삽입 --> */}
+                    <span class="spec__case-logo-ph" aria-hidden="true">
+                      <img src={logo} alt="" />
+                    </span>
+                    <p class="spec__case-name">{item.name}</p>
+                  </div>
+                  <div class="spec__case-list">
+                    {item.items.map((text) => (
+                      <TextList type="type_1">{text}</TextList>
+                    ))}
+                  </div>
+                  <p class="spec__case-footer">{item.footer}</p>
                 </div>
-                <div class="spec__case-list">
-                  {item.items.map((text) => (
-                    <TextList type="type_1">{text}</TextList>
-                  ))}
-                </div>
-                <p class="spec__case-footer">{item.footer}</p>
-              </div>
-            ))
+              )
+            })
           }
         </div>
       </div>

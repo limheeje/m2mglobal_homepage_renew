@@ -44,6 +44,9 @@ html:root{
   --color-secondary-50: #008CD6;
   --color-secondary-30: #A2C4EB;
   --color-secondary-10: #E1EBF8;
+  // @old/css/main.css .popup-wrap .bottom 배경 — 기존 팔레트 어떤 색상과도 정확히 일치하지 않는
+  // 레거시 고유값이라(Primary/Blue100 #16253F와 근접하지만 다름) 임의로 대체하지 않고 새 Core 토큰으로 추가.
+  --color-indigo-172: #17273E;
 }
 *,
 *::before,

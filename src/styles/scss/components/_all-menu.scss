@@ -133,6 +133,7 @@ body.is-allmenu-open .all-menu {
   a {
     @include font('Body 16 R');
     color: color('Color/White');
+    &.is-active,
     &:hover,
     &:focus-visible {
       color: color('Color/Accent Color');

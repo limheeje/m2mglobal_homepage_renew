@@ -76,7 +76,16 @@ html {
 html,
 body {
   width: 100%;
-  height: 100%;
+  // (버그 수정) height:100%였던 걸 min-height:100%로 바꿨다 — height:100%(고정값)에
+  // overflow-x:hidden만 걸면, 스펙상 overflow-y가 명시 안 돼 있어도(기본값 visible) 브라우저가
+  // 강제로 auto로 승격시킨다("한쪽 축만 hidden이고 반대쪽이 visible이면 visible 쪽은 auto로 계산").
+  // 그 결과 body가 "높이 고정 + overflow-y:auto"인 독립 스크롤 컨테이너가 돼버려서, 실제 스크롤이
+  // body 내부 스크롤바에서 일어나고 window/document 레벨 스크롤(scrollY, scroll 이벤트)은 계속
+  // 0으로 멈춰 있었다 — "맨 위로 가기" 버튼(scroll-to-top.ts)이 서브페이지에서 전혀 안 뜨던
+  // 원인이 이거였다(컨텐츠가 짧아 body가 딱 뷰포트 높이만큼만 필요했던 페이지에서는 우연히
+  // 안 들키고 넘어갔을 뿐, 모든 페이지에 같은 버그가 있었음). min-height는 "최소한 한 화면"이라는
+  // 의도는 그대로 살리면서, 컨텐츠가 더 많으면 body가 정상적으로 더 자라나 window가 스크롤되게 한다.
+  min-height: 100%;
   // 모바일 반응형 작업 중 개별 요소가 뷰포트보다 넓어지는 걸 놓치더라도 페이지 자체가 가로로
   // 스크롤되는 사고만은 항상 막는 안전장치 — 각 페이지에서 실제 원인(고정폭 요소 등)은 별도로 고친다.
   overflow-x: hidden;

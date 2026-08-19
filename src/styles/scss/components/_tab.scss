@@ -32,8 +32,18 @@ $IS_ACTIVE:'is-active';
         background-color: color('Color/Black 3');
         min-width: rem(91px);
         &.#{$IS_ACTIVE}{
+            position: relative;
             background-color: color('Color/Primary Color');
             color: color('Color/White');
+             &:after{
+                content: '';
+                width: 100%;
+                height: 1px;
+                position: absolute;
+                left: 0;
+                bottom: -1px;
+                background: color('Color/Primary Color');
+            }
         }
     }
     &#{$TYPE_LINE}{
@@ -81,6 +91,11 @@ $IS_ACTIVE:'is-active';
         // 탭 개수가 적어 화면 폭보다 작으면 가운데로, 많아서 넘치면(가로 스크롤 필요) safe가
         // 자동으로 시작 지점(flex-start)으로 물러나 첫 탭이 잘려 보이지 않게 한다.
         justify-content: safe center;
+        -ms-overflow-style: none;
+        scrollbar-width: none;   
+        &::-webkit-scrollbar {
+            display: none;         
+        }
         .bs-tab{
             &#{$TYPE_BOX}{
                 @include font('Body 16 R');

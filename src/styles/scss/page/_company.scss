@@ -23,6 +23,7 @@
     width: rem(36px);
     height: rem(48px);
     background: no-repeat left center url(~/assets/images/common/icon_asset002.svg);
+    background-size: cover;
   }
   &--sm {
     width: rem(24px);
@@ -243,7 +244,7 @@
 }
 .company__ceo-step-title {
   margin-top: rem(20px);
-  @include font('Body 20 R');
+  @include font('Body 24 R');
   color: color('Color/Black 100');
 }
 .company__ceo-step-arrow {

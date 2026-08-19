@@ -456,3 +456,9 @@
     width: 100%;
   }
 }
+
+@media only screen and (max-width: $breakpoint-sm) {
+  .ec__ref-media{height: initial; flex-direction: column-reverse; display: flex; gap: rem(20px);}
+  .ec__ref-media-main{position: relative; margin-left: auto; margin-right: auto;}
+  .ec__ref-media-sub{position: relative; margin-left: auto; margin-right: auto; left: 0; top: 0;}
+}

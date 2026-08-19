@@ -52,10 +52,13 @@ import AllMenu from '~/components/common/AllMenu.astro'
 </html>
 
 <style>
+  /* height:100%였던 걸 min-height:100%로 — src/styles/scss/base/_reset.scss의 동일 규칙과 같은
+     이유(overflow-x:hidden과 만나면 body가 고정 높이 스크롤 컨테이너가 돼버려 window 스크롤이
+     항상 0으로 멈추는 버그였음). Astro 스코프 스타일이라 이 파일도 별도로 고쳐야 실제로 적용됨. */
   html,
   body {
     margin: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
   }
 </style>

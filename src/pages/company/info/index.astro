@@ -224,24 +224,26 @@ const caseStudies = [
     </section>
 
     <section class="company__stats">
-      <div class="company__stats-inner">
-        <div class="company__stats-label">
-          <!-- TODO: 트로피 아이콘 이미지 삽입 -->
-          <span class="company__icon-ph ico-crow company__icon-ph--lg" aria-hidden="true"></span>
-          <p>숫자로 보는<br />M2M GLOBAL</p>
-        </div>
-        <div class="company__stats-grid">
-          {
-            statsData.map((item) => (
-              <div class="company__stats-card">
-                <p class="company__stats-num">
-                  <span>{item.value}</span>
-                  <span class="unit">{item.unit}</span>
-                </p>
-                <p class="company__stats-desc">{item.label}</p>
-              </div>
-            ))
-          }
+      <div class="innerWrap">
+        <div class="company__stats-inner">
+          <div class="company__stats-label">
+            <!-- TODO: 트로피 아이콘 이미지 삽입 -->
+            <span class="company__icon-ph ico-crow company__icon-ph--lg" aria-hidden="true"></span>
+            <p>숫자로 보는<br />M2M GLOBAL</p>
+          </div>
+          <div class="company__stats-grid">
+            {
+              statsData.map((item) => (
+                <div class="company__stats-card">
+                  <p class="company__stats-num">
+                    <span>{item.value}</span>
+                    <span class="unit">{item.unit}</span>
+                  </p>
+                  <p class="company__stats-desc">{item.label}</p>
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
     </section>

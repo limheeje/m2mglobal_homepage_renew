@@ -370,6 +370,9 @@
     flex-direction: column;
     gap: 0;
   }
+  .ai__diagram-pill{
+    @include font('Body 20 R');
+  }
   .ai__flow-box {
     width: 100%;
   }
@@ -404,9 +407,10 @@
     grid-template-columns: 1fr;
   }
   .ai__scoring-image {
-    order: -1;
-    max-width: rem(200px);
+    max-width: 20rem;
     margin-inline: auto;
+    height: stretch;
+    aspect-ratio: auto;
   }
   // 574px 고정폭이라 좁은 화면에서 잘리거나 넘쳐 보였다 — 컨테이너 폭에 맞춘다.
   .ai__personalize-image {

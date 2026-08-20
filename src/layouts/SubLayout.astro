@@ -1,0 +1,13 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/layout/Gnb.astro'
+import Footer from '~/components/layout/Footer.astro'
+---
+
+<Layout>
+  <Gnb />
+  <div class="gl-container">
+    <slot />
+  </div>
+  <Footer />
+</Layout>

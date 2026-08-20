@@ -12,7 +12,11 @@ export default defineConfig({
   output: 'static',
   base: env.PUBLIC_BUILD_URL,
   redirects: {
-    '/aboutus/about_us.html': `${env.PUBLIC_BUILD_URL}/company/info`
+    '/aboutus/about_us.html': `${env.PUBLIC_BUILD_URL}/company/info`,
+    '/solution/eccp.html': `${env.PUBLIC_BUILD_URL}/solutions/commerce-platform/`,
+    '/solution/cvo.html': `${env.PUBLIC_BUILD_URL}/solutions/logistics-platform/`,
+    '/solution/wms.html': `${env.PUBLIC_BUILD_URL}/solutions/logistics-platform/`,
+    '/solution/etrade.html': `${env.PUBLIC_BUILD_URL}/solutions/trade-platform/`
   },
   vite: {
     envDir: './config/env',

@@ -1,0 +1,14 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import Gnb from '~/components/layout/Gnb.astro'
+---
+
+<Layout>
+  <Fragment slot="head">
+    <slot name="head" />
+  </Fragment>
+  <Gnb />
+  <div class="gl-container">
+    <slot />
+  </div>
+</Layout>

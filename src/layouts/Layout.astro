@@ -1,7 +1,5 @@
 ---
 import '~/styles/css/main.css'
-import Gnb from '~/components/layout/Gnb.astro'
-import Footer from '~/components/layout/Footer.astro'
 import AllMenu from '~/components/common/AllMenu.astro'
 ---
 
@@ -31,13 +29,11 @@ import AllMenu from '~/components/common/AllMenu.astro'
     <slot name="head" />
   </head>
   <body>
-    <Gnb />
-    <div class="gl-container">
-      <slot />
-    </div>
+    <slot />
     <button type="button" class="layout__top-btn" aria-label="맨 위로 가기">
       <span class="layout__top-btn-icon" aria-hidden="true"></span>
     </button>
+    <AllMenu />
     <script>
       import '~/scripts/tab-box-scrollspy.ts'
       import '~/scripts/scroll-to-top.ts'
@@ -46,8 +42,6 @@ import AllMenu from '~/components/common/AllMenu.astro'
       import '~/scripts/nav-active-state.ts'
       import '~/scripts/navi-group-active-scroll.ts'
     </script>
-    <Footer />
-    <AllMenu />
   </body>
 </html>
 

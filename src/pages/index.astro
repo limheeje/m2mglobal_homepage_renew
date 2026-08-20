@@ -14,8 +14,9 @@
 // Section 1 하단 가운데 스크롤 유도 마우스 아이콘도 Figma 실측(CSS로 구현, 휠이 흐르는 애니메이션).
 // Swiper는 npm 설치 대신 CDN <script src>로 불러온다(사용자 지정) — Layout의 "head" 슬롯으로 CSS를
 // <head>에, 본문 끝에서 JS 스크립트 태그 + 초기화 스크립트를 로드한다.
-import Layout from '~/layouts/Layout.astro'
+import MainLayout from '~/layouts/MainLayout.astro'
 import TextList from '~/components/common/TextList.astro'
+import Footer from '~/components/layout/Footer.astro'
 
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 // Partner 섹션 로고: 이미 다운로드되어 있는 src/assets/images/clients/ico_client_*.png 재사용
@@ -84,7 +85,11 @@ const mainSlides = [
 ]
 
 // --- Section 2: 사업정보 (2개) ---
-const bizSlides = [
+// card는 슬라이드마다 desc(단일 설명) 또는 list(불릿 목록) 둘 중 하나만 채워지는 형태라
+// TS가 배열 리터럴만 보고는 두 형태를 서로 다른 유니온으로 쪼개 판별(narrowing)하지 못한다
+// (card.list ? ... : card.desc 삼항에서 프로퍼티 접근 자체가 에러) — 명시 타입으로 통일한다.
+type BizCard = {title: string; desc?: string; list?: string[]}
+const bizSlides: {href: string; coreTitle: string; coreSub: string; cards: BizCard[]}[] = [
   {
     href: '/company/info',
     coreTitle: 'M2M GLOBAL',
@@ -139,7 +144,19 @@ const bizSlides = [
 ]
 
 // --- Section 3: AI (2개) ---
-const aiSlides = [
+// flow 노드도 위 BizCard와 같은 이유(sub 또는 accent만 있고 서로 배타적)로 명시 타입이 필요하다.
+type AiFlowNode = {title: string; sub?: string; accent?: boolean}
+const aiSlides: {
+  eyebrow: string
+  flowLine?: boolean
+  head: string
+  bannerTitle: string
+  bannerDesc: string
+  flow: AiFlowNode[]
+  cols?: {title: string; desc: string}[]
+  footer?: string
+  footerCaption?: string
+}[] = [
   {
     eyebrow: 'AI Commerce',
     flowLine: true,
@@ -545,7 +562,7 @@ const partnerLogoKeys = [
 ]
 ---
 
-<Layout>
+<MainLayout>
   <Fragment slot="head">
     <link rel="stylesheet" href={`${PUBLIC_BUILD_URL}/css/jquery.fullpage.min.css`} />
     <link rel="stylesheet" href={`${PUBLIC_BUILD_URL}/css/swiper.min.css`} />
@@ -602,11 +619,6 @@ const partnerLogoKeys = [
               </div>
               {/* Figma 실측(node 1714:29424 등 4개 슬라이드 전부): content-inner 좌측 하단 CTA —
                    기존엔 마크업 누락으로 렌더링 안 되고 있었음(.ad-more CSS는 이미 있었음) */}
-              {slide.href && (
-                <a href={PUBLIC_BUILD_URL + slide.href} class="ad-more">
-                  Read More
-                </a>
-              )}
             </div>
           ))
         }
@@ -1015,7 +1027,7 @@ const partnerLogoKeys = [
                 <img class="sp-arrow-ph" src={mainIconSrc('icon_arrow_forward')} alt="" />
               </p>
               <p class="sp-desc">
-                실제 비즈니스를 움직이는 AI를 구축합니다. 다년 간의 경험과 전문성을 겸비한 인력과
+                실제 비즈니스를 움직이는 AI를 구축합니다.<br /> 다년 간의 경험과 전문성을 겸비한 인력과
                 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.
               </p>
             </div>
@@ -1090,6 +1102,7 @@ const partnerLogoKeys = [
         </div>
       </div>
     </div>
+    <Footer />
   </div>
 
   <script src={`${PUBLIC_BUILD_URL}/js/jquery-3.1.1.min.js`} is:inline></script>
@@ -1261,7 +1274,8 @@ const partnerLogoKeys = [
           'solution',
           'why',
           'project',
-          'partner'
+          'partner',
+          'footer'
         ],
         //scrollingSpeed: 1000, //스크롤 이동 속도를 0.001초 단위로 설정
         //fitToSectionDelay: 1200, //설정된 1000분의 1초 단위로 맞춤을 지연
@@ -1273,6 +1287,10 @@ const partnerLogoKeys = [
         keyboardScrolling: true,
         animateAnchor: true,
         recordHistory: true
+
+        // 마지막 섹션(Partner)에 도착하면 스크롤 잠금을 풀어 그 아래 Footer로 자연스럽게
+        // 이어지게 한다 — 위 setAutoScrolling(true) 복구 로직은 있었지만 정작 이걸 처음
+        // 풀어주는 트리거가 빠져있어서 Footer에 끝까지 도달할 방법 자체가 없었다(버그).
       })
 
       window.addEventListener('scroll', function () {
@@ -1285,4 +1303,4 @@ const partnerLogoKeys = [
       })
     })
   </script>
-</Layout>
+</MainLayout>

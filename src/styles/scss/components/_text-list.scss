@@ -16,7 +16,6 @@ $CIRCLE_TYPE_2:'[data-circle-type="type_2"]';
         gap: rem(12px);
         .b-tx{
             text-align: left;
-            word-break: break-all;
             @include font('Body 18 R');
             color: color('Color/Black 100');
             width: calc(100% - rem(18px) - rem(12px));

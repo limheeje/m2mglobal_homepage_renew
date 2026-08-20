@@ -46,7 +46,7 @@ const understandCards = [
     icon: ICON_KEY_NAME['Solution3-2'],
     title: 'M2M-WMS',
     items: [
-      '입고 → 보관 → 피킹 → 포장 → 출고까지 과정을 디지털화,<br/>자동화한 스마트 물류 솔루션',
+      '입고 → 보관 → 피킹 → 포장 → 출고까지 과정을 디지털화, 자동화한 스마트 물류 솔루션',
       '입고관리 : 입고예정 등록, 검수, 로케이션 자동할당, 바코드/QR스캔 기반 입고처리',
       '재고관리 : 로케이션 단위 재고 추천, LOT/유통기한/Serial No 관리, 실시간 재고 현황 파악',
       '피킹/포장 관리 : 주문 별 최적 피킹 경로 제시, 피킹 작업자/장비 배정, 자동 패킹 시 라벨 출력',
@@ -58,7 +58,7 @@ const understandCards = [
     icon: ICON_KEY_NAME['Solution3-3'],
     title: 'M2M-CVO',
     items: [
-      '실시간 위치 추적을 통한 운송 최적화(배차, 경로, 스케줄)하는<br/>물류 가시성 솔루션임',
+      '실시간 위치 추적을 통한 운송 최적화(배차, 경로, 스케줄)하는 물류 가시성 솔루션임',
       '효율적 배차 및 경로 최적화 제공 가능(연료비 절감 & 운송 과정 효율 극대화)',
       '멀티배송 및 복수차량 관리 가능(대규모 물류 처리 및 운영 체계화 가능)',
       '지연, 경로이탈, 차량 정지 등 이상상황 알림 및 즉각 대응 가능(신속 대응에 따른 리스크 최소화)',
@@ -70,9 +70,9 @@ const understandCards = [
 
 // --- 기술 구성 안내: 컴포넌트 별 아키텍처 다이어그램 (이미지) ---
 const techGroups = [
-  {imgSrc: SYMBOL020.src, title: 'M2M-WMS'},
-  {imgSrc: SYMBOL021.src, title: 'M2M-TMS'},
-  {imgSrc: SYMBOL022.src, title: 'M2M-CVO'}
+  {imgSrc: SYMBOL020.src, title: 'M2M-TMS ( 운송 관리 )'},
+  {imgSrc: SYMBOL021.src, title: 'M2M-WMS (창고 관리)'},
+  {imgSrc: SYMBOL022.src, title: 'M2M-CVO (차량관제)'}
 ]
 // --- 주요 특장점: Figma 실측대로 3개 그룹(M2M-TMS 5 / M2M-WMS 5 / M2M-CVO 8)으로 나뉜다 ---
 const featureGroups = [
@@ -82,27 +82,27 @@ const featureGroups = [
       {
         icon: ICON_KEY_NAME['Solution4-1'],
         title: '운송비 절감',
-        desc: '최적 경로 배차 가능<br/>연료 및 인건비 절감'
+        desc: '최적 경로 배차 가능 연료 및 인건비 절감'
       },
       {
         icon: ICON_KEY_NAME['Solution4-2'],
         title: '운영의 효율성',
-        desc: '배차 자동화<br/>속도, 정확성 강화'
+        desc: '배차 자동화 속도, 정확성 강화'
       },
       {
         icon: ICON_KEY_NAME['Solution4-3'],
         title: '투명성 확보',
-        desc: '고객, 파트너와 운송 현황<br/>실시간 공유'
+        desc: '고객, 파트너와 운송 현황 실시간 공유'
       },
       {
         icon: ICON_KEY_NAME['Solution4-4'],
         title: '서비스 향상',
-        desc: '정시 배송률 개선<br/>고객 신뢰 증대'
+        desc: '정시 배송률 개선 고객 신뢰 증대'
       },
       {
         icon: ICON_KEY_NAME['Solution4-5'],
         title: '데이터 분석&최적화',
-        desc: 'KPI 분석으로<br/>전략적 개선 가능'
+        desc: 'KPI 분석으로 전략적 개선 가능'
       }
     ]
   },
@@ -112,27 +112,27 @@ const featureGroups = [
       {
         icon: ICON_KEY_NAME['Solution4-6'],
         title: '정밀한 재고 추적',
-        desc: '로케이션 단위로 재고 위치 파악<br/>입출고이력, 유효기간, LOT관리'
+        desc: '로케이션 단위로 재고 위치 파악 입출고이력, 유효기간, LOT관리'
       },
       {
         icon: ICON_KEY_NAME['Solution4-7'],
         title: '재고 정확성',
-        desc: '실시간 데이터 갱신<br/>재고 오류 최소화<br/>실사 부담 감소'
+        desc: '실시간 데이터 갱신 재고 오류 최소화 실사 부담 감소'
       },
       {
         icon: ICON_KEY_NAME['Solution4-8'],
         title: '피킹/출고 효율화',
-        desc: '주문에 맞는 최적의 피킹 경로 제시<br/>출고 지연 방지'
+        desc: '주문에 맞는 최적의 피킹 경로 제시 출고 지연 방지'
       },
       {
         icon: ICON_KEY_NAME['Solution4-9'],
         title: '최적의 재고 운영',
-        desc: '과잉재고, 품절 방지<br/>안전 재고 자동 알림<br/>작업 동선, 작업시간 단축'
+        desc: '과잉재고, 품절 방지 안전 재고 자동 알림 작업 동선, 작업시간 단축'
       },
       {
         icon: ICON_KEY_NAME['Solution4-10'],
         title: '현장 즉시 대응',
-        desc: '창고 내 휴대 장비 지원<br/>(각종 휴대장비, 바코드 스캔,<br/>RFID, 라벨발행)'
+        desc: '창고 내 휴대 장비 지원 (각종 휴대장비, 바코드 스캔, RFID, 라벨발행)'
       }
     ]
   },
@@ -142,42 +142,42 @@ const featureGroups = [
       {
         icon: ICON_KEY_NAME['Solution4-11'],
         title: '실시간 차량관제',
-        desc: '차량 위치 실시간 관제(GPS Tracking)<br/>차량 원격제어 도난 상태 감시 및<br/>추천차량 출발-도착 관리'
+        desc: '차량 위치 실시간 관제(GPS Tracking) 차량 원격제어 도난 상태 감시 및 추천차량 출발-도착 관리'
       },
       {
         icon: ICON_KEY_NAME['Solution4-12'],
         title: '경로 최적화',
-        desc: '교통 상황, 거리, 운송 비용 등<br/>고려하여 최적의 경로 추천 제공'
+        desc: '교통 상황, 거리, 운송 비용 등 고려하여 최적의 경로 추천 제공'
       },
       {
         icon: ICON_KEY_NAME['Solution4-13'],
         title: '차량 정보 관리',
-        desc: '차량 등록 정보 관리, 사고, 정보/점검 내역 관리<br/>엔진/온도이상 차량 모니터링<br/>방전 예상 차량 모니터링'
+        desc: '차량 등록 정보 관리, 사고, 정보/점검 내역 관리 엔진/온도이상 차량 모니터링 방전 예상 차량 모니터링'
       },
       {
         icon: ICON_KEY_NAME['Solution4-14'],
         title: '차량 배차 관리',
-        desc: '차량 배차내역 관리<br/>차량별 운행 내역 관리<br/>운행 기록부 생성'
+        desc: '차량 배차내역 관리 차량별 운행 내역 관리 운행 기록부 생성'
       },
       {
         icon: ICON_KEY_NAME['Solution4-15'],
         title: '멀티 배송',
-        desc: '여러 대 차량 동시 모니터링 제공<br/>분할/합 배송 관리<br/>(대규모 물류 체계적 관리)'
+        desc: '여러 대 차량 동시 모니터링 제공 분할/합 배송 관리 (대규모 물류 체계적 관리)'
       },
       {
         icon: ICON_KEY_NAME['Solution4-16'],
         title: '다양한 디바이스',
-        desc: '다양한 디바이스 연계<br/>전용 단말기<br/>모바일'
+        desc: '다양한 디바이스 연계 전용 단말기 모바일'
       },
       {
         icon: ICON_KEY_NAME['Solution4-17'],
         title: '이상 상황 알림',
-        desc: '지연, 경로이탈, 차량 정지 등<br/>이상 상황 발생 시<br/>즉각 알림 발송-대응'
+        desc: '지연, 경로이탈, 차량 정지 등 이상 상황 발생 시 즉각 알림 발송-대응'
       },
       {
         icon: ICON_KEY_NAME['Solution4-18'],
         title: '데이터 기록&분석',
-        desc: '운행 내역 분석<br/>시간대 별, 차종-차량별 가동률 분석<br/>기간 별 매출 분석'
+        desc: '운행 내역 분석 시간대 별, 차종-차량별 가동률 분석 기간 별 매출 분석'
       }
     ]
   }
@@ -247,7 +247,10 @@ const featureGroups = [
 
     <section id="tech" class="g-section">
       <div class="innerWrap">
-        <TitleSub title={`<span class="mark">기술 구성 안내</span>`} />
+        <TitleSub
+          title={`기술 <span class="mark">구성 안내</span>`}
+          description={`고객 주문부터 배송 완료까지 전 과정을 "자동화·통합·실시간으로 관리"할 수 있는 효율성을 더한 스마트 물류·무역 솔루션을 제공합니다.`}
+        />
         {
           techGroups.map((name) => (
             <div class="sol__tech-group">

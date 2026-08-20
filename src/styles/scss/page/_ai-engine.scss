@@ -471,23 +471,6 @@
 // 베이스 규칙에 밀려서 실제로는 하나도 안 먹는다.
 @media only screen and (max-width: $breakpoint-md) {
   .ai-com-sub-banner {
-    .inner {
-      height: auto;
-      flex-wrap: wrap;
-      padding: rem(20px) rem(15px);
-    }
-    .item {
-      width: rem(180px);
-      height: rem(180px);
-      .txt {
-        .tit {
-          // 원본 24px 대비 폭이 240px→180px(75%)로 줄어든 비율 그대로 텍스트도 축소.
-          @include font('Body 18 R');
-        }
-        .dec {
-          @include font('Body 14 R');
-        }
-      }
-    }
+    display: none;
   }
 }

@@ -163,6 +163,11 @@ ol {
     height: initial !important;
   }
 }
+@media (max-width: $breakpoint-md) {
+  img{
+    max-width: 100% !important;
+  }
+}
 .mark{color: color('Color/Primary Color') !important}
 
 // ==========================================================================
@@ -267,9 +272,12 @@ $grid-breakpoints: (
 // 고정 헤더 밑에 가려지는 것을 방지 — 헤더 높이만큼 여유를 두고 스크롤 정지시킨다.
 .g-section{margin-top: rem(80px);margin-bottom: rem(80px); scroll-margin-top: rem(120px);}
 @media only screen and (min-width: $breakpoint-md) {
-  // .g-section{
-  //   scroll-margin-top: rem(220px);
-  // }
+  .only-pc{display: block;}
+  .only-mob{display: none;}
+}
+@media only screen and (max-width: $breakpoint-md) {
+  .only-pc{display: none;}
+  .only-mob{display: block;}
 }
 
 .bt-noti-group{
@@ -306,7 +314,6 @@ $grid-breakpoints: (
             @include font('Body 16 R');
             color: color('Color/Font/Font Color');
             width: calc(100% - rem(142px));
-            word-break: break-all;
         }
         &+.b-lst{
             margin-top: rem(10px);

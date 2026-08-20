@@ -96,7 +96,6 @@ $USE_SLOTFOOT : 'use-slotfoot';
         .bsb-title{
             text-align: left;
             width: calc(100% - rem(100px) - rem(12px));
-            word-break: break-all;
             @include font('Body 30 R');
             color: color('Color/Secondary Color');
         }

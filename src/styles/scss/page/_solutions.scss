@@ -244,7 +244,10 @@
   // 이미지를 살짝 안쪽으로 줄이고, overflow:hidden으로 그래도 넘치는 부분은 잘라낸다.
   .sol__diagram-placeholder {
     padding: rem(20px) rem(15px);
+    align-items: flex-start;
     overflow: hidden;
+    aspect-ratio: auto;
+    margin-bottom: 0;
   }
   // max-width-1760은 PC 풀와이드 기준 캡이라 좁은 화면에선 그보다 훨씬 넓게 렌더링될 수 있다
   // (전역 img{max-width:100%} 리셋보다 이 클래스가 더 구체적이라 이겨버림) — 100%로 되돌린다.

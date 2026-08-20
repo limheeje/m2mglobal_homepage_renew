@@ -52,7 +52,7 @@ Claude Code로 작업할 때는 `astro dev --background`로 백그라운드 실�
 | `config/env/.env.prod` | `prod` | `prod` | `/dist` | 배포 — `/dist` 서브패스에서 서빙 (`astro.config.mjs`의 `base`로도 그대로 들어감) |
 
 - `MODE`는 `npm run local`/`npm run build:prod`가 `cross-env`로 주입하는 값이고, 이 값으로 `config/env/.env.{MODE}`를 고른다.
-- 컴포넌트/페이지 코드에서 링크를 만들 때는 **직접 `import.meta.env.PUBLIC_BUILD_URL`을 쓰지 말고** `@config/route`의 `route` 조회 객체를 통하는 게 원칙(아래 [4. 라우팅](#4-라우팅-configroute) 참고) — 다만 실제 코드베이스에는 아직 `PUBLIC_BUILD_URL`을 직접 문자열 접합하는 곳도 많이 남아 있음(과도기 상태).
+- 컴포넌트/페이지 코드에서 GNB/서브탭 등 메뉴 링크를 만들 때는 경로 문자열을 직접 쓰지 말고 `@config/route`의 `route` 배열(그룹/`children`)을 순회해서 만드는 게 원칙(아래 [4. 라우팅](#4-라우팅-configroute) 참고). 실제 URL 문자열 자체는 미리 계산된 조회 객체가 따로 있는 게 아니라 `` `${PUBLIC_BUILD_URL}${item.href}` `` 접합으로 만듭니다 — 코드베이스 전체가 이 방식으로 통일되어 있음.
 
 ---
 
@@ -63,7 +63,7 @@ Claude Code로 작업할 때는 `astro dev --background`로 백그라운드 실�
 ├── @old/                      # 구 사이트 원본(HTML/CSS/JS/이미지) — 마이그레이션 원본 참고용, 절대 수정 금지
 ├── config/
 │   ├── env/                   # .env.dev / .env.prod
-│   └── route/                 # routeMap.ts(라우트 정의) + index.ts(조회용 route 객체, flatten 헬퍼)
+│   └── route/                 # index.ts 한 파일 — 라우트 정의(route: Route[]), 단일 소스
 ├── public/                    # 정적 파일 그대로 서빙 (images/, icons/, css/js — @old에서 옮겨온 서드파티 자산 등)
 ├── src/
 │   ├── assets/                # Astro가 최적화 처리하는 이미지/아이콘 (import해서 사용)
@@ -92,9 +92,9 @@ Claude Code로 작업할 때는 `astro dev --background`로 백그라운드 실�
 
 ## 4. 라우팅 (`config/route/`)
 
-### `routeMap.ts` — 라우트 정의 (Single Source of Truth)
+> **2026-08-20 통합**: 예전엔 이 폴더가 `routeMap.ts`(GNB/AllMenu/Navigation/page-list가 실제로 쓰던 `route: Route[]`)와 `index.ts`(링크 조회용 `route: Record<string,string>` 헬퍼 — 어디서도 import되지 않던 죽은 코드)로 나뉘어 있었고, 이름이 둘 다 `route`/`routeMap`이라 헷갈렸습니다. `index.ts` 한 파일로 통합하고 안 쓰이던 헬퍼는 제거했습니다(과거 구조는 git 이력에서 확인 가능).
 
-GNB 2Depth, All메뉴, Navigation(서브페이지 탭), page-list(개발용 전체 목록)가 **전부 이 배열 하나를 소스로 씀**. 새 메뉴를 추가/변경할 땐 여기 한 곳만 고치면 위 화면들에 전부 반영됩니다.
+GNB 2Depth(`Gnb.astro`), All메뉴(`AllMenu.astro`), Navigation(서브페이지 탭), page-list(개발용 전체 목록)가 **전부 이 배열 하나를 소스로 씀**. 새 메뉴를 추가/변경할 땐 여기 한 곳만 고치면 위 화면들에 전부 반영됩니다.
 
 ```ts
 export interface RouteChildren {
@@ -111,18 +111,22 @@ export interface Route {
 export const route: Route[] = [ /* Company / AI Engine / Robot Logistics / e-Commerce / Solutions / Project */ ]
 ```
 
-⚠️ **새 페이지에서 `route.find(item => item.href === ...)`는 항상 그룹 최상위 href로 조회할 것** — 페이지 자기 자신의 href를 넣으면 2Depth 서브 내비게이션(Navigation.astro)이 빈 값을 받아 사라지는 버그가 과거에 9개 페이지에서 발생한 적 있음(`CLAUDE.md` 작업 로그 참고).
-
-### `index.ts` — 링크 생성용 조회 객체
+**사용 패턴**:
 
 ```ts
 import {route} from '@config/route'
-<a href={route['/company/ceo-message']}>CEO's Message</a>
+
+// (a) route.find()로 현재 페이지가 속한 그룹의 children을 Navigation에 넘길 때
+const localNavigation = route.find((item) => item.href === '/company/info')
+
+// (b) 링크 생성 — 미리 계산된 URL 조회 객체는 없음, PUBLIC_BUILD_URL과 직접 접합
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+;<a href={`${PUBLIC_BUILD_URL}${item.href}`}>{item.koLabel}</a>
 ```
 
-`routeMap`을 평탄화(`flattenRoutes`)한 뒤 각 `path`에 `PUBLIC_BUILD_URL`을 붙인 완성 URL을 미리 계산해 `Record<string, string>`으로 export. `RouteStatus`(`existing`/`renamed`/`new`/`dropped`/`merged`)로 구 사이트(`@old/header.html`) 대비 변경 이력도 같이 기록되어 있어 "이 메뉴가 예전엔 뭐였는지" 추적 가능. `getRoutesNeedingReview()`로 `existing`이 아닌 항목만 뽑아볼 수 있음.
+⚠️ **`route.find(item => item.href === ...)`는 항상 그룹 최상위 href로 조회할 것** — 페이지 자기 자신의 href를 넣으면 2Depth 서브 내비게이션(Navigation.astro)이 빈 값을 받아 사라지는 버그가 과거에 9개 페이지에서 동시 발생한 적 있음(`CLAUDE.md` 작업 로그 참고).
 
-**주의**: `routeMap.ts`(2Depth 배열, `route.find()`/`.map()`용)와 `index.ts`의 `route`(문자열 URL 조회용, `route['/path']`) 둘 다 이름이 `route`라 import 위치를 꼭 확인할 것 — `@config/route/routeMap.ts`와 `@config/route`(index.ts)는 다른 값입니다.
+각 라우트 항목 옆에는 `@old/header.html`(구 GNB + 3-depth 사이트맵) 대비 신규 구조가 어떻게 바뀌었는지(`existing`/`renamed`/`new`/`merged`) 주석으로 기록되어 있습니다 — 런타임에서 쓰이진 않고 "이 메뉴가 옛날엔 뭐였는지" 추적하고 싶을 때 참고하는 용도(코드가 아니라 주석이라 `grep`으로 찾아야 함). Home(`/`)·`/privacy`·`/404`·`/page-list` 같은 유틸리티 라우트는 GNB 2Depth 구조가 아니라서 이 배열에 없습니다 — Home은 `Gnb.astro`의 로고 링크에 `${PUBLIC_BUILD_URL}/`로 직접 하드코딩.
 
 ### 전체 페이지 목록 (`src/pages/`)
 
@@ -150,8 +154,8 @@ import {route} from '@config/route'
 | `/project/reference` | `pages/project/reference/index.astro` | Project | 프로젝트 레퍼런스 12건 리스트 |
 | `/project/specialized-outcomes` | `pages/project/specialized-outcomes/index.astro` | Project | Figma 4개 프레임을 앵커탭 하나로 통합 |
 | `/privacy` | `pages/privacy/index.astro` | – | 개인정보처리방침(버전별 문서 리스트, 실 PDF는 외부 링크) |
-| `/page-list` | `pages/page-list.astro` | – | **실 서비스 라우트 아님** — `routeMap` 기반 전체 페이지 목록 자동 생성, 검수용. 새 라우트는 `routeMap.ts`에만 등록하면 자동 반영 |
-| `/404` | `pages/404.astro` | – | **Astro 예약 경로** — 파일명이 곧 라우트 규칙(Astro가 자동 인식, `routeMap.ts` 등록 불필요/불가). Figma 디자인 없는 유틸리티 페이지라 `TitleMain` + `Button`만 조합. **자동 리다이렉트 없음** — "홈으로 가기" 버튼만 제공(사용자 확인 후 결정된 사양, 아래 [11. 배포 시 알아둘 것](#11-배포-시-알아둘-것--404와-base서브패스) 참고) |
+| `/page-list` | `pages/page-list.astro` | – | **실 서비스 라우트 아님** — `route` 기반 전체 페이지 목록 자동 생성, 검수용. 새 라우트는 `config/route/index.ts`에만 등록하면 자동 반영 |
+| `/404` | `pages/404.astro` | – | **Astro 예약 경로** — 파일명이 곧 라우트 규칙(Astro가 자동 인식, `config/route/index.ts` 등록 불필요/불가). Figma 디자인 없는 유틸리티 페이지라 `TitleMain` + `Button`만 조합. **자동 리다이렉트 없음** — "홈으로 가기" 버튼만 제공(사용자 확인 후 결정된 사양, 아래 [11. 배포 시 알아둘 것](#11-배포-시-알아둘-것--404와-base서브패스) 참고) |
 
 > `CLAUDE.md`가 언급하는 `/style-guide`(컴포넌트 검수용 페이지)는 **현재 코드베이스에 실제로 없습니다**(파일 없음, `page-list.astro`의 `etcPages`에 링크만 남아 있는 죽은 링크). 새로 만들거나 CLAUDE.md 쪽을 정정해야 함.
 
@@ -160,6 +164,8 @@ import {route} from '@config/route'
 ---
 
 ## 5. 공용 컴포넌트 (`src/components/`)
+
+아래 표는 빠르게 훑어볼 때 쓰는 색인이고, 각 표 밑에는 **실제 소스 전문**을 접이식(`<details>`)으로 붙여뒀습니다 — Props가 뭔지 헷갈리면 표를, 실제로 어떻게 동작하는지 궁금하면 소스를 펼쳐 보면 됩니다(파일을 직접 열어보는 것과 100% 동일한 내용이라 둘이 어긋날 일은 없음 — README가 코드보다 낡으면 표는 틀릴 수 있어도 소스 블록은 항상 그 시점의 진실).
 
 ### `common/` — 페이지 전반에서 재사용
 
@@ -182,19 +188,976 @@ import {route} from '@config/route'
 | `TitleMiddle.astro` | (슬롯만) | `.bs-title-middle` | |
 | `TitleSub.astro` | `title?`(HTML), `description?`(HTML) | `.bs-title-sub` | |
 | `TitleThird.astro` | (슬롯만) | `.bs-title-third` | |
+| `AllMenu.astro` | (props 없음, `@config/route`를 직접 참조) | `.all-menu` | GNB `.all-gnb` 버튼으로 여닫는 전체 메뉴 오버레이. `Layout.astro`에 전역으로 이미 박혀 있어서 페이지에서 따로 안 씀 |
+
+<details>
+<summary><code>Box.astro</code></summary>
+
+```astro
+---
+const {useBackground = false, useSlotFoot = false} = Astro.props
+---
+
+<div
+  class="bs-box"
+  class:list={{
+    'use-background': useBackground,
+    'use-slotfoot': useSlotFoot
+  }}
+>
+  <div class="b-inner">
+    <slot />
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>Button.astro</code></summary>
+
+```astro
+---
+export interface Props {
+  class?: string
+  href?: string
+  useBlock?: boolean
+  useSuffixIcon?: 'copy' | 'blank' | 'plus' | 'toggle' | 'next' | 'download'
+  size?: 'md' | 'sm' | 'lg'
+  variant?: 'default' | 'white' | 'primary'
+  target?: string
+}
+const {
+  class: className,
+  href,
+  useBlock,
+  useSuffixIcon,
+  size = 'md',
+  variant = 'default',
+  ...rest
+} = Astro.props
+const Tag = href ? 'a' : 'button'
+---
+
+<Tag
+  class:list={[
+    'bs-button',
+    {
+      'use-block': useBlock
+    },
+    className
+  ]}
+  data-variant={variant}
+  data-size={size}
+  href={href}
+  {...rest}
+>
+  <div class="bs-inner">
+    <span class="b-tx"><slot /></span>
+    {useSuffixIcon && <span class="b-suff" data-type={useSuffixIcon} />}
+  </div>
+</Tag>
+```
+
+</details>
+
+<details>
+<summary><code>CaseCardGrid.astro</code></summary>
+
+```astro
+---
+// 구축사례 카드 그리드 (재사용 컴포넌트) — 썸네일 + 타이틀 + 일자 + 설명, 중앙정렬.
+// /ai-engine/machine-learning, /robot-logistics/smart-factory, /e-commerce/b2b-commerce에서
+// 각자 구현하던 동일 패턴(ai__case-*/rl__case-*/ec__case-*)을 통합한 것.
+// 이미지가 없는 케이스는 imageSrc를 생략하면 회색 placeholder 박스만 표시된다.
+import TitleSub from './TitleSub.astro'
+
+export interface Props {
+  id?: string
+  title?: string // set:html — 기본값은 프로젝트 전반에서 동일하게 쓰인 "구축 사례"
+  columns?: number
+  cases: {imageSrc?: string; title: string; date: string; desc: string}[]
+}
+
+const {
+  id = 'cases',
+  title = `구축 <span class="mark">사례</span>`,
+  columns = 3,
+  cases
+} = Astro.props
+---
+
+<section id={id} class="g-section">
+  <div class="innerWrap">
+    <TitleSub title={title} />
+    <div class="cc__grid" style={`--cc-cols: ${columns};`}>
+      {
+        cases.map((item) => (
+          <div class="cc__card">
+            {/* TODO: 이미지 삽입 */}
+            <div class="cc__thumb" aria-hidden={!item.imageSrc}>
+              {item.imageSrc && <img src={item.imageSrc} alt="" />}
+            </div>
+            <p class="cc__title">{item.title}</p>
+            <span class="cc__date">{item.date}</span>
+            <p class="cc__desc">{item.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+```
+
+</details>
+
+<details>
+<summary><code>CaseStudySection.astro</code> (375줄 — Props 인터페이스 + 렌더 구조만 발췌, 기본 데이터(CJ대한통운 APRIL 구축사례 텍스트 전량)는 생략. 전문은 파일에서 직접 확인)</summary>
+
+```astro
+---
+// 구축사례 섹션 (재사용 컴포넌트) — 최초 /robot-logistics/overview#cases에서 추출.
+// "프로젝트 전체" 등 다른 라우트에서도 완전히 동일한 내용(CJ 대한통운 APRIL 로봇통합플랫폼 구축사례)을
+// 그대로 재사용하는 용도라, 모든 데이터를 컴포넌트 안에 기본값으로 내장해뒀다 — 그냥 <CaseStudySection />
+// 만 써도 지금과 완전히 같은 내용이 렌더링된다. props는 나중에 다른 곳에서 진짜 다른 내용이 필요할 때만
+// 있는 그대로 개별적으로 덮어쓰라고 열어둔 탈출구일 뿐, 평소엔 하나도 안 넘겨도 된다.
+// 페이지 전용 scss(rl__*, ec__* 등)에 기대지 않고 자체 스타일(cs__*)만 사용한다.
+// 모든 서브섹션(타임라인/구현기능/연동 제조사/다이어그램/시스템 업무 구성/디바이스 패널)은
+// null을 넘기면 렌더링되지 않는 선택적(optional) 블록이다.
+import TitleSub from './TitleSub.astro'
+import TitleThird from './TitleThird.astro'
+import TextList from './TextList.astro'
+import Icon from './Icon.astro'
+import {ICON_KEY_NAME} from '~/constants/Icon'
+// (이미지 3종 + 고객사 로고 1종 import 생략)
+
+type TimelineData = {
+  periods: {range: string; label: string; span: number}[]
+  phases: {name: string; desc: string}[]
+}
+type FunctionsData = {title: string; items: {number: string; title: string; desc: string}[]}
+type VendorTablesData = {title: string; tables: string[][][]} // [표][행][셀]
+type DiagramData = {title: string; thirdTitle?: string; width: number; height: number}
+type SystemFeaturesData = {
+  title: string
+  description?: string
+  items: {icon?: string; title: string; items: string[]}[]
+}
+type DevicePanelsData = {
+  title: string
+  description?: string
+  panels: {icon?: string; title: string; items: string[]; imgSrc?: string}[]
+}
+
+export interface Props {
+  id?: string
+  title?: string // <span class="mark">...</span> 포함 가능 (set:html)
+  partnerLogos?: boolean // 타이틀 옆 파트너 로고 placeholder 노출 여부
+  timeline?: TimelineData | null
+  functions?: FunctionsData | null
+  vendorTables?: VendorTablesData | null
+  diagram?: DiagramData | null
+  systemFeatures?: SystemFeaturesData | null
+  devicePanels?: DevicePanelsData | null
+}
+
+// --- 기본값: CJ 대한통운 APRIL 로봇통합플랫폼 구축사례 (Figma 실측 그대로, 실제 텍스트 데이터는 생략) ---
+const DEFAULT_TITLE = `로봇기반 통합관제시스템 <span class="mark">구축 사례</span>`
+const DEFAULT_TIMELINE: TimelineData = {
+  /* periods: 2단계 기간/라벨, phases: 4단계 개발 이력 — 파일 참고 */
+}
+const DEFAULT_FUNCTIONS: FunctionsData = {
+  /* "구현 기능" 01~07 카드 텍스트 — 파일 참고 */
+}
+const DEFAULT_VENDOR_TABLES: VendorTablesData = {
+  /* "연동 제조사 AMR/AGV" 표 2개 — 파일 참고 */
+}
+const DEFAULT_DIAGRAM: DiagramData = {
+  /* "동작 구현 화면" 타이틀/이미지 크기 — 파일 참고 */
+}
+const DEFAULT_SYSTEM_FEATURES: SystemFeaturesData = {
+  /* "시스템 업무 구성" 8개 카드(정보조회/센터관리/SKU/주문/재고/시스템/통계/작업자) — 파일 참고 */
+}
+const DEFAULT_DEVICE_PANELS: DevicePanelsData = {
+  /* "주요 기능 소개" PC/Tablet 패널 2개 — 파일 참고 */
+}
+
+const {
+  id = 'cases',
+  title = DEFAULT_TITLE,
+  partnerLogos = true,
+  timeline = DEFAULT_TIMELINE,
+  functions: functionsData = DEFAULT_FUNCTIONS,
+  vendorTables = DEFAULT_VENDOR_TABLES,
+  diagram = DEFAULT_DIAGRAM,
+  systemFeatures = DEFAULT_SYSTEM_FEATURES,
+  devicePanels = DEFAULT_DEVICE_PANELS
+} = Astro.props
+---
+
+<section id={id} class="g-section">
+  <div class="innerWrap">
+    {/* cs__head: TitleSub + (partnerLogos && 고객사 로고) */}
+    {/* cs__timeline: timeline && periods/phases 렌더 (null이면 블록 자체가 안 그려짐) */}
+    {/* cs__number-grid: functionsData && 01~07 넘버 카드 */}
+    {/* cs__vendor-tables: vendorTables && 표 렌더 */}
+    {/* cs__diagram-box: diagram && 타이틀+이미지 */}
+    {/* cs__split(systemFeatures): 좌측 TitleSub, 우측 cs__feature-grid 아이콘 카드 */}
+    {/* cs__split(devicePanels): 좌측 TitleSub, 우측 cs__device-panel(PC/Tablet 카드 + 커넥터) */}
+    {/* 각 블록은 전부 `{data && (...)}` 패턴 — 파일 원문에 실제 마크업 전문 있음 */}
+  </div>
+</section>
+```
+
+</details>
+
+<details>
+<summary><code>ClientLogoGrid.astro</code></summary>
+
+```astro
+---
+// 주요 고객사 로고 그리드 (재사용 컴포넌트) — /company/news, /ai-engine/ai-commerce,
+// /e-commerce/commerce-technology에서 각자 구현하던 동일 패턴을 통합.
+// 로고 자산은 /company/news 작업 시 원본 다운로드해 보관 중인 src/assets/images/clients/*.png를
+// 그대로 재사용한다(신규 다운로드 아님) — 파일명 규칙 ico_client_{key}.png.
+export interface Props {
+  clients: {key: string; name: string}[]
+  columns?: number
+}
+
+const {clients, columns = 6} = Astro.props
+
+const clientLogos = import.meta.glob<{default: ImageMetadata}>('/src/assets/images/clients/*.png', {
+  eager: true
+})
+const logoSrc = (key: string) =>
+  clientLogos[`/src/assets/images/clients/ico_client_${key}.png`].default.src
+---
+
+<div class="cl__grid" style={`--cl-cols: ${columns};`}>
+  {
+    clients.map((client) => (
+      <div class="cl__card">
+        <img src={logoSrc(client.key)} alt={client.name} loading="lazy" />
+      </div>
+    ))
+  }
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>Icon.astro</code></summary>
+
+```astro
+---
+const {name, width = '10rem', height = '10rem'} = Astro.props
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+---
+
+<span
+  class="bs-icon"
+  style={{
+    width: width,
+    height: height
+  }}
+>
+  <img src={`${PUBLIC_BUILD_URL}/images/icons/${name}`} class="v-ic" alt="Icon" />
+</span>
+```
+
+</details>
+
+<details>
+<summary><code>Label.astro</code></summary>
+
+```astro
+---
+export interface Props {
+  type?: 'type_1' | 'type_2'
+}
+const {type = 'type_1'} = Astro.props
+---
+
+<span class="bs-label" data-type={type}>
+  <slot />
+</span>
+```
+
+</details>
+
+<details>
+<summary><code>LayerPopup.astro</code></summary>
+
+```astro
+---
+// 공통 레이어 팝업 — @old/index.html의 .popup-wrap(레거시 공지/이벤트 팝업)을 포팅한 컴포넌트.
+// 오버레이/딤 없이 화면 좌측 상단에 여러 개가 나란히 뜨는 원본 구조 그대로이며, 체크박스로
+// "오늘 하루 이 창을 열지 않음"을 선택한 뒤 닫으면 쿠키(기본 1일)로 재노출을 막는다.
+// 동작은 layer-popup.ts가 담당(Layout.astro에 전역 등록되어 있어 별도 연결 코드 불필요) —
+// data-layer-popup / data-cookie-key 마크업 컨벤션만 지키면 어느 페이지에서 써도 동작한다.
+//
+// 사용 예:
+// <LayerPopup
+//   items={[
+//     { id: 'notice-01', image: '/images/popup/notice-01.png', alt: '공지 제목', href: 'https://...', target: '_blank' },
+//   ]}
+// />
+export interface LayerPopupItem {
+  id: string
+  image: string
+  alt: string
+  href?: string
+  target?: '_blank' | '_self'
+  cookieDays?: number // 닫기 시 "오늘 하루 안 보기"를 체크했을 때 재노출을 막는 기간(일). 기본 1일
+}
+
+export interface Props {
+  items: LayerPopupItem[]
+}
+
+const {items} = Astro.props
+---
+
+{
+  items.length > 0 && (
+    <div class="layer-popup-wrap">
+      {items.map((item) => (
+        <div
+          class="layer-popup"
+          id={`layerPopup-${item.id}`}
+          data-layer-popup
+          data-cookie-key={`layerPopupClosed-${item.id}`}
+          data-cookie-days={item.cookieDays ?? 1}
+          style="display:none"
+        >
+          {item.href ? (
+            <a href={item.href} target={item.target ?? '_self'}>
+              <img src={item.image} alt={item.alt} />
+            </a>
+          ) : (
+            <img src={item.image} alt={item.alt} />
+          )}
+          <p class="layer-popup__bottom">
+            <label class="layer-popup__hide-today">
+              <input type="checkbox" /> 오늘 하루 이 창을 열지 않음
+            </label>
+            <button type="button" class="layer-popup__close">
+              닫기 X
+            </button>
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+</details>
+
+<details>
+<summary><code>Navigation.astro</code></summary>
+
+```astro
+---
+import type {RouteChildren} from '@config/route'
+export interface Props {
+  items: RouteChildren[] | undefined
+  activeMenuId: string
+}
+const {items, activeMenuId = ''} = Astro.props
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+---
+
+<div class="bs-navigation">
+  <div class="inner">
+    <div class="navi-group">
+      {
+        items &&
+          items.map((item) => (
+            <div class="nvi-item">
+              {/* 활성화시 .is-active */}
+              <a
+                href={PUBLIC_BUILD_URL + item.href}
+                class="nvi-txt"
+                class:list={{
+                  'is-active': item.id === activeMenuId
+                }}
+              >
+                {item.koLabel}
+              </a>
+            </div>
+          ))
+      }
+    </div>
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>SubBanner.astro</code></summary>
+
+```astro
+---
+const {title = 'Company', description = ''} = Astro.props
+---
+
+<div class="bs-sub-banner">
+  <div class="innerWrap">
+    <div class="tit" set:html={title} />
+    <div class="desc" set:html={description} />
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>Tab.astro</code></summary>
+
+```astro
+---
+export interface Props {
+  is?: 'span' | 'button'
+  type?: 'round' | 'line' | 'box'
+}
+const {type = 'round', is = 'button'} = Astro.props
+const Tag = is
+---
+
+<Tag class="bs-tab" data-type={type}><slot /></Tag>
+```
+
+</details>
+
+<details>
+<summary><code>Table.astro</code></summary>
+
+```astro
+---
+export interface Props {
+  size?: 'sm' | 'md' | 'lg'
+  tleft?: boolean
+}
+const {size = 'md', tleft} = Astro.props
+---
+
+<table
+  class="bs-table"
+  class:list={{
+    'is-tleft': tleft
+  }}
+  data-size={size}
+>
+  <slot />
+</table>
+```
+
+</details>
+
+<details>
+<summary><code>TextList.astro</code></summary>
+
+```astro
+---
+export interface Props {
+  type?: 'type_1' | 'type_2'
+  circleType?: 'type_1' | 'type_2'
+}
+const {type = 'type_1', circleType = 'type_1'} = Astro.props
+---
+
+<div class="bs-text-list" data-type={type} data-circle-type={circleType}>
+  <div class="bst-inner">
+    <span class="b-syn">
+      {
+        circleType === 'type_2' && (
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* 체크마크 원형 아이콘 path 2개 — 파일 참고 */}
+          </svg>
+        )
+      }
+    </span>
+    <div class="b-tx"><slot /></div>
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>TitleMain.astro</code></summary>
+
+```astro
+---
+const {title = '', description = ''} = Astro.props
+---
+
+<div class="bs-main-title">
+  <div class="innerWrap">
+    {
+      description ? (
+        <div class="bms-texts">
+          <div class="bm-title" set:html={title} />
+          <div class="bm-description" set:html={description} />
+        </div>
+      ) : (
+        <div class="bm-page-name" set:html={title} />
+      )
+    }
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>TitleMiddle.astro</code></summary>
+
+```astro
+---
+
+---
+
+<span class="bs-title-middle">
+  <slot />
+</span>
+```
+
+</details>
+
+<details>
+<summary><code>TitleSub.astro</code></summary>
+
+```astro
+---
+const {title = '', description = ''} = Astro.props
+---
+
+<div class="bs-title-sub">
+  <div class="bs-title" set:html={title} />
+  {description && <div class="bs-description" set:html={description} />}
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>TitleThird.astro</code></summary>
+
+```astro
+---
+
+---
+
+<span class="bs-title-third">
+  <slot />
+</span>
+```
+
+</details>
+
+<details>
+<summary><code>AllMenu.astro</code></summary>
+
+```astro
+---
+// All 메뉴 — GNB 우측 all-gnb 버튼으로 여닫는 전체 메뉴 오버레이(Figma "All 메뉴" 심볼, node 2932:22685).
+// 화면 전체(GNB 포함)를 덮는 최상위 레이어라 Layout.astro의 <body> 최상단에 둔다.
+// 2Depth 항목은 Figma 텍스트를 그대로 옮기지 않고 @config/route(route)를 그대로 사용한다 —
+// Gnb.astro/Navigation.astro와 동일한 단일 소스라 라우트가 바뀌어도 항상 최신 상태로 맞다.
+import {route} from '@config/route'
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+---
+
+<div class="all-menu" id="allMenu" aria-hidden="true">
+  <!-- TODO: 배경 이미지(스크린 블렌드 합성) 삽입 — 사용자가 직접 작업 -->
+  <div class="all-menu__bg-ph" aria-hidden="true"></div>
+
+  <button class="all-menu__close" type="button" aria-label="전체 메뉴 닫기">
+    <span class="all-menu__close-icon" aria-hidden="true"></span>
+  </button>
+
+  <div class="all-menu__inner">
+    <div class="all-menu__body">
+      <div class="all-menu__head">
+        <p class="all-menu__eyebrow">e-Commerce Leading Technology Partner</p>
+        <p class="all-menu__brand">M2M GLOBAL</p>
+      </div>
+
+      <nav class="all-menu__nav">
+        <div class="all-menu__depth1-row">
+          {
+            route.map((section) => (
+              <div class="all-menu__depth1">
+                <p class="all-menu__depth1-title">{section.label}</p>
+                <span class="all-menu__depth1-line" aria-hidden="true" />
+                <ul class="all-menu__depth2-col">
+                  {section.children.map((child) => (
+                    <li>
+                      <a href={PUBLIC_BUILD_URL + child.href}>{child.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </nav>
+    </div>
+
+    <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href (Footer.astro와 동일) -->
+    <div class="all-menu__downloads">
+      <a href={`${PUBLIC_BUILD_URL}/etc/m2m_company_info.pdf`} class="all-menu__download-btn" target="_blank">
+        회사소개서
+        <span class="all-menu__download-icon" aria-hidden="true"></span>
+      </a>
+      <a href="#" class="all-menu__download-btn">
+        로봇물류 소개서
+        <span class="all-menu__download-icon" aria-hidden="true"></span>
+      </a>
+    </div>
+  </div>
+</div>
+```
+
+</details>
 
 ### `layout/` — 전역 레이아웃 전용
 
 | 컴포넌트 | 비고 |
 | --- | --- |
-| `Gnb.astro` | 헤더. `routeMap`로 1/2Depth 메뉴 렌더, 1Depth hover 시 6컬럼 메가메뉴 패널이 통째로 열리는 구조(항목별 개별 드롭다운 아님). `nav-active-state.ts`가 현재 URL 기준 `.is-active` 부여 |
+| `Gnb.astro` | 헤더. `route`로 1/2Depth 메뉴 렌더, 1Depth hover 시 6컬럼 메가메뉴 패널이 통째로 열리는 구조(항목별 개별 드롭다운 아님). `nav-active-state.ts`가 현재 URL 기준 `.is-active` 부여 |
 | `Footer.astro` | 다크 배경 전용 화이트 로고 자산(GNB용과 다른 별도 export) 사용 |
 
-`AllMenu.astro`(common)는 GNB `.all-gnb` 버튼으로 여닫는 전체 메뉴 오버레이 — `Layout.astro`에 전역으로 이미 박혀 있어서 페이지에서 따로 안 씀.
+<details>
+<summary><code>Gnb.astro</code></summary>
+
+```astro
+---
+import {route} from '@config/route'
+const localGnbItems = route
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+---
+
+<div class="gnb-wrap">
+  <div class="lts">
+    <a href={`${PUBLIC_BUILD_URL}/`} class="logo">로고</a>
+  </div>
+  <div class="content">
+    <ul class="gnb">
+      {
+        localGnbItems &&
+          localGnbItems.map((item) => (
+            <li class="gb-item">
+              <a href={PUBLIC_BUILD_URL + item.href} class="g-link">
+                {item.label}
+              </a>
+              {item.children && item.children.length > 0 && (
+                <ul class="gb-submenu">
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={PUBLIC_BUILD_URL + child.href}>{child.koLabel}</a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+      }
+    </ul>
+    <div class="gnb-mega-bg" aria-hidden="true"></div>
+  </div>
+  <div class="rts">
+    <button class="all-gnb"></button>
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>Footer.astro</code></summary>
+
+```astro
+---
+// Footer 공통 컴포넌트
+// Footer는 어두운 배경이라 GNB의 원색 로고가 아니라 Figma의 별도 화이트 2줄
+// (워드마크+국문 표기) 로고 자산을 그대로 쓴다 — 단순 색 반전이 아니라 별개 export.
+const year = new Date().getFullYear()
+const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+const {class: className, ...rest} = Astro.props
+---
+
+<footer class="footer-wrap" class:list={[className]} {...rest}>
+  <div class="inner">
+    <div class="top">
+      <div class="info">
+        <a href="/" class="logo">M2M GLOBAL 엠투엠글로벌(주)</a>
+        <div class="contact">
+          <p class="address">
+            <span>Head Office </span>
+            <span class="strong">서울특별시 영등포구 영등포로 150, B동 1509호 (생각공장 당산), 엠투엠글로벌</span>
+          </p>
+          <p class="reach">
+            <span class="reach-item"><span>Email</span> <span class="strong">help@m2mglobal.co.kr</span></span>
+            <span class="reach-item"><span>Tel</span> <span class="strong">02-6956-3955</span></span>
+          </p>
+        </div>
+      </div>
+
+      <!-- TODO: 실제 소개서 파일 연결 전까지 placeholder href -->
+      <div class="downloads">
+        <a href={`${PUBLIC_BUILD_URL}/etc/m2m_company_info.pdf`} class="download-btn" target="_blank"
+          >회사소개서<span class="download-btn-icon"></span></a>
+        <a href="#" class="download-btn">로봇물류 소개서<span class="download-btn-icon"></span></a>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <p class="copyright">Copyright ⓒ {year} M2M GLOBAL. All rights reserved.</p>
+      <a href={`${PUBLIC_BUILD_URL}/privacy`} class="privacy">개인정보처리방침</a>
+    </div>
+  </div>
+</footer>
+```
+
+</details>
 
 ### `ui/box/` — `/company/info` 전용 Box 상단 타이틀 조합
 
-`Box.astro`(공용 셸) + `boxTitleCase/BoxTitleCase1~5.astro`(타이틀 영역 variant 5종: 아이콘+라벨, 라벨만, 아이콘+타이틀, prefix+라벨+타이틀, 아이콘+설명+타이틀 등 조합이 각기 다름) + `UiBoxCase1~3.astro`(Box+BoxTitleCase 조합 래퍼) + `UiNoti.astro`(`.bt-noti-group`, dl 리스트형 안내) + `UiTags.astro`(`items: {codeId, codeName}[]`, 태그 리스트). 현재 `/company/info`에서만 쓰이는 페이지 종속 컴포넌트에 가까움 — 다른 페이지에서 재사용할 땐 variant가 실제로 맞는지 먼저 확인할 것.
+`Box.astro`(공용 셸, 위에서 이미 소개) + `boxTitleCase/BoxTitleCase1~5.astro`(타이틀 영역 variant 5종) + `UiBoxCase1~3.astro`(Box+BoxTitleCase 조합 래퍼) + `UiNoti.astro`(dl 리스트형 안내) + `UiTags.astro`(태그 리스트). 현재 `/company/info`에서만 쓰이는 페이지 종속 컴포넌트에 가까움 — 다른 페이지에서 재사용할 땐 variant가 실제로 맞는지 먼저 확인할 것.
+
+<details>
+<summary><code>boxTitleCase/BoxTitleCase1.astro</code> — 아이콘 + 라벨 + 타이틀</summary>
+
+```astro
+---
+import Icon from '~/components/common/Icon.astro'
+import Label from '~/components/common/Label.astro'
+
+const {label = '', title = '', icon = ''} = Astro.props
+---
+
+<div class="bs-box-title-case-1">
+  <div class="bbtc1-inner">
+    <span class="bsb-icon">
+      <Icon name={icon} />
+    </span>
+    <div class="bsb-label">
+      <Label>{label}</Label>
+    </div>
+    <div class="bsb-title" set:html={title} />
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>boxTitleCase/BoxTitleCase2.astro</code> — 라벨 + 타이틀 (아이콘 없음)</summary>
+
+```astro
+---
+import Label from '~/components/common/Label.astro'
+
+const {label = '', title = ''} = Astro.props
+---
+
+<div class="bs-box-title-case-2">
+  <div class="bbtc1-inner">
+    <div class="bsb-label">
+      <Label>{label}</Label>
+    </div>
+    <div class="bsb-title" set:html={title} />
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>boxTitleCase/BoxTitleCase3.astro</code> — 아이콘 + 타이틀 (라벨 없음)</summary>
+
+```astro
+---
+import Icon from '~/components/common/Icon.astro'
+const {title = '', icon = ''} = Astro.props
+---
+
+<div class="bs-box-title-case-3">
+  <div class="bbtc3-inner">
+    <span class="bsb-icon">
+      <Icon name={icon} />
+    </span>
+    <div class="bsb-title" set:html={title} />
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>boxTitleCase/BoxTitleCase4.astro</code> — prefix + 라벨(type_2) + 타이틀</summary>
+
+```astro
+---
+import Label from '~/components/common/Label.astro'
+const {title = '', label = '', prefix} = Astro.props
+---
+
+<div class="bs-box-title-case-4">
+  <div class="bbtc4-inner">
+    <div class="bsb-label">
+      <Label type="type_2">{label}</Label>
+    </div>
+    <div class="bsb-title-wrap">
+      <div class="bsb-title" set:html={title} />
+      {prefix && <div class="bsb-title-pref" set:html={prefix} />}
+    </div>
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>boxTitleCase/BoxTitleCase5.astro</code> — 아이콘 + 타이틀 + 설명</summary>
+
+```astro
+---
+import Icon from '~/components/common/Icon.astro'
+
+const {description = '', title = '', icon = ''} = Astro.props
+---
+
+<div class="bs-box-title-case-5">
+  <div class="bbtc5-inner">
+    <span class="bsb-icon">
+      <Icon name={icon} />
+    </span>
+    <div class="bsb-title" set:html={title} />
+    <div class="bsb-description" set:html={description} />
+  </div>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>UiBoxCase1.astro</code> — Box + BoxTitleCase1 조합</summary>
+
+```astro
+---
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase1 from '~/components/ui/box/boxTitleCase/BoxTitleCase1.astro'
+const {label, title, icon} = Astro.props
+---
+
+<Box>
+  <BoxTitleCase1 label={label} title={title} icon={icon} />
+  <div class="bs-gl-content">
+    <slot />
+  </div>
+</Box>
+```
+
+</details>
+
+<details>
+<summary><code>UiBoxCase2.astro</code> — Box + BoxTitleCase2 조합</summary>
+
+```astro
+---
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase2 from '~/components/ui/box/boxTitleCase/BoxTitleCase2.astro'
+const {label, title, useBackground} = Astro.props
+---
+
+<Box useBackground={useBackground}>
+  <BoxTitleCase2 label={label} title={title} />
+  <div class="bs-gl-content">
+    <slot />
+  </div>
+</Box>
+```
+
+</details>
+
+<details>
+<summary><code>UiBoxCase3.astro</code> — Box + 슬롯 3분할(head/default/foot)</summary>
+
+```astro
+---
+import Box from '~/components/common/Box.astro'
+
+const useSlotFoot = Astro.slots.has('slotFoot')
+---
+
+<Box useSlotFoot={useSlotFoot}>
+  <slot name="slotHead" />
+  <div class="bs-gl-content">
+    <slot />
+  </div>
+  {
+    useSlotFoot && (
+      <div class="bs-gl-bottom">
+        <slot name="slotFoot" />
+      </div>
+    )
+  }
+</Box>
+```
+
+</details>
+
+<details>
+<summary><code>UiNoti.astro</code> — dl 리스트형 안내(데이터 활용 수준 / 성과 지표 고정 2행)</summary>
+
+```astro
+---
+const {dataLevel, metric} = Astro.props
+---
+
+<div class="bt-noti-group">
+  <dl class="b-lst">
+    <dt class="dt ico1">데이터 활용 수준</dt>
+    <dd class="dd" set:html={dataLevel} />
+  </dl>
+  <dl class="b-lst">
+    <dt class="dt ico2">성과 지표</dt>
+    <dd class="dd" set:html={metric} />
+  </dl>
+</div>
+```
+
+</details>
+
+<details>
+<summary><code>UiTags.astro</code> — 태그 리스트</summary>
+
+```astro
+---
+export type Item = {
+  codeId: string | number
+  codeName: string
+}
+export interface Props {
+  items: Item[]
+}
+
+const {items} = Astro.props
+---
+
+<div class="bt-tags-group">
+  {items && items.map((item) => <span class="b-tags">{item.codeName}</span>)}
+</div>
+```
+
+</details>
 
 ---
 
@@ -267,7 +1230,7 @@ src/styles/css/main.css    # 컴파일 산출물 — git ignore, 직접 수정 �
 
 ## 9. 알려진 문서-코드 불일치 / TODO
 
-`CLAUDE.md` 자체에도 "⚠️ 위 표와 실제 코드 불일치 주의" 섹션이 있을 만큼, 문서가 코드 변경 속도를 못 따라간 부분이 있습니다. 이 README 최초 작성 시점(2026-08-19) 기준으로 직접 확인한 불일치 목록(2026-08-20 갱신 — `/404` 페이지 추가분 반영):
+`CLAUDE.md` 자체에도 "⚠️ 위 표와 실제 코드 불일치 주의" 섹션이 있을 만큼, 문서가 코드 변경 속도를 못 따라간 부분이 있습니다. 이 README 최초 작성 시점(2026-08-19) 기준으로 직접 확인한 불일치 목록(2026-08-20 갱신 — `/404` 페이지 추가분 반영, `config/route/index.ts`+`routeMap.ts` 중복 통합 후 관련 서술 정리):
 
 - `/style-guide` 페이지 없음(파일 자체가 없음, `page-list.astro`에 죽은 링크만 존재).
 - `Icon.astro`는 `src/assets/**/*.svg` glob이 아니라 `public/images/icons/{name}`을 `<img src>`로 직접 로드.
@@ -283,7 +1246,7 @@ src/styles/css/main.css    # 컴파일 산출물 — git ignore, 직접 수정 �
 
 ## 10. `@old/` 폴더
 
-구 사이트(`m2mglobal.co.kr`) 원본 HTML/CSS/JS/이미지 스냅샷. 신규 페이지 제작 시 콘텐츠·구조 근거 자료로만 참고하고 **여기 파일은 절대 수정하지 않습니다**. `config/route/index.ts`의 `routeMap`이 `@old/header.html`(구 GNB+사이트맵) 기준으로 신규/구 라우트 매핑을 기록해두었으니, "이 메뉴가 옛날엔 어디 있었는지" 찾을 땐 거기부터 보면 됩니다.
+구 사이트(`m2mglobal.co.kr`) 원본 HTML/CSS/JS/이미지 스냅샷. 신규 페이지 제작 시 콘텐츠·구조 근거 자료로만 참고하고 **여기 파일은 절대 수정하지 않습니다**. `config/route/index.ts`의 `route` 배열 각 항목 옆 주석이 `@old/header.html`(구 GNB+사이트맵) 기준으로 신규/구 라우트 매핑을 기록해두었으니, "이 메뉴가 옛날엔 어디 있었는지" 찾을 땐 거기부터 보면 됩니다.
 
 ---
 

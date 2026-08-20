@@ -32,6 +32,7 @@
             @include font('H2');
             color: color('Color/Black 100');
             padding: rem(30px) rem($spacing-left) rem(20px);
+            margin-top: rem(30px);
         }
         .bms-texts{
             margin-top: rem(30px);

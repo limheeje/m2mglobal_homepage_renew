@@ -1,0 +1,37 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use '../abstracts/functions' as *;
+
+// ==========================================================================
+// /404 전용 마크업 — Figma 디자인 없는 유틸리티 페이지(/page-list와 동일 성격), 공용 컴포넌트만 조합
+// ==========================================================================
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: rem(120px);
+}
+
+.error-page__code {
+  @include font('H1');
+  color: color('Color/Primary Color');
+  margin-top: rem(100px);
+}
+
+.error-page__actions {
+  margin-top: rem(8px);
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .error-page {
+    padding-bottom: rem(60px);
+  }
+
+  .error-page__code {
+    @include font('H2');
+    margin-top: rem(30px);
+  }
+}

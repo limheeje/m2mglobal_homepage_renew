@@ -23,7 +23,6 @@ $ICON_DOWNLOAD: '[data-type="download"]';
     justify-content: center;
     border: rem(1px) solid transparent;
     &:disabled{
-        opacity: .3;
         cursor: auto;
     }
     &.#{$USE_BLOCK}{
@@ -76,6 +75,7 @@ $ICON_DOWNLOAD: '[data-type="download"]';
         .b-suff{
             &#{$ICON_COPY}{width: rem(18px);height: rem(18px);@include get-background-svg(icon_copy, color('Color/Black 20'));}
             &#{$ICON_PLUS}{@include get-background-svg(icon_plus, color('Color/Black 20'));}
+            &#{$ICON_BLANK}{width: rem(20px);height: rem(20px);@include get-background-svg(icon_blank, color('Color/Black 20'));}
         }
         &:not(:disabled):hover{
             background-color: color('Color/Primary Color');
@@ -86,6 +86,7 @@ $ICON_DOWNLOAD: '[data-type="download"]';
             .b-suff{
                 &#{$ICON_COPY}{@include get-background-svg(icon_copy, color('Color/White'));}
                 &#{$ICON_PLUS}{@include get-background-svg(icon_plus, color('Color/White'));}
+                &#{$ICON_BLANK}{@include get-background-svg(icon_blank, color('Color/White'));}
             }
         }
 

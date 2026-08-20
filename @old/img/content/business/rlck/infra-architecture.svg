@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">RLCK 인프라 구성</title>
+  <desc id="desc">작업자 디바이스와 WCS, Middleware, WES, RCS, AGV, AMR의 연결 구조</desc>
+
+  <style>
+    .label {
+      fill: #10294b;
+      font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      text-anchor: middle;
+    }
+    .node-label {
+      fill: #10294b;
+      font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+    .signal {
+      fill: none;
+      stroke: #d91f26;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 4;
+    }
+    .signal-dash {
+      fill: none;
+      stroke: #d91f26;
+      stroke-dasharray: 12 10;
+      stroke-width: 4;
+    }
+    .rack {
+      fill: none;
+      stroke: #8a8d91;
+      stroke-linecap: square;
+      stroke-width: 12;
+    }
+    .label-bg {
+      fill: #fff;
+      stroke: #d9e5f1;
+      stroke-width: 1.5;
+    }
+  </style>
+
+  <rect width="1600" height="760" rx="28" fill="#fff"/>
+
+  <!-- Connection lines -->
+  <path class="signal" d="M620 224 V286 H1000 V178 H1070"/>
+  <path class="signal" d="M780 244 V286"/>
+  <path class="signal" d="M332 349 V520 H353 V602"/>
+  <path class="signal" d="M395 336 V472 H353"/>
+  <path class="signal" d="M365 650 H820"/>
+  <path class="signal" d="M493 500 V650"/>
+  <path class="signal" d="M650 530 V650"/>
+  <path class="signal" d="M1055 286 V310"/>
+  <path class="signal" d="M1055 500 V522 H915 V540"/>
+  <path class="signal" d="M1055 522 H1225 V540"/>
+  <path class="signal" d="M1150 405 H1320"/>
+  <path class="signal" d="M1320 630 H1370"/>
+  <path class="signal-dash" d="M1435 520 V420"/>
+
+  <!-- Work station rack -->
+  <path class="rack" d="M48 252 V700 M405 252 V700 M48 450 H405 M48 570 H405 M48 700 H405"/>
+
+  <!-- Put to Light -->
+  <image href="infra-put-to-light.png" x="62" y="326" width="270" height="45" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="133" y="278" width="128" height="38" rx="8"/>
+  <text class="label" x="197" y="304">Put to Light</text>
+
+  <!-- System Stop Button -->
+  <circle cx="395" cy="336" r="28" fill="#ef2029" stroke="#dbe5ef" stroke-width="9"/>
+  <rect class="label-bg" x="316" y="266" width="158" height="48" rx="8"/>
+  <text class="label" x="395" y="287">
+    <tspan x="395">System</tspan>
+    <tspan x="395" dy="22">Stop Button</tspan>
+  </text>
+
+  <!-- Controller -->
+  <image href="infra-controller.png" x="286" y="586" width="92" height="92" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="280" y="680" width="106" height="38" rx="8"/>
+  <text class="label" x="333" y="706">controller</text>
+
+  <!-- Handheld Scanner -->
+  <image href="infra-scanner.png" x="446" y="392" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="420" y="326" width="152" height="56" rx="8"/>
+  <text class="label" x="496" y="349">
+    <tspan x="496">Handheld</tspan>
+    <tspan x="496" dy="23">Scanner</tspan>
+  </text>
+
+  <!-- Touch Screen -->
+  <image href="infra-touch-screen.png" x="570" y="370" width="164" height="164" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="575" y="322" width="154" height="40" rx="8"/>
+  <text class="label" x="652" y="349">Touch Screen</text>
+
+  <!-- Tablet -->
+  <image href="infra-tablet.jpg" x="555" y="112" width="142" height="118" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="574" y="66" width="104" height="38" rx="8"/>
+  <text class="label" x="626" y="92">Tablet</text>
+
+  <!-- Smart Watch -->
+  <image href="infra-smart-watch.jpg" x="714" y="100" width="130" height="148" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="704" y="54" width="150" height="38" rx="8"/>
+  <text class="label" x="779" y="80">Smart Watch</text>
+
+  <!-- WCS -->
+  <image href="infra-server.png" x="1070" y="64" width="210" height="220" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="1123" y="16" width="104" height="40" rx="8"/>
+  <text class="node-label" x="1175" y="44">WCS</text>
+
+  <!-- Middleware -->
+  <image href="infra-middleware.png" x="960" y="310" width="190" height="190" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="970" y="266" width="170" height="40" rx="8"/>
+  <text class="node-label" x="1055" y="294">Middleware</text>
+
+  <!-- WES -->
+  <image href="infra-server.png" x="820" y="520" width="190" height="200" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="867" y="476" width="96" height="40" rx="8"/>
+  <text class="node-label" x="915" y="504">WES</text>
+
+  <!-- RCS -->
+  <image href="infra-server.png" x="1130" y="520" width="190" height="200" preserveAspectRatio="xMidYMid meet"/>
+  <rect class="label-bg" x="1177" y="476" width="96" height="40" rx="8"/>
+  <text class="node-label" x="1225" y="504">RCS</text>
+
+  <!-- Robots -->
+  <image href="infra-agv.jpg" x="1315" y="326" width="150" height="100" preserveAspectRatio="xMidYMid meet"/>
+  <image href="robot-forward-flex-300-scb.png" x="1462" y="184" width="110" height="200" preserveAspectRatio="xMidYMid meet"/>
+  <image href="infra-wireless.png" x="1370" y="520" width="130" height="130" preserveAspectRatio="xMidYMid meet"/>
+
+  <!-- Work Station label -->
+  <rect class="label-bg" x="520" y="682" width="160" height="42" rx="8"/>
+  <text class="node-label" x="600" y="711">Work Station</text>
+</svg>

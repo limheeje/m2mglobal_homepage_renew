@@ -1,0 +1,16 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00A8E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Gear / Settings -->
+  <circle cx="40" cy="40" r="14"/>
+  <circle cx="40" cy="40" r="5"/>
+  <!-- Gear teeth -->
+  <line x1="40" y1="20" x2="40" y2="26"/>
+  <line x1="40" y1="54" x2="40" y2="60"/>
+  <line x1="20" y1="40" x2="26" y2="40"/>
+  <line x1="54" y1="40" x2="60" y2="40"/>
+  <line x1="26" y1="26" x2="30" y2="30"/>
+  <line x1="50" y1="50" x2="54" y2="54"/>
+  <line x1="54" y1="26" x2="50" y2="30"/>
+  <line x1="30" y1="50" x2="26" y2="54"/>
+  <!-- Monitor / Performance lines -->
+  <polyline points="10,72 18,66 24,70 32,62 40,68 48,60 56,66 64,58 70,64" stroke-width="1.5"/>
+</svg>

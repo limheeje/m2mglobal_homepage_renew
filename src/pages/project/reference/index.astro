@@ -159,7 +159,7 @@ const references = [
                     <Button
                       href={item.href}
                       target="_blank"
-                      variant="white"
+                      variant={!item.href ? 'default' : 'white'}
                       size="sm"
                       disabled={!item.href}
                       useSuffixIcon="blank"

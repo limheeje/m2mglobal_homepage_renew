@@ -7,9 +7,10 @@
 // 순수 마크업 + footer.scss 직접 스타일링 방식으로 맞췄다.
 const year = new Date().getFullYear()
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+const {class: className, ...rest} = Astro.props
 ---
 
-<footer class="footer-wrap fp-auto-height section" data-anchor="footer">
+<footer class="footer-wrap" class:list={[className]} {...rest}>
   <div class="inner">
     <div class="top">
       <div class="info">

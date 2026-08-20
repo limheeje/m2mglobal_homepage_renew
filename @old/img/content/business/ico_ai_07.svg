@@ -1,0 +1,12 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00A8E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Database cylinders -->
+  <ellipse cx="40" cy="16" rx="20" ry="6"/>
+  <path d="M20 16 L20 34 Q20 40 40 40 Q60 40 60 34 L60 16"/>
+  <path d="M20 26 Q20 32 40 32 Q60 32 60 26"/>
+
+  <path d="M20 34 L20 52 Q20 58 40 58 Q60 58 60 52 L60 34"/>
+  <path d="M20 44 Q20 50 40 50 Q60 50 60 44"/>
+
+  <path d="M20 52 L20 64 Q20 70 40 70 Q60 70 60 64 L60 52"/>
+  <path d="M20 62 Q20 68 40 68 Q60 68 60 62"/>
+</svg>

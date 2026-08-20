@@ -1,0 +1,30 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00A8E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- AI chip / brain in center -->
+  <rect x="28" y="28" width="24" height="24" rx="2"/>
+  <circle cx="40" cy="40" r="6"/>
+  <line x1="40" y1="34" x2="40" y2="37"/>
+  <line x1="40" y1="43" x2="40" y2="46"/>
+  <line x1="34" y1="40" x2="37" y2="40"/>
+  <line x1="43" y1="40" x2="46" y2="40"/>
+  <!-- Chip pins (top) -->
+  <line x1="32" y1="22" x2="32" y2="28"/>
+  <line x1="40" y1="22" x2="40" y2="28"/>
+  <line x1="48" y1="22" x2="48" y2="28"/>
+  <!-- Chip pins (bottom) -->
+  <line x1="32" y1="52" x2="32" y2="58"/>
+  <line x1="40" y1="52" x2="40" y2="58"/>
+  <line x1="48" y1="52" x2="48" y2="58"/>
+  <!-- Chip pins (left) -->
+  <line x1="22" y1="32" x2="28" y2="32"/>
+  <line x1="22" y1="40" x2="28" y2="40"/>
+  <line x1="22" y1="48" x2="28" y2="48"/>
+  <!-- Chip pins (right) -->
+  <line x1="52" y1="32" x2="58" y2="32"/>
+  <line x1="52" y1="40" x2="58" y2="40"/>
+  <line x1="52" y1="48" x2="58" y2="48"/>
+  <!-- Cloud at top -->
+  <path d="M14 16 Q12 14 14 12 Q14 8 18 8 Q20 6 24 8 Q28 8 28 12 Q30 14 28 16 Z" stroke-width="1.5"/>
+  <!-- Server stack at bottom -->
+  <rect x="56" y="62" width="14" height="4" rx="1" stroke-width="1.5"/>
+  <rect x="56" y="68" width="14" height="4" rx="1" stroke-width="1.5"/>
+</svg>

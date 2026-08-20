@@ -1,0 +1,19 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00A8E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Image frame -->
+  <rect x="12" y="16" width="56" height="42" rx="3"/>
+  <!-- Mountain inside frame -->
+  <polyline points="18,50 28,36 36,44 48,28 62,50"/>
+  <!-- Sun -->
+  <circle cx="52" cy="26" r="3"/>
+  <!-- AI scan / detection box -->
+  <rect x="32" y="38" width="20" height="14" stroke-dasharray="3,2" stroke="#00A8E8"/>
+  <!-- Scan corners highlight -->
+  <polyline points="32,42 32,38 36,38"/>
+  <polyline points="48,38 52,38 52,42"/>
+  <polyline points="52,48 52,52 48,52"/>
+  <polyline points="36,52 32,52 32,48"/>
+  <!-- Magnifier and check -->
+  <circle cx="62" cy="64" r="5"/>
+  <line x1="66" y1="68" x2="70" y2="72"/>
+  <polyline points="59,64 61,66 65,62"/>
+</svg>

@@ -1,0 +1,72 @@
+
+<div class="inner">
+  <div class="cont-outer">
+    <div class="m2m-cont">
+      <h1><img src="img/common/footer-logo.png" alt="M2M GLOBAL 엠투엠글로벌(주)" /></h1>
+      <div class="m2m-info">
+        <p class="m2m-copyright">Copyright ⓒ 2024 M2M GLOBAL. All rights reserved. <span><a href="../etc/privacy.html">개인정보처리방침</a></span></p>
+        <ul>
+          <li>
+            <span class="blue">M <span class="sr-only">메일주소</span></span>
+            : <a href="mailto:help@m2mglobal.co.kr">help@m2mglobal.co.kr</a>
+          </li>
+          <li>
+            <span class="blue">T <span class="sr-only">전화번호</span></span>
+            : 02-6956-3955
+          </li>
+        </ul>
+        <address><span class="blue">A </span> : 서울특별시 영등포구 영등포로 150, <span>B동 1509호 (생각공장 당산), 엠투엠글로벌</span></address>
+      </div>
+      <a href="" class="instagram"><span class="sr-only">인스타그램</span></a>
+    </div>
+    <div class="partner-cont">
+      <button type="button" class="partner-title">Partner 바로가기</button>
+      <ul class="partner-link">
+        <li>
+          <a href="../partner/appreneur.html">
+            <span class="txt">Appreneur <span>바로가기</span></span>
+            <img src="img/common/logo_appreneur.png" alt="Appreneur" />
+          </a>
+        </li>
+        <li>
+          <a href="./partner/microsoft_azure.html">
+            <span class="txt">Microsoft AZURE <span>바로가기</span></span>
+            <img src="img/common/logo_microsoft.png" alt="Microsoft AZURE Partner" />
+          </a>
+        </li>
+        <li>
+          <a href="./partner/ibm_solution_distributor.html">
+            <span class="txt">IBM Solution Distributor <span>바로가기</span></span>
+            <img src="img/common/logo_ibm.png" alt="IBM Solution Distributor" />
+          </a>
+        </li>
+      </ul>
+      <button type="button" class="btn-download"><span class="sr-only">회사소개서 다운로드 </span></button>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(function(){
+    // top 버튼 클릭시
+    $("#btnTop").click(function() {   
+    $('html, body').animate({
+      scrollTop : 0    // 0 까지 animation 이동합니다.
+      }, 100);          // 속도 100
+      
+      //$('.location li:last-child .location-title').text($(this).text());
+      return false;
+    });
+
+    //footerWrap
+    $('.partner-title').on('click', function (e) {
+      $(this).next('ul').stop().slideToggle(300);
+      e.preventDefault();
+    });
+    $('.partner-title').on('click', function () {
+        $(this).closest('ul').stop().slideUp(300);
+    });
+
+  })
+</script>

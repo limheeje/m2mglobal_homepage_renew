@@ -154,6 +154,7 @@ ol {
   @media (min-width: $breakpoint-md) {
     &{
       margin-bottom: rem(170px);
+      min-height: calc(100vh - rem(206px) - rem(170px));
     }
   }
 }

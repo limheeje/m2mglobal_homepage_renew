@@ -1,0 +1,12 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#00A8E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Person silhouette -->
+  <circle cx="28" cy="26" r="7"/>
+  <path d="M16 50 Q16 38 28 38 Q40 38 40 50"/>
+  <!-- Recommendation/Heart icon to the right -->
+  <path d="M58 28 Q58 22 52 22 Q48 22 48 26 Q48 22 44 22 Q38 22 38 28 Q38 36 48 44 Q58 36 58 28 Z"/>
+  <!-- Star recommendation -->
+  <path d="M50 56 L52 60 L57 61 L53 64 L54 69 L50 67 L46 69 L47 64 L43 61 L48 60 Z"/>
+  <!-- Arrow connecting -->
+  <line x1="42" y1="44" x2="46" y2="52"/>
+  <polyline points="44,49 46,52 49,50"/>
+</svg>

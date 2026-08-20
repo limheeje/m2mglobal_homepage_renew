@@ -1,0 +1,129 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR', 'Malgun Gothic', sans-serif">
+  <!-- Background -->
+  <rect width="1200" height="720" fill="#FFFFFF"/>
+
+  <!-- ===== HEADER ===== -->
+  <rect x="0" y="0" width="1200" height="70" fill="#1E40AF"/>
+  <text x="600" y="44" text-anchor="middle" fill="#FFFFFF" font-size="22" font-weight="700">AI / ML 플랫폼 구성도</text>
+
+  <!-- ===== LEFT CARD: 데이터 / 학습 ===== -->
+  <rect x="30" y="100" width="560" height="580" fill="none" stroke="#B6C7E3" stroke-width="1.5" rx="6"/>
+  <text x="310" y="138" text-anchor="middle" fill="#333333" font-size="18" font-weight="700">데이터 수집 &amp; 모델 학습</text>
+
+  <!-- Left Column 1: 데이터 수집 -->
+  <rect x="55" y="170" width="160" height="490" fill="#F4F8FF" stroke="#DCE6F4" stroke-width="1" rx="4"/>
+  <text x="135" y="200" text-anchor="middle" fill="#1E40AF" font-size="15" font-weight="700">데이터 수집</text>
+  <line x1="75" y1="215" x2="195" y2="215" stroke="#00A8E8" stroke-width="2"/>
+
+  <text x="135" y="245" text-anchor="middle" fill="#333333" font-size="13">사용자 행동</text>
+  <line x1="75" y1="265" x2="195" y2="265" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="135" y="290" text-anchor="middle" fill="#333333" font-size="13">상품 / 콘텐츠</text>
+  <line x1="75" y1="310" x2="195" y2="310" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="135" y="335" text-anchor="middle" fill="#333333" font-size="13">이미지 / 영상</text>
+  <line x1="75" y1="355" x2="195" y2="355" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="135" y="380" text-anchor="middle" fill="#333333" font-size="13">트랜잭션</text>
+  <line x1="75" y1="400" x2="195" y2="400" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="135" y="425" text-anchor="middle" fill="#333333" font-size="13">실시간 이벤트</text>
+  <line x1="75" y1="445" x2="195" y2="445" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="135" y="470" text-anchor="middle" fill="#333333" font-size="13">로그 데이터</text>
+
+  <!-- Left Column 2: 데이터 처리 -->
+  <rect x="225" y="170" width="160" height="490" fill="#F4F8FF" stroke="#DCE6F4" stroke-width="1" rx="4"/>
+  <text x="305" y="200" text-anchor="middle" fill="#1E40AF" font-size="15" font-weight="700">데이터 처리</text>
+  <line x1="245" y1="215" x2="365" y2="215" stroke="#00A8E8" stroke-width="2"/>
+
+  <text x="305" y="245" text-anchor="middle" fill="#333333" font-size="13">전처리 / 클렌징</text>
+  <line x1="245" y1="265" x2="365" y2="265" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="305" y="290" text-anchor="middle" fill="#333333" font-size="13">Feature Engineering</text>
+  <line x1="245" y1="310" x2="365" y2="310" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="305" y="335" text-anchor="middle" fill="#333333" font-size="13">Kafka 스트리밍</text>
+  <line x1="245" y1="355" x2="365" y2="355" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="305" y="380" text-anchor="middle" fill="#333333" font-size="13">실시간 파이프라인</text>
+  <line x1="245" y1="400" x2="365" y2="400" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="305" y="425" text-anchor="middle" fill="#333333" font-size="13">배치 처리</text>
+  <line x1="245" y1="445" x2="365" y2="445" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="305" y="470" text-anchor="middle" fill="#333333" font-size="13">데이터 저장소</text>
+
+  <!-- Left Column 3: 모델 학습 -->
+  <rect x="395" y="170" width="170" height="490" fill="#F4F8FF" stroke="#DCE6F4" stroke-width="1" rx="4"/>
+  <text x="480" y="200" text-anchor="middle" fill="#1E40AF" font-size="15" font-weight="700">모델 학습 / 평가</text>
+  <line x1="415" y1="215" x2="545" y2="215" stroke="#00A8E8" stroke-width="2"/>
+
+  <text x="480" y="245" text-anchor="middle" fill="#333333" font-size="13">Collaborative Filter</text>
+  <line x1="415" y1="265" x2="545" y2="265" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="480" y="290" text-anchor="middle" fill="#333333" font-size="13">Learning-to-Rank</text>
+  <line x1="415" y1="310" x2="545" y2="310" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="480" y="335" text-anchor="middle" fill="#333333" font-size="13">YOLO / Deep Learning</text>
+  <line x1="415" y1="355" x2="545" y2="355" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="480" y="380" text-anchor="middle" fill="#333333" font-size="13">KMeans Clustering</text>
+  <line x1="415" y1="400" x2="545" y2="400" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="480" y="425" text-anchor="middle" fill="#333333" font-size="13">모델 버전 관리</text>
+  <line x1="415" y1="445" x2="545" y2="445" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="480" y="470" text-anchor="middle" fill="#333333" font-size="13">A / B 테스트</text>
+
+  <!-- Bottom note on left card -->
+  <text x="310" y="630" text-anchor="middle" fill="#1E40AF" font-size="13" font-weight="700">PyTorch · Scikit-learn · LightGBM · ONNX</text>
+
+  <!-- ===== Connection arrow between cards ===== -->
+  <line x1="595" y1="380" x2="615" y2="380" stroke="#00A8E8" stroke-width="2.5"/>
+  <polygon points="615,380 608,376 608,384" fill="#00A8E8"/>
+
+  <!-- ===== RIGHT CARD: AI 서비스 / 운영 ===== -->
+  <rect x="610" y="100" width="560" height="580" fill="none" stroke="#B6C7E3" stroke-width="1.5" rx="6"/>
+  <text x="890" y="138" text-anchor="middle" fill="#333333" font-size="18" font-weight="700">AI 서비스 &amp; 운영</text>
+
+  <!-- Right Column 1: AI 서비스 -->
+  <rect x="635" y="170" width="170" height="490" fill="#F4F8FF" stroke="#DCE6F4" stroke-width="1" rx="4"/>
+  <text x="720" y="200" text-anchor="middle" fill="#1E40AF" font-size="15" font-weight="700">AI 서비스</text>
+  <line x1="655" y1="215" x2="785" y2="215" stroke="#00A8E8" stroke-width="2"/>
+
+  <text x="720" y="245" text-anchor="middle" fill="#333333" font-size="13">개인화 추천 API</text>
+  <line x1="655" y1="265" x2="785" y2="265" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="720" y="290" text-anchor="middle" fill="#333333" font-size="13">사용자 세그먼트</text>
+  <line x1="655" y1="310" x2="785" y2="310" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="720" y="335" text-anchor="middle" fill="#333333" font-size="13">이미지 객체 탐지</text>
+  <line x1="655" y1="355" x2="785" y2="355" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="720" y="380" text-anchor="middle" fill="#333333" font-size="13">이미지 품질 검수</text>
+  <line x1="655" y1="400" x2="785" y2="400" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="720" y="425" text-anchor="middle" fill="#333333" font-size="13">수요 예측</text>
+  <line x1="655" y1="445" x2="785" y2="445" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="720" y="470" text-anchor="middle" fill="#333333" font-size="13">이탈 위험 탐지</text>
+
+  <!-- Right Column 2: 운영 / 모니터링 -->
+  <rect x="815" y="170" width="160" height="490" fill="#F4F8FF" stroke="#DCE6F4" stroke-width="1" rx="4"/>
+  <text x="895" y="200" text-anchor="middle" fill="#1E40AF" font-size="15" font-weight="700">운영 / 모니터링</text>
+  <line x1="835" y1="215" x2="955" y2="215" stroke="#00A8E8" stroke-width="2"/>
+
+  <text x="895" y="245" text-anchor="middle" fill="#333333" font-size="13">실시간 추론 서버</text>
+  <line x1="835" y1="265" x2="955" y2="265" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="895" y="290" text-anchor="middle" fill="#333333" font-size="13">Re-ranking 엔진</text>
+  <line x1="835" y1="310" x2="955" y2="310" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="895" y="335" text-anchor="middle" fill="#333333" font-size="13">성능 모니터링</text>
+  <line x1="835" y1="355" x2="955" y2="355" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="895" y="380" text-anchor="middle" fill="#333333" font-size="13">로깅 / 알람</text>
+  <line x1="835" y1="400" x2="955" y2="400" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="895" y="425" text-anchor="middle" fill="#333333" font-size="13">자동 재학습</text>
+  <line x1="835" y1="445" x2="955" y2="445" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="895" y="470" text-anchor="middle" fill="#333333" font-size="13">대시보드</text>
+
+  <!-- Right Column 3: 인프라 -->
+  <rect x="985" y="170" width="160" height="490" fill="#F4F8FF" stroke="#DCE6F4" stroke-width="1" rx="4"/>
+  <text x="1065" y="200" text-anchor="middle" fill="#1E40AF" font-size="15" font-weight="700">인프라 / 연계</text>
+  <line x1="1005" y1="215" x2="1125" y2="215" stroke="#00A8E8" stroke-width="2"/>
+
+  <text x="1065" y="245" text-anchor="middle" fill="#333333" font-size="13">AWS / Cloud</text>
+  <line x1="1005" y1="265" x2="1125" y2="265" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="1065" y="290" text-anchor="middle" fill="#333333" font-size="13">On-Premise</text>
+  <line x1="1005" y1="310" x2="1125" y2="310" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="1065" y="335" text-anchor="middle" fill="#333333" font-size="13">GPU / Non-GPU</text>
+  <line x1="1005" y1="355" x2="1125" y2="355" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="1065" y="380" text-anchor="middle" fill="#333333" font-size="13">Docker / MSA</text>
+  <line x1="1005" y1="400" x2="1125" y2="400" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="1065" y="425" text-anchor="middle" fill="#333333" font-size="13">CI / CD 파이프라인</text>
+  <line x1="1005" y1="445" x2="1125" y2="445" stroke="#CCD7E8" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="1065" y="470" text-anchor="middle" fill="#333333" font-size="13">레거시 시스템 연계</text>
+
+  <!-- Bottom note on right card -->
+  <text x="890" y="630" text-anchor="middle" fill="#1E40AF" font-size="13" font-weight="700">FastAPI · Spring Boot · Kafka · Redis · MySQL · MSSQL</text>
+
+</svg>

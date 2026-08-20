@@ -1,11 +1,11 @@
 ---
 // All 메뉴 — GNB 우측 all-gnb 버튼으로 여닫는 전체 메뉴 오버레이(Figma "All 메뉴" 심볼, node 2932:22685).
 // 화면 전체(GNB 포함)를 덮는 최상위 레이어라 Layout.astro의 <body> 최상단에 둔다.
-// 2Depth 항목은 Figma 텍스트를 그대로 옮기지 않고 @config/route/routeMap.ts(route)를 그대로 사용한다 —
+// 2Depth 항목은 Figma 텍스트를 그대로 옮기지 않고 @config/route(route)를 그대로 사용한다 —
 // Gnb.astro/Navigation.astro와 동일한 단일 소스라 라우트가 바뀌어도 항상 최신 상태로 맞다.
 // (참고: Figma는 Company 2Depth에서 "News"가 빠져있지만, 실제 내비게이션 완전성을 위해
-// routeMap의 전체 children을 그대로 노출한다.)
-import {route} from '@config/route/routeMap.ts'
+// route의 전체 children을 그대로 노출한다.)
+import {route} from '@config/route'
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 ---
 

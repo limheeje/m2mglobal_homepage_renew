@@ -267,7 +267,7 @@ src/styles/css/main.css    # 컴파일 산출물 — git ignore, 직접 수정 �
 
 ## 9. 알려진 문서-코드 불일치 / TODO
 
-`CLAUDE.md` 자체에도 "⚠️ 위 표와 실제 코드 불일치 주의" 섹션이 있을 만큼, 문서가 코드 변경 속도를 못 따라간 부분이 있습니다. 이 README 작성 시점(2026-08-19) 기준으로 직접 확인한 불일치 목록:
+`CLAUDE.md` 자체에도 "⚠️ 위 표와 실제 코드 불일치 주의" 섹션이 있을 만큼, 문서가 코드 변경 속도를 못 따라간 부분이 있습니다. 이 README 최초 작성 시점(2026-08-19) 기준으로 직접 확인한 불일치 목록(2026-08-20 갱신 — `/404` 페이지 추가분 반영):
 
 - `/style-guide` 페이지 없음(파일 자체가 없음, `page-list.astro`에 죽은 링크만 존재).
 - `Icon.astro`는 `src/assets/**/*.svg` glob이 아니라 `public/images/icons/{name}`을 `<img src>`로 직접 로드.
@@ -284,3 +284,37 @@ src/styles/css/main.css    # 컴파일 산출물 — git ignore, 직접 수정 �
 ## 10. `@old/` 폴더
 
 구 사이트(`m2mglobal.co.kr`) 원본 HTML/CSS/JS/이미지 스냅샷. 신규 페이지 제작 시 콘텐츠·구조 근거 자료로만 참고하고 **여기 파일은 절대 수정하지 않습니다**. `config/route/index.ts`의 `routeMap`이 `@old/header.html`(구 GNB+사이트맵) 기준으로 신규/구 라우트 매핑을 기록해두었으니, "이 메뉴가 옛날엔 어디 있었는지" 찾을 땐 거기부터 보면 됩니다.
+
+---
+
+## 11. 배포 시 알아둘 것 — 404와 base(서브패스)
+
+`output: 'static'`이라 빌드 산출물은 순수 정적 파일 묶음이고, "매칭 안 되는 경로를 어떻게 처리할지"는 결국 **이 파일들을 서빙하는 바깥쪽 웹서버**(Nginx/Apache/IIS 등)의 몫입니다. 이 프로젝트에서 특히 헷갈리기 쉬운 지점 두 가지:
+
+### `outDir`과 `base`는 서로 다른 설정이다
+
+`astro.config.mjs`의 `base: env.PUBLIC_BUILD_URL`(`prod`에서 `/dist`)은 **페이지 안 링크·에셋 URL에 붙는 프리픽스**일 뿐, 빌드 산출물이 쌓이는 **물리적 폴더 경로**(`outDir`, 커스텀 설정 없어 기본값 `./dist/`)와는 무관합니다. 이름이 우연히 같아서(`base=/dist` vs 산출 폴더 `dist/`) 같은 개념으로 착각하기 쉬운데:
+
+- `src/pages/404.astro`는 `base` 값과 무관하게 **항상 `dist/404.html`에 그대로 생성**됩니다.
+- 나중에 `PUBLIC_BUILD_URL`을 빈 문자열(루트 서빙)로 바꿔도 이 파일 위치는 안 바뀝니다 — Astro 쪽에서 추가로 손댈 코드 없음.
+
+### 실제 404 응답 시 이 파일을 띄우는 건 인프라 설정
+
+Astro 개발 서버(`astro dev`)와 `astro preview`는 없는 경로 요청 시 자동으로 `404.astro`를 보여주지만, 이건 **로컬 개발용 편의 기능**입니다. 실제 배포 환경에서 브라우저가 이 페이지를 보려면 호스팅 서버가 "매칭 안 되는 요청 → `404.html` 서빙"으로 명시적으로 설정돼 있어야 합니다(Nginx `error_page 404 /dist/404.html;`, Apache `ErrorDocument 404 /dist/404.html`, IIS 커스텀 오류 페이지, S3/Netlify류의 Error document 설정 등). **이 설정은 Astro 코드 밖의 영역이라 이 저장소만 봐서는 안 보임** — 배포 담당자/인프라 쪽에 확인 필요.
+
+지금은 `/dist` 서브패스로 테스트 중이라 오류 페이지 경로도 `/dist/404.html`을 가리키게 되어 있을 텐데, **나중에 서브패스 없이 루트로 배포가 바뀌면 이 경로 설정값도 `/404.html`로 같이 바뀌어야 합니다** — `PUBLIC_BUILD_URL`을 바꾼다고 자동으로 따라가는 값이 아니니, 서브패스 제거 작업 시 체크리스트에 반드시 포함시킬 것.
+
+---
+
+## 12. 트러블슈팅 (과거에 실제로 겪은 문제)
+
+작업 중 비슷한 증상을 마주치면 아래부터 의심해볼 것 — 전부 이 저장소에서 실제로 발생했던 버그입니다(`CLAUDE.md` 작업 로그에 원본 기록).
+
+| 증상 | 원인 | 해결 |
+| --- | --- | --- |
+| GNB 등 링크가 `undefined/company/info`처럼 깨짐 | `config/env/.env.dev`·`.env.prod` 파일명이 Vite 자동 로딩 규칙(`.env.development`/`.env.production`)과 안 맞아 `import.meta.env.PUBLIC_BUILD_URL`이 항상 `undefined` | `astro.config.mjs`에서 `loadEnv(mode, './config/env', '')`로 직접 읽어 `vite.define`으로 강제 주입(현재 코드에 이미 반영됨, [2. 환경 변수](#2-환경-변수-configenv) 참고) |
+| 특정 서브페이지에서 2Depth `Navigation` 탭이 통째로 안 보임 | `route.find(item => item.href === 자기_자신의_href)`로 조회 — `Route.href`는 그룹 대표(보통 첫 child) href라 자기 자신과 다르면 매칭 실패, 빈 값 전달 | `route.find()`는 항상 **그룹 최상위 href**로 조회([4. 라우팅](#4-라우팅-configroute) 참고). 과거 9개 페이지에서 동시에 발생했던 이력 있음 — 새 페이지 만들 때마다 재확인 |
+| 특정 페이지에서 `window` 스크롤이 항상 0에 멈춤(스크롤이 아예 안 됨) | `html, body { height: 100% }` + 다른 곳의 `overflow-x: hidden`이 만나면 body가 고정 높이 스크롤 컨테이너가 되어버림 | `height: 100%` → `min-height: 100%`로 변경(`Layout.astro`의 scoped `<style>`, `base/_reset.scss` 양쪽 다 확인 — Astro scoped 스타일이라 한쪽만 고치면 안 먹음) |
+| "맨 위로 가기" 버튼이 안 보이거나 클릭이 안 먹음 | CSS 포지셔닝과 클릭 훅(`scroll-to-top.ts`)만 있고 실제 `<button>` 엘리먼트 자체가 없던 상태 | `Layout.astro`에 `.layout__top-btn` 버튼 엘리먼트 직접 추가 — **새 페이지에서 페이지마다 다시 추가하지 말 것**(전역 렌더됨) |
+| SCSS를 고쳤는데 브라우저에 반영이 안 됨 | VSCode **Watch Sass**가 꺼져 있어서 `src/styles/css/main.css`가 그대로 | 하단 상태바에서 **Watch Sass** 클릭해서 켜기(꺼진 채로 저장해봤자 컴파일 안 됨) — `npm install`에 `sass` 패키지를 추가하는 식으로 "해결"하지 말 것(Astro 자체 vite-sass와 이중 컴파일 충돌 남) |
+| `color()`/`spacing()` 등 SCSS 함수를 썼는데 컴파일 경고(`정의되지 않은 토큰`)만 뜨고 스타일이 안 나옴 | 존재하지 않는 토큰 문자열을 넘김 — `abstracts/_functions.scss`의 `color()`는 매핑 안 되는 값이면 컴파일을 안 죽이고 `@warn` + `null` 반환(해당 속성만 조용히 생략) | Watch Sass 출력 패널의 경고 로그 확인, `_functions.scss`의 `color()` 함수 안 매핑 리스트에서 정확한 토큰명 문자열 확인 후 사용 |

@@ -1,295 +1,233 @@
-// 라우트 맵 — 신규 GNB(src/components/layout/Gnb.astro) 구조를 기준으로, @old/header.html에 있던
-// 구버전 GNB(및 사이트맵 레이어)를 어디로 옮길지 매핑해둔다.
-// @old/header.html이 old 사이트의 실제 GNB 마크업(<nav class="gnb-area">)과 전체메뉴
-// 사이트맵(#sitemap, 3-depth까지)을 전부 포함하고 있어서, 이 파일이 old 쪽 라벨/구조의 근거다.
+// 라우트 정의 — GNB 2Depth(Gnb.astro), 전체메뉴(AllMenu.astro), 서브페이지 2Depth 탭(Navigation.astro),
+// 개발용 전체 페이지 목록(page-list.astro)이 전부 이 배열 하나를 소스로 쓴다. 새 메뉴를 추가/변경할
+// 땐 여기 한 곳만 고치면 위 화면 전부에 자동 반영됨.
 //
-// status 값:
-//   'existing' — old와 신규 GNB에 라벨/개념이 사실상 동일 (경로 표기만 .html → clean path로 변경)
-//   'renamed'  — old와 신규 사이의 라벨이 바뀌었거나 메뉴 계층(부모/깊이)이 바뀐 항목
-//   'new'      — old GNB에는 없던, 신규 GNB에서 새로 생긴 항목
-//   'dropped'  — old GNB에는 있었는데 신규 GNB 어디에도 대응 항목이 없는 항목. 신규 GNB 기준으로
-//                불필요하다고 판단해 routeMap 자체에서 제거했다(IT Consulting/IT Management/
-//                Benefit/Partner) — 필요해지면 git 이력에서 복원.
-//   'merged'   — old는 3-depth(사이트맵) 개별 메뉴였지만, 신규 GNB는 2-depth까지만 있어서
-//                하나의 상위 페이지 안 콘텐츠 섹션으로 합쳐진 것으로 추정되는 항목
+// 사용 예:
+//   import {route} from '@config/route'
+//   const localNavigation = route.find((item) => item.href === '/company/info') // ⚠️ 그룹 최상위 href로 조회
+//   <a href={`${PUBLIC_BUILD_URL}${item.href}`}>{item.koLabel}</a>
+//
+// (예전엔 이 파일 옆에 링크 조회용 `route: Record<string,string>` 헬퍼가 있는 index.ts와, 실제 UI가
+// 쓰는 이 `Route[]` 구조가 담긴 routeMap.ts로 파일이 2개 나뉘어 있었다 — 이름이 둘 다 "routeMap"이라
+// 헷갈리는데 실제로는 이 파일(당시 routeMap.ts)만 24개 파일에서 쓰이고 있었고, 옛 index.ts의
+// Record 헬퍼는 어디서도 import되지 않는 죽은 코드였음. 하나로 합치면서 안 쓰이던 헬퍼는 제거하고,
+// 실제 관례대로 링크는 `PUBLIC_BUILD_URL + item.href` 문자열 접합으로 만든다 — Gnb.astro 등 기존
+// 호출부 전부 이 방식.)
 
-export type RouteStatus = 'existing' | 'renamed' | 'new' | 'dropped' | 'merged'
-
-export interface RouteEntry {
+export interface RouteChildren {
+  /** Navigation.astro의 activeMenuId 매칭용 */
+  id: string
+  /** 실제 노출 라벨(국문) */
+  koLabel: string
+  /** 영문 라벨(내부용, 현재 화면 노출엔 안 씀) */
   label: string
-  /** 신규 사이트 경로 (Gnb.astro의 href와 동일 값이어야 함). dropped/merged는 신규 경로가 없을 수 있음 */
-  path?: string
-  /** @old/ 기준 원본 경로 (해시 앵커 포함, 예: @old/aboutus/about_us.html#benefit) */
-  oldPath?: string
-  status: RouteStatus
-  /** renamed/new/dropped/merged 판단 근거, 확인 필요 사항 */
-  note?: string
-  children?: RouteEntry[]
+  href: string
+}
+export interface Route {
+  label: string
+  /** 그룹 대표 href(보통 첫 child와 동일) — GNB 1Depth 링크, `route.find()` 조회 키.
+   *  ⚠️ 새 페이지에서 route.find()는 항상 이 그룹 최상위 href로 조회할 것 — 페이지 자기 자신의
+   *  href를 넣으면 2Depth 서브 내비게이션(Navigation.astro)이 빈 값을 받아 사라진다(과거 9개
+   *  페이지에서 동시에 발생했던 버그, CLAUDE.md 작업 로그 참고). */
+  href: string
+  children: RouteChildren[]
 }
 
-export const routeMap: RouteEntry[] = [
+// 각 그룹/항목 옆 주석은 @old/header.html(구 GNB + 3-depth 사이트맵) 대비 신규 구조가 어떻게
+// 바뀌었는지 기록한 것 — 런타임에서는 안 쓰지만 "이 메뉴가 옛날엔 뭐였는지" 추적할 때 참고용으로
+// 남겨둔다. 상태 구분: existing(라벨·개념 동일, 경로만 clean path화) / renamed(라벨·계층 변경) /
+// new(구 GNB에 없던 신규) / merged(구 3-depth 개별 메뉴가 신규 2-depth 페이지 콘텐츠 섹션으로
+// 병합된 것으로 추정). old GNB의 IT Consulting/IT Management/Benefit/Partner는 신규 GNB에 대응
+// 항목이 없어(dropped) 아예 뺐음 — 필요해지면 git 이력에서 복원.
+//
+// 참고: 최상위 Home(path '/')은 이 배열에 없음 — GNB 로고 링크(Gnb.astro)에 `${PUBLIC_BUILD_URL}/`로
+// 직접 하드코딩되어 있고, /privacy·/404·/page-list 같은 유틸리티 라우트도 GNB 2Depth 구조가
+// 아니라서 이 배열 밖(각 페이지 파일 자체가 라우트 정의)에 있다.
+export const route: Route[] = [
   {
-    label: 'Home',
-    path: '/',
-    oldPath: '@old/index.html',
-    status: 'existing'
-  },
-
-  // ------------------------------------------------------------------
-  // old "About us" → 신규 "Company"
-  // ------------------------------------------------------------------
-  {
+    // old 최상위 라벨은 "About us" — 신규는 "Company"로 변경(renamed)
     label: 'Company',
-    path: '/company',
-    oldPath: '@old/header.html (About us)',
-    status: 'renamed',
-    note: 'old 최상위 라벨은 "About us" — 신규는 "Company"로 변경',
+    href: '/company/info',
     children: [
       {
+        id: 'MAP-COMPANY-ID-1',
+        koLabel: 'ABOUT M2MGLOBAL',
         label: 'Company Info',
-        path: '/company/info',
-        oldPath: '@old/aboutus/about_us.html',
-        status: 'existing'
+        href: '/company/info' // old: @old/aboutus/about_us.html (existing)
       },
       {
-        label: 'Address',
-        path: '/company/address',
-        oldPath: '@old/aboutus/about_us.html#headquartersAddress',
-        status: 'renamed',
-        note: 'old 라벨 "Headquarters Address" → 신규 "Address"'
-      },
-      {
-        label: 'History',
-        path: '/company/history',
-        oldPath: '@old/aboutus/about_us.html#history',
-        status: 'existing'
-      },
-      {
+        id: 'MAP-COMPANY-ID-2',
+        koLabel: 'CEO 인사말',
         label: "CEO's Message",
-        path: '/company/ceo-message',
-        status: 'new',
-        note: 'old GNB에 없던 신규 항목. about_us.html 회사개요 표에 "대표이사" 이름 필드는 있지만(companyInfo 섹션) 별도 인사말 콘텐츠는 없었음 — 내용이 같다고 보기엔 근거가 약해서 new로 유지'
+        href: '/company/ceo-message' // old GNB에 없던 신규 항목(new). about_us.html 회사개요 표에
+        // "대표이사" 이름 필드는 있지만 별도 인사말 콘텐츠는 없었음
       },
       {
+        id: 'MAP-COMPANY-ID-3',
+        koLabel: '회사 연혁',
+        label: 'History',
+        href: '/company/history' // old: @old/aboutus/about_us.html#history (existing)
+      },
+      {
+        id: 'MAP-COMPANY-ID-4',
+        koLabel: '인재 채용',
         label: 'Careers',
-        path: '/company/careers',
-        status: 'new',
-        note: 'old GNB에 없던 신규 항목. about_us.html benefit 섹션에 "인재추천"(추천 채용 포상금) 항목은 있지만 별도 채용 페이지는 아니었음 — 내용이 같다고 보기엔 근거가 약해서 new로 유지'
+        href: '/company/careers' // old GNB에 없던 신규 항목(new). benefit 섹션 "인재추천"(추천 채용
+        // 포상금)과는 다른 별도 채용 페이지
       },
       {
+        id: 'MAP-COMPANY-ID-5',
+        koLabel: 'News',
         label: 'News',
-        path: '/company/news',
-        status: 'new',
-        note: 'old GNB/콘텐츠 어디에도 대응 근거 없음'
+        href: '/company/news' // old GNB/콘텐츠 어디에도 대응 근거 없음(new)
       },
       {
+        id: 'MAP-COMPANY-ID-6',
+        koLabel: '위치 및 연락처',
+        label: 'Address',
+        href: '/company/address' // old: about_us.html#headquartersAddress (renamed, "Headquarters
+        // Address" → "Address")
+      },
+      {
+        id: 'MAP-COMPANY-ID-7',
+        koLabel: '사업 문의',
         label: 'Contact us',
-        path: '/company/contact-us',
-        oldPath: '@old/aboutus/about_us.html#headquartersAddress (사업 문의 항목)',
-        status: 'renamed',
-        note: 'old에는 별도 메뉴가 아니라 "Headquarters Address" 섹션 안 dt "사업 문의"(전화번호와 같은 목록) 항목으로만 있었음 — 신규에서 Address와 분리돼 별도 nav 항목으로 승격된 것으로 추정. 같은 내용이라 old 근거를 남김'
+        href: '/company/contact-us' // old: about_us.html#headquartersAddress 안 "사업 문의" dt
+        // 항목이 별도 nav 항목으로 승격(renamed)
       }
     ]
   },
-
-  // ------------------------------------------------------------------
-  // old "Business" → 신규 "AI Engine" / "Robot Logistics" / "e-Commerce"(일부)로 분리 승격.
-  // old "Business" 하위의 IT Consulting / IT Management, old "About us" 하위의 Benefit,
-  // old 홈 본문의 Partner(파트너사 로고 섹션)는 신규 GNB에 대응 항목이 없어 라우트 맵에서 제외했다.
-  // ------------------------------------------------------------------
   {
+    // old에는 "AI Engine"이라는 최상위 메뉴가 없었음 — old "Business > AI Engineering for Real
+    // Business"가 최상위로 승격된 것으로 추정(renamed)
     label: 'AI Engine',
-    path: '/ai-engine',
-    status: 'renamed',
-    note: 'old에는 "AI Engine"이라는 최상위 메뉴가 없었음 — old "Business > AI Engineering for Real Business"가 최상위로 승격된 것으로 추정',
+    href: '/ai-engine/machine-learning',
     children: [
       {
+        id: 'MAP-AI-ENGINE-ID-1',
+        koLabel: 'AI & Machine Learning',
         label: 'AI & Machine Learning',
-        path: '/ai-engine/machine-learning',
-        oldPath: '@old/business/ai-solution.html',
-        status: 'renamed',
-        note: 'old 라벨 "AI Engineering for Real Business" → 신규 "AI & Machine Learning". ai-solution-old.html(구판)도 있으니 ai-solution.html(신판) 기준으로 이관'
+        href: '/ai-engine/machine-learning' // old: @old/business/ai-solution.html, 라벨 "AI
+        // Engineering for Real Business" → "AI & Machine Learning"(renamed)
       },
       {
+        id: 'MAP-AI-ENGINE-ID-2',
+        koLabel: 'AI Commerce',
         label: 'AI Commerce',
-        path: '/ai-engine/ai-commerce',
-        oldPath: '@old/business/ai-solution.html (02 AI 커머스 플랫폼 섹션)',
-        status: 'renamed',
-        note: 'old에는 별도 메뉴가 아니라 ai-solution.html 안 6개 하위 섹션(01 AI 추천 플랫폼 / 02 AI 커머스 플랫폼 / 03 스마트 물류 시스템 / 04 수요 예측 시스템 / 05 고객 행동 분석 / 06 AI 이미지 분석) 중 "02 AI 커머스 플랫폼"으로만 존재 — 신규에서 AI & Machine Learning과 분리돼 별도 nav 항목으로 승격된 것으로 추정. 같은 내용이라 old 근거를 남김'
+        href: '/ai-engine/ai-commerce' // old: ai-solution.html 안 "02 AI 커머스 플랫폼" 섹션이
+        // 별도 nav 항목으로 승격(renamed)
       }
     ]
   },
   {
+    // old에는 "Robot Logistics"라는 최상위 메뉴가 없었음 — old "Business > Robotic Logistics /
+    // Smart Factory"가 최상위로 승격된 것으로 추정(renamed)
     label: 'Robot Logistics',
-    path: '/robot-logistics',
-    status: 'renamed',
-    note: 'old에는 "Robot Logistics"라는 최상위 메뉴가 없었음 — old "Business > Robotic Logistics / Smart Factory"가 최상위로 승격된 것으로 추정',
+    href: '/robot-logistics/overview',
     children: [
       {
+        id: 'MAP-ROBOT-LOGISTICS-ID-1',
+        koLabel: 'Robot Logistics',
         label: 'Robot Logistics',
-        path: '/robot-logistics/overview',
-        oldPath: '@old/business/agv.html',
-        status: 'renamed',
-        note: 'old 라벨 "Robotic Logistics" → 신규 "Robot Logistics". agv_0727.html(수정판)도 있음, 신판 기준 확인 필요'
+        href: '/robot-logistics/overview' // old: @old/business/agv.html, 라벨 "Robotic Logistics"
+        // → "Robot Logistics"(renamed)
       },
       {
+        id: 'MAP-ROBOT-LOGISTICS-ID-2',
+        koLabel: 'Smart Factory',
         label: 'Smart Factory',
-        path: '/robot-logistics/smart-factory',
-        oldPath: '@old/business/mes.html',
-        status: 'existing',
-        note: 'old 라벨 그대로 "Smart Factory" (old에서는 실제 파일이 mes.html/MES였고, 부모만 Business → Robot Logistics로 변경)'
+        href: '/robot-logistics/smart-factory' // old: @old/business/mes.html, 라벨 그대로 "Smart
+        // Factory"(existing, 부모만 Business → Robot Logistics로 변경)
       }
     ]
   },
-  // ------------------------------------------------------------------
-  // old "Business > e-Commerce" + old "Solution > Commerce Platform > M2M-eMarketPlace"
-  // → 신규 최상위 "e-Commerce"로 재편
-  // ------------------------------------------------------------------
   {
+    // old에는 "e-Commerce"라는 최상위 메뉴가 없었음 — old "Business > e-Commerce"가 최상위로
+    // 승격된 것으로 추정(renamed). old "Solution > Commerce Platform > M2M-eMarketPlace"도 여기로 재편
     label: 'e-Commerce',
-    path: '/e-commerce',
-    status: 'renamed',
-    note: 'old에는 "e-Commerce"라는 최상위 메뉴가 없었음 — old "Business > e-Commerce"가 최상위로 승격된 것으로 추정',
+    href: '/e-commerce/commerce-technology',
     children: [
       {
+        id: 'MAP-E-COMMERCE-ID-1',
+        koLabel: 'B2C Commerce',
         label: 'Commerce Technology',
-        path: '/e-commerce/commerce-technology',
-        oldPath: '@old/business/ecommerce.html',
-        status: 'renamed',
-        note: 'old 라벨 "e-Commerce"(Business 하위) → 신규 "Commerce Technology"'
+        href: '/e-commerce/commerce-technology' // old: @old/business/ecommerce.html, 라벨
+        // "e-Commerce"(Business 하위) → "Commerce Technology"(renamed)
       },
       {
+        id: 'MAP-E-COMMERCE-ID-2',
+        koLabel: 'B2B Commerce',
         label: 'B2B Commerce',
-        path: '/e-commerce/b2b-commerce',
-        oldPath: '@old/business/ecommerce.html (이커머스 비즈니스 지원 카드의 "B2B 지원" 항목)',
-        status: 'renamed',
-        note: 'old에는 별도 메뉴가 아니라 ecommerce.html 안 "유연한 이커머스 비즈니스 지원" 카드의 여러 지원 항목(Promotion/Coupon/B2E/B2B) 중 하나로만 언급됨 — 신규에서 별도 nav 항목으로 승격된 것으로 추정. 같은 내용이라 old 근거를 남김'
+        href: '/e-commerce/b2b-commerce' // old: ecommerce.html "유연한 이커머스 비즈니스 지원" 카드의
+        // 여러 지원 항목(Promotion/Coupon/B2E/B2B) 중 "B2B 지원"이 별도 nav 항목으로 승격(renamed)
       },
       {
+        id: 'MAP-E-COMMERCE-ID-3',
+        koLabel: 'Auction',
         label: 'Marketplace',
-        path: '/e-commerce/marketplace',
-        oldPath: '@old/solution/emp.html',
-        status: 'renamed',
-        note: 'old 사이트맵 기준 "M2M-eMarketPlace"(Solution > Commerce Platform 3-depth 하위)가 신규에서는 e-Commerce 최상위 2-depth "Marketplace"로 승격/이동'
+        href: '/e-commerce/marketplace' // old: @old/solution/emp.html "M2M-eMarketPlace"(Solution >
+        // Commerce Platform 3-depth 하위)가 e-Commerce 최상위 2-depth로 승격/이동(renamed)
       }
     ]
   },
-
-  // ------------------------------------------------------------------
-  // old "Solution" → 신규 "Solutions" (라벨은 거의 동일, 3-depth 세부 항목은 병합된 것으로 추정)
-  // ------------------------------------------------------------------
   {
+    // 최상위 라벨은 old "Solution" 그대로(단수→복수만 차이, existing). old 사이트맵은 3-depth까지
+    // 있었는데 신규 GNB는 2-depth뿐이라, 3-depth 항목들은 상위 Platform 페이지 안 콘텐츠 섹션으로
+    // 합쳐진 것으로 추정(merged) — 실제 이관 시 개별 페이지 유지 여부는 재확인 필요했던 부분.
     label: 'Solutions',
-    path: '/solutions',
-    oldPath: '@old/header.html (Solution)',
-    status: 'existing',
-    note: '최상위 라벨은 old "Solution" 그대로(단수→복수만 차이). old 사이트맵은 3-depth까지 있었는데 신규 GNB는 2-depth뿐이라, 3-depth 항목들은 상위 Platform 페이지 안 콘텐츠 섹션으로 합쳐진 것으로 추정 — 실제 이관 시 개별 페이지 유지 여부 재확인 필요.',
+    href: '/solutions/commerce-platform',
     children: [
       {
+        id: 'MAP-SOLUTIONS-ID-1',
+        koLabel: 'Commerce Platform',
         label: 'Commerce Platform',
-        path: '/solutions/commerce-platform',
-        oldPath: '@old/solution/emall.html',
-        status: 'existing',
-        note: 'old 하위 3-depth: M2M-eMall(emall.html), M2M-MultiMall(multimall.html), M2M-ePRO(epro.html), M2M-ImageTag(imagetag.html), M2M-eCCP(eccp.html) — M2M-eMarketPlace(emp.html)만 위 e-Commerce>Marketplace로 이동, 나머지는 이 페이지로 병합 추정',
-        children: [
-          {label: 'M2M-eMall', oldPath: '@old/solution/emall.html', status: 'merged'},
-          {label: 'M2M-MultiMall', oldPath: '@old/solution/multimall.html', status: 'merged'},
-          {label: 'M2M-ePRO', oldPath: '@old/solution/epro.html', status: 'merged'},
-          {label: 'M2M-ImageTag', oldPath: '@old/solution/imagetag.html', status: 'merged'},
-          {label: 'M2M-eCCP', oldPath: '@old/solution/eccp.html', status: 'merged'}
-        ]
+        href: '/solutions/commerce-platform' // old: @old/solution/emall.html(existing). 구 3-depth
+        // M2M-eMall(emall.html)/M2M-MultiMall(multimall.html)/M2M-ePRO(epro.html)/
+        // M2M-ImageTag(imagetag.html)/M2M-eCCP(eccp.html)가 전부 이 페이지로 병합 추정(merged)
       },
       {
+        id: 'MAP-SOLUTIONS-ID-2',
+        koLabel: 'Logistics Platform',
         label: 'Logistics Platform',
-        path: '/solutions/logistics-platform',
-        oldPath: '@old/solution/tms.html',
-        status: 'existing',
-        note: 'old 하위 3-depth: M2M-TMS(tms.html), M2M-WMS(wms.html), M2M-CVO(cvo.html) — 전부 이 페이지로 병합 추정',
-        children: [
-          {label: 'M2M-TMS', oldPath: '@old/solution/tms.html', status: 'merged'},
-          {label: 'M2M-WMS', oldPath: '@old/solution/wms.html', status: 'merged'},
-          {label: 'M2M-CVO', oldPath: '@old/solution/cvo.html', status: 'merged'}
-        ]
+        href: '/solutions/logistics-platform' // old: @old/solution/tms.html(existing). 구 3-depth
+        // M2M-TMS(tms.html)/M2M-WMS(wms.html)/M2M-CVO(cvo.html)가 전부 이 페이지로 병합 추정(merged)
       },
       {
+        id: 'MAP-SOLUTIONS-ID-3',
+        koLabel: 'Trade Platform',
         label: 'Trade Platform',
-        path: '/solutions/trade-platform',
-        oldPath: '@old/solution/etrade.html',
-        status: 'existing',
-        note: 'old 하위 3-depth: M2M-eTrade(etrade.html), M2M-FTA(fta.html), M2M-eDrawback(edrawback.html) — 전부 이 페이지로 병합 추정',
-        children: [
-          {label: 'M2M-eTrade', oldPath: '@old/solution/etrade.html', status: 'merged'},
-          {label: 'M2M-FTA', oldPath: '@old/solution/fta.html', status: 'merged'},
-          {label: 'M2M-eDrawback', oldPath: '@old/solution/edrawback.html', status: 'merged'}
-        ]
+        href: '/solutions/trade-platform' // old: @old/solution/etrade.html(existing). 구 3-depth
+        // M2M-eTrade(etrade.html)/M2M-FTA(fta.html)/M2M-eDrawback(edrawback.html)가 전부 이
+        // 페이지로 병합 추정(merged)
       },
       {
+        id: 'MAP-SOLUTIONS-ID-4',
+        koLabel: 'eLiveStock Platform',
         label: 'eLiveStock Platform',
-        path: '/solutions/elivestock-platform',
-        status: 'new',
-        note: 'old에 축산(livestock) 관련 페이지 없음 — 신규 GNB에서 새로 생긴 솔루션 라인'
+        href: '/solutions/elivestock-platform' // old에 축산(livestock) 관련 페이지 없음 — 신규
+        // GNB에서 새로 생긴 솔루션 라인(new)
       }
     ]
   },
-
-  // ------------------------------------------------------------------
-  // old "Works" → 신규 "Project"
-  // ------------------------------------------------------------------
   {
+    // old 최상위 라벨은 "Works" — 신규는 "Project"로 변경(renamed)
     label: 'Project',
-    path: '/project',
-    oldPath: '@old/header.html (Works)',
-    status: 'renamed',
-    note: 'old 최상위 라벨은 "Works" — 신규는 "Project"로 변경',
+    href: '/project/reference',
     children: [
       {
+        id: 'MAP-PROJECT-ID-1',
+        koLabel: 'Reference',
         label: 'Reference',
-        path: '/project/reference',
-        oldPath: '@old/works/works.html',
-        status: 'renamed',
-        note: 'old 라벨 "Major Clients" → 신규 "Reference"로 추정(확정 아님, 확인 필요). works_251224.html(개정판) 존재, 신판 기준 확인 필요'
+        href: '/project/reference' // old: @old/works/works.html, 라벨 "Major Clients" → "Reference"로
+        // 추정(renamed, 확정 아님 — 확인 필요)
       },
       {
+        id: 'MAP-PROJECT-ID-2',
+        koLabel: 'Specialized Outcomes',
         label: 'Specialized Outcomes',
-        path: '/project/specialized-outcomes',
-        oldPath: '@old/works/works.html#portfolio',
-        status: 'renamed',
-        note: 'old 라벨 "Portfolio"(works.html 내 앵커 섹션) → 신규 "Specialized Outcomes"로 추정(확정 아님, 확인 필요)'
+        href: '/project/specialized-outcomes' // old: @old/works/works.html#portfolio, 라벨
+        // "Portfolio"(앵커 섹션) → "Specialized Outcomes"로 추정(renamed, 확정 아님 — 확인 필요)
       }
     ]
   }
 ]
-
-// path 기준으로 평탄화해서 조회할 때 쓰는 헬퍼 — 라우팅 미들웨어/리다이렉트 매핑 등에서 활용.
-export function flattenRoutes(entries: RouteEntry[] = routeMap): RouteEntry[] {
-  const children = (entry: RouteEntry) => (entry.children ? flattenRoutes(entry.children) : [])
-  return entries.flatMap((entry) => [entry, ...children(entry)])
-}
-
-// 사람 확인이 필요한 항목만 모아서 보여준다(new/dropped/merged/renamed — existing만 제외).
-export function getRoutesNeedingReview(entries: RouteEntry[] = routeMap): RouteEntry[] {
-  return flattenRoutes(entries).filter((entry) => entry.status !== 'existing')
-}
-
-// ---------------------------------------------------------------------------
-// route — 프론트에서 실제로 링크를 만들 때 쓰는 조회용 맵.
-// key는 routeMap의 path 그대로(예: '/company/ceo-message'), value는 env(PUBLIC_BUILD_URL,
-// config/env/.env.{dev,prod} — astro.config.mjs의 base와 동일 값)를 앞에 붙인 완성 URL이다.
-// PUBLIC_BUILD_URL은 dev에서 빈 문자열, prod에서 '/dist'라 base가 바뀌어도(배포 경로가
-// 서브패스로 바뀌어도) 이 값만 보고 링크를 만들면 코드 수정 없이 따라간다.
-//
-// 사용 예:
-//   import {route} from '@config/route'
-//   <a href={route['/company/ceo-message']}>CEO's Message</a>
-// ---------------------------------------------------------------------------
-
-function toBuildUrl(path: string): string {
-  const base = (import.meta.env.PUBLIC_BUILD_URL ?? '').replace(/\/$/, '')
-  return `${base}${path}` || '/'
-}
-
-export const route: Record<string, string> = Object.fromEntries(
-  flattenRoutes()
-    .filter((entry): entry is RouteEntry & {path: string} => Boolean(entry.path))
-    .map((entry) => [entry.path, toBuildUrl(entry.path)])
-)

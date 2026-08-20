@@ -1,13 +1,13 @@
 ---
 // 전체 페이지 목록 (/page-list) — 실 서비스 라우트 아님, 개발/검수 전용.
-// @config/route/routeMap.ts(route) 기반으로 자동 생성되므로 라우트가 추가/변경돼도 따로 손댈 필요 없음
-// — 새 1Depth/2Depth를 추가할 땐 routeMap.ts에만 등록하면 여기도 같이 반영된다.
+// @config/route(route) 기반으로 자동 생성되므로 라우트가 추가/변경돼도 따로 손댈 필요 없음
+// — 새 1Depth/2Depth를 추가할 땐 config/route/index.ts에만 등록하면 여기도 같이 반영된다.
 // 링크는 검수 중 원래 보던 페이지를 잃지 않도록 전부 새 탭(target=_blank)으로 연다.
 import Layout from '~/layouts/SubLayout.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
-import {route} from '@config/route/routeMap.ts'
+import {route} from '@config/route'
 
-// routeMap에 없는 유틸리티/공용 페이지 (2Depth 없음)
+// route에 없는 유틸리티/공용 페이지 (2Depth 없음)
 const etcPages = [
   {label: '메인', href: '/'},
   {label: '개인정보처리방침', href: '/privacy'},
@@ -32,7 +32,7 @@ const totalPages = groups.reduce((sum, g) => sum + g.children.length, 0)
       <div class="innerWrap">
         <TitleMain
           title="전체 페이지 목록"
-          description="실 서비스 라우트가 아닌 개발/검수용 페이지입니다. 1Depth/2Depth 구조는 routeMap.ts를 그대로 반영하며, 링크는 모두 새 탭으로 열립니다."
+          description="실 서비스 라우트가 아닌 개발/검수용 페이지입니다. 1Depth/2Depth 구조는 config/route/index.ts를 그대로 반영하며, 링크는 모두 새 탭으로 열립니다."
         />
 
         <p class="page-list__summary">

@@ -151,6 +151,7 @@ import {route} from '@config/route'
 | `/project/specialized-outcomes` | `pages/project/specialized-outcomes/index.astro` | Project | Figma 4개 프레임을 앵커탭 하나로 통합 |
 | `/privacy` | `pages/privacy/index.astro` | – | 개인정보처리방침(버전별 문서 리스트, 실 PDF는 외부 링크) |
 | `/page-list` | `pages/page-list.astro` | – | **실 서비스 라우트 아님** — `routeMap` 기반 전체 페이지 목록 자동 생성, 검수용. 새 라우트는 `routeMap.ts`에만 등록하면 자동 반영 |
+| `/404` | `pages/404.astro` | – | **Astro 예약 경로** — 파일명이 곧 라우트 규칙(Astro가 자동 인식, `routeMap.ts` 등록 불필요/불가). Figma 디자인 없는 유틸리티 페이지라 `TitleMain` + `Button`만 조합. **자동 리다이렉트 없음** — "홈으로 가기" 버튼만 제공(사용자 확인 후 결정된 사양, 아래 [11. 배포 시 알아둘 것](#11-배포-시-알아둘-것--404와-base서브패스) 참고) |
 
 > `CLAUDE.md`가 언급하는 `/style-guide`(컴포넌트 검수용 페이지)는 **현재 코드베이스에 실제로 없습니다**(파일 없음, `page-list.astro`의 `etcPages`에 링크만 남아 있는 죽은 링크). 새로 만들거나 CLAUDE.md 쪽을 정정해야 함.
 
@@ -212,7 +213,8 @@ src/styles/scss/
   layout/                 # _gnb.scss, _footer.scss, _top-btn.scss
   page/                    # 라우트 1Depth 단위로 1파일(_company.scss, _ai-engine.scss, _e-commerce.scss,
                             # _robot-logistics.scss, _solutions.scss, _project.scss, _main.scss(메인 전용),
-                            # _page-list.scss, _privacy.scss) — 공용 컴포넌트로 못 커버하는 그 페이지 전용 마크업만
+                            # _page-list.scss, _privacy.scss, _error.scss(/404)) — 공용 컴포넌트로 못 커버하는
+                            # 그 페이지 전용 마크업만
   main.scss                # 진입점. 새 partial은 반드시 여기 @use로 등록해야 컴파일에 포함됨
 src/styles/css/main.css    # 컴파일 산출물 — git ignore, 직접 수정 금지. Layout.astro가 import
 ```

@@ -567,6 +567,7 @@
     padding: rem(36px) rem(20px);
     .rl__chip-row{
       flex-wrap: wrap;
+      gap: rem(7px);
     }
   }
   .rl__tech-banne .inner .tit{@include font('Body 24 R')}

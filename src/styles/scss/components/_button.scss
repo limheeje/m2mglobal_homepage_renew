@@ -69,6 +69,11 @@ $ICON_DOWNLOAD: '[data-type="download"]';
     &#{$VARIANT_DEFAULT}{
         background-color: color('Color/Black1');
         border-color: color('Color/Black 20');
+        &:disabled{
+            .b-tx{
+                color: color('Color/Black 20');
+            }
+        }
         .b-tx{
             color: color('Color/Black 100');
         }

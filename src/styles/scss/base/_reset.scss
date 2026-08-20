@@ -88,13 +88,13 @@ body {
   min-height: 100%;
   // 모바일 반응형 작업 중 개별 요소가 뷰포트보다 넓어지는 걸 놓치더라도 페이지 자체가 가로로
   // 스크롤되는 사고만은 항상 막는 안전장치 — 각 페이지에서 실제 원인(고정폭 요소 등)은 별도로 고친다.
-  overflow-x: hidden;
   font-family: "Pretendard", "Noto Sans KR", sans-serif, Helvetica, Arial;
   scroll-behavior: smooth;
   -webkit-text-size-adjust: none;
   -moz-text-size-adjust: none;
   text-size-adjust: none;
   -webkit-overflow-scrolling: touch;
+  word-break: keep-all;
 }
 
 img{
@@ -265,6 +265,11 @@ $grid-breakpoints: (
 // scroll-margin-top: GNB가 fixed(80px)라 앵커탭(.bs-tab-group) 클릭/스크롤 시 섹션 상단이
 // 고정 헤더 밑에 가려지는 것을 방지 — 헤더 높이만큼 여유를 두고 스크롤 정지시킨다.
 .g-section{margin-top: rem(80px);margin-bottom: rem(80px); scroll-margin-top: rem(120px);}
+@media only screen and (min-width: $breakpoint-md) {
+  // .g-section{
+  //   scroll-margin-top: rem(220px);
+  // }
+}
 
 .bt-noti-group{
     border-top: rem(1px) solid color('Color/Box/Border color');

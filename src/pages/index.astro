@@ -50,6 +50,9 @@ const mainIconSrc = (key: string) => {
 }
 
 // --- Section 1: Main slogan (4개) ---
+// href: Figma 목업 버튼 자체엔 실제 링크가 없어 슬라이드 내용에 맞는 사이트 내 페이지로 매핑했다
+// (슬라이드1 전반 소개→회사개요, 2 AI Engineering→AI&ML, 3 B2B 원자재거래→Trade Platform,
+// 4 AI Commerce/Hybrid Scoring→AI Commerce).
 const mainSlides = [
   {
     bg: 'slide1-bg',
@@ -597,6 +600,13 @@ const partnerLogoKeys = [
                   </div>
                 )}
               </div>
+              {/* Figma 실측(node 1714:29424 등 4개 슬라이드 전부): content-inner 좌측 하단 CTA —
+                   기존엔 마크업 누락으로 렌더링 안 되고 있었음(.ad-more CSS는 이미 있었음) */}
+              {slide.href && (
+                <a href={PUBLIC_BUILD_URL + slide.href} class="ad-more">
+                  Read More
+                </a>
+              )}
             </div>
           ))
         }

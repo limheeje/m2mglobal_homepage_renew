@@ -368,19 +368,26 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       align-items: stretch;
     }
     .biz-card-title {
-      // 부모(.biz-card)가 flex-column + align-items:stretch라 block이면 카드 폭 100%를 그대로
-      // 채워서 알약(pill)이 너무 길어 보였다 — inline-flex + align-self:center로 내용 크기만큼만
-      // 잡고 가운데로 보내고, 안쪽 텍스트도 flex로 중앙 정렬한다. 패딩도 기존 대비 80%로 줄인다.
-      display: inline-flex;
+      // Figma 실측(node 1746:29967): 카드 폭(351px) 그대로 꽉 채우는 pill이고 텍스트는
+      // white-space:nowrap 한 줄 고정 — 351px면 "지능형 Robot Logistics"도 한 줄로 들어간다.
+      // (이전엔 inline-flex+align-self:center로 내용 크기만큼만 줄여놨었는데 Figma 재검증 결과
+      // 오히려 폭이 좁아져 2줄로 줄바꿈되면서 카드가 늘어나 하단 Read More 버튼과 겹치는
+      // 원인이었다 — w-full + nowrap으로 되돌린다.)
+      display: flex;
       align-items: center;
       justify-content: center;
-      align-self: center;
-      border: rem(1px) dashed color('Color/Box/Border color');
+      width: 100%;
       border-radius: rem(240px);
-      padding: rem(24px) rem(29px);
+      padding: rem(30px) rem(36px);
       text-align: center;
+      white-space: nowrap;
       color: color('Color/White');
       @include font('Body 24 R');
+      border-width: rem(1px);
+      border-style: dashed;
+      border-color: color('Color/Box/Border color');
+      dashes: 2, 2;
+
     }
     .biz-card-desc {
       margin-top: rem(4px);
@@ -397,6 +404,7 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       color: color('Color/White');
       @include font('Body 16 R');
       min-height: rem(200px);
+      align-self: center;
     }
     .biz-card-item {
       position: relative;
@@ -469,19 +477,18 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       text-align: center;
       @include font('H3');
       color: color('Color/Primary Color');
-      padding-right: rem(44px);
       position: relative;
-      display: inline-block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-left: auto;
       margin-right: auto;
+      gap: rem(20px);
       &:after {
         content: '';
         width: rem(24px);
         height: rem(24px);
-        position: absolute;
-        right: 0;
-        top: 50%;
-        margin-top: rem(-12px);
+        display: flex;
         @include get-background-svg(icon_forward_arrow, color('Color/Primary Color'));
       }
     }
@@ -1145,7 +1152,10 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       width: rem(100px);
       height: rem(100px);
       border-radius: 50%;
-      background-color: color('Color/Blue 10');
+      // Figma 실측: Color/Blue 10(#E1EBF8)이 아니라 이 섹션 배경과 같은 Bluegray/300(#edf3fb) —
+      // 바로 위 .section5-slide .section-item 배경과 동일한 값(별도 토큰 없이 그 자리도 리터럴로
+      // 씀)이라 여기도 리터럴로 맞춘다.
+      background-color: #edf3fb;
       // 카드에 따라 아이콘 레이어가 1~2장(Figma의 layered group 아이콘)이라 항상 중앙에 겹쳐 놓는다.
       img {
         position: absolute;

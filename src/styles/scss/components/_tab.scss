@@ -71,7 +71,22 @@ $IS_ACTIVE:'is-active';
   }
 }
 .tab__item {
-  flex: 0 0 auto;
+    flex: 0 0 auto;
+}
+@media only screen and (min-width: $breakpoint-md) {
+// GNB가 fixed(80px)로 항상 최상단에 떠 있으므로, 서브페이지 내부 앵커 탭바(.bs-tab-group)도 스크롤 시
+// GNB 바로 아래(80px)에 붙어 계속 보이게 한다(PC/모바일 공통 — GNB 높이가 반응형에서도 고정 80px라
+// 미디어쿼리 분기 불필요, .g-section의 scroll-margin-top: rem(120px)과 동일 기준).
+// sticky는 .bs-tab-group이 아니라 이걸 감싸는 .innerWrap에 줘야 한다 — .bs-tab-group의 직계 부모인
+// .innerWrap이 tab-group과 정확히 같은 높이라(다른 형제 없음) sticky의 기준 박스가 그만큼만 있어서
+// 그 부모(.innerWrap)째로 같이 스크롤되어 사라져버렸다(전혀 안 붙는 것처럼 보였음). .innerWrap의
+// 부모인 .sub-wrap은 페이지 전체 높이라, 대신 이 wrapper를 sticky로 만들면 실제로 화면 끝까지 붙는다.
+.innerWrap:has(> .bs-tab-group) {
+    // position: sticky;
+    // top: calc(rem(80px) + rem(69px));
+    // z-index: 10;
+    // background-color: color('Color/White');
+}
 }
 @media only screen and (max-width: $breakpoint-lg){
 .bs-tab-group{

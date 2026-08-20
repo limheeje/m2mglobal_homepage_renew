@@ -130,7 +130,7 @@ const references = [
                 <div
                   class="ref__row"
                   class:list={{
-                    'use-href': item.href
+                    'use-href': true
                   }}
                 >
                   <div class="ref__row-main">
@@ -161,6 +161,7 @@ const references = [
                       target="_blank"
                       variant="white"
                       size="sm"
+                      disabled={!item.href}
                       useSuffixIcon="blank"
                       class="ref__link"
                     >

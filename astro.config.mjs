@@ -11,6 +11,9 @@ console.log('APP_ENV:', env.APP_ENV)
 export default defineConfig({
   output: 'static',
   base: env.PUBLIC_BUILD_URL,
+  redirects: {
+    '/aboutus/about_us.html': `${env.PUBLIC_BUILD_URL}/company/info`
+  },
   vite: {
     envDir: './config/env',
     // config/env는 .env.dev/.env.prod로 명명돼있어 Vite가 모드별로 자동 로드하는

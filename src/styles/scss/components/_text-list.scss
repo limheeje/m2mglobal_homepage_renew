@@ -54,7 +54,9 @@ $CIRCLE_TYPE_2:'[data-circle-type="type_2"]';
     &#{$TYPE_2}{
         .bst-inner{
             padding: rem(12px);
-            background-color: color('Color/Black 3');
+            // Figma 실측(Solution 카드 리스트 아이템 등): #F1F1F1(Color/Black 3)이 아니라
+            // #F8F8F8(Color/Black1) — 매우 비슷해 보이지만 다른 토큰이었다.
+            background-color: color('Color/Black1');
             border-radius: rem(12px);
         }
         &+.bs-text-list{

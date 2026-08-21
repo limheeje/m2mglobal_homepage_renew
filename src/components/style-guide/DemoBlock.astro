@@ -1,0 +1,17 @@
+---
+// /style-guide 전용 도구 컴포넌트 — 다른 페이지에서 재사용하는 공용 컴포넌트가 아니라서
+// common/·ui/에 안 두고 이 폴더에 따로 둔다.
+// prop 조합 하나를 "캡션 + 실제 라이브 렌더" 카드 하나로 보여준다. 캡션은 실제 JSX 호출부 그대로
+// 적어서(예: size="sm") 코드 안 보고도 어떤 조합인지 바로 알 수 있게 한다.
+export interface Props {
+  label: string
+}
+const {label} = Astro.props
+---
+
+<div class="sgd__demo-card">
+  <p class="sgd__demo-label">{label}</p>
+  <div class="sgd__demo-stage">
+    <slot />
+  </div>
+</div>

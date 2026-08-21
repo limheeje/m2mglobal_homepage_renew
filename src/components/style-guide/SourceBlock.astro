@@ -1,0 +1,16 @@
+---
+// /style-guide 전용 도구 컴포넌트 — 컴포넌트 "내부 구현"이 아니라 "부모 페이지에서 이 컴포넌트를
+// 어떻게 가져다 쓰는지"(import문 + 실제 호출 태그)를 보여준다. 내부 마크업은 컴포넌트를 쓰는
+// 입장에선 몰라도 되는 정보라 일부러 안 보여주고, 실제 페이지 코드와 동일한 형태의 사용 예시만
+// 보여준다(style-guide.astro의 `const xUsage = \`...\`` 상수를 code prop으로 넘겨줌).
+export interface Props {
+  title: string
+  code: string
+}
+const {title, code} = Astro.props
+---
+
+<details class="sgd__source" open>
+  <summary>{title} 사용 예시</summary>
+  <pre><code>{code}</code></pre>
+</details>

@@ -1,0 +1,125 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+
+// ==========================================================================
+// StyleGuideLayout.astro 전용 셸(사이드바+콘텐츠 2단 구조)
+//
+// ⚠️ 이 파일과 아래 page/_style-guide.scss의 "가이드 자체 UI 텍스트"는 프로젝트 전역 컨벤션과
+// 다르게 rem()/color()/@include font()를 안 쓰고 **일부러 순수 px**로 값을 준다. 사이트 전역은
+// html{font-size:10px}(모바일 8px) 기준 rem()이라 rem() 없이 값을 쓰면 원래는 사고지만, 여기는
+// 반대로 "실제 컴포넌트 데모"와 "가이드 자체 UI(사이드바/캡션/설명 텍스트)"를 시각적으로 분리하고
+// 싶은 게 목적 — 특히 아무 폰트 클래스도 안 준 순수 <p> 텍스트가 html의 10px 기준을 그대로
+// 상속해서 실제 16px 대비 지나치게 작게 보이던 문제(2026-08-21 리포트)가 있었다. 가이드 UI는 항상
+// px 고정값(14px 기준)으로 브라우저 기본 크기와 동일하게 두고, 데모 스테이지(.sgd__demo-stage)
+// 안쪽만 실제 프로젝트 컴포넌트 클래스가 그대로 rem() 기준으로 렌더된다.
+$sgl-sidebar-width: 280px;
+$sgl-border: #e4e4e7;
+$sgl-text: #18181b;
+$sgl-text-muted: #71717a;
+$sgl-accent: #023894;
+$sgl-bg-subtle: #f8f8fa;
+
+.sgl {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.sgl__sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: $sgl-sidebar-width;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 32px 20px;
+  border-right: 1px solid $sgl-border;
+  background: $sgl-bg-subtle;
+  z-index: 10;
+}
+
+.sgl__brand {
+  display: block;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $sgl-border;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 700;
+  color: $sgl-text;
+}
+.sgl__brand-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 400;
+  color: $sgl-text-muted;
+  font-family: monospace;
+}
+
+.sgl__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sgl__nav-link {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $sgl-text-muted;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: #fff;
+    color: $sgl-text;
+  }
+  &.is-active {
+    background: #fff;
+    color: $sgl-accent;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px $sgl-border;
+  }
+}
+
+.sgl__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: $sgl-sidebar-width;
+  padding: 48px 56px 120px;
+  max-width: 1400px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: $sgl-text;
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  .sgl {
+    flex-direction: column;
+  }
+  .sgl__sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid $sgl-border;
+    padding: 20px;
+  }
+  .sgl__brand {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+  }
+  .sgl__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .sgl__nav-link {
+    padding: 8px 10px;
+  }
+  .sgl__content {
+    margin-left: 0;
+    padding: 32px 20px 80px;
+  }
+}

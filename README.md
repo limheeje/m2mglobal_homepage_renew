@@ -155,9 +155,8 @@ const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
 | `/project/specialized-outcomes` | `pages/project/specialized-outcomes/index.astro` | Project | Figma 4개 프레임을 앵커탭 하나로 통합 |
 | `/privacy` | `pages/privacy/index.astro` | – | 개인정보처리방침(버전별 문서 리스트, 실 PDF는 외부 링크) |
 | `/page-list` | `pages/page-list.astro` | – | **실 서비스 라우트 아님** — `route` 기반 전체 페이지 목록 자동 생성, 검수용. 새 라우트는 `config/route/index.ts`에만 등록하면 자동 반영 |
+| `/style-guide` | `pages/style-guide.astro` | – | **실 서비스 라우트 아님** — 컴포넌트/디자인 토큰 검수용(2026-08-21 신규, 같은 날 전용 레이아웃으로 재구축). `SubLayout`(Gnb/Footer) 대신 전용 `StyleGuideLayout.astro`(왼쪽 고정 사이드바 + 스크롤 활성 하이라이트)를 씀. 각 컴포넌트마다 실제 라이브 렌더 + `?raw` import로 읽어온 진짜 소스코드(손으로 옮겨 적지 않음, `SourceBlock.astro`)를 같이 보여줌. Color/Typography 스와치는 `abstracts/_functions.scss`·`_mixins.scss`의 `color()`/`font()`를 그대로 호출해서 그려서 항상 실제 값과 동기화됨. 가이드 자체 UI 텍스트(사이드바/캡션/설명)는 사이트 표준 `rem()`이 아니라 순수 px 고정값(14px 기준) — 이유는 `layout/_style-guide-layout.scss` 상단 주석 참고. 새 공용 컴포넌트를 추가하면 이 페이지에도 예시 섹션을 추가할 것 |
 | `/404` | `pages/404.astro` | – | **Astro 예약 경로** — 파일명이 곧 라우트 규칙(Astro가 자동 인식, `config/route/index.ts` 등록 불필요/불가). Figma 디자인 없는 유틸리티 페이지라 `TitleMain` + `Button`만 조합. **자동 리다이렉트 없음** — "홈으로 가기" 버튼만 제공(사용자 확인 후 결정된 사양, 아래 [11. 배포 시 알아둘 것](#11-배포-시-알아둘-것--404와-base서브패스) 참고) |
-
-> `CLAUDE.md`가 언급하는 `/style-guide`(컴포넌트 검수용 페이지)는 **현재 코드베이스에 실제로 없습니다**(파일 없음, `page-list.astro`의 `etcPages`에 링크만 남아 있는 죽은 링크). 새로 만들거나 CLAUDE.md 쪽을 정정해야 함.
 
 여러 Figma 프레임을 한 페이지의 **앵커탭(`.bs-tab-group` 또는 `.g-section` id)** 으로 합친 페이지가 대부분입니다 — 즉 "탭 = 다른 페이지"가 아니라 "탭 = 같은 페이지 안 스크롤 이동"이라는 점에 유의(`src/scripts/tab-box-scrollspy.ts`가 이 클릭/스크롤 동기화를 전역 처리).
 
@@ -1562,9 +1561,9 @@ src/styles/css/main.css    # 컴파일 산출물 — git ignore, 직접 수정 �
 
 ## 9. 알려진 문서-코드 불일치 / TODO
 
-`CLAUDE.md` 자체에도 "⚠️ 위 표와 실제 코드 불일치 주의" 섹션이 있을 만큼, 문서가 코드 변경 속도를 못 따라간 부분이 있습니다. 이 README 최초 작성 시점(2026-08-19) 기준으로 직접 확인한 불일치 목록(2026-08-21 갱신 — `Box`/`BoxTitleCase*` 전역화, `ImagePlaceholder`/`IconTitle` 신규 추가, `BoxTitleCase1`/`UiBoxCase1` 미사용 확인분 반영):
+`CLAUDE.md` 자체에도 "⚠️ 위 표와 실제 코드 불일치 주의" 섹션이 있을 만큼, 문서가 코드 변경 속도를 못 따라간 부분이 있습니다. 이 README 최초 작성 시점(2026-08-19) 기준으로 직접 확인한 불일치 목록(2026-08-21 갱신 — `Box`/`BoxTitleCase*` 전역화, `ImagePlaceholder`/`IconTitle` 신규 추가, `BoxTitleCase1`/`UiBoxCase1` 미사용 확인분 반영, **`/style-guide` 페이지 신규 제작으로 해소**):
 
-- `/style-guide` 페이지 없음(파일 자체가 없음, `page-list.astro`에 죽은 링크만 존재).
+- ~~`/style-guide` 페이지 없음~~ → **2026-08-21 해소**: `src/pages/style-guide.astro`로 신규 제작. Color/Typography 디자인 토큰 스와치(실제 `color()`/`font()` 호출 결과) + `common/`·`ui/box/` 전 컴포넌트의 주요 variant 예시를 한 페이지에서 확인 가능. (Spacing/Radius는 CLAUDE.md가 언급하는 공식 스케일 자체가 코드에 없어서 — 바로 아래 항목 참고 — 스와치 없이 생략.) `page-list.astro`의 `etcPages`에도 연결해둠.
 - `Icon.astro`는 `src/assets/**/*.svg` glob이 아니라 `public/images/icons/{name}`을 `<img src>`로 직접 로드.
 - 디자인 토큰 `:root` 정의는 `abstracts/_variables.scss`가 아니라 `base/_reset.scss`에 있음.
 - `spacing()`/`radius()`/`m.*` 네임스페이스 헬퍼는 실제로 존재하지 않음(`rem()`/`color()`만 있음).

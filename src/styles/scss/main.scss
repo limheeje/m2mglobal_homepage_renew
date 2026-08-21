@@ -25,6 +25,7 @@
 @use 'layout/gnb';
 @use 'layout/footer';
 @use 'layout/top-btn';
+@use 'layout/style-guide-layout';
 
 @use 'page/main';
 @use 'page/company';
@@ -36,3 +37,4 @@
 @use 'page/privacy';
 @use 'page/page-list';
 @use 'page/error';
+@use 'page/style-guide';

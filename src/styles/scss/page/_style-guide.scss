@@ -1,0 +1,342 @@
+@charset 'utf-8';
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// ==========================================================================
+// /style-guide 콘텐츠 전용 마크업 — 컴포넌트/디자인 토큰 검수 페이지.
+// 셸(사이드바 등)은 layout/_style-guide-layout.scss, 이 파일은 .sgl__content 안쪽 콘텐츠만.
+//
+// Color/Typography 스와치는 이 파일이 실제 color()/font()를 직접 호출해서 그린다 — 값을 여기
+// 새로 하드코딩하지 않았다는 뜻. style-guide.astro의 JS 배열(colorGroups/typeScale)에 있는
+// 토큰 문자열과 아래 $sg-color-tokens/$sg-type-keys 리스트가 정확히 같은 문자열이어야 매칭된다 —
+// 둘 중 하나에 새 토큰을 추가하면 반대쪽에도 추가할 것.
+//
+// ⚠️ 이 파일의 "가이드 자체 UI"(제목/설명/캡션/소스코드 블록)는 프로젝트 표준(rem()+color()+
+// @include font())이 아니라 순수 px 고정값을 쓴다 — 이유는 layout/_style-guide-layout.scss 상단
+// 주석 참고. 딱 하나 예외: .sgd__demo-stage 안쪽(실제 라이브 컴포넌트가 렌더되는 자리)은 절대
+// 이 파일에서 손대지 않는다 — 거기는 각 컴포넌트 자신의 실제 프로젝트 스타일 그대로 나와야 의미가
+// 있기 때문.
+// ==========================================================================
+
+$sg-text: #18181b;
+$sg-text-muted: #71717a;
+$sg-border: #e4e4e7;
+$sg-accent: #023894;
+$sg-code-bg: #18181b;
+$sg-code-text: #e4e4e7;
+
+$sg-color-tokens: 'Color/Font/Font Color', 'Color/Black 100', 'Black/90', 'Black/80', 'Black/70',
+  'Black/60', 'Black/50', 'Color/Black 40', 'Black/30', 'Color/Black 20', 'Color/Box/Border color',
+  'Color/Black 10', 'Black/5', 'Color/Black 3', 'Color/Box/Box BG', 'Color/Black1', 'Color/White',
+  'Color/Blue Gray 800', 'Color/Font/Sub Font Color', 'Primary/Blue100', 'Primary/Blue80',
+  'Color/Primary Color', 'Primary/Blue30', 'Primary/Blue10', 'Color/Secondary Color',
+  'Secondary/Lightblue80', 'Color/Third Color', 'Secondary/Lightblue30', 'Color/Blue 10',
+  'Color/Accent Color', 'Accent/2', 'Accent/3', 'Accent/4', 'Alert/1', 'Alert/2', 'Color/Indigo 172';
+
+$sg-type-keys: 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Body 36 R', 'Body 30 R', 'Body 24 R', 'Body 22 R',
+  'Body 20 R', 'Body 18 R', 'Body 16 R', 'Body 15 R', 'Body 14 R';
+
+@each $token in $sg-color-tokens {
+  .sg-swatch[data-token='#{$token}'] {
+    background-color: color($token);
+  }
+}
+@each $key in $sg-type-keys {
+  .sg-type-sample[data-type='#{$key}'] {
+    @include font($key);
+  }
+}
+
+// --- 섹션 공통 ---
+.sg-section {
+  padding-top: 8px;
+  margin-bottom: 88px;
+  scroll-margin-top: 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.sg-section__title {
+  font-size: 26px;
+  font-weight: 700;
+  color: $sg-text;
+  margin-bottom: 8px;
+}
+.sg-section__desc {
+  font-size: 14px;
+  color: $sg-text-muted;
+  max-width: 860px;
+  margin-bottom: 32px;
+
+  code {
+    font-family: monospace;
+    background: $sg-border;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+}
+.sg-block {
+  margin-bottom: 40px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.sg-block__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: $sg-text;
+  margin-bottom: 4px;
+}
+.sg-block__desc {
+  font-size: 14px;
+  color: $sg-text-muted;
+  margin-bottom: 16px;
+  max-width: 860px;
+}
+
+// --- 강조 콜아웃(예: "Box는 항상 BoxTitleCase와 세트로 쓴다") ---
+.sg-callout {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 18px 22px;
+  margin-bottom: 28px;
+  border-radius: 12px;
+  border: 1px solid #b7cef0;
+  background: #eef4fd;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #0b2f6b;
+  max-width: 900px;
+}
+.sg-callout__icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  line-height: 1;
+}
+.sg-callout code {
+  font-family: monospace;
+  background: rgba(2, 56, 148, 0.1);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.sg-callout strong {
+  color: $sg-accent;
+}
+
+// --- 조합 예시 코드 (recipe — 실제 파일 ?raw가 아니라 이 페이지가 직접 작성한 대표 패턴) ---
+.sg-recipe {
+  margin-bottom: 4px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid $sg-border;
+}
+.sg-recipe__label {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: $sg-accent;
+}
+.sg-recipe__code {
+  margin: 0;
+  padding: 20px;
+  background: $sg-code-bg;
+  color: $sg-code-text;
+  overflow-x: auto;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+// --- 컴포넌트 원본 소스 (SourceBlock.astro) ---
+.sgd__source {
+  margin-bottom: 24px;
+  border: 1px solid $sg-border;
+  border-radius: 10px;
+  overflow: hidden;
+
+  summary {
+    cursor: pointer;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: $sg-accent;
+    background: #f4f4f5;
+    user-select: none;
+
+    &:hover {
+      background: #ececee;
+    }
+  }
+  pre {
+    margin: 0;
+    padding: 20px;
+    background: $sg-code-bg;
+    color: $sg-code-text;
+    overflow-x: auto;
+  }
+  code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre;
+  }
+}
+
+// --- Icon 전체 목록 ---
+.sg-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+.sg-icon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 8px;
+  border: 1px solid $sg-border;
+  border-radius: 10px;
+  text-align: center;
+  overflow: hidden;
+}
+.sg-icon-card__key {
+  font-size: 11px;
+  color: $sg-text;
+  word-break: break-all;
+}
+.sg-icon-card__file {
+  font-size: 10px;
+  color: $sg-text-muted;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+// --- variant 데모 카드(DemoBlock.astro) ---
+.sgd__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 8px;
+}
+.sgd__grid--wide {
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+}
+.sgd__demo-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $sg-border;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.sgd__demo-label {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: monospace;
+  color: $sg-text-muted;
+  background: #f4f4f5;
+  border-bottom: 1px solid $sg-border;
+}
+.sgd__demo-stage {
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+}
+// TitleMain/TitleSub 등 페이지 전체 폭을 전제로 만들어진 컴포넌트는 데모 카드 안에서 좌우가
+// 뭉개지지 않도록 자기 폭을 그대로 쓰게 둔다(부모 flex의 align-items:flex-start와 함께).
+.sgd__demo-stage > * {
+  width: 100%;
+}
+.sg-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+// --- Color ---
+.sg-color-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.sg-color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 16px;
+}
+.sg-swatch-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sg-swatch {
+  display: block;
+  width: 100%;
+  height: 64px;
+  border-radius: 10px;
+  border: 1px solid $sg-border;
+}
+.sg-swatch-token {
+  font-size: 13px;
+  color: $sg-text;
+}
+.sg-swatch-hex {
+  font-size: 12px;
+  color: $sg-text-muted;
+  font-family: monospace;
+}
+
+// --- Typography ---
+.sg-type-list {
+  display: flex;
+  flex-direction: column;
+}
+.sg-type-row {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid $sg-border;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+.sg-type-meta {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: $sg-text-muted;
+
+  code {
+    font-family: monospace;
+    color: $sg-accent;
+  }
+}
+.sg-type-sample {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: $sg-text;
+}
+
+@media only screen and (max-width: 900px) {
+  .sg-type-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .sg-type-meta {
+    flex: none;
+  }
+}

@@ -1120,11 +1120,19 @@ const partnerLogoKeys = [
     // autoHeight로 "지금 보이는 슬라이드"의 실제 높이만큼만 차지하게 한다(min-height:100vh는
     // CSS가 그대로 보장).
     document.addEventListener('DOMContentLoaded', () => {
+      // --- Section 1~4 공통: 세로 닷 페이지네이션 + loop + 4초 간격 자동 롤링.
+      // disableOnInteraction: false로 둬서 사용자가 닷을 클릭해 수동으로 넘겨도 자동 롤링이
+      // 멈추지 않고 그 시점부터 다시 4초 뒤 계속 넘어간다(메인 히어로 배너 관례 — 한 번 조작했다고
+      // 자동재생이 영구히 꺼지면 안 됨). pauseOnMouseEnter는 마우스를 올린 동안만 잠깐 멈췄다가
+      // 벗어나면 재개 — 텍스트 읽는 도중 다음 슬라이드로 훽 넘어가버리는 걸 방지.
+      const AUTOPLAY = {delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: false}
+
       // --- Section 1: Main slogan — 세로 닷 페이지네이션만, loop ---
       new Swiper('.section1-slide.js-swiper', {
         slidesPerView: 1,
         loop: true,
         autoHeight: true,
+        autoplay: AUTOPLAY,
         pagination: {
           el: '.section1-slide .swiper-pagination',
           clickable: true
@@ -1139,6 +1147,7 @@ const partnerLogoKeys = [
         slidesPerView: 1,
         loop: true,
         autoHeight: true,
+        autoplay: AUTOPLAY,
         pagination: {
           el: '.section2-slide .swiper-pagination',
           clickable: true
@@ -1153,6 +1162,7 @@ const partnerLogoKeys = [
         slidesPerView: 1,
         loop: true,
         autoHeight: true,
+        autoplay: AUTOPLAY,
         pagination: {
           el: '.section3-slide .swiper-pagination',
           clickable: true
@@ -1167,6 +1177,7 @@ const partnerLogoKeys = [
         slidesPerView: 1,
         loop: true,
         autoHeight: true,
+        autoplay: AUTOPLAY,
         pagination: {
           el: '.section4-slide .swiper-pagination',
           clickable: true

@@ -22,73 +22,30 @@
 }
 
 // --- 서비스 특징 / 추천설계: 아이콘+타이틀(구분선)+체크리스트 카드 ---
+// 공용 Box + BoxTitleCase3(아이콘+타이틀, 좌측정렬, 하단 Primary Color 구분선)로 대체
+// (2026-08-21, /ai-engine/machine-learning, /ai-engine/ai-commerce 공용) — 테두리/아이콘 gap/
+// 구분선 색상/타이틀 폰트가 BoxTitleCase3 기본값과 이미 정확히 일치. 단, 구분선 아래 여백은
+// 기존 코드가 12px였는데 Figma 실측(node 2870:46292, y좌표 역산)은 20px — BoxTitleCase3
+// 기본값(20px)이 오히려 맞았던 케이스라 버그로 판단, Figma/컴포넌트 기본값(20px)으로 정리.
 .ai__feature-grid {
   display: flex;
   flex-wrap: wrap;
   gap: rem(20px);
-}
-.ai__feature-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.ai__feature-head {
-  display: flex;
-  align-items: center;
-  gap: rem(12px);
-  padding-bottom: rem(20px);
-  margin-bottom: rem(12px);
-  border-bottom: rem(1px) solid color('Color/Primary Color');
-}
-.ai__feature-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-  flex-shrink: 0;
-}
-.ai__feature-title {
-  @include font('Body 30 R');
-  color: color('Color/Secondary Color');
+  > .bs-box {
+    flex: 1 1 0%;
+    min-width: rem(280px);
+  }
 }
 
 // --- 핵심기능: 아이콘+타이틀+설명(중앙정렬, 체크리스트 없음) ---
+// 공용 Box + BoxTitleCase5(tight)로 대체(2026-08-21) — Figma 실측(node 2784:43073, y좌표 역산)
+// 결과 아이콘/타이틀/설명 gap 전부 20px, 트레일링 여백 없음, 폰트 Body 30/18 — BoxTitleCase5
+// 기본값(lg)과 100% 일치해서 사이즈 옵션 없이 tight만 사용. CSS Grid라 자식 sizing 오버라이드도
+// 필요 없음(business-card류 flex 그리드와 달리 간단).
 .ai__stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: rem(20px);
-}
-.ai__stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
-  text-align: center;
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.ai__stat-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-}
-.ai__stat-title {
-  @include font('Body 30 R');
-  color: color('Color/Black 100');
-}
-.ai__stat-desc {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
 }
 
 // --- 비즈니스 구성도 / 상황기반 고객 여정: n단계 flow + 화살표 ---
@@ -171,49 +128,23 @@
 // (components/_case-card-grid.scss, cc__*)로 컴포넌트화되어 이동했다.
 
 // --- 아키텍처 전환: Level 카드 (라벨 + 타이틀 + 체크리스트 + 데이터/성과 메타) ---
+// 공용 Box + BoxTitleCase4(tight)로 대체(2026-08-21) — Figma 실측(y좌표 역산) 결과 라벨→타이틀
+// 12px, 구분선→체크리스트 20px, 리스트→메타 20px, 타이틀 폰트 Body 30(기존 코드는 24였던 버그,
+// BoxTitleCase4 기본값이 이미 Figma와 일치) — BoxTitleCase4를 tight로 써서 중복 여백만 제거하고
+// 나머지 간격은 Box 내부 flex gap 하나로 통일. .ai__level-meta/.ai__meta-* 는 예전 수기 마크업이
+// UiNoti 컴포넌트로 대체되며 이미 죽어있던 CSS라 같이 정리(마크업에서 참조 안 됨, 실제 데이터/성과
+// 메타 스타일은 UiNoti 자체의 .bt-noti-group이 담당).
 .ai__level-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: rem(20px);
-}
-.ai__level-card {
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-  display: flex;
-  flex-direction: column;
-  gap: rem(20px);
-  > .bs-label {
-    align-self: flex-start;
+  > .bs-box {
+    .b-inner {
+      display: flex;
+      flex-direction: column;
+      gap: rem(20px);
+    }
   }
-}
-.ai__level-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin-top: rem(12px);
-  padding-bottom: rem(20px);
-  border-bottom: rem(1px) solid color('Color/Primary Color');
-}
-.ai__level-meta {
-  margin-top: auto;
-  padding-top: rem(20px);
-  border-top: rem(1px) solid color('Color/Black 10');
-  display: flex;
-  flex-direction: column;
-  gap: rem(12px);
-}
-.ai__meta-row {
-  display: flex;
-  gap: rem(10px);
-}
-.ai__meta-label {
-  @include font('Body 14 R');
-  color: color('Color/Black 40');
-  min-width: rem(142px);
-}
-.ai__meta-value {
-  @include font('Body 16 R');
-  color: color('Color/Black 100');
 }
 
 // --- 상황기반추천설계: 커머스 특성 3카드 + 화살표 + 결론 배너 ---
@@ -335,24 +266,11 @@
 }
 
 // --- 재구매 예측 / 재 랭킹 / 리밸런싱: 캡션 pill + 다이어그램(이미지 예정) ---
-.ai__diagram-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: rem(8px) rem(24px);
-  border-radius: rem(30px);
-  background-color: color('Color/Black 3');
-  color: color('Color/Black 100');
-  @include font('H5');
+// 캡션 pill은 공용 TitleThird, 다이어그램 자리는 공용 ImagePlaceholder로 대체(2026-08-21) —
+// TitleThird 자체엔 여백을 안 넣으므로(공용 컴포넌트는 페이지별 여백을 갖지 않음), 이 페이지에서
+// 쓸 때만 class="ai__diagram-title"로 하단 여백을 준다.
+.ai__diagram-title {
   margin-bottom: rem(20px);
-}
-.ai__diagram-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
 }
 
 // (주의) "주요 고객사/실행 사례" 로고 카드는 ~/components/common/ClientLogoGrid.astro
@@ -369,9 +287,6 @@
   .ai__flow {
     flex-direction: column;
     gap: 0;
-  }
-  .ai__diagram-pill{
-    @include font('Body 20 R');
   }
   .ai__flow-box {
     width: 100%;
@@ -415,12 +330,6 @@
   // 574px 고정폭이라 좁은 화면에서 잘리거나 넘쳐 보였다 — 컨테이너 폭에 맞춘다.
   .ai__personalize-image {
     width: 100%;
-  }
-  // 16:7 비율 박스에 원본 다이어그램 이미지의 실제 비율이 안 맞으면 세로로 넘쳐 보인다 — 패딩으로
-  // 이미지를 살짝 안쪽으로 줄이고, overflow:hidden으로 그래도 넘치는 부분은 잘라낸다.
-  .ai__diagram-placeholder {
-    padding: rem(20px) rem(15px);
-    overflow: hidden;
   }
 }
 

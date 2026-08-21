@@ -13,8 +13,9 @@ import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
-import Icon from '~/components/common/Icon.astro'
 import Button from '~/components/common/Button.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase3 from '~/components/ui/box/boxTitleCase/BoxTitleCase3.astro'
 import SYMBOL007 from '~/assets/images/common/symbol007.png'
 import IMG1 from '~/assets/images/common/e_comm_prod_001.png'
 import IMG1_1 from '~/assets/images/common/e_comm_prod_001_1.png'
@@ -241,20 +242,14 @@ const clients = [
         <div class="ec__feature-grid">
           {
             featureCards.map((card) => (
-              <div class="ec__feature-card">
-                <div class="ec__feature-head">
-                  {/* TODO: 아이콘 이미지 삽입 */}
-                  <span class="ec__feature-icon" aria-hidden="true">
-                    <Icon name={card.icon} />
-                  </span>
-                  <p class="ec__feature-title">{card.title}</p>
-                </div>
+              <Box>
+                <BoxTitleCase3 icon={card.icon} title={card.title} titleColor="primary100" />
                 <div>
                   {card.items.map((item) => (
                     <TextList>{item}</TextList>
                   ))}
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>

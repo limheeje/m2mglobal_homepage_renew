@@ -1,0 +1,50 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// 다이어그램/구성도 이미지 자리 — "테두리 + radius 박스 안에 이미지 1장" 공용 패턴.
+// 비율은 인스턴스마다 다르므로 style="aspect-ratio"로 인라인 지정(컴포넌트 props.ratio).
+.bs-image-placeholder {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: rem(24px);
+  // 지정 비율(ratio)과 원본 이미지의 실제 비율이 다르면 모서리가 둥근 박스 밖으로 이미지가
+  // 삐져나와 보인다 — 항상 박스 기준으로 잘라낸다(robot-logistics 시스템구성도에서 실측 확인).
+  overflow: hidden;
+  img {
+    max-width: var(--ip-max-width, 100%);
+  }
+  &.use-border {
+    border: rem(1px) solid color('Color/Box/Border color');
+  }
+  &.use-padding {
+    padding: rem(36px) rem(24px);
+  }
+  // fixedRatio=false — 박스는 auto-height로 이미지 크기만큼만, 이미지가 width:100%로 자기
+  // aspect-ratio를 가져간다(박스 쪽엔 ratio를 안 줌).
+  &.fit-content img {
+    width: 100%;
+  }
+  &.use-fill img {
+    background-color: color('Color/Black 3');
+    border-radius: rem(12px);
+  }
+}
+
+@media only screen and (max-width: $breakpoint-md) {
+  // 좁은 화면에서 지정 비율(ratio)로 고정하면 원본 이미지가 눌리거나 넘쳐 잘리므로, 모바일에서는
+  // 비율 고정을 풀고 이미지 자체 비율대로 자연스럽게 줄어들게 한다.
+  .bs-image-placeholder {
+    padding: rem(20px) rem(15px);
+    aspect-ratio: auto !important;
+    // maxWidth prop(예: 1760px)은 PC 풀와이드 기준 캡이라 좁은 화면에선 그보다 훨씬 넓게
+    // 렌더링될 수 있다(전역 img{max-width:100%} 리셋보다 이 컴포넌트의 img 규칙이 더 구체적이라
+    // 이겨버림) — 100%로 되돌린다(solutions 다이어그램에서 처음 발견, 다른 페이지에도 동일 적용).
+    img {
+      max-width: 100%;
+    }
+  }
+}

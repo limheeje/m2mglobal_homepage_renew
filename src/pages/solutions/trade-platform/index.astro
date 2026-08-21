@@ -17,7 +17,9 @@ import SYMBOL023 from '~/assets/images/common/symbol023.png'
 import SYMBOL024 from '~/assets/images/common/symbol024.png'
 import SYMBOL025 from '~/assets/images/common/symbol025.png'
 import SYMBOL026 from '~/assets/images/common/symbol026.png'
-import Icon from '~/components/common/Icon.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase5 from '~/components/ui/box/boxTitleCase/BoxTitleCase5.astro'
+import ImagePlaceholder from '~/components/common/ImagePlaceholder.astro'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/solutions/commerce-platform')
@@ -228,26 +230,25 @@ const featureGroups = [
           description="<span class='mark'>'수출입 계약, 운송, 통관 결제, 수입관계 환급제도, 문서 전자거래 등 바이어와 셀러 간의 무역 거래 전 과정을 전자문서, 전자결제, 온라인 플랫폼 기반으로 디지털화'</span> 하여 투명하고, 빠르고, 효율적으로 통합 무역 업무를 처리할 수 있음."
         />
 
-        <!-- TODO: 솔루션 구성도(삼각형 다이어그램) 이미지 삽입 -->
-        <div class="sol__diagram-placeholder max-width-1760" aria-hidden="true">
-          <img src={SYMBOL023.src} alt="" />
-        </div>
+        <ImagePlaceholder
+          ratio="16/7"
+          src={SYMBOL023.src}
+          useBorder={false}
+          maxWidth="176rem"
+          class="sol__diagram-standalone"
+        />
 
         <div class="sol__understand-grid">
           {
             understandCards.map((card) => (
-              <div class="sol__understand-card">
-                {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="sol__understand-icon" aria-hidden="true">
-                  <Icon name={card.icon} alt="" />
-                </span>
-                <p class="sol__understand-title">{card.title}</p>
+              <Box>
+                <BoxTitleCase5 icon={card.icon} title={card.title} titleColor="primary100" />
                 <div class="sol__understand-list">
                   {card.items.map((item) => (
                     <TextList type="type_2" set:html={item} />
                   ))}
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>
@@ -264,10 +265,7 @@ const featureGroups = [
           techGroups.map((name) => (
             <div class="sol__tech-group">
               <TitleThird>{name.title}</TitleThird>
-              {/* <!-- TODO: 아키텍처 구성도 이미지 삽입 --> */}
-              <div class="sol__tech-diagram sol__diagram-placeholder" aria-hidden="true">
-                <img src={name.imgSrc} alt="" />
-              </div>
+              <ImagePlaceholder src={name.imgSrc} usePadding maxWidth="120rem" />
             </div>
           ))
         }
@@ -283,14 +281,14 @@ const featureGroups = [
               <TitleThird>{group.title}</TitleThird>
               <div class="sol__stat-grid">
                 {group.cards.map((card) => (
-                  <div class="sol__stat-card">
-                    {/* TODO: 아이콘 이미지 삽입 */}
-                    <span class="sol__stat-icon" aria-hidden="true">
-                      <Icon name={card.icon} />
-                    </span>
-                    <p class="sol__stat-title">{card.title}</p>
-                    <p class="sol__stat-desc" set:html={card.desc} />
-                  </div>
+                  <Box>
+                    <BoxTitleCase5
+                      icon={card.icon}
+                      title={card.title}
+                      description={card.desc}
+                      tight
+                    />
+                  </Box>
                 ))}
               </div>
             </div>

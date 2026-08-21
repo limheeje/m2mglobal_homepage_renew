@@ -1,0 +1,40 @@
+@charset 'utf-8';
+@use '../abstracts/variables' as *;
+@use '../abstracts/_functions' as *;
+@use '../abstracts/_mixins' as *;
+
+// 아이콘(100px 원형, Blue-10) + 타이틀(+서브타이틀) 단일 아이템. size="lg"(Body 24 R, 예:
+// robot-logistics 인프라/시뮬레이션 구분선 아이템)와 size="sm"(기본값, Body 18 R, 예: ceo 핵심가치
+// /robot-logistics 인사이트 카드) 두 사이즈만 실사용처에서 확인됨.
+.bs-icon-title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: rem(20px);
+  text-align: center;
+  .bit-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(100px);
+    height: rem(100px);
+    border-radius: 50%;
+    background-color: color('Color/Blue 10');
+  }
+  .bit-title {
+    @include font('Body 18 R');
+    color: color('Color/Black 100');
+  }
+  // (참고) 아직 실사용처가 없어 Figma 미검증 — 처음 쓰는 페이지에서 실측 후 조정할 것.
+  .bit-subtitle {
+    @include font('Body 16 R');
+    color: color('Color/Black 40');
+  }
+  &.size-lg {
+    .bit-title {
+      @include font('Body 24 R');
+    }
+  }
+}

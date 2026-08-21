@@ -9,12 +9,14 @@ import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
-import Label from '~/components/common/Label.astro'
 import TitleThird from '~/components/common/TitleThird.astro'
 import stepArrowUrl from '~/assets/images/step-arrow.svg'
 import roleConnectorArrow from '~/assets/images/role-connector-arrow.svg'
 import {ICON_KEY_NAME} from '~/constants/Icon'
-import Icon from '~/components/common/Icon.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase3 from '~/components/ui/box/boxTitleCase/BoxTitleCase3.astro'
+import BoxTitleCase4 from '~/components/ui/box/boxTitleCase/BoxTitleCase4.astro'
+import BoxTitleCase5 from '~/components/ui/box/boxTitleCase/BoxTitleCase5.astro'
 
 const localNavigation = route.find((item) => item.href === '/e-commerce/commerce-technology')
 
@@ -174,14 +176,8 @@ const auctionFlow = [
         <div class="ec__feature-grid">
           {
             featureCards.map((card) => (
-              <div class="ec__feature-card">
-                <div class="ec__feature-head">
-                  {/* TODO: 아이콘 이미지 삽입 */}
-                  <span class="ec__feature-icon" aria-hidden="true">
-                    <Icon name={card.icon} />
-                  </span>
-                  <p class="ec__feature-title">{card.title}</p>
-                </div>
+              <Box>
+                <BoxTitleCase3 icon={card.icon} title={card.title} titleColor="primary100" />
                 <div>
                   {card.items.map((lines) => (
                     <TextList>
@@ -191,7 +187,7 @@ const auctionFlow = [
                     </TextList>
                   ))}
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>
@@ -205,17 +201,14 @@ const auctionFlow = [
           {
             roles.map((role, i) => (
               <>
-                <div class:list={['ec__role-card', {'ec__role-card--accent': role.accent}]}>
-                  <div class="ec__role-head">
-                    <Label type="type_2">{role.label}</Label>
-                    <p class="ec__role-title">{role.title}</p>
-                  </div>
+                <Box useAccentBorder={role.accent}>
+                  <BoxTitleCase4 label={role.label} title={role.title} />
                   <div>
                     {role.items.map((text) => (
                       <TextList>{text}</TextList>
                     ))}
                   </div>
-                </div>
+                </Box>
                 {i < roles.length - 1 && (
                   <span class="ec__role-connector" aria-hidden="true">
                     <img src={roleConnectorArrow.src} alt="" />
@@ -230,13 +223,14 @@ const auctionFlow = [
         <div class="ec__box-grid ec__box-grid--5">
           {
             operationSteps.map((title, i) => (
-              <div class="ec__stat-card">
-                {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="ec__stat-icon" aria-hidden="true">
-                  <Icon name={ICON_KEY_NAME[`Business12-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
-                </span>
-                <p class="ec__stat-title">{title}</p>
-              </div>
+              <Box>
+                <BoxTitleCase5
+                  icon={ICON_KEY_NAME[`Business12-${i + 1}` as keyof typeof ICON_KEY_NAME]}
+                  title={title}
+                  size="md"
+                  tight
+                />
+              </Box>
             ))
           }
         </div>

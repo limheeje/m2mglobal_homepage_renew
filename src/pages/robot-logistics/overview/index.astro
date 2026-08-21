@@ -10,6 +10,8 @@ import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import TitleMiddle from '~/components/common/TitleMiddle.astro'
 import TitleThird from '~/components/common/TitleThird.astro'
+import ImagePlaceholder from '~/components/common/ImagePlaceholder.astro'
+import IconTitle from '~/components/common/IconTitle.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
 import Icon from '~/components/common/Icon.astro'
@@ -454,10 +456,7 @@ const schedulingInsights = [
           title={`시스템 <span class="mark">구성</span>`}
           description="플랫폼 통합관제, 통합정보관리, 작업관리, 사용자 시스템을 통합 구현하여 로봇 운영과 물류 업무를 하나의 플랫폼에서 효율적으로 관리할 수 있는 환경을 제공합니다."
         />
-        <!-- TODO: 시스템구성도 이미지 삽입 -->
-        <div class="rl__diagram-placeholder" aria-hidden="true">
-          <img src={Rl_image001.src} alt="" />
-        </div>
+        <ImagePlaceholder ratio="16/7" src={Rl_image001.src} usePadding maxWidth="119rem" />
       </div>
     </section>
 
@@ -467,12 +466,13 @@ const schedulingInsights = [
           title={`인프라 <span class="mark">구성</span>`}
           description="Middleware는 WES·WCS와 RCS 간의 안정적인 데이터 연계 및 제어를 지원하며, 태블릿, 스마트워치, PDA 등 다양한 작업자 디바이스와 연동하여 실시간 작업 수행과 운영 가시성을 제공합니다."
         />
-        {/* TODO: 인프라구성도 이미지 삽입 (Figma 실측 1168x579) */}
-        <div class="rl__diagram-box">
-          <div class="rl__diagram-img" style={`max-width:${toRem(1168)}; aspect-ratio:1168/579;`}>
-            <img src={Rl_image002.src} alt="" />
-          </div>
-        </div>
+        <ImagePlaceholder
+          ratio="1168/579"
+          src={Rl_image002.src}
+          usePadding
+          fixedRatio={false}
+          maxWidth={toRem(1168)}
+        />
       </div>
     </section>
 
@@ -486,20 +486,22 @@ const schedulingInsights = [
           {
             softwareInsights.map((desc, i) => (
               <div class="rl__divider-item">
-                <span class="rl__icon-circle" aria-hidden="true">
-                  <Icon name={ICON_KEY_NAME[`Business4-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
-                </span>
-                <p class="rl__divider-desc">{desc}</p>
+                <IconTitle
+                  icon={ICON_KEY_NAME[`Business4-${i + 1}` as keyof typeof ICON_KEY_NAME]}
+                  title={desc}
+                  size="lg"
+                />
               </div>
             ))
           }
         </div>
-        {/* TODO: 소프트웨어구성도 이미지 삽입 (Figma 실측 1170x623) */}
-        <div class="rl__diagram-box">
-          <div class="rl__diagram-img" style={`max-width:${toRem(1170)}; aspect-ratio:1170/623;`}>
-            <img src={Rl_image003.src} alt="" />
-          </div>
-        </div>
+        <ImagePlaceholder
+          ratio="1170/623"
+          src={Rl_image003.src}
+          usePadding
+          fixedRatio={false}
+          maxWidth={toRem(1170)}
+        />
       </div>
     </section>
 
@@ -513,21 +515,22 @@ const schedulingInsights = [
           {
             simulationInsights.map((desc, i) => (
               <div class="rl__divider-item">
-                {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="rl__icon-circle" aria-hidden="true">
-                  <Icon name={ICON_KEY_NAME[`Business5-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
-                </span>
-                <p class="rl__divider-desc">{desc}</p>
+                <IconTitle
+                  icon={ICON_KEY_NAME[`Business5-${i + 1}` as keyof typeof ICON_KEY_NAME]}
+                  title={desc}
+                  size="lg"
+                />
               </div>
             ))
           }
         </div>
-        {/* TODO: 시뮬레이션 이미지 삽입 (Figma 실측 1325x573) */}
-        <div class="rl__diagram-box">
-          <div class="rl__diagram-img" style={`max-width:${toRem(1325)}; aspect-ratio:1325/573;`}>
-            <img src={Rl_image004.src} alt="" />
-          </div>
-        </div>
+        <ImagePlaceholder
+          ratio="1325/573"
+          src={Rl_image004.src}
+          usePadding
+          fixedRatio={false}
+          maxWidth={toRem(1325)}
+        />
       </div>
     </section>
 
@@ -541,24 +544,22 @@ const schedulingInsights = [
           {
             schedulingInsights.map((desc, i) => (
               <div class="rl__insight-card">
-                {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="rl__icon-circle" aria-hidden="true">
-                  <Icon name={ICON_KEY_NAME[`Business6-${i + 1}` as keyof typeof ICON_KEY_NAME]} />
-                </span>
-                <p class="rl__insight-desc">{desc}</p>
+                <IconTitle
+                  icon={ICON_KEY_NAME[`Business6-${i + 1}` as keyof typeof ICON_KEY_NAME]}
+                  title={desc}
+                />
               </div>
             ))
           }
         </div>
-        {/* TODO: 스케줄링 다이어그램 이미지 삽입 (Figma 실측 1333x291) */}
-        <div class="rl__diagram-box">
-          <div
-            class="rl__diagram-img rl__thumb-ph"
-            style={`max-width:${toRem(1333)}; aspect-ratio:1333/291;`}
-          >
-            <img src={Rl_image005.src} alt="" />
-          </div>
-        </div>
+        <ImagePlaceholder
+          ratio="1333/291"
+          src={Rl_image005.src}
+          usePadding
+          fixedRatio={false}
+          useFill
+          maxWidth={toRem(1333)}
+        />
       </div>
     </section>
 

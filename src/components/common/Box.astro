@@ -1,12 +1,19 @@
 ---
-const {useBackground = false, useSlotFoot = false} = Astro.props
+const {
+  useBackground = false,
+  useSlotFoot = false,
+  useLightBorder = false,
+  useAccentBorder = false
+} = Astro.props
 ---
 
 <div
   class="bs-box"
   class:list={{
     'use-background': useBackground,
-    'use-slotfoot': useSlotFoot
+    'use-slotfoot': useSlotFoot,
+    'use-light-border': useLightBorder,
+    'use-accent-border': useAccentBorder
   }}
 >
   <div class="b-inner">

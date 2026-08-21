@@ -167,6 +167,9 @@ ol {
   img{
     max-width: 100% !important;
   }
+  .root_daum_roughmap img{
+    max-width: none !important;
+  }
 }
 .mark{color: color('Color/Primary Color') !important}
 

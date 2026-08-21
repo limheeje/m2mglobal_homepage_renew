@@ -1,0 +1,11 @@
+---
+const {description = '', title = ''} = Astro.props
+---
+
+<!-- 피그미기 기준 Box_Case 상단 — 아이콘/라벨 없이 타이틀+설명만 있는 경우 -->
+<div class="bs-box-title-case-6">
+  <div class="bbtc6-inner">
+    <div class="bsb-title" set:html={title} />
+    <div class="bsb-description" set:html={description} />
+  </div>
+</div>

@@ -5,13 +5,14 @@ import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import Navigation from '~/components/common/Navigation.astro'
-import Icon from '~/components/common/Icon.astro'
 import TextList from '~/components/common/TextList.astro'
 import Button from '~/components/common/Button.astro'
+import Box from '~/components/common/Box.astro'
 import UiBoxCase2 from '~/components/ui/box/UiBoxCase2.astro'
 import UiBoxCase3 from '~/components/ui/box/UiBoxCase3.astro'
 import UiTags from '~/components/ui/box/UiTags.astro'
 import BoxTitleCase4 from '~/components/ui/box/boxTitleCase/BoxTitleCase4.astro'
+import BoxTitleCase5 from '~/components/ui/box/boxTitleCase/BoxTitleCase5.astro'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/company/info')
@@ -260,18 +261,18 @@ const caseStudies = [
         <div class="company__business-grid">
           {
             businessAreas.map((area) => (
-              <div class="company__business-card">
-                <span class="company__business-icon">
-                  <Icon name={ICON_KEY_NAME[area.icon as keyof typeof ICON_KEY_NAME]} />
-                </span>
-                <p class="company__business-title">{area.title}</p>
-                <p class="company__business-desc">{area.desc}</p>
+              <Box useLightBorder>
+                <BoxTitleCase5
+                  icon={ICON_KEY_NAME[area.icon as keyof typeof ICON_KEY_NAME]}
+                  title={area.title}
+                  description={area.desc}
+                />
                 <div class="company__business-list">
                   {area.items.map((text) => (
                     <TextList type="type_2">{text}</TextList>
                   ))}
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>

@@ -13,8 +13,10 @@ import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
 import stepArrowUrl from '~/assets/images/step-arrow.svg'
 import {ICON_KEY_NAME} from '~/constants/Icon'
-import Icon from '~/components/common/Icon.astro'
 import CaseCardGrid from '~/components/common/CaseCardGrid.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase3 from '~/components/ui/box/boxTitleCase/BoxTitleCase3.astro'
+import BoxTitleCase5 from '~/components/ui/box/boxTitleCase/BoxTitleCase5.astro'
 
 const localNavigation = route.find((item) => item.href === '/ai-engine/machine-learning')
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
@@ -189,20 +191,14 @@ const cases = [
         <div class="ai__feature-grid">
           {
             features.map((feature) => (
-              <div class="ai__feature-card">
-                <div class="ai__feature-head">
-                  {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                  <span class="ai__feature-icon" aria-hidden="true">
-                    <Icon name={feature.icon} />
-                  </span>
-                  <p class="ai__feature-title">{feature.title}</p>
-                </div>
+              <Box>
+                <BoxTitleCase3 icon={feature.icon} title={feature.title} />
                 <div>
                   {feature.items.map((item) => (
                     <TextList>{item}</TextList>
                   ))}
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>
@@ -218,14 +214,14 @@ const cases = [
         <div class="ai__stat-grid">
           {
             coreFeatures.map((feature) => (
-              <div class="ai__stat-card">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span class="ai__stat-icon" aria-hidden="true">
-                  <Icon name={feature.icon} />
-                </span>
-                <p class="ai__stat-title">{feature.title}</p>
-                <p class="ai__stat-desc" set:html={feature.desc} />
-              </div>
+              <Box>
+                <BoxTitleCase5
+                  icon={feature.icon}
+                  title={feature.title}
+                  description={feature.desc}
+                  tight
+                />
+              </Box>
             ))
           }
         </div>

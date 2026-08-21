@@ -15,54 +15,24 @@
   height: rem(48px);
   flex-shrink: 0;
 }
-.sol__diagram-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 7;
-  border-radius: rem(24px);
+// 다이어그램 자리는 공용 ImagePlaceholder로 대체(2026-08-21, 4개 solutions 페이지 공용) — "솔루션
+// 이해" 탭의 삼각형 도식(테두리 없음, 1760 캡)은 아래로 그리드가 바로 이어져서 여백만 페이지에 남김.
+.sol__diagram-standalone {
   margin-bottom: rem(40px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  img{
-    max-width: rem(1200px);
-  }
-  &.max-width-1760{
-    img{
-      max-width: rem(1760px);
-    }
-  }
 }
 
 // --- 솔루션 이해: 아이콘+타이틀+체크리스트(회색박스) 카드 ---
+// 아이콘+타이틀은 공용 Box + BoxTitleCase5(description 생략, titleColor="primary100")로 대체
+// (2026-08-21, 4개 solutions 페이지 공용) — 체크리스트가 바로 이어져서 description 없이 title
+// 자체의 트레일링 margin-bottom(20px)이 리스트와의 간격을 그대로 대신한다.
 .sol__understand-grid {
   display: flex;
   flex-wrap: wrap;
   gap: rem(20px);
-}
-.sol__understand-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.sol__understand-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-}
-.sol__understand-title {
-  @include font('Body 30 R');
-  color: color('Primary/Blue100');
-  text-align: center;
+  > .bs-box {
+    flex: 1 1 0%;
+    min-width: rem(280px);
+  }
 }
 .sol__understand-list {
   width: 100%;
@@ -81,59 +51,18 @@
   }
 }
 
-// --- 주요 특장점 / 적용 분야: 아이콘(또는 없음)+타이틀+설명 카드 (중앙정렬) ---
+// --- 주요 특장점 / 적용 분야: 아이콘+타이틀+설명 카드 (중앙정렬) ---
+// 공용 Box + BoxTitleCase5(기본 lg, tight)로 대체(2026-08-21, 4개 solutions 페이지 공용) —
+// ai-engine 핵심기능 카드와 완전히 같은 값(30/18, 리스트 없음).
 .sol__stat-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: rem(20px);
   margin-bottom: rem(80px);
 }
-.sol__stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
-  text-align: center;
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.sol__stat-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-}
-.sol__stat-title {
-  @include font('Body 30 R');
-  color: color('Color/Black 100');
-}
-.sol__stat-desc {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
-}
 
-.sol__scope-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
-  text-align: center;
-  padding: rem(36px);
-  background-color: color('Color/Box/Box BG');
-  border-radius: rem(24px);
-}
-.sol__scope-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-}
-.sol__scope-desc {
-  @include font('Body 16 R');
-  color: color('Color/Black 100');
-}
+// 적용 분야 카드는 공용 Box(useBackground) + BoxTitleCase6로 대체(2026-08-21) — company/careers
+// 분야카드와 완전히 같은 패턴(타이틀24/설명16, Black3 채움, 테두리 없음).
 
 // --- 기술 구성 안내: Third Title 라벨(상) + 다이어그램(하) — Figma 실측: 좌우 배치가 아니라 상하 배치 ---
 .sol__tech-group {
@@ -147,14 +76,11 @@
     width:fit-content;
   }
 }
-// Figma 실측: 테두리만 있는 흰 박스(회색 채움 없음) — .sol__diagram-placeholder(회색 채움 자리표시자)는
-// 안쪽에 별도로 넣는다. 두 클래스를 한 엘리먼트에 합치면 채움+테두리가 겹쳐 Figma보다 진하게 보인다.
-.sol__tech-diagram-ty2{}
-.sol__tech-diagram {
-  padding: rem(36px) rem(24px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
+// "기술 구성 안내" 다이어그램(테두리+패딩 박스)도 공용 ImagePlaceholder(useBorder usePadding)로
+// 대체 — 이전엔 페이지마다 .sol__tech-diagram+.sol__diagram-placeholder를 따로 쓰거나(정석) 한
+// 엘리먼트에 합쳐 쓰거나(logistics/trade — 겹쳐 보이는 문제 있었음) elivestock만 스타일이 아예
+// 비어있는(.sol__tech-diagram-ty2{}) 등 페이지마다 제각각이었는데, 컴포넌트 하나로 통일되면서
+// 자동으로 다 같은 모양이 됨.
 
 // --- eLivestock 기술 구성 안내 상단: 경매 절차 플로우 ---
 .sol__auction-head {
@@ -240,28 +166,16 @@
       background-color: transparent;
     }
   }
-  // 16:7 비율 박스와 실제 다이어그램 이미지 비율이 안 맞으면 세로로 넘쳐 보인다 — 패딩으로
-  // 이미지를 살짝 안쪽으로 줄이고, overflow:hidden으로 그래도 넘치는 부분은 잘라낸다.
-  .sol__diagram-placeholder {
-    padding: rem(20px) rem(15px);
-    align-items: flex-start;
-    overflow: hidden;
-    aspect-ratio: auto;
+  // ImagePlaceholder 자체가 이 폭에서 padding 20/15 + aspect-ratio:auto + overflow:hidden을
+  // 이미 처리한다 — standalone 인스턴스(솔루션 이해 탭)만 데스크탑 전용 하단 여백(40px)을 모바일에서
+  // 없앤다(뒤에 바로 그리드가 이어지는데 화면이 좁아지면 그 정도 여백까진 필요 없어서).
+  .sol__diagram-standalone {
     margin-bottom: 0;
-  }
-  // max-width-1760은 PC 풀와이드 기준 캡이라 좁은 화면에선 그보다 훨씬 넓게 렌더링될 수 있다
-  // (전역 img{max-width:100%} 리셋보다 이 클래스가 더 구체적이라 이겨버림) — 100%로 되돌린다.
-  .sol__diagram-placeholder.max-width-1760 img {
-    max-width: 100%;
-  }
-  // "테두리 박스 + width:100% + 안에 이미지"류 — .rl__diagram-box와 동일 이유/패턴.
-  .sol__tech-diagram {
-    padding: rem(20px) rem(15px);
   }
   .sol__understand-grid {
     flex-direction: column;
-  }
-  .sol__understand-card {
-    width: 100%;
+    > .bs-box {
+      width: 100%;
+    }
   }
 }

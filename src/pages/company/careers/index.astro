@@ -11,6 +11,9 @@ import TitleSub from '~/components/common/TitleSub.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
 import Icon from '~/components/common/Icon.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase5 from '~/components/ui/box/boxTitleCase/BoxTitleCase5.astro'
+import BoxTitleCase6 from '~/components/ui/box/boxTitleCase/BoxTitleCase6.astro'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 
 const localNavigation = route.find((item) => item.href === '/company/info')
@@ -87,14 +90,15 @@ const fields = [
           <div class="company__careers-grid">
             {
               benefits.map((benefit) => (
-                <div class="company__careers-card">
-                  {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                  <span class="company__icon-ph company__icon-ph--lg" aria-hidden="true">
-                    <Icon name={benefit.icon} />
-                  </span>
-                  <p class="company__careers-card-title">{benefit.title}</p>
-                  <p class="company__careers-card-desc" set:html={benefit.desc} />
-                </div>
+                <Box>
+                  <BoxTitleCase5
+                    icon={benefit.icon}
+                    title={benefit.title}
+                    description={benefit.desc}
+                    size="sm"
+                    tight
+                  />
+                </Box>
               ))
             }
           </div>
@@ -104,10 +108,9 @@ const fields = [
         <div class="company__careers-fields">
           {
             fields.map((field) => (
-              <div class="company__careers-field">
-                <p class="company__careers-field-title" set:html={field.title} />
-                <p class="company__careers-field-desc" set:html={field.desc} />
-              </div>
+              <Box useBackground>
+                <BoxTitleCase6 title={field.title} description={field.desc} />
+              </Box>
             ))
           }
         </div>

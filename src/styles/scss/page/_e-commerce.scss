@@ -41,90 +41,28 @@
     grid-template-columns: repeat(6, 1fr);
   }
 }
-.ec__step-card {
-  padding: rem(36px);
-  background-color: color('Color/Black 3');
-  border-radius: rem(24px);
-  text-align: center;
-}
-.ec__step-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin: rem(20px) 0;
-}
-.ec__step-desc {
-  @include font('Body 16 R');
-  color: color('Color/Black 100');
-}
+// 구매 프로세스 STEP 카드는 공용 UiBoxCase2(useBackground)로 대체(2026-08-21) — Label+타이틀+설명
+// 값이 그대로 일치(Body 24 R 타이틀 / Body 16 R 설명, 배경 Black 3 채움).
 
 // --- 제공기술 및 특징: 아이콘+타이틀(구분선)+체크리스트 카드 ---
+// 공용 Box + BoxTitleCase3(titleColor="primary100")로 대체(2026-08-21) — /ai-engine,
+// /robot-logistics와 같은 패턴. 구분선 아래 여백이 margin-bottom:12px였는데(ai-engine에서 같은
+// 값이 버그였던 전례), BoxTitleCase3 기본값(20px)으로 정리 — 아이콘 배경색은 svg 자체에 이미
+// 포함돼 있어 별도 지정 불필요(다른 아이콘 자산과 동일 패턴).
 .ec__feature-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: rem(20px);
 }
-.ec__feature-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.ec__feature-head {
-  display: flex;
-  align-items: center;
-  gap: rem(12px);
-  padding-bottom: rem(20px);
-  margin-bottom: rem(12px);
-  border-bottom: rem(1px) solid color('Color/Primary Color');
-}
-.ec__feature-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-  flex-shrink: 0;
-}
-.ec__feature-title {
-  @include font('Body 30 R');
-  color: color('Primary/Blue100');
-}
 
 // --- 아이콘+타이틀+설명 카드 (중앙정렬, 체크리스트 없음) ---
+// 공용 Box + BoxTitleCase5(size="md" tight)로 대체(2026-08-21, b2b-commerce/marketplace 공용) —
+// 타이틀만 24로 줄고 설명은 18 그대로인 조합이라 size="md" 옵션 신설(Figma 미검증, 기존 코드값
+// 그대로 이전). marketplace 쪽은 설명 없이 아이콘+타이틀만 쓰는 인스턴스도 있음(description 생략).
 .ec__stat-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: rem(20px);
-}
-.ec__stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
-  text-align: center;
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.ec__stat-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-}
-.ec__stat-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-}
-.ec__stat-desc {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
 }
 
 // (주의) "구축사례" 썸네일+타이틀+일자+설명 카드는 ~/components/common/CaseCardGrid.astro
@@ -263,6 +201,8 @@
 }
 
 // --- Marketplace 거래 중개 구조: SELLER / MARKETPLACE / BUYER (+연결 커넥터) ---
+// 카드 껍데기+라벨+타이틀은 공용 Box + BoxTitleCase4로 대체(2026-08-21) — MARKETPLACE 카드는
+// 배경 채움이 아니라 테두리색만 Primary Color로 강조되는 인스턴스라 Box의 useAccentBorder 옵션 사용.
 .ec__role-grid {
   display: flex;
   flex-wrap: wrap;
@@ -270,30 +210,9 @@
   align-items: stretch;
   gap: rem(20px);
   margin-bottom: rem(40px);
-}
-.ec__role-card {
-  flex: 1 1 rem(280px);
-  padding: rem(36px);
-  background-color: color('Color/White');
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-  // Figma 실측: MARKETPLACE는 배경 채움이 아니라 프라이머리 컬러 1px 테두리 강조(두께는 동일)
-  &--accent {
-    border: rem(1px) solid color('Color/Primary Color');
+  > .bs-box {
+    flex: 1 1 rem(280px);
   }
-}
-.ec__role-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: rem(12px);
-  padding-bottom: rem(20px);
-  margin-bottom: rem(20px);
-  border-bottom: rem(1px) solid color('Color/Primary Color');
-}
-.ec__role-title {
-  @include font('Body 30 R');
-  color: color('Color/Black 100');
 }
 // 카드 사이 장식용 연결 커넥터 (Figma "Union" 모티프 — 사용자 요청으로 원본 다운로드)
 .ec__role-connector {
@@ -458,7 +377,7 @@
 }
 
 @media only screen and (max-width: $breakpoint-sm) {
-  .ec__ref-media{height: initial; flex-direction: column-reverse; display: flex; gap: rem(20px);}
-  .ec__ref-media-main{position: relative; margin-left: auto; margin-right: auto;}
+  .ec__ref-media{height: initial; flex-direction: column-reverse; display: flex; gap: rem(20px); width: 100%;}
+  .ec__ref-media-main{position: relative; margin-left: auto; margin-right: auto; width: 100%; height: auto;}
   .ec__ref-media-sub{position: relative; margin-left: auto; margin-right: auto; left: 0; top: 0;}
 }

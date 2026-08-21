@@ -20,37 +20,9 @@
   background-color: color('Color/Black 3');
   border-radius: rem(12px);
 }
-.rl__diagram-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 7;
-  padding: rem(36px) rem(24px);
-  border-radius: rem(24px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  img {
-    max-width: rem(1190px);
-  }
-}
-// 시스템 구성도류 다이어그램(인프라/소프트웨어/시뮬레이션/스케줄링/구축사례) 공용 —
-// Figma는 섹션마다 이미지 원본 비율이 달라 실제 px는 각 페이지에서 인라인 style로 넘긴다.
-// (담당자가 실제 이미지로 교체할 자리 — 상하 36px 패딩 + 가운데 정렬은 공통)
-.rl__diagram-box {
-  display: flex;
-  justify-content: center;
-  padding: rem(36px) rem(24px);
-  border-radius: rem(24px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  overflow: hidden;
-  &--top {
-    margin-top: rem(20px);
-  }
-}
-.rl__diagram-img {
-  width: 100%;
-}
+// 시스템구성도/인프라/소프트웨어/시뮬레이션/스케줄링 다이어그램은 전부 공용 ImagePlaceholder로
+// 대체(2026-08-21) — .rl__diagram-placeholder(고정 비율, 크롭형) / .rl__diagram-box+.rl__diagram-img
+// (auto-height, 원본 비율 그대로) 두 패턴 다 컴포넌트의 fixedRatio prop으로 흡수됨.
 
 // --- M2M-RLCK 개요: RCS / WES 카드(87x87 원형 칩 그리드) + Seamless 프로세스 3단계 ---
 // (Figma 실측: Frame 20/21 722x386, 칩 87x87 원형, 프로세스 박스는 점선 테두리 + 87x87 흰 원)
@@ -441,6 +413,8 @@
 }
 
 // --- 소프트웨어 구성 / 시뮬레이션: 구분선으로 나뉜 인사이트 3열(카드 테두리 없음, Figma 실측) ---
+// 아이콘+타이틀 자체는 공용 IconTitle(size="lg")로 대체(2026-08-21) — 이 wrapper는 구분선(테두리
+// 없이 세로선으로만 구분)과 그리드 아이템 사이징만 담당.
 .rl__divider-row {
   display: flex;
   align-items: stretch;
@@ -448,23 +422,16 @@
 }
 .rl__divider-item {
   flex: 1 1 0%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
   padding: rem(36px);
   border-right: rem(1px) solid color('Color/Box/Border color');
   &:last-child {
     border-right: none;
   }
 }
-.rl__divider-desc {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  text-align: center;
-}
 
 // --- 스케줄링, 경로계획, 영역제어: 인사이트 카드 (4열 그리드, 5번째는 다음 줄, Figma 실측) ---
+// 아이콘+타이틀 자체는 공용 IconTitle(기본 size="sm")로 대체(2026-08-21) — 이 wrapper는 테두리
+// 박스 + 그리드 아이템 사이징만 담당.
 .rl__insight-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -472,18 +439,9 @@
   gap: rem(20px);
 }
 .rl__insight-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: rem(20px);
   padding: rem(36px);
   border: rem(1px) solid color('Color/Box/Border color');
   border-radius: rem(24px);
-}
-.rl__insight-desc {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
 }
 
 // (주의) "구축사례" 서브섹션(타임라인/구현기능/연동제조사표/시스템업무구성/디바이스패널)은
@@ -513,30 +471,13 @@
   margin-top: rem(80px);
   margin-bottom: rem(40px);
 }
+// 카드 껍데기(테두리/radius/padding)+아이콘·타이틀 헤더는 공용 Box + BoxTitleCase3(2026-08-21) —
+// 타이틀 색이 ai-engine 쪽(Color/Secondary Color)과 달리 Primary/Blue100이라 titleColor="primary100"
+// 옵션 사용(Figma 실측 확인, #16253f).
 .rl__benefit-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: rem(20px);
-}
-.rl__benefit-card {
-  display: flex;
-  flex-direction: column;
-  gap: rem(20px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.rl__benefit-head {
-  display: flex;
-  align-items: center;
-  gap: rem(12px);
-  width: 100%;
-  padding-bottom: rem(20px);
-  border-bottom: rem(1px) solid color('Color/Primary Color');
-}
-.rl__benefit-title {
-  @include font('Body 30 R');
-  color: color('Primary/Blue100');
 }
 .rl__benefit-body {
   padding-inline: rem(20px);
@@ -630,11 +571,5 @@
   }
   .rl__spec-columns {
     flex-direction: column;
-  }
-  // 박스 비율(16:7)과 실제 다이어그램 이미지 비율이 안 맞으면 세로로 넘쳐 보인다 — 패딩을
-  // 좁은 화면에 맞게 줄이고(기존 36/24는 이 폭엔 과함), overflow:hidden은 이미 있어 그대로 유지.
-  .rl__diagram-placeholder,
-  .rl__diagram-box {
-    padding: rem(20px) rem(15px);
   }
 }

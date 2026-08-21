@@ -1,0 +1,23 @@
+---
+// 아이콘(100px 원형, Blue-10) + 타이틀(+선택적 서브타이틀) 단일 아이템 — 카드 테두리/padding/그리드
+// 배치는 컴포넌트가 관여하지 않고 페이지에서 감싸는 wrapper가 맡는다(Box/BoxTitleCase 조합과 동일한
+// 역할 분담). /company/ceo-message(.company__ceo-value), /robot-logistics/overview
+// (.rl__divider-item, .rl__insight-card) 등에서 각자 다르게 구현되어 있던 걸 공용화(2026-08-21).
+import Icon from '~/components/common/Icon.astro'
+
+export interface Props {
+  icon: string
+  title: string
+  subtitle?: string
+  size?: 'lg' | 'sm'
+}
+const {icon, title, subtitle, size = 'sm'} = Astro.props
+---
+
+<div class="bs-icon-title" class:list={{'size-lg': size === 'lg'}}>
+  <span class="bit-icon" aria-hidden="true">
+    <Icon name={icon} />
+  </span>
+  <p class="bit-title">{title}</p>
+  {subtitle && <p class="bit-subtitle">{subtitle}</p>}
+</div>

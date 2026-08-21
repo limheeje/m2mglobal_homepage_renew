@@ -1,10 +1,10 @@
 ---
 import Label from '~/components/common/Label.astro'
-const {title = '', label = '', prefix} = Astro.props
+const {title = '', label = '', prefix, tight = false} = Astro.props
 ---
 
 <!-- 피그미기 기준 Box_Case 상단-->
-<div class="bs-box-title-case-4">
+<div class="bs-box-title-case-4" class:list={{'is-tight': tight}}>
   <div class="bbtc4-inner">
     <div class="bsb-label">
       <Label type="type_2">{label}</Label>

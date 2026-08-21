@@ -8,14 +8,16 @@ import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
 import TitleMiddle from '~/components/common/TitleMiddle.astro'
+import ImagePlaceholder from '~/components/common/ImagePlaceholder.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
 import CaseCardGrid from '~/components/common/CaseCardGrid.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase3 from '~/components/ui/box/boxTitleCase/BoxTitleCase3.astro'
 import stepArrowUrl from '~/assets/images/step-arrow.svg'
 import SYMBOL013 from '~/assets/images/common/symbol013.png'
 import SYMBOL014 from '~/assets/images/common/symbol014.png'
 import {ICON_KEY_NAME} from '~/constants/Icon'
-import Icon from '~/components/common/Icon.astro'
 
 const localNavigation = route.find((item) => item.href === '/robot-logistics/overview')
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
@@ -122,14 +124,8 @@ const cases = [
         <div class="rl__benefit-grid">
           {
             benefitCards.map((card) => (
-              <div class="rl__benefit-card">
-                <div class="rl__benefit-head">
-                  <span class="rl__icon-circle" aria-hidden="true">
-                    {/* TODO: 아이콘 이미지 삽입 */}
-                    <Icon name={card.icon} />
-                  </span>
-                  <p class="rl__benefit-title">{card.title}</p>
-                </div>
+              <Box>
+                <BoxTitleCase3 icon={card.icon} title={card.title} titleColor="primary100" />
                 <div class="rl__benefit-body">
                   <TextList>{card.top}</TextList>
                   <span class="rl__benefit-arrow" aria-hidden="true">
@@ -137,7 +133,7 @@ const cases = [
                   </span>
                   <TextList>{card.bottom}</TextList>
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>
@@ -147,10 +143,7 @@ const cases = [
     <section id="system" class="g-section">
       <div class="innerWrap">
         <TitleSub title={`시스템 <span class="mark">구성도</span>`} />
-        <!-- TODO: 시스템구성도 이미지 삽입 -->
-        <div class="rl__diagram-placeholder" aria-hidden="true">
-          <img src={SYMBOL013.src} alt="" />
-        </div>
+        <ImagePlaceholder ratio="16/7" src={SYMBOL013.src} usePadding maxWidth="119rem" />
       </div>
     </section>
 

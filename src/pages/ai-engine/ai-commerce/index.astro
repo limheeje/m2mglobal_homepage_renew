@@ -8,9 +8,10 @@ import Layout from '~/layouts/SubLayout.astro'
 import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import TitleSub from '~/components/common/TitleSub.astro'
+import TitleThird from '~/components/common/TitleThird.astro'
+import ImagePlaceholder from '~/components/common/ImagePlaceholder.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
-import Label from '~/components/common/Label.astro'
 import stepArrowUrl from '~/assets/images/step-arrow.svg'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 import Icon from '~/components/common/Icon.astro'
@@ -21,6 +22,9 @@ import SYMBOL004 from '~/assets/images/common/symbol004.png'
 import SYMBOL005 from '~/assets/images/common/symbol005.png'
 import ClientLogoGrid from '~/components/common/ClientLogoGrid.astro'
 import UiNoti from '~/components/ui/box/UiNoti.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase3 from '~/components/ui/box/boxTitleCase/BoxTitleCase3.astro'
+import BoxTitleCase4 from '~/components/ui/box/boxTitleCase/BoxTitleCase4.astro'
 const localNavigation = route.find((item) => item.href === '/ai-engine/machine-learning')
 
 const sectionTabs = [
@@ -287,20 +291,14 @@ const caseClients = [
         <div class="ai__feature-grid">
           {
             designCards.map((card) => (
-              <div class="ai__feature-card">
-                <div class="ai__feature-head">
-                  {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                  <span class="ai__feature-icon" aria-hidden="true">
-                    <Icon name={card.icon} />
-                  </span>
-                  <p class="ai__feature-title">{card.title}</p>
-                </div>
+              <Box>
+                <BoxTitleCase3 icon={card.icon} title={card.title} />
                 <div>
                   {card.items.map((item) => (
                     <TextList>{item}</TextList>
                   ))}
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>
@@ -316,16 +314,15 @@ const caseClients = [
         <div class="ai__level-grid">
           {
             levels.map((lv) => (
-              <div class="ai__level-card">
-                <Label type="type_2">{lv.level}</Label>
-                <p class="ai__level-title">{lv.title}</p>
+              <Box>
+                <BoxTitleCase4 label={lv.level} title={lv.title} tight />
                 <div>
                   {lv.items.map((item) => (
                     <TextList>{item}</TextList>
                   ))}
                 </div>
                 <UiNoti dataLevel={lv.dataLevel} metric={lv.metric} />
-              </div>
+              </Box>
             ))
           }
         </div>
@@ -434,7 +431,9 @@ const caseClients = [
           title={`Vector 기반 <span class="mark">개인화 프로파일링</span>`}
           description="사용자 행동과 상품 속성을 벡터 공간으로 구조화하여, 유사도 기반 개인화 추천을 구현합니다. 동일 상품이라도 사용자 맥락에 따라 노출 우선순위가 동적으로 재정렬됩니다."
         />
-        <p class="ai__diagram-pill">Layer 1 &amp; 2 : 광범위한 탐색과 정교한 취향 매칭</p>
+        <TitleThird class="ai__diagram-title"
+          >Layer 1 &amp; 2 : 광범위한 탐색과 정교한 취향 매칭</TitleThird
+        >
         <div class="ai__personalize-grid">
           <div class="ai__personalize-card">
             <!-- TODO: 아이콘 이미지 삽입 -->
@@ -474,11 +473,10 @@ const caseClients = [
           title={`재구매 예측 <span class="mark">모델 전략</span>`}
           description="사용자의 구매 주기를 예측하여, 선제적 추천을 가능하게 합니다. 예상 필요 시점에 스코어를 가중 개인화 추천을 지능적으로 제공함으로써 재구매 전환율을 증대시킵니다."
         />
-        <p class="ai__diagram-pill">Layer 3 : 커머스의 핵심, "재구매 타이밍" 예측</p>
-        <!-- TODO: 다이어그램 이미지 삽입 -->
-        <div class="ai__diagram-placeholder" aria-hidden="true">
-          <img src={SYMBOL002.src} alt="" />
-        </div>
+        <TitleThird class="ai__diagram-title"
+          >Layer 3 : 커머스의 핵심, "재구매 타이밍" 예측</TitleThird
+        >
+        <ImagePlaceholder ratio="16/7" src={SYMBOL002.src} />
       </div>
     </section>
 
@@ -488,11 +486,8 @@ const caseClients = [
           title={`비즈니스 반영  <span class="mark">재랭킹 구조</span>`}
           description="프로모션·재고·회원 정책을 훼손 없이 반영하는 재랭킹 구조를 통해, 알고리즘 품질과 비즈니스 전략을 동시에 만족시키는 통제 가능한 추천을 구현합니다."
         />
-        <p class="ai__diagram-pill">Layer 5 : AI 제안 위에 비지니스 전략 제시</p>
-        <!-- TODO: 다이어그램 이미지 삽입 -->
-        <div class="ai__diagram-placeholder" aria-hidden="true">
-          <img src={SYMBOL003.src} alt="" />
-        </div>
+        <TitleThird class="ai__diagram-title">Layer 5 : AI 제안 위에 비지니스 전략 제시</TitleThird>
+        <ImagePlaceholder ratio="16/7" src={SYMBOL003.src} />
       </div>
     </section>
 
@@ -502,11 +497,10 @@ const caseClients = [
           title={`개인화·재구매 예측·자동 최적화 (리밸런싱)`}
           description="단계적 확장을 통해 성과와 안정성을 동시에 확보합니다. Quick Win으로 초기 성과를 창출하고, 개인화·재구매 예측·자동 최적화로 점진적 고도화를 추진합니다."
         />
-        <p class="ai__diagram-pill">리스크를 최소화한 단계적 도입 로드맵으로 Phase2 목표</p>
-        <!-- TODO: 다이어그램 이미지 삽입 -->
-        <div class="ai__diagram-placeholder" aria-hidden="true">
-          <img src={SYMBOL004.src} alt="" />
-        </div>
+        <TitleThird class="ai__diagram-title"
+          >리스크를 최소화한 단계적 도입 로드맵으로 Phase2 목표</TitleThird
+        >
+        <ImagePlaceholder ratio="16/7" src={SYMBOL004.src} />
       </div>
     </section>
 

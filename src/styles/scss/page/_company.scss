@@ -160,38 +160,19 @@
     }
   }
 }
+// 사업영역 카드(아이콘+타이틀+설명) 자체는 공용 Box + BoxTitleCase5로 대체(2026-08-21) —
+// 껍데기(테두리/radius/padding)는 Box, 아이콘+타이틀+설명은 BoxTitleCase5가 담당하고
+// 여기서는 그리드의 그리드아이템 사이징(flex/min-width)과 하단 리스트 정렬만 남긴다.
+// 테두리색은 Figma 실측이 Color/Black 10(#dbdbdb)이라 Box 기본값(Color/Box/Border, #b7b7b7)과
+// 달라서 Box의 useLightBorder 옵션을 사용 — 다른 Box 사용처엔 영향 없음.
 .company__business-grid {
   display: flex;
   flex-wrap: wrap;
   gap: rem(20px);
-}
-.company__business-card {
-  flex: 1 1 0%;
-  min-width: rem(280px);
-  padding: rem(36px);
-  border: rem(1px) solid color('Color/Black 10');
-  border-radius: rem(24px);
-  text-align: center;
-}
-.company__business-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: rem(100px);
-  height: rem(100px);
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-  margin-bottom: rem(20px);
-}
-.company__business-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(20px);
-}
-.company__business-desc {
-  @include font('Body 16 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(20px);
+  > .bs-box {
+    flex: 1 1 0%;
+    min-width: rem(280px);
+  }
 }
 .company__business-list {
   text-align: left;
@@ -224,28 +205,18 @@
   text-align: center;
   margin-bottom: rem(40px);
 }
+// Step 카드(Label+Title)는 공용 Box + BoxTitleCase2(tight)로 대체(2026-08-21) — 테두리/radius/
+// padding/타이틀폰트가 Box 기본값과 Figma 실측이 그대로 일치해서 옵션 없이 그대로 재사용,
+// "본문 없이 타이틀로 끝나는 카드"라 BoxTitleCase2의 tight 옵션만 켜서 타이틀 하단 여백 제거.
 .company__ceo-steps {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: rem(12px);
   margin-bottom: rem(80px);
-}
-.company__ceo-step {
-  flex: 1;
-  padding: rem(36px);
-  text-align: center;
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.company__ceo-step-label {
-  @include font('Body 20 R');
-  color: color('Color/Primary Color');
-}
-.company__ceo-step-title {
-  margin-top: rem(20px);
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
+  > .bs-box {
+    flex: 1;
+  }
 }
 .company__ceo-step-arrow {
   flex-shrink: 0;
@@ -279,15 +250,13 @@
   flex-wrap: wrap;
   gap: rem(20px);
 }
+// 아이콘+타이틀 자체는 공용 IconTitle(default size="sm")로 대체(2026-08-21) — 이 wrapper는
+// 그리드 아이템 사이징 + 데스크탑 구분선 + 모바일 전용 테두리(Figma상 PC엔 테두리가 없고
+// 모바일에서만 카드형 테두리가 붙는 케이스)만 담당.
 .company__ceo-value {
   flex: 1 1 0%;
   min-width: rem(240px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
   padding: rem(36px);
-  text-align: center;
   position: relative;
   @media only screen and (max-width: $breakpoint-md){
     &{
@@ -306,14 +275,6 @@
       background: color('Color/Black 20');
     }
   }
-}
-.company__ceo-value-icon {
-  border-radius: 50%;
-  background-color: color('Color/Blue 10');
-}
-.company__ceo-value-text {
-  @include font('Body 18 R');
-  color: color('Color/Black 100');
 }
 
 // --- 회사 연혁 ---
@@ -399,51 +360,27 @@
     margin-bottom: 0;
   }
 }
+// 복지 카드(아이콘+타이틀+설명, 리스트 없음)는 공용 Box + BoxTitleCase5(size="sm" tight)로 대체
+// (2026-08-21) — 테두리/radius/padding/간격이 Box 기본값과 Figma 실측이 그대로 일치, 폰트만
+// ai-engine/business-card와 다른 24/16 사이즈라 size="sm" 옵션 사용. 본문 뒤에 리스트가 없어서
+// tight로 description 하단 여백 제거.
 .company__careers-grid {
   flex: 1 1 auto;
   display: flex;
   flex-wrap: wrap;
   gap: rem(20px);
+  > .bs-box {
+    flex: 0 0 rem(350px);
+  }
 }
-.company__careers-card {
-  flex: 0 0 rem(350px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: rem(20px);
-  padding: rem(36px);
-  text-align: center;
-  border: rem(1px) solid color('Color/Box/Border color');
-  border-radius: rem(24px);
-}
-.company__careers-card-title {
-  @include font('Body 24 R');
-  color: color('Color/Font/Font Color');
-}
-.company__careers-card-desc {
-  @include font('Body 16 R');
-  color: color('Color/Font/Font Color');
-}
+// 분야/안내 카드(타이틀+설명, 아이콘/테두리 없음)는 공용 Box(useBackground) + BoxTitleCase6로
+// 대체(2026-08-21). 기존 title→desc 간격이 12px였는데, Figma 실측(y좌표 역산)은 사이트 전체와
+// 동일한 20px — 버그로 판단, Figma 값으로 수정.
 .company__careers-fields {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: rem(20px);
   margin-bottom: rem(80px);
-}
-.company__careers-field {
-  padding: rem(36px);
-  text-align: center;
-  background-color: color('Color/Box/Box BG');
-  border-radius: rem(24px);
-}
-.company__careers-field-title {
-  @include font('Body 24 R');
-  color: color('Color/Black 100');
-  margin-bottom: rem(12px);
-}
-.company__careers-field-desc {
-  @include font('Body 16 R');
-  color: color('Color/Font/Font Color');
 }
 .company__careers-process {
   display: flex;
@@ -672,9 +609,9 @@
 
   .company__business-grid {
     flex-direction: column;
-  }
-  .company__business-card {
-    min-width: 0;
+    > .bs-box {
+      min-width: 0;
+    }
   }
 
   .company__ceo-intro {
@@ -682,11 +619,11 @@
   }
   .company__ceo-steps {
     flex-direction: column;
-  }
-  // 부모가 column이 되면 flex:1은 세로(메인축) 성장만 관여하고, 가로(cross축)는
-  // align-items:center 때문에 내용 크기만큼만 좁게 잡혀 있었다 — 폭 100%로 넓힌다.
-  .company__ceo-step {
-    width: 100%;
+    // 부모가 column이 되면 flex:1은 세로(메인축) 성장만 관여하고, 가로(cross축)는
+    // align-items:center 때문에 내용 크기만큼만 좁게 잡혀 있었다 — 폭 100%로 넓힌다.
+    > .bs-box {
+      width: 100%;
+    }
   }
   .company__ceo-step-arrow {
     transform: rotate(90deg);
@@ -717,7 +654,7 @@
   .company__careers-benefits {
     flex-direction: column;
   }
-  .company__careers-card {
+  .company__careers-grid > .bs-box {
     flex: 1 1 100%;
   }
   .company__careers-fields {
@@ -793,10 +730,6 @@
   }
   .company__info-cell:first-child {
     border-top: none;
-  }
-  .company__business-card {
-    // padding-left: rem($spacing-left);
-    // padding-right: rem($spacing-right);
   }
   .company__address-logo{
     margin-left: auto;

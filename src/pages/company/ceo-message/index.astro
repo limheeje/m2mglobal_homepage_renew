@@ -8,9 +8,10 @@ import Layout from '~/layouts/SubLayout.astro'
 import SubBanner from '~/components/common/SubBanner.astro'
 import TitleMain from '~/components/common/TitleMain.astro'
 import Navigation from '~/components/common/Navigation.astro'
-import Label from '~/components/common/Label.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase2 from '~/components/ui/box/boxTitleCase/BoxTitleCase2.astro'
+import IconTitle from '~/components/common/IconTitle.astro'
 import stepArrowUrl from '~/assets/images/step-arrow.svg'
-import Icon from '~/components/common/Icon.astro'
 import {ICON_KEY_NAME} from '~/constants/Icon'
 const localNavigation = route.find((item) => item.href === '/company/info')
 
@@ -58,10 +59,9 @@ const values = [
           {
             steps.map((step, i) => (
               <>
-                <div class="company__ceo-step">
-                  <Label>{step.label}</Label>
-                  <p class="company__ceo-step-title">{step.title}</p>
-                </div>
+                <Box>
+                  <BoxTitleCase2 label={step.label} title={step.title} tight />
+                </Box>
                 {i < steps.length - 1 && (
                   <span class="company__ceo-step-arrow" aria-hidden="true">
                     <img src={stepArrowUrl.src} alt="" />
@@ -87,14 +87,7 @@ const values = [
           {
             values.map((item) => (
               <div class="company__ceo-value">
-                {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                <span
-                  class="company__icon-ph company__icon-ph--lg company__ceo-value-icon"
-                  aria-hidden="true"
-                >
-                  <Icon name={item.codeIcon} />
-                </span>
-                <p class="company__ceo-value-text">{item.codeContent}</p>
+                <IconTitle icon={item.codeIcon} title={item.codeContent} />
               </div>
             ))
           }

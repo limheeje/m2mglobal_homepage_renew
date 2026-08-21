@@ -10,11 +10,13 @@ import TitleSub from '~/components/common/TitleSub.astro'
 import TitleMiddle from '~/components/common/TitleMiddle.astro'
 import Navigation from '~/components/common/Navigation.astro'
 import TextList from '~/components/common/TextList.astro'
-import Label from '~/components/common/Label.astro'
 import {ICON_KEY_NAME} from '~/constants/Icon'
-import Icon from '~/components/common/Icon.astro'
 import SYMBOL009 from '~/assets/images/common/symbol009.png'
 import CaseCardGrid from '~/components/common/CaseCardGrid.astro'
+import Box from '~/components/common/Box.astro'
+import BoxTitleCase3 from '~/components/ui/box/boxTitleCase/BoxTitleCase3.astro'
+import BoxTitleCase5 from '~/components/ui/box/boxTitleCase/BoxTitleCase5.astro'
+import UiBoxCase2 from '~/components/ui/box/UiBoxCase2.astro'
 
 const localNavigation = route.find((item) => item.href === '/e-commerce/commerce-technology')
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
@@ -139,14 +141,8 @@ const featureCards = [
         <div class="ec__feature-grid">
           {
             featureCards.map((card) => (
-              <div class="ec__feature-card">
-                <div class="ec__feature-head">
-                  {/* <!-- TODO: 아이콘 이미지 삽입 --> */}
-                  <span class="ec__feature-icon" aria-hidden="true">
-                    <Icon name={card.icon} />
-                  </span>
-                  <p class="ec__feature-title">{card.title}</p>
-                </div>
+              <Box>
+                <BoxTitleCase3 icon={card.icon} title={card.title} titleColor="primary100" />
                 <div>
                   {card.items.map((lines) => (
                     <TextList>
@@ -156,7 +152,7 @@ const featureCards = [
                     </TextList>
                   ))}
                 </div>
-              </div>
+              </Box>
             ))
           }
         </div>
@@ -171,11 +167,9 @@ const featureCards = [
         <div class="ec__box-grid ec__box-grid--6">
           {
             processSteps.map((item) => (
-              <div class="ec__step-card">
-                <Label type="type_1">{item.step}</Label>
-                <p class="ec__step-title">{item.title}</p>
-                <p class="ec__step-desc">{item.desc.join(' · ')}</p>
-              </div>
+              <UiBoxCase2 label={item.step} title={item.title} useBackground>
+                {item.desc.join(' · ')}
+              </UiBoxCase2>
             ))
           }
         </div>
@@ -186,14 +180,9 @@ const featureCards = [
         <div class="ec__stat-grid">
           {
             processFeatures.map((f) => (
-              <div class="ec__stat-card">
-                {/* TODO: 아이콘 이미지 삽입 */}
-                <span class="ec__stat-icon" aria-hidden="true">
-                  <Icon name={f.icon} />
-                </span>
-                <p class="ec__stat-title">{f.title}</p>
-                <p class="ec__stat-desc" set:html={f.desc} />
-              </div>
+              <Box>
+                <BoxTitleCase5 icon={f.icon} title={f.title} description={f.desc} tight />
+              </Box>
             ))
           }
         </div>

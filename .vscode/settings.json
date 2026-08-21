@@ -23,7 +23,9 @@
   "[astro]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-
+  "liveSassCompile.settings.includeItems": [
+    "/src/styles/scss/**/*.scss"
+  ],
   "liveSassCompile.settings.formats": [
     {
       "format": "expanded",

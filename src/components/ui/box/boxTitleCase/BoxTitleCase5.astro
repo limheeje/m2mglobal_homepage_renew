@@ -1,16 +1,31 @@
 ---
 import Icon from '~/components/common/Icon.astro'
 
-const {description = '', title = '', icon = ''} = Astro.props
+const {
+  description = '',
+  title = '',
+  icon = '',
+  size = 'lg',
+  tight = false,
+  titleColor = 'default'
+} = Astro.props
 ---
 
 <!-- 피그미기 기준 Box_Case 상단-->
-<div class="bs-box-title-case-5">
+<div
+  class="bs-box-title-case-5"
+  class:list={{
+    'size-sm': size === 'sm',
+    'size-md': size === 'md',
+    'is-tight': tight,
+    'title-color-primary100': titleColor === 'primary100'
+  }}
+>
   <div class="bbtc5-inner">
     <span class="bsb-icon">
       <Icon name={icon} />
     </span>
     <div class="bsb-title" set:html={title} />
-    <div class="bsb-description" set:html={description} />
+    {description && <div class="bsb-description" set:html={description} />}
   </div>
 </div>

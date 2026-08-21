@@ -1127,24 +1127,29 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       // 중복으로 겹쳐서 카드 사이가 실제 의도보다 두 배로 벌어진다 — 간격은 JS spaceBetween 하나로만.
       align-items: stretch;
     }
-    // /company/info의 .company__business-card 패턴을 그대로 따른다(카드 테두리색만 여기 Figma
-    // 실측대로 Black/10).
-    // 카드 폭은 더는 여기서 고정하지 않는다 — Swiper가 #solution-swiper의 slidesPerView(소수점,
+    // 공용 Box 컴포넌트(useLightBorder — 테두리색만 Figma 실측대로 Black/10)로 테두리/패딩/radius를
+    // 대체했다 — /company/info의 .company__business-card와 동일 패턴(마크업 참고). Box는 자기
+    // 콘텐츠를 항상 .b-inner로 한 번 더 감싸므로, 아이콘/타이틀/리스트를 세로로 쌓는 flex는 카드
+    // 자신이 아니라 .b-inner에 줘야 한다(.ai__feature-grid > .bs-box .b-inner와 동일 패턴).
+    // 카드 폭은 여기서 고정하지 않는다 — Swiper가 #solution-swiper의 slidesPerView(소수점,
     // "몇 장 + 다음 장 살짝 peek")로 컨테이너 실측 폭을 나눠 각 슬라이드에 인라인 width를 직접
-    // 계산해 넣어준다. flex-basis/width를 여기서 고정하면 그 계산값을 도로 덮어써서 페이지네이션
-    // 수만큼 나뉘지 않고 예전처럼 425px 그대로 고정돼버린다 — flex-shrink만 0으로 둬서 Swiper가
-    // 준 폭이 줄어들지 않게만 한다.
+    // 계산해 넣어준다. flex-basis/width/max-width를 여기서 고정하면 그 계산값을 도로 덮어써서
+    // 페이지네이션 수만큼 나뉘지 않고 예전처럼 425px 그대로 고정돼버리는 것뿐 아니라, slidesPerView가
+    // 소수점일 때 Swiper는 카드 폭을 DOM 실측이 아니라 "컨테이너 폭÷slidesPerView" 공식으로 계산해서
+    // 그 계산값을 그대로 다음 슬라이드 이동 거리(translate)에 쓰기 때문에, CSS로 렌더 폭만 그보다
+    // 작게 눌러버리면 실제 보이는 카드 폭과 Swiper 내부 계산이 어긋나 네비게이션 시 카드가 화면
+    // 밖으로 튕겨나가는 버그가 생긴다(실제로 max-width:425px를 줬다가 태블릿 폭 등에서 재현됨,
+    // 되돌림). — flex-shrink만 0으로 둬서 Swiper가 준 폭이 줄어들지 않게만 한다.
     .sp-solution-card {
       flex-shrink: 0;
       height: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: rem(20px);
-      padding: rem(36px);
-      border: rem(1px) solid color('Color/Black 10');
-      border-radius: rem(24px);
       text-align: center;
+      .b-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: rem(20px);
+      }
     }
     .sp-solution-icon-ph {
       position: relative;
@@ -1262,16 +1267,18 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
       @include font('Body 16 R');
       color: color('Black/60');
     }
+    // 공용 Box 컴포넌트(useBackground — 배경 Color/Black 3는 Box의 useBackground와 정확히 같은
+    // 토큰이라 테두리도 같은 색으로 덮여 사실상 무테두리로 보이는 원본과 동일)로 배경/패딩/radius를
+    // 대체했다 — 세로 stacking(flex)은 .sp-solution-card와 동일 이유로 .b-inner에 준다.
     .sp-why-card {
       flex-shrink: 0;
       width: rem(425px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: rem(20px);
-      padding: rem(36px);
-      background-color: color('Color/Black 3');
-      border-radius: rem(24px);
+      .b-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: rem(20px);
+      }
     }
     .sp-why-card-title {
       @include font('Body 30 R');
@@ -1481,7 +1488,7 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
   // width: calc(100% + #{rem(160px)});
   margin-left: rem(-80px);
   margin-right: rem(-80px);
-  padding-right: rem(100px);
+  padding-right: rem(20px);
 }
 .main-wrap .section6-slide .js-swiper {
   width: calc(100% + #{rem(160px)});
@@ -1673,7 +1680,7 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
     // (주의) base가 .section-item .b-list 까지 중첩돼 있어 그 깊이까지 그대로 맞춰써야 명시도가
     // 이긴다 — .b-li만 쓰면 명시도가 낮아 안 먹는다.
     .section1-slide .section-item .b-list .b-li:after {
-      display: none;
+      //display: none;
     }
     // Section1 히어로 타이틀의 <br/>은 PC 폭 기준 줄바꿈이라 좁은 화면에서 부자연스럽게 끊겨
     // 보인다 — 화면 폭에 맞춰 자연스럽게 줄바꿈되도록 렌더링만 지운다(데이터는 그대로 유지).

@@ -16,6 +16,7 @@
 // <head>에, 본문 끝에서 JS 스크립트 태그 + 초기화 스크립트를 로드한다.
 import MainLayout from '~/layouts/MainLayout.astro'
 import TextList from '~/components/common/TextList.astro'
+import Box from '~/components/common/Box.astro'
 import Footer from '~/components/layout/Footer.astro'
 
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
@@ -921,7 +922,7 @@ const partnerLogoKeys = [
             <div class="swiper-wrapper sp-solution-grid">
               {
                 solutionOverview.cards.map((card) => (
-                  <div class="swiper-slide sp-solution-card">
+                  <Box useLightBorder class="swiper-slide sp-solution-card">
                     <span class="sp-solution-icon-ph" aria-hidden="true">
                       {card.icons.map((icon) => (
                         <img src={mainIconSrc(icon)} alt="" />
@@ -933,7 +934,7 @@ const partnerLogoKeys = [
                         <TextList type="type_2">{text}</TextList>
                       ))}
                     </div>
-                  </div>
+                  </Box>
                 ))
               }
             </div>
@@ -990,7 +991,7 @@ const partnerLogoKeys = [
                         ))}
                       </div>
                     </div>
-                    <div class="sp-why-card">
+                    <Box useBackground class="sp-why-card">
                       {item.logoKey ? (
                         <span class="sp-why-logo-ph sp-why-logo-ph--img">
                           <img src={partnerLogoSrc(item.logoKey)} alt={item.name} />
@@ -1004,7 +1005,7 @@ const partnerLogoKeys = [
                           <TextList type="type_2">{text}</TextList>
                         ))}
                       </div>
-                    </div>
+                    </Box>
                   </div>
                 ))
               }

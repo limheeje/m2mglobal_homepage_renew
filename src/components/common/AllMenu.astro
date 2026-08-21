@@ -35,7 +35,7 @@ const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
                 <ul class="all-menu__depth2-col">
                   {section.children.map((child) => (
                     <li>
-                      <a href={PUBLIC_BUILD_URL + child.href}>{child.label}</a>
+                      <a href={PUBLIC_BUILD_URL + child.href}>{child.koLabel}</a>
                     </li>
                   ))}
                 </ul>

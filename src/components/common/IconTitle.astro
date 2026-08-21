@@ -18,6 +18,6 @@ const {icon, title, subtitle, size = 'sm'} = Astro.props
   <span class="bit-icon" aria-hidden="true">
     <Icon name={icon} />
   </span>
-  <p class="bit-title">{title}</p>
-  {subtitle && <p class="bit-subtitle">{subtitle}</p>}
+  <p class="bit-title" set:html={title} />
+  {subtitle && <p class="bit-subtitle" set:html={subtitle} />}
 </div>

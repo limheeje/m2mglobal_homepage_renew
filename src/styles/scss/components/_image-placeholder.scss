@@ -11,6 +11,7 @@
   align-items: center;
   justify-content: center;
   border-radius: rem(24px);
+  aspect-ratio: auto !important;
   // 지정 비율(ratio)과 원본 이미지의 실제 비율이 다르면 모서리가 둥근 박스 밖으로 이미지가
   // 삐져나와 보인다 — 항상 박스 기준으로 잘라낸다(robot-logistics 시스템구성도에서 실측 확인).
   overflow: hidden;

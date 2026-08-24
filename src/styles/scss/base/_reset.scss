@@ -131,7 +131,7 @@ ol {
   list-style: none;
 }
 .innerWrap {
-  max-width: $innerWrap;
+  max-width: rem($innerWrap);
   margin-left: auto;
   margin-right: auto;
   .innerWrap{
@@ -186,18 +186,18 @@ $grid-gutter: 20px;
   max-width: 100%;
   margin-inline: auto;
 
-  @media (min-width: $breakpoint-sm) {
-    max-width: $breakpoint-sm;
-  }
-  @media (min-width: $breakpoint-md) {
-    max-width: $breakpoint-md;
-  }
-  @media (min-width: $breakpoint-lg) {
-    max-width: $breakpoint-lg;
-  }
-  @media (min-width: $breakpoint-xlg) {
-    max-width: $breakpoint-xlg;
-  }
+  // @media (min-width: $breakpoint-sm) {
+  //   max-width: $breakpoint-sm;
+  // }
+  // @media (min-width: $breakpoint-md) {
+  //   max-width: $breakpoint-md;
+  // }
+  // @media (min-width: $breakpoint-lg) {
+  //   max-width: $breakpoint-lg;
+  // }
+  // @media (min-width: $breakpoint-xlg) {
+  //   max-width: $breakpoint-xlg;
+  // }
 }
 
 .g-row {
@@ -322,4 +322,9 @@ $grid-breakpoints: (
             margin-top: rem(10px);
         }
     }
+}
+
+
+@media only screen and (max-width: calc(1920px * 0.8)) {
+  html{font-size: 7.6px;}
 }

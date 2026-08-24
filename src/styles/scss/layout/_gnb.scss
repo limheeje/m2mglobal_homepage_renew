@@ -149,9 +149,7 @@
     .gnb-wrap{
         padding: rem(20px) rem(45px);
         .gnb{
-            gap: rem(15px);
             .gb-item{
-                min-width: rem(120px);
                 .g-link{
                     @include font('Body 18 R');
                 }

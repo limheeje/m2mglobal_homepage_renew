@@ -213,6 +213,7 @@ const aiSlides: {
 const ecommerceSlide = {
   bg: 'ecommerce-bg',
   title: 'Modular Commerce Platform',
+  href: '/e-commerce/commerce-technology',
   desc: 'Commerce Platform에 속도와 생산성을 높이다.<br/>"Front –BackOffice-Interface" 모듈화 된 e-Commerce 아키텍처! AI와 융합 및 빠른 구축과 유연한 확장성 제공.',
   circles: [
     '회원',
@@ -246,6 +247,7 @@ const robotLogisticsSlide = {
     'robot-photo-07-1',
     'robot-photo-07-2'
   ],
+  href: '/robot-logistics/overview',
   title: 'ROBOT Logistics',
   desc: '다양한 물류 로봇과 자동화 설비를 하나의 플랫폼으로 통합 제어하여 스마트 창고의 운영 효율 UP!<br/>AS/RS, AMR, 셔틀카 등 이기종 로봇을 유기적으로 연계해 안정적인 물류 운영 및 최적의 작업 환경 제공',
   centerBadge: 'M2M-RLCK<br/>로봇물류제어기술',
@@ -281,6 +283,7 @@ const robotLogisticsSlide = {
 
 const smartFactorySlide = {
   bg: 'factory-bg',
+  href: '/robot-logistics/smart-factory',
   title: 'Smart Factory MES',
   desc: '사람, 산업 공간, 업무 정보를 스마트하게 연결하다!<br/>생산 현장 데이터 실시간 수집/가공/분석"을 통한 자율 공장 실현 가능, 지능화 된 스마트 팩토리 시스템 보유',
   dataFlow: [
@@ -681,7 +684,9 @@ const partnerLogoKeys = [
             <div class="section-item swiper-slide">
               <div class="center-inner">
                 <p class="ai-eyebrow">{slide.eyebrow}</p>
-                <p class="ai-head">{slide.head}</p>
+                <a href="/ai-engine/machine-learning" class="ai-head">
+                  {slide.head}
+                </a>
                 <div class="ai-banner">
                   <p class="ai-banner-title">{slide.bannerTitle}</p>
                   <p class="ai-banner-desc" set:html={slide.bannerDesc} />
@@ -744,7 +749,7 @@ const partnerLogoKeys = [
             <div class="biz-body">
               <div class="biz-head">
                 <div class="biz-title-row">
-                  <p class="biz-title">{ecommerceSlide.title}</p>
+                  <a href={ecommerceSlide.href} class="biz-title">{ecommerceSlide.title}</a>
                 </div>
                 <p class="biz-desc" set:html={ecommerceSlide.desc} />
               </div>
@@ -781,7 +786,9 @@ const partnerLogoKeys = [
             <div class="biz-body">
               <div class="biz-head">
                 <div class="biz-title-row">
-                  <p class="biz-title">{robotLogisticsSlide.title}</p>
+                  <a href={robotLogisticsSlide.href} class="biz-title"
+                    >{robotLogisticsSlide.title}</a
+                  >
                 </div>
                 <p class="biz-desc" set:html={robotLogisticsSlide.desc} />
               </div>
@@ -838,7 +845,7 @@ const partnerLogoKeys = [
             <div class="biz-body">
               <div class="biz-head">
                 <div class="biz-title-row">
-                  <p class="biz-title">{smartFactorySlide.title}</p>
+                  <a href={smartFactorySlide.href} class="biz-title">{smartFactorySlide.title}</a>
                 </div>
                 <p class="biz-desc" set:html={smartFactorySlide.desc} />
               </div>
@@ -904,7 +911,7 @@ const partnerLogoKeys = [
           <p class="sp-eyebrow">Solution</p>
           <div class="sp-head">
             <div>
-              <p class="sp-title">{solutionOverview.title}</p>
+              <a href="/solutions/commerce-platform" class="sp-title">{solutionOverview.title}</a>
               <p class="sp-desc">{solutionOverview.desc}</p>
             </div>
             <div class="sp-nav">
@@ -1023,10 +1030,10 @@ const partnerLogoKeys = [
           <p class="sp-eyebrow">Project</p>
           <div class="sp-head">
             <div>
-              <p class="sp-title">
+              <a href="/project/reference" class="sp-title">
                 Proving Our Capabilities Through Successful Projects
                 <img class="sp-arrow-ph" src={mainIconSrc('icon_arrow_forward')} alt="" />
-              </p>
+              </a>
               <p class="sp-desc">
                 실제 비즈니스를 움직이는 AI를 구축합니다.<br /> 다년 간의 경험과 전문성을 겸비한 인력과
                 AI가 한 팀이 되어, 고객 비즈니스의 성공을 위해 끊임없이 실행하고 성장합니다.
@@ -1125,7 +1132,7 @@ const partnerLogoKeys = [
       // 멈추지 않고 그 시점부터 다시 4초 뒤 계속 넘어간다(메인 히어로 배너 관례 — 한 번 조작했다고
       // 자동재생이 영구히 꺼지면 안 됨). pauseOnMouseEnter는 마우스를 올린 동안만 잠깐 멈췄다가
       // 벗어나면 재개 — 텍스트 읽는 도중 다음 슬라이드로 훽 넘어가버리는 걸 방지.
-      const AUTOPLAY = {delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: false}
+      const AUTOPLAY = {delay: 7000, disableOnInteraction: false, pauseOnMouseEnter: false}
 
       // --- Section 1: Main slogan — 세로 닷 페이지네이션만, loop ---
       new Swiper('.section1-slide.js-swiper', {
@@ -1272,38 +1279,73 @@ const partnerLogoKeys = [
         isAutoScrolling = on
       }
 
-      $('#fullpage').fullpage({
-        // $breakpoint-md(1300px)보다 좁으면 fullPage가 섹션 스냅/스크롤 잠금을 전부 놓고 평범한
-        // 문서 스크롤로 넘어간다 — 우리 CSS 미디어쿼리(max-width:1300px)와 정확히 같은 지점에서
-        // 전환되도록 1301(1300 이하는 전부 "미만"에 포함)로 잡는다. 모바일에서 컨텐츠가 100vh를
-        // 넘는 섹션이 fullPage에 의해 잘리던 문제가 있었어서, PC는 fullPage 스냅을 그대로 두고
-        // 모바일만 이걸로 빠져나가게 한 것 — PC 동작은 예전 그대로.
-        responsiveWidth: 1301,
-        anchors: [
-          'main',
-          'business-info',
-          'ai',
-          'business',
-          'solution',
-          'why',
-          'project',
-          'partner',
-          'footer'
-        ],
-        //scrollingSpeed: 1000, //스크롤 이동 속도를 0.001초 단위로 설정
-        //fitToSectionDelay: 1200, //설정된 1000분의 1초 단위로 맞춤을 지연
-        //touchSensitivity: 20, // 슬라이드로 이동하는 데 필요한 스와이프 거리를 정의
-        //scrollHorizontally: true, //슬라이더 안에서 마우스 휠 또는 트랙패드를 써서 수평으로 미끄러지듯 움직일지를 정의
-        css3: true,
+      const PC_BREAKPOINT = 1301 // 아래 responsiveWidth와 동일 값, 리사이즈 핸들러에서도 참조
 
-        //접근성
-        keyboardScrolling: true,
-        animateAnchor: true,
-        recordHistory: true
+      // fullPage 초기화를 함수로 빼둔다 — 최초 1회 호출은 물론, 아래 리사이즈 핸들러에서
+      // "이전 사이즈가 모바일(반응형)이었던 경우" 통째로 destroy 후 재호출(재로드)하기 위함.
+      function initFullpage() {
+        $('#fullpage').fullpage({
+          // $breakpoint-md(1300px)보다 좁으면 fullPage가 섹션 스냅/스크롤 잠금을 전부 놓고 평범한
+          // 문서 스크롤로 넘어간다 — 우리 CSS 미디어쿼리(max-width:1300px)와 정확히 같은 지점에서
+          // 전환되도록 1301(1300 이하는 전부 "미만"에 포함)로 잡는다. 모바일에서 컨텐츠가 100vh를
+          // 넘는 섹션이 fullPage에 의해 잘리던 문제가 있었어서, PC는 fullPage 스냅을 그대로 두고
+          // 모바일만 이걸로 빠져나가게 한 것 — PC 동작은 예전 그대로.
+          responsiveWidth: PC_BREAKPOINT,
+          anchors: [
+            'main',
+            'business-info',
+            'ai',
+            'business',
+            'solution',
+            'why',
+            'project',
+            'partner',
+            'footer'
+          ],
+          //scrollingSpeed: 1000, //스크롤 이동 속도를 0.001초 단위로 설정
+          //fitToSectionDelay: 1200, //설정된 1000분의 1초 단위로 맞춤을 지연
+          //touchSensitivity: 20, // 슬라이드로 이동하는 데 필요한 스와이프 거리를 정의
+          //scrollHorizontally: true, //슬라이더 안에서 마우스 휠 또는 트랙패드를 써서 수평으로 미끄러지듯 움직일지를 정의
+          css3: true,
 
-        // 마지막 섹션(Partner)에 도착하면 스크롤 잠금을 풀어 그 아래 Footer로 자연스럽게
-        // 이어지게 한다 — 위 setAutoScrolling(true) 복구 로직은 있었지만 정작 이걸 처음
-        // 풀어주는 트리거가 빠져있어서 Footer에 끝까지 도달할 방법 자체가 없었다(버그).
+          //접근성
+          keyboardScrolling: true,
+          animateAnchor: true,
+          recordHistory: true
+
+          // 마지막 섹션(Partner)에 도착하면 스크롤 잠금을 풀어 그 아래 Footer로 자연스럽게
+          // 이어지게 한다 — 위 setAutoScrolling(true) 복구 로직은 있었지만 정작 이걸 처음
+          // 풀어주는 트리거가 빠져있어서 Footer에 끝까지 도달할 방법 자체가 없었다(버그).
+        })
+      }
+      initFullpage()
+
+      // --- 이전 사이즈가 모바일 폭(1300px 이하)이었다면, 리사이즈 후 fullPage를 통째로 재로드 ---
+      // 실제 재현된 원인(사용자 리포트, Ctrl+휠 줌으로 확인): fullPage의 responsiveWidth 설정
+      // 때문에 브라우저 확대/축소 중 1300px 밑으로 살짝이라도 스쳐 지나가면 fullPage가 반응형
+      // 모드(스냅 잠금 해제)로 전환됐다가, 다시 커질 때 섹션 위치(translate3d) 재동기화가 깨끗하게
+      // 안 맞아 화면이 두 섹션 사이에 걸쳐 보이는 상태로 남는다 — reBuild()/silentMoveTo() 같은
+      // 부분 재계산으로는 안 잡혀서, 아예 destroy('all')로 fullPage가 건드린 마크업/상태를 전부
+      // 원상 복구한 뒤 initFullpage()로 처음부터 다시 초기화한다(가장 확실한 재동기화 방법).
+      // 리사이즈 이벤트가 짧은 시간에 여러 번 발생하므로(연속 줌 등) 300ms 디바운스로 리사이즈가
+      // 일단락된 뒤에만 재로드한다.
+      let resizeTimer
+      let wasMobileWidth = window.innerWidth < PC_BREAKPOINT
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer)
+        resizeTimer = setTimeout(function () {
+          if (
+            wasMobileWidth &&
+            $.fn.fullpage &&
+            $.fn.fullpage.destroy &&
+            window.innerWidth > 1200
+          ) {
+            //$.fn.fullpage.destroy('all')
+            //initFullpage()
+            location.reload()
+          }
+          wasMobileWidth = window.innerWidth < PC_BREAKPOINT
+        }, 300)
       })
 
       window.addEventListener('scroll', function () {

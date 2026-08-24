@@ -207,6 +207,13 @@ $USE_ACCENT_BORDER : 'use-accent-border';
 @media only screen and (max-width: $breakpoint-md){
 .bs-box{
     padding: rem(36px);
+    &.#{$USE_SLOTFOOT}{
+        padding-bottom: rem(85px);
+    }
+    .bt-tags-group{
+        padding: 0 rem(20px);
+        padding-bottom: rem(10px);
+    }
     .bs-box-title-case-4{
         .bsb-title-wrap{
             align-items: flex-start;

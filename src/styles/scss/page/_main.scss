@@ -1863,3 +1863,20 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
     }
   }
 }
+
+
+
+@media only screen and (max-width: calc(1920px * 0.8)) {
+  .main-wrap .section5-slide .sp-head .sp-title, .main-wrap .section6-slide .sp-head .sp-title, .main-wrap .section7-slide .sp-head .sp-title{
+    @include font('Body 30 R');
+  }
+  .main-wrap .section5-slide .sp-eyebrow, .main-wrap .section6-slide .sp-eyebrow, .main-wrap .section7-slide .sp-eyebrow{
+    margin-bottom: rem(10px);
+  }
+  .main-wrap .section5-slide .sp-head .sp-desc, .main-wrap .section6-slide .sp-head .sp-desc, .main-wrap .section7-slide .sp-head .sp-desc{
+    margin-top: rem(10px);
+  }
+  .main-wrap .section5-slide .section-item, .main-wrap .section6-slide .section-item, .main-wrap .section7-slide .section-item{
+    padding-bottom: rem(50px);
+  }
+}

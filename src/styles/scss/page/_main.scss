@@ -888,7 +888,8 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
     // 요소는 width:100%를 그대로 채워서 알약이 너무 길어 보였다. inline-flex + align-self:center로
     // 내용 크기만큼만 잡고 가운데로, 패딩도 기존 대비 80%로 줄인다(12px→10px).
     .biz-pill {
-      display: inline-flex;
+      display: flex;
+      width: 100%;
       align-items: center;
       justify-content: center;
       align-self: center;
@@ -1864,6 +1865,20 @@ $slide-height: 100vh;//calc(100vh - #{rem(80px)});
   }
 }
 
+
+
+@media only screen and (max-width: $breakpoint-sm) {
+  .biz-dataflow-row{
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .main-wrap .section4-slide .biz-datacircle{
+    width: rem(220px);
+    height: rem(220px);
+    flex: inherit;
+    display: inline-flex;
+  }
+}
 
 
 @media only screen and (max-width: calc(1920px * 0.8)) {

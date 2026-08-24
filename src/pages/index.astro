@@ -20,6 +20,7 @@ import Box from '~/components/common/Box.astro'
 import Footer from '~/components/layout/Footer.astro'
 
 const PUBLIC_BUILD_URL = import.meta.env.PUBLIC_BUILD_URL
+const APP_ENV = import.meta.env.APP_ENV
 // Partner 섹션 로고: 이미 다운로드되어 있는 src/assets/images/clients/ico_client_*.png 재사용
 // (ClientLogoGrid 공용 컴포넌트는 카드가 테두리+고정 비율(277x133) 고정이라 Figma의 이 섹션
 // 카드(테두리 없음, radius 24, 내용 높이에 맞춰 자연스러운 높이)와 맞지 않아 여기서는 직접 구현)
@@ -232,7 +233,7 @@ const ecommerceSlide = {
     'B2C 종합 온-오프라인 통합 몰',
     '온-오프라인 통합 몰',
     '국내외 전문 몰 제휴 연계',
-    '쇼핑몰 솔류션 공급',
+    '쇼핑몰 솔루션 공급',
     'Mobile Web / App'
   ]
 }
@@ -253,7 +254,7 @@ const robotLogisticsSlide = {
   centerBadge: 'M2M-RLCK<br/>로봇물류제어기술',
   leftPills: [
     {
-      name: '자동화 창고(AS/RS',
+      name: '자동화 창고(AS/RS)',
       desc: 'WMS 실시간 연계<br/>고밀도 저장 및 자동 입·출고<br/>스태커 크레인 기반 자동 운반<br/>재고 정확도 및 공간 활용 극대화'
     },
     {
@@ -285,7 +286,7 @@ const smartFactorySlide = {
   bg: 'factory-bg',
   href: '/robot-logistics/smart-factory',
   title: 'Smart Factory MES',
-  desc: '사람, 산업 공간, 업무 정보를 스마트하게 연결하다!<br/>생산 현장 데이터 실시간 수집/가공/분석"을 통한 자율 공장 실현 가능, 지능화 된 스마트 팩토리 시스템 보유',
+  desc: '사람, 산업 공간, 업무 정보를 스마트하게 연결하다!<br/>"생산 현장 데이터 실시간 수집/가공/분석"을 통한 자율 공장 실현 가능, 지능화 된 스마트 팩토리 시스템 보유',
   dataFlow: [
     {text: '데이터 수집', icons: ['factory-icon-collect-a', 'factory-icon-collect-b']},
     {text: '데이터 정제 · 관리', icons: ['factory-icon-refine']},
@@ -1117,7 +1118,7 @@ const partnerLogoKeys = [
   <script src={`${PUBLIC_BUILD_URL}/js/jquery-3.1.1.min.js`} is:inline></script>
   <script src={`${PUBLIC_BUILD_URL}/js/jquery.fullpage.min.js`} is:inline></script>
   <script src={`${PUBLIC_BUILD_URL}/js/swiper.min.js.js`} is:inline></script>
-  <script is:inline>
+  <script is:inline define:vars={{APP_ENV}}>
     // 공통 타입 분기 없이 슬라이드별로 각자 따로 선언한다 — 서로 옵션이 달라지기 시작하면(peek
     // 폭, offset 등) 분기 하나 고칠 때 다른 슬라이드까지 건드릴 위험이 있어서 유지보수상 분리한다.
     // PC(<1300px 아닐 때)는 fullPage.js가 섹션을 정확히 1화면(100vh)로 스냅하니 같은 그룹
@@ -1132,7 +1133,11 @@ const partnerLogoKeys = [
       // 멈추지 않고 그 시점부터 다시 4초 뒤 계속 넘어간다(메인 히어로 배너 관례 — 한 번 조작했다고
       // 자동재생이 영구히 꺼지면 안 됨). pauseOnMouseEnter는 마우스를 올린 동안만 잠깐 멈췄다가
       // 벗어나면 재개 — 텍스트 읽는 도중 다음 슬라이드로 훽 넘어가버리는 걸 방지.
-      const AUTOPLAY = {delay: 7000, disableOnInteraction: false, pauseOnMouseEnter: false}
+
+      const AUTOPLAY =
+        APP_ENV === 'dev'
+          ? false
+          : {delay: 7000, disableOnInteraction: false, pauseOnMouseEnter: false}
 
       // --- Section 1: Main slogan — 세로 닷 페이지네이션만, loop ---
       new Swiper('.section1-slide.js-swiper', {
